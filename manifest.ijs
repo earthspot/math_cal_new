@@ -9,7 +9,10 @@ cal.ijs
 cal.ijt
 cal.log
 manifest.ijs
-SAMPLE.ijsSAMPLE0.ijsSAMPLE1.ijsSAMPLE2.ijs
+SAMPLE.ijs
+SAMPLE0.ijs
+SAMPLE1.ijs
+SAMPLE2.ijs
 tabmath.ijs
 tabz.ijs
 )
