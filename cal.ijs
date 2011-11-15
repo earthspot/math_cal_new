@@ -725,7 +725,7 @@ if. y e. }.items'' do.
   0 ttsort (items''),y		NB. x=0 does a blind-sort
   'item duplicated:' SP1 y
 else.
-  'cannot duplicate item:' SP1 y
+  '>>> cannot duplicate item:' SP1 y
 end.
 )
 
@@ -1913,9 +1913,9 @@ ttdelete=: 3 : 0
     reselect 0
     'deleted:' SP1 yd
   elseif. mt yd do.
-    'can''t delete:' SP1 nd
-  elseif. 1 do.
-    'deleted:' SP1 yd SP2 '-- can''t delete:' SP1 nd
+    '>>> cannot delete:' SP1 nd
+  elseif. do.
+    '>>> deleted:' SP1 yd SP2 '-- but cannot delete:' SP1 nd
   end.
 )
 
@@ -1998,7 +1998,7 @@ tag,'loaded: ',fprefix file
 ttmerge=: 4 : 0
 	NB. delete target item y after pointing its descendants to item x
 if. y incompat_i x do.
-  'items' SP1 x SP1 y SP1 'are incompatible -- cannot merge'
+  '>>> items' SP1 x SP1 y SP1 'are incompatible -- cannot merge'
   return.
 end.
 select. z=.hasf x,y
@@ -2011,7 +2011,7 @@ NB. 	smoutput 'y=' SP0 y SP1 'has formula but not x=' SP0 x
 case. 1 0 do.
 NB. 	smoutput 'x=' SP0 x SP1 'has formula but not y=' SP0 y
 case. 1 1 do.
-	'items:' SP1 x SP1 y SP1 'both have formulas -- cannot merge'
+	'>>> items:' SP1 x SP1 y SP1 'both have formulas -- cannot merge'
 	return.
 end.
 NB. smoutput 'x=' SP0 x SP2 'y=' SP0 y
