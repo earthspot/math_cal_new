@@ -118,8 +118,8 @@ TITL void CAPT                     \window title -from CAPT
 TITU void UNDEF_CAPT               \window title -undefined
 TFIL void file                     \ttable file name
 TFLU void UNDEF                    \ttable file name -undefined
-TNAM void '.'taketo shortf file    \ttable file name-only
-TNMX void shortf file              \ttable file name.ext
+TNAM void shortf file              \ttable file name-only
+TNMX void tbx shortf file          \ttable file name.ext
 UCOM r    docompatlist r           \item compat units
 UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
@@ -1558,12 +1558,8 @@ end.
 )
 
 shortf=: 3 : 0
-	NB. short-form of: y (=file) for message output
-p=. #path=. }: ST dropafter scriptof ST
-if. path-: p{.y do. p}.y
-elseif. (-. DT e. y) and (-. SEP e. y) do. ijs y
-elseif. do. ijs y
-end.
+	NB. short-form (no ext) of: y (=file) for message output
+DT taketo |. SEP taketo |. y
 )
 
 showing=: empty
@@ -2026,6 +2022,14 @@ ttdelete_one y		NB. lastly, delete y
 CH=: recal 0
 'ttmerge' dirty 1
 'old item:' SP1 y SP1 'merged with item:' SP1 x
+)
+
+ttnames=: 3 : 0
+	NB. TEST: the various forms of ttable name
+for_no. ;:'CAPT TITF TITL TITU TFIL TFLU TNAM TNMX' do.
+  nom=. ,>no
+  smoutput nom,': ',tabengine nom
+end.
 )
 
 ttnew=: 3 : 0
