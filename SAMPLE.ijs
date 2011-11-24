@@ -36,4 +36,5 @@ Purpose:
 
 To plot something, insert a max value in item 1
 Then pick menu: File > Plot 0 to (value)
+
 )

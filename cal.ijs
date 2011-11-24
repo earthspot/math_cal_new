@@ -1,43 +1,7 @@
 NB. CAL scientific calculator engine
-require 'plot files strings jmf numeric'
 
-cocurrent 'z'
-
-tabengine=: tabengine_cal_
-
-TTABLES=: jpath '~user/tabula-user/'	NB. folder of user ttables
-TTARCHIVE=: jpath '~temp/ttarchive/'	NB. users ttable archive folder
-CALDIR=: '<UNSET>'			NB. OVERWRITTEN BY: wami
-
-wami=: 3 : 0
-	NB. where-am-I? -puts invoking script path in (y)
-	NB. eg. wami 'CALDIR'
-ws=. [: 'Not from script'"_`({ 4!:3@(0&$))@.(0&<:) [: 4!:4 [: < >
-(y)=: 0
-z=. >ws y
-SEP=: '/\' {~ '\' e. z
-z=. (>: z i: SEP) {.z
-(y)=: z
-)
-
-wami 'CALDIR'	NB. point CALDIR to the folder containing this script
-
-	NB. Used by verb: scriptof
-tabula=:	3 : 'CALDIR,y'		NB. locates CAL installation
-ttsample=:	3 : 'CALDIR,y'		NB. locates ttable: SAMPLE.ijs
-ttabula=:	3 : 'TTABLES,y'		NB. locates user own ttables
-ttarchive=:	3 : 'TTARCHIVE,y'	NB. locates archive of altered ttables
-ijs=: ],'.ijs' #~ [: -. '.' e. ]
-tabulasc=: tabula@ijs
-ot=: open@tabulasc
-
-	NB. load fixed scripts implementing TABULA...
-load tabula 'tabz.ijs'
-load 'math/uu'
-
-NB. ==================================================
 coclass 'cal'
-VERSION=: '1.0.0'
+require 'plot files strings jmf numeric'
 
 TTn=: ,:'tn'		NB. fwd-ref fixup
 items=: 3 : 'i. #TTn'	NB. fwd-ref fixup
@@ -62,7 +26,6 @@ MAXINVERT=: 30		NB. limits inversion cycles
 PAD=: 10		NB. default pad
 PFMT=: 'line'		NB. default plot format
 RETURNED=: ''		NB. noun returned by i/f call
-SAVEPATH=: '~user/tabula'	NB. target path for LOBROW use
 TOLERANCE=: 1.0e_9	NB. default tolerance for notional equality
 TRACE=: 0		NB. controls: sess
 TRACI=: 0		NB. controls: sesi (echoes instruction string)
@@ -112,7 +75,7 @@ ITMS void }.items''                \list of non-0 item#s
 NAME r    dtb r{TTn                \name of item
 PLOT rzz  r plotz~ zz              \gen plot data with x-axis
 QCMD yy   CCc e.~ <yy              \query valid command
-QUER void x2f (>CCc) SP2 >CCd      \query interface defn
+QUER void querycal''               \query interface defn
 TITF void dtb 0{TTf                \window title -from TTf
 TITL void CAPT                     \window title -from CAPT
 TITU void UNDEF_CAPT               \window title -undefined
@@ -268,6 +231,7 @@ CSEP=: '\'
 DT=: '.'
 SC=: ';'
 SH=: '!'
+SEP=: PATHSEP_j_
 SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTn TTu TTs TTf UNITN UNITS CAPT'
 SP=: ' '
 UNDEF=: 'undefined'
@@ -320,7 +284,7 @@ else.
 	t0=.-0  1  2  3  4  5  6  7   5 5
 	for_i. i.#t1 do. y=. y+ (y=i{t1)*i{t0-t1 end.
 end.
-|y
+x: |y	NB. extended int to avoid overflow
 )
 
 adj=: adj_uu_
@@ -355,12 +319,12 @@ archive=: 3 : 0
 require'files'	NB. for: fcopynews
 	NB. xtx appends correct .ext if none given
 xtx=. tbx	NB. the correct extension for a ttable
-sce=. ttabula xtx y
+sce=. TPATH_TTABLES, xtx y
 	NB. Don't archive empty file, return _2 instead
 if. 0=#z=.freads sce do. _2 return. end.
 	NB. Don't archive absent file, return _3 instead
 if. _1=z do. _3 return. end.
-1!:5 <fld=. ttarchive 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
+1!:5 <fld=. TPATH_ARCHIVE, 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
 tgt=. fld , SEP , xtx y
 tgt fcopynews sce
 )
@@ -389,9 +353,11 @@ end.
 zz=. zz,z
 end.	NB. i
 ZZ=: zz
+	NB. Globalize these for debugging...
 zz2=. |: |. aheads pack acomb zz
+zz3=. zz2 <. #uarr=. uucp ARROWCH  NB. limit to #uarr
 sess 'arrowch: codes used:' ; ~. ,zz2
-zz2 { uucp ARROWCH
+zz3 { uarr,'?'
 )
 
 arrowgen=: 3 : 0
@@ -725,13 +691,13 @@ if. y e. }.items'' do.
   0 ttsort (items''),y		NB. x=0 does a blind-sort
   'item duplicated:' SP1 y
 else.
-  '>>> cannot duplicate item:' SP1 y
+  'cannot duplicate item:' SP1 y
 end.
 )
 
 enlog=: 3 : 0
 	NB. add y to log
-fi=. <tabula 'cal.log'
+fi=. <TPATH_CAL, 'cal.log'
 if. y-:0 do.	NB. initialise log
   z=.(": 6!:0''),' start cal.log',LF
   z 1!:2 fi
@@ -1366,6 +1332,7 @@ NB. (NOT-IMPLEMENTED YET)
 )
 
 promo=: 4 : 'x,y-.x'
+querycal=: 3 : 'x2f (>CCc) SP2 (>CCa) SP2 >CCd'
 quoted=: quoted_exch_
 
 recal=: 3 : 0
@@ -1486,12 +1453,12 @@ nb 'item' ; y ; '-units changed from:' ; un0 ; 'to:' ; un3
 scriptof=: 3 : 0
 	NB. find full pathname of ttable id in various forms
 if. 0=#y do. y=. '$$' end.
-if. y-: '$$' do.	ttsample ijs 'SAMPLE'
-elseif. isnums y do.	ttsample ijs 'SAMPLE',y
-elseif. isNo {.y do.	ttsample ijs 'SAMPLE',":y
+if. y-: '$$' do.	TPATH_SAMPLES, ijs 'SAMPLE'
+elseif. isnums y do.	TPATH_SAMPLES, ijs 'SAMPLE',y
+elseif. isNo {.y do.	TPATH_SAMPLES, ijs 'SAMPLE',":y
 elseif. '~'={.y do.	dtb jpath y
 elseif. '/'={.y do.	y	NB. assume y is fullpath (MAC/Unix only)
-elseif. do.		ttabula ijs dtb y
+elseif. do.		TPATH_TTABLES, ijs dtb y
 end.
 )
 
@@ -1627,16 +1594,15 @@ end.
 
 start=: 3 : 0
 	NB. start the engine
-	NB. RELOAD general math fns ...
-	NB. ...done here instead of ONLOAD to honour
-	NB.  any changes made to them after cal loaded.
+load :: 0: TPATH_CAL,'manifest.ijs'	NB. sets VERSION
 enlog 0		NB. start a new log file
 	NB. create folders if absent ...
-try. 1!:5 < TTABLES catch. end.
-try. 1!:5 < TTARCHIVE catch. end.
-load tabula ijs'tabmath'
+try. 1!:5 < TPATH_TTABLES catch. end.
+try. 1!:5 < TPATH_ARCHIVE catch. end.
+	NB. RELOAD general math fns ...
+load TPATH_CAL, ijs'tabmath'
 	NB. ENSURE up-to-date currency conversion table ...
-NB. load tabula ijs'exch'
+NB. load TPATH_CAL, ijs'exch'
 NB. start_exch_''
 ARGS=: targs ARGEX=: <;._2 ARGEXP	NB. i/f args-table
 cmake''		NB. build the i/f tables
@@ -1913,9 +1879,9 @@ ttdelete=: 3 : 0
     reselect 0
     'deleted:' SP1 yd
   elseif. mt yd do.
-    '>>> cannot delete:' SP1 nd
-  elseif. do.
-    '>>> deleted:' SP1 yd SP2 '-- but cannot delete:' SP1 nd
+    'cannot delete:' SP1 nd
+  elseif. 1 do.
+    'deleted:' SP1 yd SP2 '-- cannot delete:' SP1 nd
   end.
 )
 
@@ -1998,7 +1964,7 @@ tag,'loaded: ',fprefix file
 ttmerge=: 4 : 0
 	NB. delete target item y after pointing its descendants to item x
 if. y incompat_i x do.
-  '>>> items' SP1 x SP1 y SP1 'are incompatible -- cannot merge'
+  'items' SP1 x SP1 y SP1 'are incompatible -- cannot merge'
   return.
 end.
 select. z=.hasf x,y
@@ -2011,7 +1977,7 @@ NB. 	smoutput 'y=' SP0 y SP1 'has formula but not x=' SP0 x
 case. 1 0 do.
 NB. 	smoutput 'x=' SP0 x SP1 'has formula but not y=' SP0 y
 case. 1 1 do.
-	'>>> items:' SP1 x SP1 y SP1 'both have formulas -- cannot merge'
+	'items:' SP1 x SP1 y SP1 'both have formulas -- cannot merge'
 	return.
 end.
 NB. smoutput 'x=' SP0 x SP2 'y=' SP0 y
@@ -2208,3 +2174,31 @@ i.0 0
 
 xseq=: 3 : 'sor clos dpmx TD'
 
+NB. ========== z-LOCALE ==========
+
+cocurrent 'z'
+
+TPATH_CAL=: 3 : 0 ''
+	NB. returns directory containing this script
+	NB. also assigns global: WHEREAMI -the folder in question
+ws=. [: 'Not from script'"_`({ 4!:3@(0&$))@.(0&<:) [: 4!:4 [: < >
+WHEREAMI=: '<UNSET>'	NB. needed for ws to work with
+z=. >ws 'WHEREAMI'
+WHEREAMI=: (>: z i: PATHSEP_j_) {.z
+)
+
+TPATH_SAMPLES=: TPATH_CAL
+TPATH_TTABLES=: jpath '~user/tabula-user/'	NB. folder of user ttables
+TPATH_ARCHIVE=: jpath '~temp/ttarchive/'	NB. users ttable archive folder
+
+tabengine=: tabengine_cal_
+ijs=: ],'.ijs' #~ [: -. '.' e. ]
+tbx=: ijs					NB. tbx: ext for ttables (if ever changes)
+ot=: 3 : 'TPATH_CAL,ijs y'
+
+load TPATH_CAL, ijs 'tabz'
+
+	NB. Load: uu -by looking for sibling folder
+load (TPATH_CAL,'cal.ijs') rplc ;:'cal uu'
+
+NB. DO NOT CALL start_cal_ HERE: CAL DOES NOT SELF-START.

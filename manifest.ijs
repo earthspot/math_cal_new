@@ -2,12 +2,11 @@ NB. cal manifest
 
 CAPTION=: 'Scientific calculator engine'
 
-VERSION=: '1.0.4'
+VERSION=: '1.0.5'
 
 FILES=: 0 : 0
 cal.ijs
 cal.ijt
-cal.log
 manifest.ijs
 SAMPLE.ijs
 SAMPLE0.ijs
