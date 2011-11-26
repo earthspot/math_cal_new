@@ -231,7 +231,6 @@ CSEP=: '\'
 DT=: '.'
 SC=: ';'
 SH=: '!'
-SEP=: PATHSEP_j_
 SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTn TTu TTs TTf UNITN UNITS CAPT'
 SP=: ' '
 UNDEF=: 'undefined'
@@ -2181,10 +2180,12 @@ cocurrent 'z'
 TPATH_CAL=: 3 : 0 ''
 	NB. returns directory containing this script
 	NB. also assigns global: WHEREAMI -the folder in question
+	NB. plus SEP -the platform-dependent path-separator.
 ws=. [: 'Not from script'"_`({ 4!:3@(0&$))@.(0&<:) [: 4!:4 [: < >
 WHEREAMI=: '<UNSET>'	NB. needed for ws to work with
 z=. >ws 'WHEREAMI'
-WHEREAMI=: (>: z i: PATHSEP_j_) {.z
+SEP=: '/\' {~ '\' e. z
+WHEREAMI=: (>: z i: SEP) {.z
 )
 
 TPATH_SAMPLES=: TPATH_CAL
