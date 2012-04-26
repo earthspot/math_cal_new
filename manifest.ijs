@@ -2,7 +2,7 @@ NB. cal manifest
 
 CAPTION=: 'Scientific calculator engine'
 
-VERSION=: '1.0.8'
+VERSION=: '1.0.9'
 
 FILES=: 0 : 0
 cal.ijs

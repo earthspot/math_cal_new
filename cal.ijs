@@ -315,7 +315,8 @@ ar=: 3 : 'SP ,.~ }.arrowch arrowgen SP'
 
 archive=: 3 : 0
 	NB. archive ttable: y (=bare name)
-require'files'	NB. for: fcopynews
+	NB. ---now using: fcopynew instead (no use of toHOST)
+require'files'	NB. for: fcopynew
 	NB. xtx appends correct .ext if none given
 xtx=. tbx	NB. the correct extension for a ttable
 sce=. TPATH_TTABLES, xtx y
@@ -325,7 +326,7 @@ if. 0=#z=.freads sce do. _2 return. end.
 if. _1=z do. _3 return. end.
 1!:5 <fld=. TPATH_ARCHIVE, 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
 tgt=. fld , SEP , xtx y
-tgt fcopynews sce
+tgt fcopynew sce
 )
 
 arrowch=: 3 : 0
@@ -1574,7 +1575,7 @@ sortTD=: 4 : 0
 sess=. empty
 t=. 0 promo x		NB. ensure perm: t doesn't move (hdr) item 0
 z=. t{TD
-sess w=. w,: ".each w=. ;: 'z t taz' [taz=. t{az
+NB. sess w=. w,: ".each w=. ;: 'z t taz' [taz=. t{az
   NB. RATIONALE:
   NB.         a b c d e f g h
   NB. if  i=. 0 1 2 3 4 5 6 7
