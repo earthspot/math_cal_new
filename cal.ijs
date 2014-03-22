@@ -1,7 +1,7 @@
 NB. CAL scientific calculator engine
 
 coclass 'cal'
-require 'plot files strings jmf numeric'
+require 'plot jmf numeric'
 
 TTn=: ,:'tn'		NB. fwd-ref fixup
 items=: 3 : 'i. #TTn'	NB. fwd-ref fixup
