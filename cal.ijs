@@ -1,7 +1,7 @@
 NB. CAL scientific calculator engine
 
 coclass 'cal'
-require 'plot jmf numeric'
+require 'plot numeric'
 
 TTn=: ,:'tn'		NB. fwd-ref fixup
 items=: 3 : 'i. #TTn'	NB. fwd-ref fixup
@@ -1143,7 +1143,7 @@ for_t. i.MAXINVERT do.		NB. max iterations, may need to vary this
   end.
   Dtr=. r*amodel		NB. amodel is a global created in: beval
   				NB. originally: Dtr=. r inv_apply_g model
-   sess1 'inversion: z=' SP0 z SP2 'r=' SP0 r SP2 'scale=' SP0 scale SP2 'amodel=' SP0 amodel 
+   sess1 'inversion: z=' SP0 z SP2 'r=' SP0 r SP2 'scale=' SP0 scale SP2 'amodel=' SP0 amodel
    sess1 'inversion: Dz=' SP0 Dz SP2 'Dtr=' SP0 Dtr SP2 'Dtz=' SP0 Dtz
   Dtz=. +/Dz*Dtr		NB. Total derivative
   if. 0=Dtz do. sess2 'inversion: MAXMIN error' [errno=.1 break. end.
@@ -1421,8 +1421,8 @@ else.		NB. ASSUME y is item# in ttable...
   un0=. >y{UNITN
 end.
 'a f0 un2 b'=. cnvj un0		NB. f0: scale factor, un2: unscaled units, a b: discarded
-sp=. ;:'= da h k ? ? M ? ? G ? ? T ? ? P ? ? E ? ? Z ? ? Y   y ? ? z ? ? a ? ? f ? ? p ? ? n ? ? mu ? ? m  c  d' 
-NB.     0 1  2 3 4 5 6 7 8 9    12    15    18    21    24 _24   _21   _18   _15   _12    _9    _6     _3 _2 _1 
+sp=. ;:'= da h k ? ? M ? ? G ? ? T ? ? P ? ? E ? ? Z ? ? Y   y ? ? z ? ? a ? ? f ? ? p ? ? n ? ? mu ? ? m  c  d'
+NB.     0 1  2 3 4 5 6 7 8 9    12    15    18    21    24 _24   _21   _18   _15   _12    _9    _6     _3 _2 _1
 NB. no valid scale-prefix for 10^4 etc, so these have: ? in: sp
 	NB. Assign p (scale-prefix) ...
 if. 'literal'-:datatype x do.	NB. x is the literal prefix required
@@ -1819,7 +1819,7 @@ vfact=: vfactS, >(>&{:) each z
 CH=:    flags 0		NB. "Changed" flags
 vhold=: flags 0		NB. TEST ONLY >>>>> default==no holds for TT
 if. 1=#vhidd do. vhidd=: nt1 {. vhiddS
-else.		 vhidd=: vhiddS, }.vhidd 
+else.		 vhidd=: vhiddS, }.vhidd
 end.
 if. 1=#vmodl do. vmodl=: vmodlS, (nt1-nt0)#1
 else.		 vmodl=: vmodlS, }.vmodl

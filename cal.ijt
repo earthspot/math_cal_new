@@ -1,5 +1,5 @@
 LABTITLE=: 'CAL - the TABULA engine'
-LABDEPENDS=: 'math/cal'
+LABDEPENDS=: 'math/cal numeric plot'
 
 NB. =========================================================
 Lab Section INTRO
@@ -11,8 +11,6 @@ the verb: tabengine
 )
 
 require 'math/cal'
-
-tabengine_z_
 
 tabengine 'VERSION'	NB. --fails because not initialized.
 
