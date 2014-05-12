@@ -24,4 +24,4 @@ RELEASE=: 'j802'
 
 LABCATEGORY=: 'Math'
 
-PLATFORMS=: 'linux win darwin android'
+PLATFORMS=: ''
