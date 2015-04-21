@@ -2165,7 +2165,7 @@ warnplex=: 3 : 0
 z=. ;:'vfact vhidd vhold vmodl vqua0 vquan vsiq0 vsiqn'
 for_no. z do.
   if. 'complex' -: datatype ".>no do.
-	wdinfo (>no),' is COMPLEX!',LF,'Check for INVALIDs'
+	sminfo (>no),' is COMPLEX!',LF,'Check for INVALIDs'
 	return.
   end.
 end.
