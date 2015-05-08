@@ -22,6 +22,10 @@ CAL is a platform-independent engine residing in its own locale (_cal_) which fo
 
 RELEASE=: 'j802 j803 j804'
 
+DEPENDS=: 0 : 0
+math/uu
+)
+
 LABCATEGORY=: 'Math'
 
 PLATFORMS=: ''
