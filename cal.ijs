@@ -700,9 +700,9 @@ enlog=: 3 : 0
 fi=. <TPATH_CAL, 'cal.log'
 if. y-:0 do.	NB. initialise log
   z=.(": 6!:0''),' start cal.log',LF
-  z 1!:2 fi
+  z 1!:2 ::0: fi
 else.
-  (y,LF) 1!:3 fi
+  (y,LF) 1!:3 ::0: fi
 end.
 )
 
