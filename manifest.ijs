@@ -2,7 +2,7 @@ NB. cal manifest
 
 CAPTION=: 'Scientific calculator engine'
 
-VERSION=: '1.0.16'
+VERSION=: '1.0.17'
 
 FILES=: 0 : 0
 cal.ijs
@@ -20,7 +20,7 @@ DESCRIPTION=: 0 : 0
 CAL is a platform-independent engine residing in its own locale (_cal_) which forms the basis of TABULA, a backfitting scientific calculator.
 )
 
-RELEASE=: 'j802 j803 j804 j805'
+RELEASE=: 'j802 j803 j804 j805 j806'
 
 DEPENDS=: 0 : 0
 math/uu
