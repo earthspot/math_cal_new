@@ -26,7 +26,9 @@ DESCRIPTION=: 0 : 0
 CAL is a platform-independent engine residing in its own locale (_cal_) which forms the basis of TABULA, a backfitting scientific calculator.
 )
 
-RELEASE=: 'j802 j803 j804 j805 j806 j807'
+RELEASE=: ''
+
+FOLDER=: 'math/cal'
 
 LABCATEGORY=: 'Math'
 
