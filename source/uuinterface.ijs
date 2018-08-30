@@ -1,3 +1,4 @@
+@@---DO NOT LOAD
 '==================== cal uuinterface.ijs ===================='
 NB. IAC Wed 1 Jul 2015  09:04:42
 
@@ -23,7 +24,7 @@ compat=: compatible_uu_
 compatlist=: compatlist_uu_
 convert=: convert_uu_
 cnvj=: cnvj_uu_
-format=: format_uu_
+format=: formatOUT_uu_
 scino=: scino_uu_
 selfcanc=: selfcanc_uu_
 setsci=: setsci_uu_

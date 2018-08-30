@@ -1,5 +1,6 @@
-'==================== [cal] consts.ijs ===================='
-NB. IAC Wed 1 Jul 2015  01:12:04
+	NB. cal - constants.ijs
+'==================== [cal] constants.ijs ===================='
+NB. IAC Wednesday 29 August 2018  20:42:51
 
 NB. The global nouns here must not change at runtime
 NB. (See: globvars in: start.ijs for those that do change)
@@ -21,6 +22,7 @@ MAXINVERT=: 30		NB. limits backfit cycles
 NB=: 'NB.'
 PAD=: 10			NB. default pad
 PFMT=: 'line'		NB. default plot format
+PLOTNAME=: '/users/ianclark/myplot.pdf'
 SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'

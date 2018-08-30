@@ -1,20 +1,12 @@
-NB. project: cal
-NB.
-NB. defines list of source files.
-NB. path defaults to project directory.
-
-init.ijs
-whenbuilt.ijs
-consts.ijs
-util.ijs
-sesses.ijs
-message.ijs
-tabmath.ijs
-califace.ijs
+header.ijs
+constants.ijs
+utilities.ijs
 main.ijs
 inversion.ijs
-exchange.ijs
-getversion.ijs
-whereami.ijs
-zfns.ijs
+califace.ijs
+message.ijs
+tabmath.ijs
+public.ijs
+paths.ijs
+sesses.ijs
 start.ijs

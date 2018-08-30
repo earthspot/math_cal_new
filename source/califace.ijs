@@ -1,6 +1,9 @@
+	NB. cal - califace.ijs
 '==================== [cal] califace.ijs ===================='
 NB. califace.ijs -the CAL interface / instruction set
-NB. IAC Tue 30 Jun 2015  05:13:29
+NB. IAC Wednesday 29 August 2018  21:12:56
+NB. UPDATED by replacing CAL with
+NB.  CAL from Xcode: cal-instruction-set
 
 cocurrent 'cal'
 
@@ -32,43 +35,64 @@ NB. ========================================================
   NB.  lowercase - does an operation, returns (string) message: error/confirm
   NB.  Mixedcase - returned value is undefined - should be ignored
   NB. (Instr: "Repe" not implemented below: recognized by: tabengine itself)
+
 CAL=: 0 : 0
-Init void start''                  \(re-)start the engine
-Repe void dummy''                  \repeat last action
-Redo void undo 0                   \redo
-Undo void undo 1                   \undo
+%%%% void '29 Aug 2018  21:12:56'  \+CAL last saved
+Inic void start 0                  \=(re-)start with clear tt
+Init void start 1                  \=(re-)start with SAMPLE tt
+Repe void dummy''                  \=repeat last action
+Redo void undo 0                   \=redo
+Undo void undo 1                   \=undo
 ABOU void ABOUT                    \About the engine
 ABTI void ABTIME                   \last-updated timestamp
 ANCE r    r{TD                     \ancestors of item r
-CAPT void CAPT                     \window title -cf TITL
+CAPT void CAPT                     \t-table title -cf TITL
+CAPU void CAPT rplc SP;UL          \+t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
 CTBU void utf8 x2f ct''            \t-table display: utf-8
 DIRT void dirty''                  \flag: unsaved changes
-FMLA r    dtb r{TTf                \formula of item r
+FMLA r    formula r                \formula of item r
+FMLL r    1 formula r              \+braced formula of item r
 INFO void info''                   \info about t-table
+INTD void ":initialized''          \query if start'' was run
 ITMS void }.items''                \list of non-0 item#s
 JXDO yy   ". yy                    \run J code in this loc
 NAME r    dtb r{TTn                \name of item r
 PLOT rzz  r plotz~ zz              \gen plot data with x-axis
 PTHS void tpaths''                 \all CAL+TABULA paths
-QCMD yy   CCc e.~ <yy              \query valid command
+QCMD yy   CCc e.~ <yy              \=query valid command
 QUER void querycal''               \query interface defn
 QSCI void sci''                    \query SCI (in UU)
 QSIC void uunicode''               \query SI conformance level
 QSIG void sig''                    \query SIG (in UU)
+RETA yy   'assert last noun retd'  \=+assert last noun returned
+RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
 TITL void CAPT                     \window title -from CAPT
 TITU void UNDEF_CAPT               \window title -undefined
 TFIL void file                     \t-table file pathname
+TFIT void shortpath file           \t-table file short pathname
 TFLU void UNDEF                    \t-table file name -undefined
 TNAM void filename file            \t-table file name-only
 TNMS void ttnames''                \t-table all its names
 TNMX void tbx filename file        \t-table file name.ext
-UCOM r    docompatlist r           \item compat units
+TPAR void TPATH_ARCHIVE            \reference path to archive
+TPCA void TPATH_CAL                \reference path to CAL addon
+TPCL void logpath LOGNAME          \+reference path of callogfile
+TPSA void TPATH_SAMPLES            \reference path to SAMPLES
+TPTA void TPATH_TABULA             \reference path to TABULA
+TPTT void TPATH_TTABLES            \reference path to t-tables
+TPUU void TPATH_UU                 \reference path to UU addon
+TPUC void TPATH_UUC                \reference path to constants
+TPUF void TPATH_UUF                \reference path to functions
+UCMU r    1 docompatlist r         \+item compat units (simode)
+UCOM r    docompatlist r           \item compat units (system)
 UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
 VALU r    getvalue r               \value of item -corrected
 VERS void VERSION                  \version of engine
+VUUC void x2f UUC_uu_              \content of UUC
+VUUF void x2f UUF_uu_              \content of UUF
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
@@ -114,18 +138,23 @@ extl r    r fnline~ '10^'          \copy 10^(item)
 extv r    r setvalue~ 10^vr        \10^(item value)
 femt r    'f' scaleunits r         \femto- item
 fmla rzz  r setfmla~ zz            \set formula of item
+fral r    r fnline~ 'fra'          \copy item fractional part
+frav r    r setvalue~ fra vr       \fractional part of r
 func yy   ttauf yy                 \new funct line
 giga r    'G' scaleunits r         \giga- units
 hect r    'h' scaleunits r         \hecto- item
 hide rrr  hide rrr                 \hide items
 hlvl r    r fnline~ 'hlv'          \copy item halved
 hlvv r    r setvalue~ -:vr         \halve value of r
-hold r    tranhold r               \toggle transient hold
-holm r    mandhold r               \toggle mandatory hold
+hold rrr  tranhold rrr             \+toggle transient hold
+holm rrr  mandhold rrr             \+toggle mandatory hold
 info yy   1 info yy                \set info about t-table
+infr void finfo 0                  \read TTINFO from txtfile
+infw void finfo 1                  \write TTINFO to txtfile
 intl r    r fnline~ 'int'          \copy item integer value
 intv r    r setvalue~ int vr       \integer value of r
 invl r    r fnline~ '%'            \copy invt value of item
+invf r    invert r                 \invert formula of r
 invv r    r setvalue~ %vr          \invert value of r
 kilo r    'k' scaleunits r         \kilo- item
 lnnl r    r fnline~ '^.'           \copy ln(item)
@@ -135,12 +164,15 @@ ltwl r    r fnline~ 'log2'         \copy log2(item)
 ltnv r    r setvalue~ log10 vr     \log base-10 of r
 ltwv r    r setvalue~ log2 vr      \log base-2 of r
 load yy   ttload yy                \load named t-table
+loap yy   load yy                  \load (path yy)
 mega r    'M' scaleunits r         \mega- item
 merg rr   merge rr                 \merge 2 lines
-micr r    'mu' scaleunits r        \micro- item
+micr r    'u' scaleunits r         \micro- item
 mill r    'm' scaleunits r         \milli- item
 minu rr   '-'combine rr            \new diff of 2 items
+movb r    1 ttsort bend r          \move item to bottom
 movd r    1 ttsort bubb r          \move item down
+movt r    1 ttsort bend -r         \move item to top
 movu r    1 ttsort bubb -r         \move item up
 mulc rv   r fnline~ '*',~":v%100   \copy item times v%
 mull rv   r fnline~ '*',~":v       \copy item times v
@@ -165,10 +197,13 @@ pidv r    r setvalue~ vr%PI        \item by PI
 piml r    r fnline~ 'PI*'          \copy item times PI
 pimv r    r setvalue~ vr*PI        \item times PI
 plot rzz  r plotx~ zz              \setup plot with x-axis
+pl0v r    r plotv~ 0               \setup plot 0 to v
+pl1v r    r plotv~ 1               \setup plot 1 to v
+plvv r    r plotv~ _               \setup plot -v to v
 plus rrr  '+'combine rrr           \new sum of items
 powe rr   '^'combine rr            \new power of 2 items
-prec n    setsig n                 \set places of decimals
-psci n    setsci n                 \set sci units cut-in value
+prec n    sig n                    \set places of decimals
+psci n    sci n                    \set sci units cut-in value
 ptdl r    r fnline~ 'PI2%~'        \copy item by 2*PI
 ptdv r    r setvalue~ vr%PI2       \item divided-by 2*PI
 ptml r    r fnline~ 'PI2*'         \copy item times 2*PI
@@ -178,10 +213,14 @@ relo void ttload file              \reload current t-table
 rplt rrr  replot rrr               \re-plot with items
 rtol rv   r fnline~ '^~',~":v      \copy item ^v
 rtov rv   r setvalue~ vr^v         \item ^v
-sava yy   ttsave yy                \save t-table as yy
-save void ttsave filename file     \save current t-table
-savs yy   ttsavec ''               \save t-table COPY as SAMPLE
-sicl n    uunicode 0>.2<. n        \set SI conformance level
+samp void ttload '$$'              \+load correct SAMPLE
+sava yy   ttsava yy                \save t-table as yy
+savc yy   ttsavc yy                \+save t-table COPY as yy
+save void ttsave ''                \save current t-table
+savo yy   ttsavo yy                \+save as yy over existing
+savs void ttsavs ''                \save t-table COPY as SAMPLE
+savt void ttsavt ''                \+save t-table from caption
+sicl n    uunicode 0>.3<. n        \set SI conformance level
 sort rrr  1 ttsort rrr             \sort by perm
 sqrl r    r fnline~ 'sqr'          \copy item squared
 sqrv r    r setvalue~ sqr vr       \squared value of r
@@ -204,13 +243,20 @@ t2dl r    r fnline~ '100%~'        \copy item by 100
 t2ml r    r fnline~ '100*'         \copy item times 100
 t3dl r    r fnline~ '1000%~'       \copy item by 1000
 t3ml r    r fnline~ '1000*'        \copy item times 1000
+t1dv r    r setvalue~ vr%10        \+item divided-by 10
+t1mv r    r setvalue~ vr*10        \+item times 10
+t2dv r    r setvalue~ vr%100       \+item divided-by 100
+t2mv r    r setvalue~ vr*100       \+item times 100
+t3dv r    r setvalue~ vr%1000      \+item divided-by 1000
+t3mv r    r setvalue~ vr*1000      \+item times 1000
 unhi void hide 0                   \unhide all items
-unit rzz  r changeunits~ zz        \set units of item
+unit rzz  zz changeunits r         \set units of item
 unsc r    '' scaleunits r          \unscaled units
-valu rv   r setvalue~ v            \set value of item
+valu rv   v setvalue r             \set value of item
+vunn rzz  zz setvunits r           \set value+units of item
 yoct r    'y' scaleunits r         \yocto- item
 yott r    'Y' scaleunits r         \yotta- item
 zept r    'z' scaleunits r         \zepto- item
-zero r    r setvalue~ 0            \set item to 0
+zero r    0 setvalue r             \set item to 0
 zett r    'Z' scaleunits r         \zetta- item
 )

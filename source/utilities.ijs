@@ -1,4 +1,5 @@
-'==================== [cal] util.ijs ===================='
+	NB. cal - utilities.ijs
+'==================== [cal] utilities.ijs ===================='
 
 cocurrent 'cal'
 
@@ -28,6 +29,7 @@ mt=: 0 e. $
 NaN=: 1 e. [: ; 128!:5
 nb=: ([: }:@; (<' ') ,.~ ,.)@:(":&.>)
 paren=: 1 |. ')(' , ":
+sl=: 4 : '(btsl x),SL,bhsl y'
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs	  NB. tbx: ext for t-tables (if it ever changes)
 to=: [ + [: i. [: >: -~

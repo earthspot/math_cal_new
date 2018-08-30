@@ -1,8 +1,9 @@
+NB. cal - exchange.ijs
 '==================== [cal] exchange.ijs ===================='
 NB. euro to other currency exchange-rate demo
 
 NB. ===============================================
-NB. IAC Mon 29 Jun 2015  12:51:20
+NB. IAC Wednesday 29 August 2018  20:38:29
 NB. At one stage TABULA could handle currencies
 NB.  as if they were scientific units.
 NB. The functionality is broken.
@@ -14,7 +15,7 @@ require 'format/zulu'
 require 'strings'		NB. for: rplc
 0 :0
 >>> THIS NEEDS REPLACING...
-require '~user/httpget.ijs'	NB. http://code.jsoftware.com/wiki/Scripts/HTTP%20Get
+require '~user/httpget.ijs'	NB. http://www.jsoftware.com/jwiki/Scripts/HTTP%20Get
 Look in NUBROW pages for a replacement browser.
 )
 

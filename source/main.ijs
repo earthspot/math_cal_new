@@ -1,8 +1,30 @@
+	NB. cal - main.ijs
 '==================== [cal] main.ijs ===================='
 NB. CAL scientific calculator engine
-NB. IAC Wed 1 Jul 2015  04:16:01
+NB. IAC Wednesday 29 August 2018  20:41:04
 
 cocurrent 'cal'
+
+NB. ========================================================
+NB. Table to interpret / validate symbolic args in CAL
+NB. No TAB chars! Use only spaces, to preserve columns.
+NB. USE THIS VERB'S CODE to identify a symbolic arg
+NB. EXAMPLE:
+NB. vr -means the "quantity" (number) of item: r
+NB.    -implemented as: vr=. r{vquan  (see below.)
+NB. ========================================================
+ARGEXP=: 0 : 0
+validbool  b=. _".yy
+validnum   n=. _".yy
+validitem  r=. {. _".yy
+validnum   v=. 1{ _".yy
+validnum   vr=. r{vquan
+validrr    rr=. _".yy
+validitems rrr=. _".yy
+validrv    rv=. _".yy
+validlit   yy
+validlit   zz=. dropwd yy
+)
 
 Cols=: 4 : 0
   NB. get multiple col-pairs
@@ -74,12 +96,12 @@ y,SP,sep,SP,z
 ar=: 3 : 'SP ,.~ }.arrowch arrowgen SP'
 
 archive=: 3 : 0
-  NB. archive t-table: y (=bare name)
+  NB. archive t-table: y (the unexpanded path name)
   NB. ---now using: fcopynew instead (no use of toHOST)
 require'files'  NB. for: fcopynew
   NB. xtx appends correct .ext if none given
 xtx=. tbx  NB. the correct extension for a t-table
-sce=. TPATH_TTABLES, xtx y
+sce=. TPATH_TTABLES sl xtx y
   NB. Don't archive empty file, return _2 instead
 if. 0=#z=.freads sce do. _2 return. end.
   NB. Don't archive absent file, return _3 instead
@@ -198,8 +220,19 @@ r1 a }vsiqn
   NB. See how the calling fn (bcalc?) handles (y{vsiqn) and deltaz.
 )
 
+bend=: 3 : 0
+  NB. perm to move item y bottom or top (y<0)
+z=. i.t=. #TTn
+if. y e. (0 -.~ z,-z) do.
+  z=. z -. 0  NB. remove the title line
+  z=. z -. |y
+  if. y<0 do. z=. z,~|y else. z=. z,|y end.
+  z=. 0,z     NB. reinsert the title line
+end.
+)
+
 bubb=: 3 : 0
-  NB. perm to move item y up or down(y<0)
+  NB. perm to move item y down or up (y<0)
 z=. i.t=. #TTn
 if. y e. (}.}:z),2}.-z do.
 z+(-|y+y<0)|. t{.1 _1
@@ -212,7 +245,7 @@ changeunits=: 4 : 0
   NB. change the units of item: y to units: (str)x
 if. -.y e. }.items'' do. 1 message y return. end.
 'un0 cyc fac0'=. convert z=. >y{UNITN
-'un1 cyc fac1'=. convert x0=. 0 ucode x
+'un1 cyc fac1'=. convert x0=. x
   NB. Accept incompats UNLESS y involved in a formula
 if. (-. un0-:un1) *. ((hasdep y)+.(hasf y)) do.
   2 message z ; x
@@ -259,7 +292,7 @@ z,LF,')'
 cols=: [: }. [ {"1~ [: to/ ]
 
 combine=: 4 : 0
-  NB. combine items: y under sign: x
+  NB. combine items: y under arithmetic symbol: x
   NB. Allocate lines: y the varname (=vn): a b c... in turn
 y=. ,y      NB. in case there's only 1 item
 fmla=. fixfmla ,|: x, ,:(#y){.az
@@ -342,24 +375,24 @@ ttafl label ; unitn ; (,":y); fmla
 6 message y
 )
 
-ct=: 3 : 0
-  NB. 1 e. y -include SI units column
-  NB. 3 e. y -include box-drawn arrows
-  NB. 4 e. y -include "line 0" col-headers
-if. 0=#y do. y=. ,3 end.  NB. the default display
-  NB. returns "no t-table" message if none has been loaded
-if. absent'CAPT' do. ,:40 message'' return. end.
-  NB. return trivial display if no items...
+ct0=: 3 : 0
+NB. ORIGINAL ct from 'math/cal'
+	NB. 1 e. y -include SI units column
+	NB. 3 e. y -include box-drawn arrows
+	NB. 4 e. y -include "line 0" col-headers
+if. 0=#y do. y=. ,3 end.	NB. the default display
+	NB. return trivial display if no items...
 if. 1=#items'' do. ,:CAPT return. end.
-  NB. Use sP0 etc to stop reversion to utf-8
+ucods=. ucods_uu_  NB. DIRECT PATCH-IN <<<<<<<<<<<<<<<<<<<<<<<
+	NB. Use sP0 etc to stop reversion to utf-8
 z=. >brace each ":each items''
-z=. z ,.(HOLD fl vhold)  NB. marks "holds"
-z=. z ,.('@'fl CH)  NB. marks altered values
+z=. z ,.(SH fl vhold)	NB. marks "holds"
+z=. z ,.('@'fl CH)	NB. marks altered values
 z=. z sP1 UNITN nfx vquan
-z=. z sP1(>ucods each UNITN)  NB. nominal units
+z=. z sP1(>ucods each UNITN)	NB. nominal units
 if. 1 e. y do.
-  z=. z sP1('j'nfx vsiqn) sP1(>ucods each UNITS)  NB. SI-units figures
-  z=. z sP1 '*'    NB. to "symbolise" multiplication (by vfact)
+  z=. z sP1('j'nfx vsiqn) sP1(>ucods each UNITS)	NB. SI-units figures
+  z=. z sP1 '*'		NB. to "symbolise" multiplication (by vfact)
   z=. z sP0('j'nfx vfact)
 end.
 z=. z sP2 TTn
@@ -373,11 +406,54 @@ if. (3 e. y) do.
     end.
   end.
 end.
-if.-. 4 e. y do. z=. }.z end.  NB. drop "line 0"
-z=. CAPT,z  NB. ALWAYS INCLUDED NOW <<<<<<<<
-if. mt z do. z=. 1 1$SP end.  NB. to force panel-clear
+if.-. 4 e. y do. z=. }.z end.	NB. drop "line 0"
+z=. CAPT,z	NB. ALWAYS INCLUDED NOW <<<<<<<<
+if. mt z do. z=. 1 1$SP end.	NB. to force panel-clear
 z=. (-.vhidd) # z
 )
+
+ct1=: 3 : 0
+NB. NEW ct
+  NB. 1 e. y -include SI units column
+  NB. 3 e. y -include box-drawn arrows
+  NB. 4 e. y -include "line 0" col-headers
+if. 0=#y do. y=. ,3 end.  NB. the default display
+  NB. returns "no t-table" message if none has been loaded
+if. absent'CAPT' do. ,:40 message'' return. end.
+if. 1=#items'' do. ,:CAPT return. end.   NB. trivial display if no items
+d=. ] ; $ ; datatype
+uc=. uucp"1
+d sp=. uc SP $~ 1,~#items''  NB. 1-char wide column spacer
+d st=. uc ST $~ 1,~#items''  NB. 1-char wide column of stars
+d vd=. uc SP $~ 0,~#items''  NB. 0-char wide empty column placeholder
+d arrw=. unis=. fact=. star=. vd  NB. void columns
+d lnos=. uc >brace each ":each items''  NB. line numbers
+d hold=. uc (HOLD fl vhold)  NB. marks "holds"
+d altd=. uc ('@'fl CH)  NB. marks altered values
+d quan=. uc UNITN nfx vquan
+d unin=. sp ,. > (uc&uniform) each UNITN  NB. nominal units
+if. 1 e. y do.
+  d unis=. sp ,. > (uc&uniform) each UNITS  NB. SI-units figures
+  d fact=. uc 'j'nfx vfact
+  d star=. uc sp ,.st
+end.
+if. 3 e. y do.
+  d arrw=. uc arrowch arrowgen''
+  if. mt arrw do. arrw=. vd else. arrw=. arrw ,. sp end.
+    NB. arrw comes with its own spacer
+end.
+d uttn=. sp ,.sp ,.uc TTn
+NB. z=. arrw ,.lnos ,.hold ,.altd ,.quan ,.unin ,.unis ,.star ,.fact ,.sp ,. uc TTn
+z=. 'arrw lnos hold altd quan unin unis star fact uttn'
+d z=. ". z rplc SP;',.'
+if. -. 4 e. y do. z=. }.z end.  NB. drop line {0}
+z=. z ,~ CAPT
+if. mt z do. z=. 1 1$SP end.  NB. to force panel-clear if void display
+z=. (-.vhidd) # z  NB. remove hidden lines
+)
+
+ct=: ct1  NB. use NEW VERSION
+NB. ct=: ct1 bind 1 3  NB. include SI column
 
 cubert=: 3&%:
 
@@ -394,10 +470,10 @@ deletefile=: 3 : 0
   NB. delete t-table (y) in TPATH_TTABLES ONLY
   NB. but ONLY IF a valid t-table...
 me=. 'deletefile'
-nom=. filename scriptof y
+nom=. filename expandedPath y
 if. SL e. y do. pth=. pathof y else. pth=.'' end.
   sllog 'me nom pth y'
-file0=: TPATH_TTABLES,tbx nom
+file0=: TPATH_TTABLES sl tbx nom
 if. fexist file0 do.
   ferase file0
   38 message file0
@@ -428,10 +504,13 @@ z=. }.i.#y
 (0,z),. z, }. }."1 y
 )
 
-docompatlist=: 3 : 0
+docompatlist=: 0&$: :(4 : 0)
   NB. build list of compatible units to item#: y
+  NB. Boolean x=1 means: convert list to current simode
 z=. >y{UNITN
-compatlist z
+if. x do. compatlist z
+else. uniform each compatlist z
+end.
 )
 
 dp2=: ] +. +./ .*.~
@@ -459,14 +538,61 @@ else.
 end.
 )
 
-enlog=: 3 : 0
-  NB. add y to log
-fi=. <TPATH_CAL_LOG,LOGNAME
-if. y-:0 do.  NB. initialise log
-  z=.(": 6!:0''),' start ',LOGNAME,LF
-  z 1!:2 fi
+enlog=: 0&$: : (4 : 0)
+  NB. append to cal_log file the string: y
+  NB. x=0 --y is INSTRUCTION + ARGUMENTS
+  NB. x=1 --y is (RETURNED NOUN)
+fi=. <logpath LOGNAME   NB. fullpathname of cal_log file
+if. x do. fi 1!:3~ nounreturned y return. end.
+if. y-:0 do.            NB. initialise cal_log
+  fi 1!:2~ (": 6!:0''),' start ',LOGNAME,LF
 else.
-  (y,LF) 1!:3 fi
+  fi 1!:3~ y  NB. simplest case: y is always a string
+end.
+empty fi 1!:3~ LF  NB. append a linefeed
+)
+
+nounreturned=: LF&$: : (4 : 0)
+  NB. string description of y
+  NB. x is terminator of this entry (default: LF)
+z=. SP nountypeshape y
+  NB. try/catch needs to be here to prevent endless loops...
+try. z=. z, SP, nouncontent y
+catch. Y=: y  NB. snapshot indigestible y for later examination
+end.
+z, x
+)
+
+nountypeshape=: LF&$: : (4 : 0)
+  NB. string description of datatype and shape of y
+  NB. x is terminator of this entry (default: LF)
+z=. 4$SP
+z=. z, datatype y
+z=. CO ,~ z, brack $y
+z, x
+)
+
+nouncontent=: '…'&$: : (4 : 0)
+  NB. enlog formatter of noun: y
+  NB. x is string to be returned if error (default: '…')
+  NB. if y not too big, return descriptive string
+YY=: y
+if. 256<*/$y do. x
+else. crex y
+end.
+)
+
+expandedPath=: 3 : 0
+  NB. find full pathname of t-table file (y) in its various forms
+if. 0=#y do. y=. file end.
+if. y-: '$$' do.
+  z=. TPATH_TTABLES sl tbx SAMPLE  NB. look in ttlib first
+  if. -.fexist z do. TPATH_SAMPLES sl tbx SAMPLE end.
+elseif. isnums y do.  TPATH_SAMPLES sl tbx SAMPLE,y
+elseif. isNo {.y do.  TPATH_SAMPLES sl tbx SAMPLE,":y
+elseif. '~'={.y  do.  dtb jpath y
+elseif. '/'={.y  do.  y  NB. assume y is fullpath (MAC/Unix only)
+elseif.          do.  TPATH_TTABLES sl tbx dtb y
 end.
 )
 
@@ -635,7 +761,29 @@ vsiqn=: restore
 z
 )
 
-filename=: ([: >: '/' i:~ ]) }. ] {.~ '.' i.~ ]
+filename=: '.' taketo [: |. '/' taketo |.
+
+finfo=: 3 : 0
+  NB. reads (y=0) or writes (y=1) TTINFO to (infopath)
+infopath=: TPATH_TTABLES sl 'INFO.txt'
+smoutput '=>> enter finfo y=',(":y"),'  $TTINFO=',":$TTINFO
+msg=. ''
+if. y do.
+  TTINFO fwrite infopath
+  empty''  NB. ignore any fwrite error
+else.
+  z=. fread infopath
+  if. z -: _1 do.
+    msg=. 43 message infopath
+  else.
+    TTINFO=: z
+    msg=. 44 message '…',~ 30 {. TTINFO
+  end.
+end.
+smoutput '=>> exits finfo y=',(":y"),'  $TTINFO=',":$TTINFO
+msg
+)
+
 fixfmla=: ('/';'%') rplc~ ]
 
 fixttf=: 3 : 0
@@ -681,7 +829,6 @@ if. ';' e. z do. 2 return. end.
 fnline=: 4 : 0
   NB. fn: x of item: y
   NB. c/f copyline
-    x__=: x [y__=: y
 label=. x,(brace y)  NB. e.g. 'f{2}'
 unitn=. >y{UNITN  NB. nominal units of item: y
 units=. >y{UNITS  NB. SI units of item: y
@@ -726,7 +873,24 @@ ttafl label ; unitu ; (,":y); fmla
 )
 
 forcefloat=: 3 : '($y)$,y,1.1'
-formula=: 3 : 'if. ({.y) e. }.items'''' do. deb ({.y){TTf else. '''' end.'
+
+formula=: 0&$: : (4 : 0)
+  NB. return formula for item (y)
+  NB. if x=1 then a b c --> {1} {2} {3} (say)
+if. -.validitem y do. '' return. end.
+if. 0=#f=.dtb y{TTf do. '' return. end.
+if. -.x do. f return. end.
+  NB. Convert f to braced form
+az=. 'abcdefghijklmnopqrstuvwxyz'
+d=. 0 -.~ y{TD
+f=. ':' taketo ';' taketo f  NB. strip off units spec
+f=. f rplc '%';'/'
+for_line. d do.
+  'a az'=. ({. ; }.) az
+  f=. f rplc a;brace line
+end.
+)
+
 fwd=: ffwd&6
 
 g=: 3 : 0
@@ -762,6 +926,19 @@ else.
   10 message y
 end.
 )
+
+NB. ==================================================
+adj=: 4 : 0
+  NB. adjust (num) y according to (unit) x
+  NB. serves verbs: getvalue, setvalue
+  NB. FORMERLY DONE BY adj_uu_
+  NB. Intercept the call here to see how best to do it
+  NB. now that adj_uu has been eliminated.
+  NB. IAC Thursday 30 August 2018  00:35:42
+ssw '>>> adj: CALLED WITH x=(x) y=(y) --but no adjustment made!'
+y return.
+end.
+NB. ==================================================
 
 getversion=: 3 : 0
   NB. get version# from manifest file in TPATH (y)
@@ -861,6 +1038,25 @@ dirty x
 empty TTINFO=: y
 )
 
+initialized=: 3 : 0
+  NB. implements new instruction: INTD
+0=nc<'CCc'
+)
+
+instruction=: 4 : 0
+  NB. Return the defn of CAL-instruction: 4{.y
+  NB. Implements CAL-instruction: INST
+i=. CCc i. <4{.y  NB. lookup the instruction: y
+args=. i pick CCa
+expr=. i pick CCx
+desc=. i pick CCd
+if. x-:0 do.
+  (5{.y),(5{.args),(25{.expr),BS,desc
+else.
+  y;args;expr;desc
+end.
+)
+
 inv_prober=: 4 : 0
 rr=. $r=. x  NB. r==values of the (rr) leaf-nodes
 i=. y    NB. index of element r[i] being probed
@@ -879,9 +1075,10 @@ NB. ----------------------------------------------------------------
   NB. r1=. r inversion deltaz --the way it's called
   NB.  where: deltaz (=y here) is dY in inversionB
   NB.  and r is values of ancestors of pivot item# (fwd acts on this vec)
+
 inversion=: 4 : 0
 X=. x inversionX y
-sess1 11 message y		NB. makes no sense here!
+sess1 11 message y  NB. makes no sense here, unless crudely display: y
 sess1 (>'amodel:' ; 'x:' ; 'X:') ,. ":(amodel,:x),X
 X
 )
@@ -900,6 +1097,28 @@ dX=: g^:(_) d1X    NB. the limiting case of d_X
 X=: X0+dX    NB. the target X such that Y = fwd X
 )
 
+invert=: 3 : 0
+  NB. invert the formula of item y
+if. -.hasf y do. 41 message y return. end.
+y relabel ,'~'  NB. kill old label - may mislead
+]fa=. fixfmla formula y
+if. fa begins '1%' do.
+  z=. 2}.fa
+elseif. PC e. fa do.
+  if. CO e. fa do.
+    'f1 f2'=. CO cut fa
+    'nr dr'=. PC cut f1
+    z=. dr,SL,nr,CO,f2
+  else.
+    'nr dr'=. PC cut fa
+    z=. dr,SL,nr
+  end.
+elseif. do.
+  z=. '1/',fa
+end.
+z setfmla y
+)
+
 isBool=: isBools *. isScalar
 isBools=: [: all 0 1 e.~ ]
 isFNo=: isFin and isScalar
@@ -914,20 +1133,19 @@ _ e. |y
 
 isItem=: 3 : 'y e. }.items 0'
 isItems=: 3 : 'all y e. }.items 0'
-isNum=: ([: 1: 0 + ]) ::0:
+isNum=: ([: 1: 0 + ]) ::0:  NB. i.e. can you add 1 to y?
 isnums=: [: *./ '0123456789' e.~ ]
+isnums=: (0 < #) *. [: *./ '0123456789' e.~ ]  NB. replacement
 items=: 3 : 'i. #TTn'
 ln=: ^.
 log10=: 10&^.
 log2=: 2&^.
+logpath=: 3 : 'TPATH_CAL_LOG sl y'  NB. pathname of log file: y
 
-mandhold=: 3 : 0
-  NB. [re]set/toggle mandatory hold on item y
-_1 mandhold y    NB. default x=_1 -means: toggle the setting
-:
-  NB. x e. (_1 0 1)
-if. notitem y do. 10 message y return. end.
-lab=. (dtb y{TTn)-.SH,HOLD  NB. new label without: SH
+mandhold=: _1&$: :(4 : 0)
+  NB. set (x=1) /reset (x=0) /toggle (x=_1) mandatory hold on item(s) y
+if. 1<#y do. for_i. y do. x mandhold i end. return. end.
+lab=. (dtb y{TTn)-.SH,HOLD  NB. new label without chars: SH or HOLD
 held=. (SH e. y{TTn) or (HOLD e. y{TTn)  NB. accept SH too
 select. x
 case. _1 do. (-.held)mandhold y return.  NB. toggle the setting
@@ -980,6 +1198,11 @@ if. y e. i:2 do. i=. x else. i=. 3*x end.
 _24 >. (y+i) <. 24
 )
 
+openfile=: 3 : 0
+  NB. y is path (to file to be opened by its default app)
+2!:1 'open ',y,' &'
+)
+
 ornot=: [ +. [: -. ]
 
 orphan=: 3 : 0
@@ -1020,9 +1243,74 @@ z=. - ($y) max 0,PAD
 z{.y
 )
 
+NB. ================
+plotv=: 4 : 0
+  NB. plot t-table using range generated by current value of item: y
+  NB. y is item ID, x is parameter: 0 | 1 | _ as specified in noun: CAL
+val=. getvalue y
+smoutput nb 'plotv:' ; 'x=' ; x ; 'y=' ; y ; 'val=' ; val
+select. x
+case. 0 do. n3=. 0,val,100
+case. 1 do. n3=. 1,val,100
+case. _ do. n3=. (-val),val,100
+case.   do. @@  NB. plotv: trap invalid options
+end.
+y plotxSwift~ steps_jzplot_ n3
+)
+
+plotxSwift=: 4 : 0
+  NB. for use with Swift app
+  NB. plot t-table using vec input: x to item: y
+  NB. y is item ID, FOLLOWED BY any other items to EXCLUDE
+  NB. x is series of XAXIS-values to generate VDATA from vquan
+snapshot''
+IX=: {.y    NB. save key item# used as the X-axis of the graph
+z=. vquan   NB. 1st column is later dropped
+for_v. x do.
+  v setvalue IX
+  z=. z ,. vquan
+end.
+z=. }."1 remove_infinities z
+VDATA=: z               NB. save raw data for re-plotting
+plot2 y -.~ }.items''   NB. y-arg is items to be plotted
+)
+
+plot2=: 3 : 0
+  NB. depends on caches: IX, VDATA, created by (preceding call of) plotxSwift
+  NB. y is list of item#s to plot
+d=. IX{VDATA        NB. the x=axis row of z
+e=. y{VDATA         NB. the plottable rows of z
+PFMT plotSwift d;e
+)
+
+replot=: 3 : 0
+  NB. replot VDATA, c/f plotxSwift
+  NB. depends on caches: IX, VDATA, created by (preceding call of) plotxSwift
+  NB. but fails gracefully if caches are absent
+try.
+rrr=. y             NB. the currently selected item#s, may or may not include IX
+plot2 rrr -. IX     NB. y-arg is items to be plotted (exclude IX)
+catch.
+    'plot2 failed (caches absent?)'
+end.
+)
+
+plotSwift=: 4 : 0
+  NB. Swift replacement for plot verb
+  NB. x is format; y is data actually plotted (-->DATA)
+DATA=: y
+pd'reset'
+NB. pd boxcmd x
+pd y
+pd 'pdf ',PLOTNAME
+openfile PLOTNAME
+)
+NB. ================
+
 plotx=: 4 : 0
+NB. ??? SHOULD THIS USE: plotz ?
   NB. OLD FACILITY (plots directly)
-  NB. plot t-table using vec input to item: x
+  NB. plot t-table using vec input: x to item: y
   NB. y is item ID, x is X-data (J-expression)
 vals=. ".x  NB. assume x is validated: num vec exprn
 snapshot''
@@ -1044,6 +1332,7 @@ f_1 f1 y
 )
 
 plotz=: 4 : 0
+NB. ??? SHOULD THIS USE: adj ?
   NB. plot t-table using vec input to item: x
   NB. y is item ID, x is X-data (J-expression)
 vals=. ".x  NB. assume x is validated: num vec exprn
@@ -1121,13 +1410,6 @@ r $ y rplc , io,.ii
 
 repeatable=: [: *./ 'abcdefghijklmnopqrstuvwxyz0123456789' e.~ ]
 
-replot=: 3 : 0
-  NB. replot DATA
-try. PFMT plot DATA
-catch.
-end.
-)
-
 reselect=: empty
 
 rpln=: 4 : 0
@@ -1149,9 +1431,6 @@ else.
 end.
 )
 
-sP0=: 4 : 'x,.y'
-sP1=: 4 : '(x,.SP),.y'
-sP2=: 4 : '((x,.SP),.SP),.y'
 
 scaleunits=: 4 : 0
   NB. re-scale the units of item: y by scale-exp: x
@@ -1187,15 +1466,9 @@ un3 changeunits y
 3 message y; un0; un3
 )
 
-scriptof=: 3 : 0
-  NB. find full pathname of t-table id in various forms
-if. 0=#y do. y=. SAMPLE end.
-if. y-: '$$' do.  TPATH_SAMPLES, ijs SAMPLE
-elseif. isnums y do.  TPATH_SAMPLES, ijs SAMPLE,y
-elseif. isNo {.y do.  TPATH_SAMPLES, ijs SAMPLE,":y
-elseif. '~'={.y do.  dtb jpath y
-elseif. '/'={.y do.  y  NB. assume y is fullpath (MAC/Unix only)
-elseif. do.    TPATH_TTABLES, ijs dtb y
+sci=: 3 : 0
+if. 0=#y do. SCI
+else. SCI_z_=: {.y
 end.
 )
 
@@ -1258,24 +1531,42 @@ else.
 end.
 )
 
-shortf=: 3 : 0
-  NB. short-form (no ext) of: y (=file) for message output
-DT taketo |. SL taketo |. y
+setvunits=: 4 : 0
+  NB. set x as the value+units of item y
+  NB. if x contains QT then split off name: nm
+if. -. y e. }.items'' do.
+  10 message y return.
+end.
+r=. y
+nm=. dltb QT takeafter x
+zz=. dltb QT taketo x
+v=. ".vs=. SP taketo zz
+un=. SP takeafter zz
+smoutput '+++ setvunits y=',(":y),' vs=',vs,' un=',un,' nm=',nm
+if. 0<#nm do. r relabel nm end.
+if. 0<#un do. r changeunits~ un end.
+r setvalue~ v
 )
 
-  NB. short-path of: y (=file) for message output
-  NB. undoes the action of jpath for selected tags
-  NB. This is a variant of a word in tabula.ijs
 shortpath=: 3 : 0
-me=. 'shortpath'
-for_s. ;:'builtin tabula ptabula utabula user addons proj home' do.
-  y [np=. # p=. jpath t=. '~',(>s),SL
-NB. sllog 'me np p t y'
-  if. (tolower y) begins (tolower p) do. t, np}.y return. end.
+  NB. short-path of: y (usually: file) for message output
+  NB. e.g. '~/tabula-user/tt25.ijs'
+  NB. expects SystemFolders_j_ sorted in descending length of path strings
+  NB. ...CURRENTLY SystemFolders_j_ is sorted by starter.payload.ijs
+for_s. (<'install') -.~ {."1 SystemFolders_j_ do. su=. >s
+su=. (-. su-:'home')#su
+y [np=. # p=.jpath t=.'~',su,'/'
+if. (tolower y) begins (tolower p) do. t, np}.y return. end.
 end.
 )
 
 showing=: empty
+
+sig=: 3 : 0
+if. 0=#y do. SIG
+else. SIG_z_=: {.y
+end.
+)
 
 siunits=: 3 : 0
   NB. convert item y to SI units
@@ -1339,9 +1630,14 @@ end.
 |z
 )
 
+sP0=: 4 : 'x,.y'
+sP1=: 4 : '(x,.SP),.y'
+sP2=: 4 : '((x,.SP),.SP),.y'
+
 suits=: 1:
 
-  NB. tabengine - the CAL-engine interface
+  NB. tabengine 
+  NB. 	- the CAL-engine interface
   NB. y (trimmed) is instruction string: inst
   NB.   <cmd> <arg> <data>
   NB.   <cmd> (always 4 chars) chooses: arg, exp
@@ -1349,25 +1645,33 @@ suits=: 1:
   NB.  how <data> goes into arg-caches:
   NB.  n r rr rrr rv rzz
   NB.  for use inside: ".exp
+
 tabengine=: 3 : 0"1
-NB. FIRST THING TO DO: service the instr: Init
-NB. This avoids assuming globals already present, e.g. TRACI
-if. 'Init'-: dltb y do. start_cal_'' return. end.
 if. isBoxed y do. y=. nb y end.
+INSTR_z_=: y=. dltb y
+  NB. FIRST THING TO DO: service the instr: Init
+  NB. This avoids assuming globals already present, e.g. TRACI
+if. 'Inic'-: y do. start_cal_ 0 return. end.
+if. 'Init'-: y do. start_cal_ 1 return. end.
 sesi 'tabengine ',(quote y),TAB,NB,' TRACI_cal_'
-enlog y
+0 enlog y
 if. 'Repe'-: dltb y do. y=. LASTINSTR end.
-cmd=. 4{. instr=. dltb y  NB. the command
-yy=: dlb 4}. instr    NB. the following text
+cmd=. 4{. instr=. dltb y    NB. the command
+yy=: dltb 4}. instr         NB. the subsequent text
   NB. Instructions - special cases ...
-  NB.  Dummy-defined in: CAL but only for use by: QUER
+  NB. Defined in: CAL but only as dummies for reference.
+  NB. No guarantee the CAL version corresponds to
+  NB. what is actually implemented.
 select. cmd
-NB. case. 'Init' do. start'' return. -----done on entry.
-case. 'QCMD' do. CCc e.~ <yy return.
-case. 'Undo' do. undo 1 return.
-case. 'Redo' do. undo 0 return.
+  NB. case. 'Init'-----done above
+case. ''     do. tabengine'CTBU'return.
+case. 'QCMD' do. CCc e.~ <yy    return.
+case. 'RETA' do. assert. yy-:":RETURNED return.
+case. 'RETU' do. RETURNED       return.
+case. 'Undo' do. undo 1         return.
+case. 'Redo' do. undo 0         return.
 case.        do.     NB. other (cmd)
-  if. repeatable cmd do. LASTINSTR=: instr end.
+if. repeatable cmd do. LASTINSTR_z_=: instr end.
 end.
 if. 0>nc<'CCc' do.
   z=. '>>> CAL not initialized: ' ; instr
@@ -1379,21 +1683,13 @@ exp=. > icmd { CCx  NB. expression to execute
   NB. Fill discretionary arg caches ...
   NB. to evaluate within: exp
 af=. (bf=. ARGS e. ;: exp) # ARGS  NB. args found in exp
-  sesi exp ; af
+sesi exp ; af
 tests=. ; ".each (I.bf) { ARGEX
-  NB. TEST OUTPUT of broken-out args
-NB. for_k. af do. ko=. >k
-NB.   if. 0=nc<ko do.
-NB.     sess ko,'=',q ".ko
-NB.   else.
-NB.     sess ko,' unset'
-NB.   end.
-NB. end.
 if. -.all tests do. nb 'bad:' ; (nb af) ; 'in:' ; yy return. end.
   NB. Execute: exp ...
   NB. lowercase (cmd) return error/confirm-message
   NB. uppercase (cmd) return data-noun
-RETURNED=: ".exp
+1 enlog RETURNED=: ".exp
   NB. snapshot t-table ONLY if lowcase (cmd)
   NB. This excludes: Init, Undo, Redo,
   NB.  and cmds that return a data-noun.
@@ -1441,11 +1737,14 @@ end.
 trace=: 3 : 'if. (y=.{.y) e. 0 1 do. TRACE=:y else. TRACE=:-.TRACE end.'
 traci=: 3 : 'if. (y=.{.y) e. 0 1 do. TRACI=:y else. TRACI=:-.TRACI end.'
 
-tranhold=: 3 : 0
-_1 tranhold y    NB. default x=_1 -means: toggle the setting
-:
-NB. x e. (_1 0 1)
-if. y=0 do. vhold=: flags 0 end.  NB. 'item 0' means clear all holds
+tranhold=: _1&$: :(4 : 0)
+  NB. smoutput '==< tranhold x=#  y=$' rplc '#' ; (":x) ; '$' ; (":y)
+  NB. set (x=1) /reset (x=0) /toggle (x=_1) transient hold on item(s) y
+if. y-:0 do.  NB. 'tranhold 0' means clear all holds
+  vhold=: flags 0
+  return.
+end.
+if. 1<#y do. for_i. y do. x tranhold i end. return. end.
 if. notitem y do. 10 message y return. end.
 select. x
 case. _1 do. vhold=: (-.y{vhold) y}vhold
@@ -1508,10 +1807,10 @@ ttappend=: 3 : 0
   NB. append the chosen t-table to the one loaded
 sess_ttappend 'y:' ; y
 invalexe''      NB. existing 'exe' verbs are invalid
-SWAPPED=: 0      NB. fmla order (overridden by t-table .ijs)
-file1=: scriptof y    NB. y is generalised file descriptor
-if. mt file1 do.     19 message '' return.
-elseif. -.fexist file1 do.  20 message file1 return.
+SWAPPED=: 0      NB. fmla order (overridden by t-table script)
+file1=: expandedPath y    NB. y is generalised file descriptor
+if. mt file1            do. 19 message '' return.
+elseif. -.fexist file1  do. 20 message file1 return.
 end.
   NB. keep t-table parts cos these will change
 CAPTsav=. CAPT
@@ -1523,7 +1822,7 @@ UNITSsav=. UNITS
 UNITNsav=: UNITN
 vhidd=: vmodl=: _
 load file1
-CAPT=: CAPTsav  NB. discard new caption and retain old one
+CAPT=: CAPTsav  NB. discard new caption and restore old one
 if. TAB e. TT do. sess '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
 empty 't' setcols TT  NB. to set: tn tu ts td tf
@@ -1638,20 +1937,19 @@ TD=:    t{.TD
 
 ttload=: 3 : 0
   NB. load the chosen t-table
-snapshot 0    NB. to recover space (done again later)
-invalexe''    NB. existing 'exe' verbs are invalid
-invalinfo''    NB. existing  info display is invalid
-TTINFO=:''    NB. create empty
-SWAPPED=: 0    NB. fmla order (overridden by t-table .ijs)
-file=: scriptof y    NB. y is generalised file descriptor
+snapshot 0      NB. to recover space (done again later)
+invalexe''      NB. existing 'exe' verbs are invalid
+invalinfo''     NB. existing  info display is invalid
+TTINFO=:''      NB. create empty
+SWAPPED=: 0     NB. fmla order (overridden by t-table script)
+file=: expandedPath y    NB. y is generalised file descriptor
 if. mt file do. 19 message '' return.
 elseif. -.fexist file do.
-  if. 0=#y do. ttload '$$' return.  NB. load builtin SAMPLE
+  if. 0=#y do. ttload '$$' return.  NB. load factory SAMPLE
   else. 20 message file return.
   end.
 end.
 vhidd=: vmodl=: _
-setsig 3      NB. reset the default precision
 load file
 if. TAB e. TT do. sess '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
@@ -1683,12 +1981,15 @@ vsiq0=: vsiqn=: vquan*vfact
   NB. but replace them anyway
 genexe each I. hasfb''
 tag=. SWAPPED#'\'  NB. indicator: needs saving in cleaned-up form
+  NB. CAPT is set by the loaded t-table (==script)
+  NB. >>>>>>>>>> settitle CAPT -CANNOT DO ANYTHING AS IT STANDS...
 settitle CAPT
 reselect 0
 CH=: recal 0
 snapshot 0
 dirty 0  NB. resets the dirty-bit
 warnplex''
+finfo 1  NB. cache non-trivial info to textfile: infopath
 27 message tag; filename file
 )
 
@@ -1711,18 +2012,21 @@ CH=: recal 0
 )
 
 ttnames=: 3 : 0
-  NB. TEST: the various forms of t-table name
-for_no. ;:'CAPT TITF TITL TITU TFIL TFLU TNAM TNMX' do.
+  NB. the various forms of t-table name
+  NB. Implements instr: TNMS
+z=. ''
+for_no. ;:'CAPT CAPU TITF TITL TFIL TFIT TNAM TNMX' do.
   nom=. ,>no
-  smoutput nom,': ',tabengine nom
+  z=. z, LF, nom,': ',tabengine nom
 end.
+}.z
 )
 
 ttnew=: 3 : 0
   NB. empty the t-table
 snapshot 0      NB. to recover space (done again later)
 invalexe''      NB. existing 'exe' verbs are invalid
-invalinfo''      NB. existing  info display is invalid
+invalinfo''     NB. existing  info display is invalid
 TTINFO=:''      NB. create empty
 TTn=: ,:'tn'
 TTu=: ,:'tu'
@@ -1737,7 +2041,7 @@ vmodl=: flags 1    NB. The break-back model to be used
 vhidd=: flags 0    NB. =1 if row is hidden when displayed
 vqua0=: vquan
 vsiq0=: vsiqn=: vquan*vfact
-file=:  UNDEF
+file=:  tbx UNDEF
 settitle CAPT=: UNDEF_CAPT
 reselect 0
 snapshot 0
@@ -1745,18 +2049,35 @@ dirty 0  NB. resets the dirty-bit
 0 message ''
 )
 
-ttsave=: 3 : 0
-  NB. save the t-table
-sess_ttsave 'ttsave' ; y  NB. the ijs name
-  NB. if empty y use existing (file) as set by: ttload
-  NB. else accept filename y as a new: file
-  NB. DON'T let SAMPLE to be saved back in TPATH_SAMPLES
-if. (0=#y) or (y-:'$$') do. file=: scriptof SAMPLE
-elseif. SL e. y do. file=: dtb y
-elseif. do. file=: scriptof y
-end.
+ttsaveCopyAs=: 1&$: : (4 : 0)
+  NB. save a COPY of the current t-table as: y
+SAVEDfile=. file
+SAVEDdirty=. dirty''
+msg=. x ttsav y   NB. x=1 detects any name clash, returns error msg
+  NB. Restore (changed): file, dirty''
+file=: SAVEDfile
+dirty SAVEDdirty
+msg  NB. return any messages from ttsav
+)
+
+ttsava=: ttsav                          NB. save t-table as y
+ttsavc=: ttsaveCopyAs                   NB. save a COPY of the current t-table as: y
+ttsave=: 3 : '0 ttsav filename file'    NB. save current t-table
+ttsavo=: 3 : '0 ttsav y'                NB. save as y over an existing file
+ttsavs=: 3 : '0 ttsaveCopyAs SAMPLE'    NB. save a COPY of the current t-table as: SAMPLE
+ttsavt=: 3 : 'ttsav CAPT rplc SP;UL'    NB. save t-table from caption
+
+ttsav=: 1&$: : (4 : 0)
+  NB. save the t-table as: y
+  NB. x=1 -- DENY overwrite of existing file y
+  NB. x=0 -- ALLOW overwrite of existing file y
+sess_ttsave 'ttsav' ; y  NB. the unexpanded name: y
+  NB. if empty y use existing (file) as last set by: ttload
+  NB. else accept filename y as the new (file)
+if. 0<#y do. file=: expandedPath y end.
+NB. ...hence if y-:'' then file is left as it stands
   NB. Rebuild TT from fields...
-]TT=:  TTn sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
+TT=:  TTn sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
 empty 't' setcols TT
 z=. crr'CAPT'
 z=. z,LF2,'TT=: cmx 0 ',CO,' 0',(,LF,.TT),LF,')'
@@ -1764,32 +2085,34 @@ z=. z,LF2,(cnn'vquan'),LF2,(cnn'vfact'),LF
 if. any vhidd do.  z=. z,LF,(crr 'vhidd'),LF end.
 if. any vmodl~:1 do.  z=. z,LF,(crr 'vmodl'),LF end.
 for_no. (<'exe') -.~ listnameswithprefix 'exe' do.
-  z=. z,LF,(crr >no)
+z=. z,LF,(crr >no)
 end.
 if. 0<$TTINFO do.
   z=. z,LF2,'TTINFO=: 0 ',CO,' 0',LF,TTINFO,LF,')'
 end.
+z=. z,LF2,'uunicode ',":uunicode''  NB. restore SI conformance level
+z=. z,LF,'sig ',":sig''  NB. restore significant figures
 if. file-: UNDEF do. 29 message'' return. end.
-retco=. archive shortf file
+retco=. archive filename file
 data=: z   NB. DIAGNOSTIC TO ACCOMPANY: file
-bytes=. z fwrite file
-mfile=. shortf shortpath file  NB. t-table name for messages
-sess_ttsave 28 message bytes; mfile
-erase 'TT'  NB. delete TT - it is a redundant cache!
-if. bytes>0 do.
-  dirty 0
-  30 message mfile; bytes
-else.
-  zz [ sess_ttsave zz=. 31 message mfile
+erase 'TT' NB. TT is now a redundant cache!
+mfile=. filename file  NB. t-table name for message
+  NB. x=1 authorizes fexist trap...
+if. x and fexist file do.
+  NB. DO NOT save file...
+  NB. (Leave as a job for the topend to optionally call ttsavo)
+  42 message mfile return.
 end.
-)
-
-ttsavec=: 3 : 0
-  NB. save a COPY of the current t-table as: (y)
-restored=. file
-mm=. ttsave y
-file=: restored
-mm  NB. return any messages from ttsave
+  NB. Save file and report the result...
+bytes=. z fwrite file
+sess_ttsave 28 message bytes; mfile
+if. bytes>0 do.  NB. t-table was saved ok
+  msg=. 30 message mfile; bytes
+  dirty 0        NB. flag: t-table no longer needs saving
+else.            NB. file could not be saved...
+  sess_ttsave msg=. 31 message mfile
+end.
+msg  NB. return resulting message to top-end
 )
 
 ttsort=: 4 : 0

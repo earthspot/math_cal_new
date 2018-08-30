@@ -29,11 +29,11 @@ exe3=: 3 : '1 * (cos a) [a=. 1 * 1{y'
 exe4=: 3 : 'a+b [a=. 2{y [b=. 3{y'
 
 TTINFO=: 0 : 0
-This is a test ttable.
-Purpose:
-1. To show something meaningful in a new installation.
-2. To provide a docile demonstration of plotting data.
+This is a sample t-table to demonstrate graph plotting.
 
-To plot something, insert a max value in item 1
-Then pick menu: File > Plot 0 to (value)
+To plot something, insert a max value in line {1}
+then pick menu: File > Plot 0 to (value)
 )
+
+uunicode 1
+sig 2
