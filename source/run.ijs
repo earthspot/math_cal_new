@@ -1,16 +1,17 @@
 NB. cal - run
 0 :0
-Wednesday 29 August 2018  20:06:28
+Thursday 30 August 2018  19:26:22
 -
-cocurrent 'base'
 open BUILTFILE
 open '~Gitcal/test/test.ijs'
 )
 
+cocurrent 'base'
+
 BUILTFILE_z_=: 1!:1 <jpath'~Gitcal/builtfile'
 	NB. …effectively: '~Gitcal/cal.ijs'
 TESTFILE_z_=: '~Gitcal/test/test.ijs'
-UUFILE=:      '~Gituu/uu.ijs'
+UUFILE_z_=:   '~Gituu/uu.ijs'
 
 NB. ---------------------------------------------------------
 
@@ -24,6 +25,8 @@ load TESTFILE
 smoutput '--- run.ijs: CAL TESTFILE completed without discrepancies: ',TESTFILE
 
 smoutput tabengine 'Init'
+smoutput tabengine 'load 3'  NB. non-trivial asteroid t-table
+smoutput tabengine 'sicl 1'
 smoutput tabengine 'CTBU'
 
 NB. ---------------------------------------------------------

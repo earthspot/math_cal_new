@@ -475,7 +475,7 @@ if. SL e. y do. pth=. pathof y else. pth=.'' end.
   sllog 'me nom pth y'
 file0=: TPATH_TTABLES sl tbx nom
 if. fexist file0 do.
-  ferase file0
+  empty ferase file0
   38 message file0
 else.
   39 message nom
@@ -543,11 +543,11 @@ enlog=: 0&$: : (4 : 0)
   NB. x=0 --y is INSTRUCTION + ARGUMENTS
   NB. x=1 --y is (RETURNED NOUN)
 fi=. <logpath LOGNAME   NB. fullpathname of cal_log file
-if. x do. fi 1!:3~ nounreturned y return. end.
+if. x do. empty fi 1!:3~ nounreturned y return. end.
 if. y-:0 do.            NB. initialise cal_log
-  fi 1!:2~ (": 6!:0''),' start ',LOGNAME,LF
+  empty fi 1!:2~ (": 6!:0''),' start ',LOGNAME,LF
 else.
-  fi 1!:3~ y  NB. simplest case: y is always a string
+  empty fi 1!:3~ y  NB. simplest case: y is always a string
 end.
 empty fi 1!:3~ LF  NB. append a linefeed
 )
@@ -765,23 +765,23 @@ filename=: '.' taketo [: |. '/' taketo |.
 
 finfo=: 3 : 0
   NB. reads (y=0) or writes (y=1) TTINFO to (infopath)
-infopath=: TPATH_TTABLES sl 'INFO.txt'
-smoutput '=>> enter finfo y=',(":y"),'  $TTINFO=',":$TTINFO
-msg=. ''
+]infopath=: TPATH_TTABLES sl 'INFO.txt'
+NB. smoutput '=>> enter finfo y=',(":y),'  $TTINFO=',":$TTINFO
+msss=. ''
 if. y do.
   TTINFO fwrite infopath
   empty''  NB. ignore any fwrite error
 else.
   z=. fread infopath
   if. z -: _1 do.
-    msg=. 43 message infopath
+    msss=. 43 message infopath
   else.
     TTINFO=: z
-    msg=. 44 message '…',~ 30 {. TTINFO
+    msss=. 44 message '…',~ 30 {. TTINFO rplc LF;SP
   end.
 end.
-smoutput '=>> exits finfo y=',(":y"),'  $TTINFO=',":$TTINFO
-msg
+NB. smoutput '=>> exits finfo y=',(":y),'  $TTINFO=',":$TTINFO
+msss return.
 )
 
 fixfmla=: ('/';'%') rplc~ ]
@@ -937,7 +937,7 @@ adj=: 4 : 0
   NB. IAC Thursday 30 August 2018  00:35:42
 ssw '>>> adj: CALLED WITH x=(x) y=(y) --but no adjustment made!'
 y return.
-end.
+)
 NB. ==================================================
 
 getversion=: 3 : 0
@@ -1588,7 +1588,7 @@ CH=: recal 0
 snapshot=: 3 : 0
 ZNN=: 1 + 1 default 'ZNN'
 if. y-:0 do.        NB. restart ZZN series
-  erase listnameswithprefix '0'-.~nxt 0  NB. destroy snapshots
+  empty erase listnameswithprefix '0'-.~nxt 0  NB. destroy snapshots
   ZNN=: 1
 end.
 nom=. nxt ZNO=: ZNN
@@ -1835,7 +1835,7 @@ z=. ". debc TT cols td
 if. 1=$$z do. z=. |: ,:z end.  NB. >>>>>>>>> fix for munged 1-col TD
 TD=: TD , (<:nt0) dadd z
 TTf=: TTf, fixttf TT cols tf
-erase 'TT'  NB. delete TT as a redundant cache
+empty erase 'TT'  NB. delete TT as a redundant cache
   NB. re-create vfact and the units cols
   NB. z=. convert each UNITN=: boxvec TTu  NB. nominal units
   NB. UNITS=: (>&{.) each z  NB. SI-units
@@ -1960,7 +1960,7 @@ TTs=: debc TT hcols ts
 TD=: 0,". debc TT cols td
 if. 1=$$TD do. TD=:|:,:TD end.  NB. >>>>>>>>> fix for munged 1-col TD
 TTf=: fixttf TT hcols tf
-erase 'TT'      NB. delete TT as a redundant cache
+empty erase 'TT'      NB. delete TT as a redundant cache
   NB. re-create vfact and the units cols
 z=. convert each UNITN=: boxvec TTu  NB. nominal units
 UNITS=: (>&{.) each z    NB. SI-units
@@ -2095,7 +2095,7 @@ z=. z,LF,'sig ',":sig''  NB. restore significant figures
 if. file-: UNDEF do. 29 message'' return. end.
 retco=. archive filename file
 data=: z   NB. DIAGNOSTIC TO ACCOMPANY: file
-erase 'TT' NB. TT is now a redundant cache!
+empty erase 'TT' NB. TT is now a redundant cache!
 mfile=. filename file  NB. t-table name for message
   NB. x=1 authorizes fexist trap...
 if. x and fexist file do.

@@ -1,5 +1,5 @@
 0 :0
-2018-08-30  00:25:07
+2018-08-30  19:24:00
 -
 CAL: scientific calculator engine
 -
@@ -9,4 +9,4 @@ WHY ARE source file headers indented by 1 TAB?
 
 clear 'cal'	NB. >>>>> DELETE THIS LINE IN RELEASED ADDON
 coclass 'cal'
-AABUILT=: '2018-08-30  00:25:07'
+AABUILT=: '2018-08-30  19:24:00'

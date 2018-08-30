@@ -1,7 +1,7 @@
 	NB. cal - califace.ijs
 '==================== [cal] califace.ijs ===================='
 NB. califace.ijs -the CAL interface / instruction set
-NB. IAC Wednesday 29 August 2018  21:12:56
+NB. IAC Thursday 30 August 2018  15:31:01
 NB. UPDATED by replacing CAL with
 NB.  CAL from Xcode: cal-instruction-set
 
@@ -25,7 +25,7 @@ validlit   zz=. dropwd yy
 
 NB. ========================================================
   NB. The tabengine instruction set.
-  NB. No TAB chars! Use only spaces!
+  NB. DON'T USE HARD TAB chars! Use only spaces!
   NB.  1st col: name of instruction (always 4 bytes)
   NB.  2nd col: arg format (always <:4 bytes - see above: ARGEXP)
   NB.  3rd col: implements the instruction
@@ -37,7 +37,7 @@ NB. ========================================================
   NB. (Instr: "Repe" not implemented below: recognized by: tabengine itself)
 
 CAL=: 0 : 0
-%%%% void '29 Aug 2018  21:12:56'  \+CAL last saved
+%%%% void '30 Aug 2018  15:31:01'  \+CAL last saved
 Inic void start 0                  \=(re-)start with clear tt
 Init void start 1                  \=(re-)start with SAMPLE tt
 Repe void dummy''                  \=repeat last action

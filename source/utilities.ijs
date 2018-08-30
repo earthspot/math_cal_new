@@ -3,6 +3,15 @@
 
 cocurrent 'cal'
 
+sl=: 4 : 0
+  NB. RELIABLE path catenator
+  NB. IAC Thursday 30 August 2018  16:42:51
+SL=. '/'
+if. SL={:x do. x=. }:x end.
+if. SL={.y do. x=. }.y end.
+x,SL,y
+)
+
 absent_z_=: [: +./ 0 > [: nc ;:  NB. true if ANY names in y absent
 begins_z_=: ] -: [ {.~ [: # ]	NB. eg: z begins NB
 bh=:    ] }.~ [: >: ' ' i.~ ]	NB. behead y up to 1st SP
@@ -13,7 +22,7 @@ cmx=: [: > <;._2		NB. fwd-ref fixup
 cr=: [: 5!:5 boxopen
 crr=: > , '=: ' , cr
 detb=: 3 : 'deb y rplc TAB ; SP'	NB. c/f deb, but TAB-->SP
-dtlf=: #~ ([: +./\. (10{a.)&~:)   NB. cf dtb but SP-->LF
+dtlf=: #~ ([: +./\. (10{a.)&~:)   NB. delete trailing LF's
 extx=: (0 < [: # ]) # ] , [ #~ [: -. '.' e. ]
 ifdefined=: 0 <: [: 4!:0 <
 ijs=: ]'.ijs'&extx
@@ -29,7 +38,6 @@ mt=: 0 e. $
 NaN=: 1 e. [: ; 128!:5
 nb=: ([: }:@; (<' ') ,.~ ,.)@:(":&.>)
 paren=: 1 |. ')(' , ":
-sl=: 4 : '(btsl x),SL,bhsl y'
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs	  NB. tbx: ext for t-tables (if it ever changes)
 to=: [ + [: i. [: >: -~
@@ -59,6 +67,7 @@ NB. if. nocomplex do. smoutput 'cx: no nouns are complex in: ',loc end.
 -. nocomplex return.
 )
 
+	NB. default --
 	NB. pronoun (y) created with value (x)
 	NB. UNLESS name (y) already in-use.
 	NB. NOT compatible with the "misc.ijs" version

@@ -5,14 +5,17 @@ cocurrent 'cal'
 
 VERSION=: '2.0.0'
 
+tabengine_z_=: tabengine_cal_
+tabenginex_z_=: empty  NB. overridden by TABULA
+
   NB. Verb sesses defined in: sesses.ijs
 sss''        NB. recommended session trace settings
 
 NB. ========================================================
 start=: 3 : 0
   NB. start the CAL-engine
-  NB. IF called with y-:0 -- implements new instr: Inic
-tabengine_z_=: tabengine	NB. make _z_ alias
+  NB. start 0 -- serves/implements new instr: Inic
+  NB. start '' -- serves/implements instr: Init
 public_uu_'cal'  NB. make local aliases to UU public verbs
 globmake'' NB. make global nouns
 cmake''    NB. make the i/f tables

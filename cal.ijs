@@ -1,5 +1,5 @@
 0 :0
-2018-08-30  00:25:07
+2018-08-30  19:24:00
 -
 CAL: scientific calculator engine
 -
@@ -9,7 +9,7 @@ WHY ARE source file headers indented by 1 TAB?
 
 clear 'cal'
 coclass 'cal'
-AABUILT=: '2018-08-30  00:25:07'
+AABUILT=: '2018-08-30  19:24:00'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -46,6 +46,15 @@ TOLERANCE=: 1e_5
 
 cocurrent 'cal'
 
+sl=: 4 : 0
+
+
+SL=. '/'
+if. SL={:x do. x=. }:x end.
+if. SL={.y do. x=. }.y end.
+x,SL,y
+)
+
 absent_z_=: [: +./ 0 > [: nc ;:
 begins_z_=: ] -: [ {.~ [: # ]
 bh=:    ] }.~ [: >: ' ' i.~ ]
@@ -72,7 +81,6 @@ mt=: 0 e. $
 NaN=: 1 e. [: ; 128!:5
 nb=: ([: }:@; (<' ') ,.~ ,.)@:(":&.>)
 paren=: 1 |. ')(' , ":
-sl=: 4 : '(btsl x),SL,bhsl y'
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs
 to=: [ + [: i. [: >: -~
@@ -99,6 +107,7 @@ for_no. nl 0 do.  val=. ".nom=. >no
 end.
 -. nocomplex return.
 )
+
 
 
 
@@ -596,7 +605,7 @@ if. SL e. y do. pth=. pathof y else. pth=.'' end.
   sllog 'me nom pth y'
 file0=: TPATH_TTABLES sl tbx nom
 if. fexist file0 do.
-  ferase file0
+  empty ferase file0
   38 message file0
 else.
   39 message nom
@@ -662,11 +671,11 @@ enlog=: 0&$: : (4 : 0)
 
 
 fi=. <logpath LOGNAME
-if. x do. fi 1!:3~ nounreturned y return. end.
+if. x do. empty fi 1!:3~ nounreturned y return. end.
 if. y-:0 do.
-  fi 1!:2~ (": 6!:0''),' start ',LOGNAME,LF
+  empty fi 1!:2~ (": 6!:0''),' start ',LOGNAME,LF
 else.
-  fi 1!:3~ y
+  empty fi 1!:3~ y
 end.
 empty fi 1!:3~ LF
 )
@@ -882,23 +891,21 @@ filename=: '.' taketo [: |. '/' taketo |.
 
 finfo=: 3 : 0
 
-infopath=: TPATH_TTABLES sl 'INFO.txt'
-smoutput '=>> enter finfo y=',(":y"),'  $TTINFO=',":$TTINFO
-msg=. ''
+]infopath=: TPATH_TTABLES sl 'INFO.txt'
+msss=. ''
 if. y do.
   TTINFO fwrite infopath
   empty''
 else.
   z=. fread infopath
   if. z -: _1 do.
-    msg=. 43 message infopath
+    msss=. 43 message infopath
   else.
     TTINFO=: z
-    msg=. 44 message '…',~ 30 {. TTINFO
+    msss=. 44 message '…',~ 30 {. TTINFO rplc LF;SP
   end.
 end.
-smoutput '=>> exits finfo y=',(":y"),'  $TTINFO=',":$TTINFO
-msg
+msss return.
 )
 
 fixfmla=: ('/';'%') rplc~ ]
@@ -1040,7 +1047,16 @@ else.
   10 message y
 end.
 )
+adj=: 4 : 0
 
+
+
+
+
+
+ssw '>>> adj: CALLED WITH x=(x) y=(y) --but no adjustment made!'
+y return.
+)
 getversion=: 3 : 0
 
 z=. fread y,'manifest.ijs'
@@ -1666,7 +1682,7 @@ CH=: recal 0
 snapshot=: 3 : 0
 ZNN=: 1 + 1 default 'ZNN'
 if. y-:0 do.
-  erase listnameswithprefix '0'-.~nxt 0
+  empty erase listnameswithprefix '0'-.~nxt 0
   ZNN=: 1
 end.
 nom=. nxt ZNO=: ZNN
@@ -1912,7 +1928,7 @@ z=. ". debc TT cols td
 if. 1=$$z do. z=. |: ,:z end.
 TD=: TD , (<:nt0) dadd z
 TTf=: TTf, fixttf TT cols tf
-erase 'TT'
+empty erase 'TT'
 
 
 
@@ -2037,7 +2053,7 @@ TTs=: debc TT hcols ts
 TD=: 0,". debc TT cols td
 if. 1=$$TD do. TD=:|:,:TD end.
 TTf=: fixttf TT hcols tf
-erase 'TT'
+empty erase 'TT'
 
 z=. convert each UNITN=: boxvec TTu
 UNITS=: (>&{.) each z
@@ -2171,7 +2187,7 @@ z=. z,LF,'sig ',":sig''
 if. file-: UNDEF do. 29 message'' return. end.
 retco=. archive filename file
 data=: z
-erase 'TT'
+empty erase 'TT'
 mfile=. filename file
 
 if. x and fexist file do.
@@ -2675,7 +2691,7 @@ validlit   zz=. dropwd yy
 
 
 CAL=: 0 : 0
-%%%% void '29 Aug 2018  21:12:56'  \+CAL last saved
+%%%% void '30 Aug 2018  15:31:01'  \+CAL last saved
 Inic void start 0                  \=(re-)start with clear tt
 Init void start 1                  \=(re-)start with SAMPLE tt
 Repe void dummy''                  \=repeat last action
@@ -3008,13 +3024,13 @@ i.0 0
 )
 
 '==================== [z] paths.ijs ===================='
-
-cocurrent 'z'
 ]TPATH_CAL=: jpath'~Gitcal/'
 ]TPATH_CAL_LOG=: jpath '~/'
 ]TPATH_SAMPLES=: TPATH_CAL
 ]TPATH_TTABLES=: jpath '~/tabula-user/'
 ]TPATH_ARCHIVE=: jpath '~/j-temp/ttarchive'
+
+tpaths''
 
 '==================== [cal] sesses.ijs ===================='
 
@@ -3094,12 +3110,15 @@ cocurrent 'cal'
 
 VERSION=: '2.0.0'
 
+tabengine_z_=: tabengine_cal_
+tabenginex_z_=: empty
+
 
 sss''
 start=: 3 : 0
 
 
-tabengine_z_=: tabengine
+
 public_uu_'cal'
 globmake''
 cmake''
