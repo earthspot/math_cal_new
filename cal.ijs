@@ -1,15 +1,17 @@
 0 :0
-2018-08-31  15:19:54
+Monday 3 September 2018  00:51:22
 -
-CAL: scientific calculator engine
--
-WHY ARE source file headers indented by 1 TAB?
---to make a blank line, else decomment omits entire header line!!
+CAL: scientific calculator engine - serves multiple TABULA implementations
 )
+
+require '~Gituu/uu.ijs'
 
 clear 'cal'
 coclass 'cal'
-AABUILT=: '2018-08-31  15:19:54'
+
+AABUILT=: '2018-09-03  00:56:29'
+AABUILT=: '2018-09-03  17:01:08'
+AABUILT=: '2018-09-03  17:07:13'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -2662,7 +2664,7 @@ end.
   -. too_small 1e_4
 )
 
-'==================== [cal] califace.ijs ===================='
+'==================== [cal] CAL_interface.ijs ===================='
 cocurrent 'cal'
 
 
@@ -2691,7 +2693,7 @@ validlit   zz=. dropwd yy
 
 
 CAL=: 0 : 0
-%%%% void '30 Aug 2018  15:31:01'  \+CAL last saved
+QSAV void '3 Sep 2018  16:59:16'   \CAL last saved
 Inic void start 0                  \=(re-)start with clear tt
 Init void start 1                  \=(re-)start with SAMPLE tt
 Repe void dummy''                  \=repeat last action
@@ -2701,12 +2703,12 @@ ABOU void ABOUT                    \About the engine
 ABTI void ABTIME                   \last-updated timestamp
 ANCE r    r{TD                     \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
-CAPU void CAPT rplc SP;UL          \+t-table title soldered
+CAPU void CAPT rplc SP;UL          \t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
 CTBU void utf8 x2f ct''            \t-table display: utf-8
 DIRT void dirty''                  \flag: unsaved changes
 FMLA r    formula r                \formula of item r
-FMLL r    1 formula r              \+braced formula of item r
+FMLL r    1 formula r              \braced formula of item r
 INFO void info''                   \info about t-table
 INTD void ":initialized''          \query if start'' was run
 ITMS void }.items''                \list of non-0 item#s
@@ -2716,9 +2718,9 @@ PLOT rzz  r plotz~ zz              \gen plot data with x-axis
 PTHS void tpaths''                 \all CAL+TABULA paths
 QCMD yy   CCc e.~ <yy              \=query valid command
 QUER void querycal''               \query interface defn
-QSCI void sci''                    \query SCI (in UU)
-QSIC void uunicode''               \query SI conformance level
-QSIG void sig''                    \query SIG (in UU)
+QSCI void uuengine instr           \query scientific notation threshold
+QSIC void uuengine instr           \query SI conformance level
+QSIG void uuengine instr           \query significant figures
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
@@ -2732,21 +2734,22 @@ TNMS void ttnames''                \t-table all its names
 TNMX void tbx filename file        \t-table file name.ext
 TPAR void TPATH_ARCHIVE            \reference path to archive
 TPCA void TPATH_CAL                \reference path to CAL addon
-TPCL void logpath LOGNAME          \+reference path of callogfile
+TPCL void logpath LOGNAME          \reference path of callogfile
 TPSA void TPATH_SAMPLES            \reference path to SAMPLES
 TPTA void TPATH_TABULA             \reference path to TABULA
 TPTT void TPATH_TTABLES            \reference path to t-tables
 TPUU void TPATH_UU                 \reference path to UU addon
 TPUC void TPATH_UUC                \reference path to constants
 TPUF void TPATH_UUF                \reference path to functions
-UCMU r    1 docompatlist r         \+item compat units (simode)
+UCMU r    1 docompatlist r         \item compat units (simode)
 UCOM r    docompatlist r           \item compat units (system)
 UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
 VALU r    getvalue r               \value of item -corrected
 VERS void VERSION                  \version of engine
-VUUC void x2f UUC_uu_              \content of UUC
-VUUF void x2f UUF_uu_              \content of UUF
+VUUC void uuengine instr           \content of UUC
+VUUF void uuengine instr           \content of UUF
+VUUN void uuengine instr           \content of UUN
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
@@ -2800,8 +2803,8 @@ hect r    'h' scaleunits r         \hecto- item
 hide rrr  hide rrr                 \hide items
 hlvl r    r fnline~ 'hlv'          \copy item halved
 hlvv r    r setvalue~ -:vr         \halve value of r
-hold rrr  tranhold rrr             \+toggle transient hold
-holm rrr  mandhold rrr             \+toggle mandatory hold
+hold rrr  tranhold rrr             \toggle transient hold
+holm rrr  mandhold rrr             \toggle mandatory hold
 info yy   1 info yy                \set info about t-table
 infr void finfo 0                  \read TTINFO from txtfile
 infw void finfo 1                  \write TTINFO to txtfile
@@ -2867,14 +2870,17 @@ relo void ttload file              \reload current t-table
 rplt rrr  replot rrr               \re-plot with items
 rtol rv   r fnline~ '^~',~":v      \copy item ^v
 rtov rv   r setvalue~ vr^v         \item ^v
-samp void ttload '$$'              \+load correct SAMPLE
+samp void ttload '$$'              \load correct SAMPLE
 sava yy   ttsava yy                \save t-table as yy
-savc yy   ttsavc yy                \+save t-table COPY as yy
+savc yy   ttsavc yy                \save t-table COPY as yy
 save void ttsave ''                \save current t-table
-savo yy   ttsavo yy                \+save as yy over existing
+savo yy   ttsavo yy                \save as yy over existing
 savs void ttsavs ''                \save t-table COPY as SAMPLE
-savt void ttsavt ''                \+save t-table from caption
-sicl n    uunicode 0>.3<. n        \set SI conformance level
+savt void ttsavt ''                \save t-table from caption
+ssci n    uuengine instr           \set scientific notation threshold
+sicl n    uuengine instr           \set SI conformance level (heritage)
+ssic n    uuengine instr           \set SI conformance level
+ssig n    uuengine instr           \set significant figures
 sort rrr  1 ttsort rrr             \sort by perm
 sqrl r    r fnline~ 'sqr'          \copy item squared
 sqrv r    r setvalue~ sqr vr       \squared value of r
@@ -2897,15 +2903,16 @@ t2dl r    r fnline~ '100%~'        \copy item by 100
 t2ml r    r fnline~ '100*'         \copy item times 100
 t3dl r    r fnline~ '1000%~'       \copy item by 1000
 t3ml r    r fnline~ '1000*'        \copy item times 1000
-t1dv r    r setvalue~ vr%10        \+item divided-by 10
-t1mv r    r setvalue~ vr*10        \+item times 10
-t2dv r    r setvalue~ vr%100       \+item divided-by 100
-t2mv r    r setvalue~ vr*100       \+item times 100
-t3dv r    r setvalue~ vr%1000      \+item divided-by 1000
-t3mv r    r setvalue~ vr*1000      \+item times 1000
+t1dv r    r setvalue~ vr%10        \item divided-by 10
+t1mv r    r setvalue~ vr*10        \item times 10
+t2dv r    r setvalue~ vr%100       \item divided-by 100
+t2mv r    r setvalue~ vr*100       \item times 100
+t3dv r    r setvalue~ vr%1000      \item divided-by 1000
+t3mv r    r setvalue~ vr*1000      \item times 1000
 unhi void hide 0                   \unhide all items
 unit rzz  zz changeunits r         \set units of item
 unsc r    '' scaleunits r          \unscaled units
+uuuu yy   uuengine instr           \call uu converter directly
 valu rv   v setvalue r             \set value of item
 vunn rzz  zz setvunits r           \set value+units of item
 yoct r    'y' scaleunits r         \yocto- item
@@ -3014,14 +3021,9 @@ rfd=: *&(pi%180)
 '==================== [cal] public ===================='
 
 cocurrent 'cal'
+tabengine_z_=: tabengine_cal_
 
-public=: 3 : 0
-
-
-cocurrent y
-tabengine=: tabengine_cal_
-i.0 0
-)
+uuengine=: uuengine_uu_
 
 '==================== [z] paths.ijs ===================='
 ]TPATH_CAL=: jpath'~Gitcal/'
@@ -3110,9 +3112,6 @@ cocurrent 'cal'
 
 VERSION=: '2.0.0'
 
-tabengine_z_=: tabengine_cal_
-tabenginex_z_=: empty
-
 
 sss''
 start=: 3 : 0
@@ -3120,6 +3119,7 @@ start=: 3 : 0
 
 
 public_uu_'cal'
+tabengine_z_=: tabengine_cal_
 globmake''
 cmake''
 progress _

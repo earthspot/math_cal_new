@@ -930,7 +930,7 @@ end.
 NB. ==================================================
 adj=: 4 : 0
   NB. adjust (num) y according to (unit) x
-  NB. serves verbs: getvalue, setvalue
+  NB. serves verbs: getvalue, setvalue ONLY
   NB. FORMERLY DONE BY adj_uu_
   NB. Intercept the call here to see how best to do it
   NB. now that adj_uu has been eliminated.
