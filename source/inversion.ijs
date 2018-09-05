@@ -24,11 +24,11 @@ NB. Set TOLERANCE in consts.ijs or in configfile
 NB. ———————————————————————————————————————————————————————————
 
 progress=: 3 : 0
-wd_tab_ :: 0: 'msgs'
-wd 'msgs'
+NB. wd_tab_ :: 0: 'msgs'
+NB. wd 'msgs'
 PROGRESS_z_=: y
-wd_tab_ :: 0: 'msgs'
-wd 'msgs'
+NB. wd_tab_ :: 0: 'msgs'
+NB. wd 'msgs'
 )
 
 reportvars=: 3 : 0

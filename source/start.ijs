@@ -13,8 +13,9 @@ start=: 3 : 0
   NB. start the CAL-engine
   NB. start 0 -- serves/implements new instr: Inic
   NB. start '' -- serves/implements instr: Init
-public_uu_'cal'  NB. make local aliases to UU public verbs
-tabengine_z_=: tabengine_cal_
+load TPATH_UU sl 'uu.ijs'  NB. creates: uuinit_z_
+uuconnect''
+tt_z_=: tabengine_z_=: tabengine_cal_
 globmake'' NB. make global nouns
 cmake''    NB. make the i/f tables
 NB. DODGY... getversion TPATH_CAL

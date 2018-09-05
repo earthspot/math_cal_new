@@ -375,43 +375,6 @@ ttafl label ; unitn ; (,":y); fmla
 6 message y
 )
 
-ct0=: 3 : 0
-NB. ORIGINAL ct from 'math/cal'
-	NB. 1 e. y -include SI units column
-	NB. 3 e. y -include box-drawn arrows
-	NB. 4 e. y -include "line 0" col-headers
-if. 0=#y do. y=. ,3 end.	NB. the default display
-	NB. return trivial display if no items...
-if. 1=#items'' do. ,:CAPT return. end.
-ucods=. ucods_uu_  NB. DIRECT PATCH-IN <<<<<<<<<<<<<<<<<<<<<<<
-	NB. Use sP0 etc to stop reversion to utf-8
-z=. >brace each ":each items''
-z=. z ,.(SH fl vhold)	NB. marks "holds"
-z=. z ,.('@'fl CH)	NB. marks altered values
-z=. z sP1 UNITN nfx vquan
-z=. z sP1(>ucods each UNITN)	NB. nominal units
-if. 1 e. y do.
-  z=. z sP1('j'nfx vsiqn) sP1(>ucods each UNITS)	NB. SI-units figures
-  z=. z sP1 '*'		NB. to "symbolise" multiplication (by vfact)
-  z=. z sP0('j'nfx vfact)
-end.
-z=. z sP2 TTn
-if. (3 e. y) do.
-  a=. arrowch arrowgen''
-  if. a -: i.0 0 do.
-    sess_ct 'ct: arrows n/a'
-  else.
-    try. z=. z sP1~ a
-    catch. sess_ct 'ct: arrowch fail $z:' ; ($z) ; '$a:' ; ($a)
-    end.
-  end.
-end.
-if.-. 4 e. y do. z=. }.z end.	NB. drop "line 0"
-z=. CAPT,z	NB. ALWAYS INCLUDED NOW <<<<<<<<
-if. mt z do. z=. 1 1$SP end.	NB. to force panel-clear
-z=. (-.vhidd) # z
-)
-
 ct1=: 3 : 0
 NB. NEW ct
   NB. 1 e. y -include SI units column
@@ -934,8 +897,8 @@ adj=: 4 : 0
   NB. FORMERLY DONE BY adj_uu_
   NB. Intercept the call here to see how best to do it
   NB. now that adj_uu has been eliminated.
-  NB. IAC Thursday 30 August 2018  00:35:42
-ssw '>>> adj: CALLED WITH x=(x) y=(y) --but no adjustment made!'
+  NB. IAC Wednesday 5 September 2018  12:33:44
+ssw '>>> DUMMY adj: x=(x) y=(y)'
 y return.
 )
 NB. ==================================================
@@ -1679,7 +1642,7 @@ if. 0>nc<'CCc' do.
 end.
 icmd=. CCc i. <cmd  NB. index# of (cmd)
 if. icmd=#CCc do. '>>> bad instruction:' ; instr return. end.
-exp=. > icmd { CCx  NB. expression to execute
+EXP=: exp=. > icmd { CCx  NB. expression to execute
   NB. Fill discretionary arg caches ...
   NB. to evaluate within: exp
 af=. (bf=. ARGS e. ;: exp) # ARGS  NB. args found in exp

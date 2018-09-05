@@ -8,14 +8,22 @@ open '~Gitcal/test/test.ijs'
 
 cocurrent 'base'
 
-BUILTFILE_z_=: 1!:1 <jpath'~Gitcal/builtfile'
-	NB. …effectively: '~Gitcal/cal.ijs'
-TESTFILE_z_=: '~Gitcal/test/test.ijs'
-UUFILE_z_=:   '~Gituu/uu.ijs'
+BUILTFILE_z_=: '~Gitcal/cal.ijs'
+TESTFILE_z_=:  '~Gitcal/test/test.ijs'
+UUFILE_z_=:    '~Gituu/uu.ijs'
 
 NB. ---------------------------------------------------------
 
+NB. uloc_z_=: <,'0'  NB. >>>>>>>>>>>>>>>>> FUDGE
 load UUFILE  NB. >>> RELOADS _uu_ FROM ITS LAST BUILTFILE
+
+3 : 0''
+if. absent 'uloc_z_' do.
+  uuinitTest_uu_''
+  smoutput '>>> CAL run: created locator for locale: ',": >uloc_z_
+end.
+i.0 0
+)
 
 clear 'cal'
 load BUILTFILE	

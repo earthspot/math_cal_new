@@ -3,7 +3,7 @@
 
 NB. Mathematical functions exposed to user
 NB. These fns are accepted in formulas.
-NB. This script should be loaded by: start_tab_
+NB. This script should be loaded by CAL: start
 NB. -to overwrite all z-definitions lurking elsewhere
 
 NB. PUT THESE IN THE DEFN OF: EXCLUDE IN: cal etc

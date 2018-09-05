@@ -12,6 +12,19 @@ coclass 'cal'
 AABUILT=: '2018-09-03  00:56:29'
 AABUILT=: '2018-09-03  17:01:08'
 AABUILT=: '2018-09-03  17:07:13'
+AABUILT=: '2018-09-05  11:26:58'
+AABUILT=: '2018-09-05  11:28:48'
+AABUILT=: '2018-09-05  12:23:37'
+AABUILT=: '2018-09-05  12:34:32'
+AABUILT=: '2018-09-05  12:38:03'
+AABUILT=: '2018-09-05  15:21:56'
+AABUILT=: '2018-09-05  15:33:13'
+AABUILT=: '2018-09-05  15:59:38'
+AABUILT=: '2018-09-05  17:42:53'
+AABUILT=: '2018-09-05  17:44:17'
+AABUILT=: '2018-09-05  17:55:22'
+AABUILT=: '2018-09-05  18:02:44'
+AABUILT=: '2018-09-05  18:09:09'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -510,42 +523,6 @@ units=. >y{UNITS
 fmla=. 'a: a',paren units=.>y{UNITS
 ttafl label ; unitn ; (,":y); fmla
 6 message y
-)
-
-ct0=: 3 : 0
-
-
-
-if. 0=#y do. y=. ,3 end.
-
-if. 1=#items'' do. ,:CAPT return. end.
-ucods=. ucods_uu_
-
-z=. >brace each ":each items''
-z=. z ,.(SH fl vhold)
-z=. z ,.('@'fl CH)
-z=. z sP1 UNITN nfx vquan
-z=. z sP1(>ucods each UNITN)
-if. 1 e. y do.
-  z=. z sP1('j'nfx vsiqn) sP1(>ucods each UNITS)
-  z=. z sP1 '*'
-  z=. z sP0('j'nfx vfact)
-end.
-z=. z sP2 TTn
-if. (3 e. y) do.
-  a=. arrowch arrowgen''
-  if. a -: i.0 0 do.
-    sess_ct 'ct: arrows n/a'
-  else.
-    try. z=. z sP1~ a
-    catch. sess_ct 'ct: arrowch fail $z:' ; ($z) ; '$a:' ; ($a)
-    end.
-  end.
-end.
-if.-. 4 e. y do. z=. }.z end.
-z=. CAPT,z
-if. mt z do. z=. 1 1$SP end.
-z=. (-.vhidd) # z
 )
 
 ct1=: 3 : 0
@@ -1056,7 +1033,7 @@ adj=: 4 : 0
 
 
 
-ssw '>>> adj: CALLED WITH x=(x) y=(y) --but no adjustment made!'
+ssw '>>> DUMMY adj: x=(x) y=(y)'
 y return.
 )
 getversion=: 3 : 0
@@ -1774,7 +1751,7 @@ if. 0>nc<'CCc' do.
 end.
 icmd=. CCc i. <cmd
 if. icmd=#CCc do. '>>> bad instruction:' ; instr return. end.
-exp=. > icmd { CCx
+EXP=: exp=. > icmd { CCx
 
 
 af=. (bf=. ARGS e. ;: exp) # ARGS
@@ -2324,11 +2301,7 @@ MAXCOUNTDOWN=: 1000
 MAXPASSES=: 200
 MAXNESTED=: 3
 progress=: 3 : 0
-wd_tab_ :: 0: 'msgs'
-wd 'msgs'
 PROGRESS_z_=: y
-wd_tab_ :: 0: 'msgs'
-wd 'msgs'
 )
 
 reportvars=: 3 : 0
@@ -2693,7 +2666,7 @@ validlit   zz=. dropwd yy
 
 
 CAL=: 0 : 0
-QSAV void '3 Sep 2018  16:59:16'   \CAL last saved
+QSAV void '3 Sep 2018  17:21:00'   \CAL last saved
 Inic void start 0                  \=(re-)start with clear tt
 Init void start 1                  \=(re-)start with SAMPLE tt
 Repe void dummy''                  \=repeat last action
@@ -3021,9 +2994,92 @@ rfd=: *&(pi%180)
 '==================== [cal] public ===================='
 
 cocurrent 'cal'
+
 tabengine_z_=: tabengine_cal_
 
-uuengine=: uuengine_uu_
+uuconnect=: 3 : 0
+
+uun=: uuinit_z_''
+uuengine=: uuengine__uun
+
+compatlist	=: compatlist__uun
+convert		=: convert__uun
+cnvj		=: cnvj__uun
+format		=: format__uun
+selfcanc		=: selfcanc__uun
+sic		=: sic__uun
+sci		=: sci__uun
+sig		=: sig__uun
+udat		=: udat__uun
+udiv		=: udiv__uun
+udumb		=: udumb__uun
+uniform		=: uniform__uun
+uunicode=: sic
+i.0 0
+)
+
+0 :0
+--- uuengine instructions...
+adj		adju	NOT DONE
+compat		cpat
+compatlist	cpli
+convert		conv
+cnvj		cnvj
+format		fmat
+scino		scin
+selfcanc		slfc
+set_ucase		setu
+sci		QSCI
+sig		QSIG
+udat		udat
+udiv		udiv
+udumb		udum
+uurowsc		uroc
+uurowsf		urof
+)
+
+0 :0
+CAL used to need: ucode and ucods
+but currently…
+  ucode is unused
+  ucods is called only by ct0_cal_
+  ct_cal_=: ct1_cal_
+-
+---USE OF PUBLIC WORDS BY CAL Sunday 2 September 2018...
+compatible	NOTUSED
+compatlist	docompatlist compare incompat(combine) compat compat_i
+convert		changeunits fexp1 fexp_nominal ttadl ttafl ttappend ttload
+cnvj (cnvCunit)	scaleunits
+format (formatOUT)	nfx
+scino		NOTUSED
+selfcanc		combine
+setsci (sci)	NOTUSED	
+setsig (sig)	NOTUSED
+set_ucase		NOTUSED
+sci		califace[QSCI,psci] (local sci uses SCI)
+sig		califace[QSIG,prec] (local sig uses SIG) ttsav
+startuu		NOTUSED
+ucase		NOTUSED …is TABULA accessing UU directly?
+udat		ttauc ttauf
+udiv		combine fnline
+udumb		ttauc
+uniform		ct1 docompatlist
+uurowsc		NOTUSED
+uurowsf		NOTUSED
+UUC_uu_		califace[VUUC]
+UUF_uu_		califace[VUUF]
+ucods_uu_		NOTUSED
+adj (placeholder)	getvalue setvalue
+  getvalue	califace[VALU] plotv
+  setvalue	califace[...] plotxSwift plotx plotz setvunits
+---TO DO:
+	suffix all these with: _uu ?
+	elim NOTUSED from UU
+	elim direct use of _uu_
+	see if any can be avoided
+	consider a keyhole: uuengine (adverb if any dyadic)
+	restore adj_uu_ -but base it on format*
+)
 
 '==================== [z] paths.ijs ===================='
 ]TPATH_CAL=: jpath'~Gitcal/'
@@ -3118,8 +3174,9 @@ start=: 3 : 0
 
 
 
-public_uu_'cal'
-tabengine_z_=: tabengine_cal_
+load TPATH_UU sl 'uu.ijs'
+uuconnect''
+tt_z_=: tabengine_z_=: tabengine_cal_
 globmake''
 cmake''
 progress _
