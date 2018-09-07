@@ -34,8 +34,8 @@ smoutput '--- run.ijs: CAL TESTFILE completed without discrepancies: ',TESTFILE
 
 smoutput tabengine 'Init'
 smoutput tabengine 'load 3'  NB. non-trivial asteroid t-table
-smoutput tabengine 'sicl 1'
-smoutput tabengine 'CTBU'
+smoutput tabengine 'ssic 1'  NB. set unicode conformance level
+smoutput tabengine 'CTBU'    NB. show loaded t-table
 
 NB. ---------------------------------------------------------
 

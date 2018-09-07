@@ -25,6 +25,8 @@ AABUILT=: '2018-09-05  17:44:17'
 AABUILT=: '2018-09-05  17:55:22'
 AABUILT=: '2018-09-05  18:02:44'
 AABUILT=: '2018-09-05  18:09:09'
+AABUILT=: '2018-09-06  10:09:11'
+AABUILT=: '2018-09-06  18:36:44'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -3091,8 +3093,16 @@ adj (placeholder)	getvalue setvalue
 tpaths''
 
 '==================== [cal] sesses.ijs ===================='
+0 :0
+REPLACE THIS SCRIPT WITH TRACEVERBS/msg/sllog as in UU
+…then replace all sess_* calls. All are in: main.ijs
+… in the verbs: arrowgen dirty ttappend ttsav undo
+)
 
 cocurrent 'cal'
+
+TRACE=: 0
+TRACI=: 0
 
 SSS=: 0 : 0
 cocurrent 'cal'
@@ -3195,9 +3205,6 @@ ARGS=: targs ARGEX=: <;._2 ARGEXP
 ARROWCH=: ARROWCH1
 DIRTY=: 0
 RETURNED=: ''
-TRACE=: 0
-TRACI=: 0
 TTn=: ,:'tn'
 i.0 0
 )
-smoutput '+++ cal.ijs loaded!!!'

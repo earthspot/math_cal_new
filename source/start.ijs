@@ -40,8 +40,6 @@ ARGS=: targs ARGEX=: <;._2 ARGEXP	NB. i/f args-table
 ARROWCH=: ARROWCH1	NB. arrow-drawing chars (see consts.ijs)
 DIRTY=: 0		NB. =1 means t-table needs saving
 RETURNED=: ''	NB. noun returned by i/f call
-TRACE=: 0		NB. controls: sess
-TRACI=: 0		NB. controls: sesi (echoes instruction string)
 TTn=: ,:'tn'	NB. t-table container (part)
 i.0 0
 )
@@ -49,5 +47,3 @@ i.0 0
 NB. ======================================================
 NB. DO NOT CALL start_cal_ HERE---CAL MUST NOT SELF-START!
 NB. ======================================================
-
-smoutput '+++ cal.ijs loaded!!!'

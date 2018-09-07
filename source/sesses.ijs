@@ -1,7 +1,15 @@
 	NB. cal - sesses.ijs
 '==================== [cal] sesses.ijs ===================='
+0 :0
+REPLACE THIS SCRIPT WITH TRACEVERBS/msg/sllog as in UU
+…then replace all sess_* calls. All are in: main.ijs
+… in the verbs: arrowgen dirty ttappend ttsav undo
+)
 
 cocurrent 'cal'
+
+TRACE=: 0		NB. controls: sess
+TRACI=: 0		NB. controls: sesi (echoes instruction string)
 
 SSS=: 0 : 0
 cocurrent 'cal'
