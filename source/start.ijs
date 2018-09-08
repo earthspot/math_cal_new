@@ -5,14 +5,12 @@ cocurrent 'cal'
 
 VERSION=: '2.0.0'
 
-  NB. Verb sesses defined in: sesses.ijs
-sss''        NB. recommended session trace settings
-
 NB. ========================================================
 start=: 3 : 0
   NB. start the CAL-engine
   NB. start 0 -- serves/implements new instr: Inic
   NB. start '' -- serves/implements instr: Init
+sss''        NB. recommended session trace settings
 load TPATH_UU sl 'uu.ijs'  NB. creates: uuinit_z_
 uuconnect''
 tt_z_=: tabengine_z_=: tabengine_cal_
