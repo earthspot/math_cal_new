@@ -34,3 +34,6 @@ TIMEOUT=: 5		NB. seconds (see: blazing_saddle)
 UNDEF=: 'untitled'
 UNDEF_CAPT=: 'untitled'
 TOLERANCE=: 1e_5		NB. default tolerance for comparing physical quantities
+
+INVALID=: _.j_.
+UNDEFINED=: _.

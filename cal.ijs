@@ -29,6 +29,9 @@ AABUILT=: '2018-09-06  10:09:11'
 AABUILT=: '2018-09-06  18:36:44'
 AABUILT=: '2018-09-08  00:23:02'
 AABUILT=: '2018-09-08  00:24:59'
+AABUILT=: '2018-09-08  07:57:09'
+AABUILT=: '2018-09-08  08:10:56'
+AABUILT=: '2018-09-08  19:15:50'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -60,6 +63,9 @@ TIMEOUT=: 5
 UNDEF=: 'untitled'
 UNDEF_CAPT=: 'untitled'
 TOLERANCE=: 1e_5
+
+INVALID=: _.j_.
+UNDEFINED=: _.
 
 '==================== [cal] utilities.ijs ===================='
 
@@ -111,6 +117,14 @@ to=: [ + [: i. [: >: -~
 aann=: 'aa00'&$: : (4 : 0)
 n=. -+/x e. '0123456789'
 (n}.x),n{.":100000000+y
+)
+
+
+
+cv=: 3 : 0
+h=: ;:'vfact vqua0 vquan vsiq0 vsiqn'
+]z=: (<vv vfact),(<vv vqua0),(<vv vquan),(<vv vsiq0),(<vv vsiqn)
+h,:z
 )
 
 
@@ -2645,20 +2659,6 @@ end.
 cocurrent 'cal'
 
 
-ARGEXP=: 0 : 0
-validbool  b=. _".yy
-validnum   n=. _".yy
-validitem  r=. {. _".yy
-validnum   v=. 1{ _".yy
-validnum   vr=. r{vquan
-validrr    rr=. _".yy
-validitems rrr=. _".yy
-validrv    rv=. _".yy
-validlit   yy
-validlit   zz=. dropwd yy
-)
-
-
 
 
 
@@ -2897,6 +2897,20 @@ yott r    'Y' scaleunits r         \yotta- item
 zept r    'z' scaleunits r         \zepto- item
 zero r    0 setvalue r             \set item to 0
 zett r    'Z' scaleunits r         \zetta- item
+)
+
+
+ARGEXP=: 0 : 0
+validbool  b=. _".yy
+validnum   n=. _".yy
+validitem  r=. {. _".yy
+validnum   v=. 1{ _".yy
+validnum   vr=. r{vquan
+validrr    rr=. _".yy
+validitems rrr=. _".yy
+validrv    rv=. _".yy
+validlit   yy
+validlit   zz=. dropwd yy
 )
 
 '==================== [cal] message.ijs ===================='

@@ -8,22 +8,6 @@ NB.  CAL from Xcode: cal-instruction-set
 cocurrent 'cal'
 
 NB. ========================================================
-  NB. Table to validate and interpret tabengine arg options
-  NB. No TAB chars! Use only spaces!
-ARGEXP=: 0 : 0
-validbool  b=. _".yy
-validnum   n=. _".yy
-validitem  r=. {. _".yy
-validnum   v=. 1{ _".yy
-validnum   vr=. r{vquan
-validrr    rr=. _".yy
-validitems rrr=. _".yy
-validrv    rv=. _".yy
-validlit   yy
-validlit   zz=. dropwd yy
-)
-
-NB. ========================================================
   NB. The tabengine instruction set.
   NB. DON'T USE HARD TAB chars! Use only spaces!
   NB.  1st col: name of instruction (always 4 bytes)
@@ -264,4 +248,20 @@ yott r    'Y' scaleunits r         \yotta- item
 zept r    'z' scaleunits r         \zepto- item
 zero r    0 setvalue r             \set item to 0
 zett r    'Z' scaleunits r         \zetta- item
+)
+
+NB. ========================================================
+  NB. Table to validate and interpret tabengine arg options
+  NB. No TAB chars! Use only spaces!
+ARGEXP=: 0 : 0
+validbool  b=. _".yy
+validnum   n=. _".yy
+validitem  r=. {. _".yy
+validnum   v=. 1{ _".yy
+validnum   vr=. r{vquan
+validrr    rr=. _".yy
+validitems rrr=. _".yy
+validrv    rv=. _".yy
+validlit   yy
+validlit   zz=. dropwd yy
 )
