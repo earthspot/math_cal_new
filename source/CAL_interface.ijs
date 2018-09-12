@@ -75,9 +75,9 @@ UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
 VALU r    getvalue r               \value of item -corrected
 VERS void VERSION                  \version of engine
-VUUC void uuengine instr           \content of UUC
-VUUF void uuengine instr           \content of UUF
-VUUN void uuengine instr           \content of UUN
+VUUC yy   uuengine instr           \content of UUC
+VUUF yy   uuengine instr           \content of UUF
+VUUN yy   uuengine instr           \content of UUN
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%

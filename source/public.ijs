@@ -10,7 +10,7 @@ uuconnect=: 3 : 0
 uun=: uuinit_z_''  NB. CAL's locator to its UU instance
 uuengine=: uuengine__uun  NB. do everything through this keyhole?
   NB. ...NO. Work with individual localizations first…
-NB. compat		=: compat__uun	NB. NOTUSED?
+compat		=: compatible__uun
 compatlist	=: compatlist__uun
 convert		=: convert__uun
 cnvj		=: cnvj__uun
@@ -59,7 +59,7 @@ but currently…
   ct_cal_=: ct1_cal_
 -
 ---USE OF PUBLIC WORDS BY CAL Sunday 2 September 2018...
-compatible	NOTUSED
+compatible	incompat(combine) compat compat_i
 compatlist	docompatlist compare incompat(combine) compat compat_i
 convert		changeunits fexp1 fexp_nominal ttadl ttafl ttappend ttload
 cnvj (cnvCunit)	scaleunits

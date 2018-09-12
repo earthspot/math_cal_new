@@ -32,6 +32,8 @@ AABUILT=: '2018-09-08  00:24:59'
 AABUILT=: '2018-09-08  07:57:09'
 AABUILT=: '2018-09-08  08:10:56'
 AABUILT=: '2018-09-08  19:15:50'
+AABUILT=: '2018-09-12  02:53:04'
+AABUILT=: '2018-09-12  03:12:44'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -2724,9 +2726,9 @@ UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
 VALU r    getvalue r               \value of item -corrected
 VERS void VERSION                  \version of engine
-VUUC void uuengine instr           \content of UUC
-VUUF void uuengine instr           \content of UUF
-VUUN void uuengine instr           \content of UUN
+VUUC yy   uuengine instr           \content of UUC
+VUUF yy   uuengine instr           \content of UUF
+VUUN yy   uuengine instr           \content of UUN
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
@@ -3020,6 +3022,7 @@ uuconnect=: 3 : 0
 uun=: uuinit_z_''
 uuengine=: uuengine__uun
 
+compat		=: compatible__uun
 compatlist	=: compatlist__uun
 convert		=: convert__uun
 cnvj		=: cnvj__uun
@@ -3064,7 +3067,7 @@ but currently…
   ct_cal_=: ct1_cal_
 -
 ---USE OF PUBLIC WORDS BY CAL Sunday 2 September 2018...
-compatible	NOTUSED
+compatible	incompat(combine) compat compat_i
 compatlist	docompatlist compare incompat(combine) compat compat_i
 convert		changeunits fexp1 fexp_nominal ttadl ttafl ttappend ttload
 cnvj (cnvCunit)	scaleunits
