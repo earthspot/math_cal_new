@@ -1609,7 +1609,7 @@ suits=: 1:
   NB.  n r rr rrr rv rzz
   NB.  for use inside: ".exp
 
-tabengine=: 3 : 0"1
+tabengine0=: 3 : 0"1
 if. isBoxed y do. y=. nb y end.
 INSTR_z_=: y=. dltb y
   NB. FIRST THING TO DO: service the instr: Init
@@ -1722,7 +1722,7 @@ ttadl=: 3 : 0
   NB. eg: ttadl 'a:Distance to fall' ; 'km' ; 1
 'ytn ytu yvalu'=. y
 'yts cyc fac'=. convert ytu
-  NB. (check cyc~:0 at this point)
+  NB. (check cyc~:0 at this point?)
   NB. See: TTlist for vars comprising the t-table to be adjusted
 TTn=: TTn,ytn
 TTu=: TTu,ytu
@@ -2180,3 +2180,61 @@ i.0 0
 )
 
 xseq=: 3 : 'sor clos dpmx TD'
+
+NB. ================================================
+
+NB. compile CAL
+
+cocurrent 'cal'
+
+COMPILE_HEAD=: 0 : 0
+NB. CAL compiled into explicit verb
+if. isBoxed y do. y=. nb y end.
+INSTR_z_=: instr=. y
+yy=. 5}.y
+'inst rz zz'=. 3{.smcut3 y
+select. inst
+)
+
+assnum=: 3 : 0
+assert. isNum y
+assert. -. any isNaN y
+y return.
+)
+
+compile=: 3 : 0
+  NB. compile CAL
+z=. COMPILE_HEAD
+for_line. <;._2 CAL do.
+  'inst patt phrase'=. 3{.smcut3 >line
+  phrase=. phrase rplc '\' ; NB,SP
+  select. patt
+  case. 'void' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do.'
+  case. ,'r' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num 5}.y'
+	z=.LF,~ z, sw '                 vr=. r{vquan'
+  case. 'yy' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do.'
+  case. 'rzz' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num rz'
+  case. 'rv' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num rz'
+	z=.LF,~ z, sw '                 assnum v=. num zz'
+	z=.LF,~ z, sw '                 vr=. r{vquan'
+  case. 'rrr' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum rrr=. num 5}.y'
+  case. 'rr' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum rr=. num 5}.y'
+  case. ,'n' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum n=. num 5}.y'
+  case.      do.
+	z=.LF,~ z, sw '@@ (NB) (inst) pattern: (patt) not recognised'
+  end.
+  z=.LF,~ z, sw '                 (phrase)'
+end.
+Z=: z=. z,'end.',LF
+tabengine1=: (3 : z)"1
+NB. tv 5 !:5<'tabengine1'
+i.0 0
+)

@@ -29,6 +29,7 @@ ijs=: ]'.ijs'&extx
 isBoxed=: 32 = 3!:0
 isLen2=: 2 = #
 isNo=: isNum *. isScalar
+isNaN=: 128!:5
 isNum=: 1 4 8 64 128 e.~ 3!:0
 isScalar=: [: {. 0 = [: $ $
 items=: 3 : 'i. #TTn'	NB. fwd-ref fixup
@@ -37,6 +38,7 @@ max=: $:/ :>.
 mt=: 0 e. $
 NaN=: 1 e. [: ; 128!:5
 nb=: ([: }:@; (<' ') ,.~ ,.)@:(":&.>)
+num=: _.&".
 paren=: 1 |. ')(' , ":
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs	  NB. tbx: ext for t-tables (if it ever changes)

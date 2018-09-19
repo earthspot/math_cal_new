@@ -9,31 +9,8 @@ require '~Gituu/uu.ijs'
 clear 'cal'
 coclass 'cal'
 
-AABUILT=: '2018-09-03  00:56:29'
-AABUILT=: '2018-09-03  17:01:08'
-AABUILT=: '2018-09-03  17:07:13'
-AABUILT=: '2018-09-05  11:26:58'
-AABUILT=: '2018-09-05  11:28:48'
-AABUILT=: '2018-09-05  12:23:37'
-AABUILT=: '2018-09-05  12:34:32'
-AABUILT=: '2018-09-05  12:38:03'
-AABUILT=: '2018-09-05  15:21:56'
-AABUILT=: '2018-09-05  15:33:13'
-AABUILT=: '2018-09-05  15:59:38'
-AABUILT=: '2018-09-05  17:42:53'
-AABUILT=: '2018-09-05  17:44:17'
-AABUILT=: '2018-09-05  17:55:22'
-AABUILT=: '2018-09-05  18:02:44'
-AABUILT=: '2018-09-05  18:09:09'
-AABUILT=: '2018-09-06  10:09:11'
-AABUILT=: '2018-09-06  18:36:44'
-AABUILT=: '2018-09-08  00:23:02'
-AABUILT=: '2018-09-08  00:24:59'
-AABUILT=: '2018-09-08  07:57:09'
-AABUILT=: '2018-09-08  08:10:56'
-AABUILT=: '2018-09-08  19:15:50'
-AABUILT=: '2018-09-12  02:53:04'
-AABUILT=: '2018-09-12  03:12:44'
+AABUILT=: '2018-09-18  23:03:24'
+AABUILT=: '2018-09-18  23:18:05'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -99,6 +76,7 @@ ijs=: ]'.ijs'&extx
 isBoxed=: 32 = 3!:0
 isLen2=: 2 = #
 isNo=: isNum *. isScalar
+isNaN=: 128!:5
 isNum=: 1 4 8 64 128 e.~ 3!:0
 isScalar=: [: {. 0 = [: $ $
 items=: 3 : 'i. #TTn'
@@ -107,6 +85,7 @@ max=: $:/ :>.
 mt=: 0 e. $
 NaN=: 1 e. [: ; 128!:5
 nb=: ([: }:@; (<' ') ,.~ ,.)@:(":&.>)
+num=: _.&".
 paren=: 1 |. ')(' , ":
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs
@@ -1738,7 +1717,7 @@ suits=: 1:
 
 
 
-tabengine=: 3 : 0"1
+tabengine0=: 3 : 0"1
 if. isBoxed y do. y=. nb y end.
 INSTR_z_=: y=. dltb y
 
@@ -2306,6 +2285,57 @@ i.0 0
 )
 
 xseq=: 3 : 'sor clos dpmx TD'
+cocurrent 'cal'
+
+COMPILE_HEAD=: 0 : 0
+if. isBoxed y do. y=. nb y end.
+INSTR_z_=: instr=. y
+yy=. 5}.y
+'inst rz zz'=. 3{.smcut3 y
+select. inst
+)
+
+assnum=: 3 : 0
+assert. isNum y
+assert. -. any isNaN y
+y return.
+)
+
+compile=: 3 : 0
+
+z=. COMPILE_HEAD
+for_line. <;._2 CAL do.
+  'inst patt phrase'=. 3{.smcut3 >line
+  phrase=. phrase rplc '\' ; NB,SP
+  select. patt
+  case. 'void' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do.'
+  case. ,'r' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num 5}.y'
+	z=.LF,~ z, sw '                 vr=. r{vquan'
+  case. 'yy' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do.'
+  case. 'rzz' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num rz'
+  case. 'rv' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num rz'
+	z=.LF,~ z, sw '                 assnum v=. num zz'
+	z=.LF,~ z, sw '                 vr=. r{vquan'
+  case. 'rrr' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum rrr=. num 5}.y'
+  case. 'rr' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum rr=. num 5}.y'
+  case. ,'n' do.
+	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum n=. num 5}.y'
+  case.      do.
+	z=.LF,~ z, sw '@@ (NB) (inst) pattern: (patt) not recognised'
+  end.
+  z=.LF,~ z, sw '                 (phrase)'
+end.
+Z=: z=. z,'end.',LF
+tabengine1=: (3 : z)"1
+i.0 0
+)
 
 '==================== [cal] inversion.ijs ===================='
 cocurrent 'cal'
@@ -2672,7 +2702,7 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '3 Sep 2018  17:21:00'   \CAL last saved
+QSAV void '12 Sep 2018  17:49:27'  \CAL last saved
 Inic void start 0                  \=(re-)start with clear tt
 Init void start 1                  \=(re-)start with SAMPLE tt
 Repe void dummy''                  \=repeat last action
@@ -2726,15 +2756,19 @@ UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
 VALU r    getvalue r               \value of item -corrected
 VERS void VERSION                  \version of engine
-VUUC yy   uuengine instr           \content of UUC
-VUUF yy   uuengine instr           \content of UUF
-VUUN yy   uuengine instr           \content of UUN
+VUUC yy   uuengine instr           \UUC (filtered by yy)
+VUUF yy   uuengine instr           \UUF (filtered by yy)
+VUUN yy   uuengine instr           \UUN (filtered by yy)
+WUUC yy   uuengine instr           \UUC (filtered by yy case-insens)
+WUUF yy   uuengine instr           \UUF (filtered by yy case-insens)
+WUUN yy   uuengine instr           \UUN (filtered by yy case-insens)
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
 addl rv   r fnline~ '+',":v        \copy item adding v
 addp rv   r setvalue~ vr*1+v%100   \inc item by v%
 addv rv   r setvalue~ vr+v         \inc item by v
+add1 r    r setvalue~ vr+1         \inc item by 1
 appe yy   ttappend yy              \append named t-table
 atto r    'a' scaleunits r         \atto- item
 cent r    'c' scaleunits r         \centi- item
@@ -2871,6 +2905,7 @@ subc rv   r fnline~ '*1-',":v%100  \copy item - v%
 subl rv   r fnline~ '-~',~":v      \copy item - v
 subp rv   r setvalue~ vr*1-v%100   \dec item by v%
 subv rv   r setvalue~ vr-v         \dec item by v
+sub1 r    r setvalue~ vr-1         \dec item by 1
 tera r    'T' scaleunits r         \tera- item
 titl yy   settitle yy              \set t-table caption
 tnam yy   file=: yy                \set t-table file name
@@ -3225,3 +3260,5 @@ RETURNED=: ''
 TTn=: ,:'tn'
 i.0 0
 )
+compile''
+tabengine=: tabengine1

@@ -1,9 +1,7 @@
 	NB. cal - CAL_interface.ijs
 '==================== [cal] CAL_interface.ijs ===================='
 NB. The CAL interface / instruction set
-NB. IAC Monday 3 September 2018  16:58:52
-NB. UPDATED by replacing CAL with
-NB.  CAL from Xcode: cal-instruction-set
+NB. UPDATED from Xcode: cal-instruction-set
 
 cocurrent 'cal'
 
@@ -21,7 +19,7 @@ NB. ========================================================
   NB. (Instr: "Repe" not implemented below: recognized by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '3 Sep 2018  17:21:00'   \CAL last saved
+QSAV void '12 Sep 2018  17:49:27'  \CAL last saved
 Inic void start 0                  \=(re-)start with clear tt
 Init void start 1                  \=(re-)start with SAMPLE tt
 Repe void dummy''                  \=repeat last action
@@ -75,15 +73,19 @@ UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
 VALU r    getvalue r               \value of item -corrected
 VERS void VERSION                  \version of engine
-VUUC yy   uuengine instr           \content of UUC
-VUUF yy   uuengine instr           \content of UUF
-VUUN yy   uuengine instr           \content of UUN
+VUUC yy   uuengine instr           \UUC (filtered by yy)
+VUUF yy   uuengine instr           \UUF (filtered by yy)
+VUUN yy   uuengine instr           \UUN (filtered by yy)
+WUUC yy   uuengine instr           \UUC (filtered by yy case-insens)
+WUUF yy   uuengine instr           \UUF (filtered by yy case-insens)
+WUUN yy   uuengine instr           \UUN (filtered by yy case-insens)
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
 addl rv   r fnline~ '+',":v        \copy item adding v
 addp rv   r setvalue~ vr*1+v%100   \inc item by v%
 addv rv   r setvalue~ vr+v         \inc item by v
+add1 r    r setvalue~ vr+1         \inc item by 1
 appe yy   ttappend yy              \append named t-table
 atto r    'a' scaleunits r         \atto- item
 cent r    'c' scaleunits r         \centi- item
@@ -220,6 +222,7 @@ subc rv   r fnline~ '*1-',":v%100  \copy item - v%
 subl rv   r fnline~ '-~',~":v      \copy item - v
 subp rv   r setvalue~ vr*1-v%100   \dec item by v%
 subv rv   r setvalue~ vr-v         \dec item by v
+sub1 r    r setvalue~ vr-1         \dec item by 1
 tera r    'T' scaleunits r         \tera- item
 titl yy   settitle yy              \set t-table caption
 tnam yy   file=: yy                \set t-table file name

@@ -39,13 +39,17 @@ smoutput tabengine 'CTBU'    NB. show loaded t-table
 
 NB. ---------------------------------------------------------
 
-smoutput 0 : 0
->>> To view existing TPATH_* settings:
-  tpath''
+NB. smoutput 0 : 0
+NB. >>> To view existing TPATH_* settings:
+NB.   tpath''
+NB.
+NB. >>> To force good working TPATH_* settings:
+NB.   load temp ??
+NB. )
 
->>> To force good working TPATH_* settings:
-  load temp ??
-)
+smoutput '+++ Gitcal run: load latest TABBY build...'
+load '~Gittab/tabula.ijs'
+
 
 
 0 :0

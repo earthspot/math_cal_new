@@ -45,3 +45,6 @@ i.0 0
 NB. ======================================================
 NB. DO NOT CALL start_cal_ HERE---CAL MUST NOT SELF-START!
 NB. ======================================================
+
+compile''  NB. make the compiled version of tabengine
+tabengine=: tabengine1
