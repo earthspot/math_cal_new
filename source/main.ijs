@@ -415,6 +415,61 @@ if. mt z do. z=. 1 1$SP end.  NB. to force panel-clear if void display
 z=. (-.vhidd) # z  NB. remove hidden lines
 )
 
+force0=: 3 : '0,}.y'  NB. force leading 0 in any v-cache
+
+  NB. snapsot of ct2 from temp 1 Thursday 20 September 2018  16:16:27
+ct2=: 3 : 0
+  NB. =: used!! <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  NB. NEW ct -- y-arg ignored
+  NB. returns "no t-table" message if none has been loaded
+if. absent'CAPT' do. ,:40 message'' return. end.
+  NB. trivial display of just CAPT if no items
+if. 1=nn=: #ii=: items'' do. ,:CAPT return. end.
+uc=: uucp"1
+sp2s=:  SP $~ nn,2                NB. column-separator
+bars=: '|' $~ nn,2                NB. column-separator
+stas=: ' * ' $~ nn,3              NB. column-separator
+equs=: ' = ' $~ nn,3              NB. column-separator
+arrw=: uc arrowch arrowgen''      NB. widechar array of arrows
+lnos=: >brace each ii             NB. braced line nos
+hold=: HOLD fl vhold              NB. vhold as col of HOLD symbols
+altd=: ALTERED fl CH              NB. CH as col of ALTERED symbols
+knin=: >UNITN                     NB. kosher col of nominal units
+unin=: > (uc&uniform) each UNITN  NB. SI-levelled col of nominal units
+knis=: >UNITS                     NB. kosher col of SI-units
+unis=: > (uc&uniform) each UNITS  NB. SI-levelled col of SI-units
+  NB. …can we assume UNITN and UNITS are always kosher? <<<<<<<<<<<<<<
+qtys=: (UNITN nfx vquan) ,. SP ,. unin  NB. "quantities" col
+  NB. qtys is the one to replace with uu-generated strings
+NB. fact=: 'j'nfx vfact           NB. WTF is 'j' format ??? <<<<<<
+fact=: >": each vfact
+siqn=: >": each vsiqn
+ksis=: siqn ,. SP ,. knis         NB. kosher y-arg for uu
+qty2=: rjust uc knin&uu__uun ksis       NB. qtys using knin&uu
+uttn=: >TTn                       NB. …is TTn always 'unicode'? <<<<<<
+select. DIAGNOSTICS
+case. 0 do.  NB. 
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.sp2s ,.uttn
+case. 1 do.  NB. 
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.stas ,.siqn ,.SP ,.unis
+case. 2 do.  NB.  
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.bars ,.knin ,.stas ,.ksis
+case. 3 do.  NB.  ==2 using qty2
+ z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.bars ,.knin ,.stas ,.ksis
+case. 4 do.  NB.  qty2 c/f qtys
+ z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.equs ,.qtys
+	NB. ...need to line-up central SP
+	NB. suggest: provide a trailing fill, then replace with SP
+	NB. needs to be a feature of uu
+end.
+if. 0=DIAGNOSTICS do. lin0=. CAPT
+else. lin0=. sw' (CAPT) with: DIAGNOSTICS=(DIAGNOSTICS)' end.
+lin0 , z #~ force0 -.vhidd        NB. remove hidden lines ALSO {0}
+)
+
+]DIAGNOSTICS=: 0
+
+
 ct=: ct1  NB. use NEW VERSION
 NB. ct=: ct1 bind 1 3  NB. include SI column
 
@@ -762,7 +817,7 @@ end.
 )
 
 fixtthdr=: 3 : '(-#TTn){.y'
-fl=: 4 : ',.y{ _2{.x'
+fl=: 4 : ',.y{ _2{.uucp x'
 flags=: ] + 0 * items
 floor=: <.
 

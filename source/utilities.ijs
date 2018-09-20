@@ -12,18 +12,19 @@ if. SL={.y do. x=. }.y end.
 x,SL,y
 )
 
-absent_z_=: [: +./ 0 > [: nc ;:  NB. true if ANY names in y absent
+absent_z_=: [: +./ 0 > [: nc ;:	NB. true if ANY names in y absent
 begins_z_=: ] -: [ {.~ [: # ]	NB. eg: z begins NB
 bh=:    ] }.~ [: >: ' ' i.~ ]	NB. behead y up to 1st SP
 boxvec=: [: dltb&.> <"1		NB. convert cmx-->boxed list
 brace=: 1 |. '}{' , ":
 brack=: 1 |. '][' , ":
-cmx=: [: > <;._2		NB. fwd-ref fixup
+cmx=: [: > <;._2			NB. fwd-ref fixup
 cr=: [: 5!:5 boxopen
 crr=: > , '=: ' , cr
 detb=: 3 : 'deb y rplc TAB ; SP'	NB. c/f deb, but TAB-->SP
 dtlf=: #~ ([: +./\. (10{a.)&~:)   NB. delete trailing LF's
 extx=: (0 < [: # ]) # ] , [ #~ [: -. '.' e. ]
+fl=: [: ,. ] { _2 {. [: uucp [	NB. boolean y as col of symbols
 ifdefined=: 0 <: [: 4!:0 <
 ijs=: ]'.ijs'&extx
 isBoxed=: 32 = 3!:0

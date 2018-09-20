@@ -1,13 +1,13 @@
 0 :0
-Monday 3 September 2018  00:51:22
+Thursday 20 September 2018  14:09:28
 -
-CAL: scientific calculator engine - serves multiple TABULA implementations
+CAL: scientific calculator engine
+-serves multiple TABULA implementations
 )
-
-require '~Gituu/uu.ijs'  NB. see also: start.ijs
 
 clear 'cal'	NB. >>>>> DELETE THIS LINE IN RELEASED ADDON
 coclass 'cal'
 
-AABUILT=: '2018-09-18  23:03:24'
-AABUILT=: '2018-09-18  23:18:05'
+AABUILT=: '2018-09-20  08:53:22'
+AABUILT=: '2018-09-20  14:13:29'
+AABUILT=: '2018-09-20  16:16:59'

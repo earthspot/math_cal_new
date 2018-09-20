@@ -16,7 +16,8 @@ BS=: '\'
 CM=: ','
 CO=: ':'
 DT=: '.'
-HOLD=: '='		NB. displayed "hold" symbol, see ct
+ALTERED=: '@'		NB. "altered" symbol displayed by ct
+HOLD=: '='		NB. "hold" symbol displayed by ct
 LOGNAME=: 'cal_log.txt'
 MAXINVERT=: 30		NB. limits backfit cycles
 NB=: 'NB.'

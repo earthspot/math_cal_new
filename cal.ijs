@@ -1,16 +1,16 @@
 0 :0
-Monday 3 September 2018  00:51:22
+Thursday 20 September 2018  14:09:28
 -
-CAL: scientific calculator engine - serves multiple TABULA implementations
+CAL: scientific calculator engine
+-serves multiple TABULA implementations
 )
-
-require '~Gituu/uu.ijs'
 
 clear 'cal'
 coclass 'cal'
 
-AABUILT=: '2018-09-18  23:03:24'
-AABUILT=: '2018-09-18  23:18:05'
+AABUILT=: '2018-09-20  08:53:22'
+AABUILT=: '2018-09-20  14:13:29'
+AABUILT=: '2018-09-20  16:16:59'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -24,6 +24,7 @@ BS=: '\'
 CM=: ','
 CO=: ':'
 DT=: '.'
+ALTERED=: '@'
 HOLD=: '='
 LOGNAME=: 'cal_log.txt'
 MAXINVERT=: 30
@@ -71,6 +72,7 @@ crr=: > , '=: ' , cr
 detb=: 3 : 'deb y rplc TAB ; SP'
 dtlf=: #~ ([: +./\. (10{a.)&~:)
 extx=: (0 < [: # ]) # ] , [ #~ [: -. '.' e. ]
+fl=: [: ,. ] { _2 {. [: uucp [
 ifdefined=: 0 <: [: 4!:0 <
 ijs=: ]'.ijs'&extx
 isBoxed=: 32 = 3!:0
@@ -562,6 +564,60 @@ if. mt z do. z=. 1 1$SP end.
 z=. (-.vhidd) # z
 )
 
+force0=: 3 : '0,}.y'
+
+
+ct2=: 3 : 0
+
+
+
+if. absent'CAPT' do. ,:40 message'' return. end.
+
+if. 1=nn=: #ii=: items'' do. ,:CAPT return. end.
+uc=: uucp"1
+sp2s=:  SP $~ nn,2
+bars=: '|' $~ nn,2
+stas=: ' * ' $~ nn,3
+equs=: ' = ' $~ nn,3
+arrw=: uc arrowch arrowgen''
+lnos=: >brace each ii
+hold=: HOLD fl vhold
+altd=: ALTERED fl CH
+knin=: >UNITN
+unin=: > (uc&uniform) each UNITN
+knis=: >UNITS
+unis=: > (uc&uniform) each UNITS
+
+qtys=: (UNITN nfx vquan) ,. SP ,. unin
+
+fact=: >": each vfact
+siqn=: >": each vsiqn
+ksis=: siqn ,. SP ,. knis
+qty2=: rjust uc knin&uu__uun ksis
+uttn=: >TTn
+select. DIAGNOSTICS
+case. 0 do.
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.sp2s ,.uttn
+case. 1 do.
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.stas ,.siqn ,.SP ,.unis
+case. 2 do.
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.bars ,.knin ,.stas ,.ksis
+case. 3 do.
+ z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.bars ,.knin ,.stas ,.ksis
+case. 4 do.
+ z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.equs ,.qtys
+
+
+
+end.
+if. 0=DIAGNOSTICS do. lin0=. CAPT
+else. lin0=. sw' (CAPT) with: DIAGNOSTICS=(DIAGNOSTICS)' end.
+lin0 , z #~ force0 -.vhidd
+)
+
+]DIAGNOSTICS=: 0
+
+
 ct=: ct1
 cubert=: 3&%:
 
@@ -900,7 +956,7 @@ end.
 )
 
 fixtthdr=: 3 : '(-#TTn){.y'
-fl=: 4 : ',.y{ _2{.x'
+fl=: 4 : ',.y{ _2{.uucp x'
 flags=: ] + 0 * items
 floor=: <.
 
