@@ -112,14 +112,26 @@ case.    do.		NB. Initialize (y= seconds)
 end.
 )
 
+force0=: 0 , }.  NB. force leading 0 in any v-cache
+
 invalid=: (3 : 0)"0
-	NB. test for presence of INVALID
+  NB. test for presence of INVALID
 if. -. 128!:5 y do. 0 return. end.
 '_.j_.' -: 5!:6 <'y'
 )
 
 undefined=: (3 : 0)"0
-	NB. test for presence of UNDEFINED
+  NB. test for presence of UNDEFINED
 if. -. 128!:5 y do. 0 return. end.
 '_.' -: 5!:6 <'y'
 )
+
+  NB. mjust: "middle-SP justification" (c/f ljust, rjust)
+  NB. NOTE: intermediate verbs are transient (=. not =:)
+  NB. …they are only provided for explication and debugging.
+NB. mjustBordered=: (13 : 'dtb (y i."1 SP) |. y,~(SP$~#y)')"1
+mjustBordered=. ([: dtb (' ' i."1~ ]) |. ] ,~ ' ' $~ #)"1
+NB. deleteLeadingBlankColumns=: 13 : '(+/ *./\ *./ SP=y)}."1 y'
+deleteLeadingBlankColumns=. ] }."1~ [: +/ [: *./\ [: *./ ' ' = ]
+NB. mjust=: 13 : 'deleteLeadingBlankColumns mjustBordered y'
+mjust=: ([: deleteLeadingBlankColumns mjustBordered) f.

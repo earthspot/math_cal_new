@@ -375,104 +375,6 @@ ttafl label ; unitn ; (,":y); fmla
 6 message y
 )
 
-ct1=: 3 : 0
-NB. NEW ct
-  NB. 1 e. y -include SI units column
-  NB. 3 e. y -include box-drawn arrows
-  NB. 4 e. y -include "line 0" col-headers
-if. 0=#y do. y=. ,3 end.  NB. the default display
-  NB. returns "no t-table" message if none has been loaded
-if. absent'CAPT' do. ,:40 message'' return. end.
-if. 1=#items'' do. ,:CAPT return. end.   NB. trivial display if no items
-d=. ] ; $ ; datatype
-uc=. uucp"1
-d sp=. uc SP $~ 1,~#items''  NB. 1-char wide column spacer
-d st=. uc ST $~ 1,~#items''  NB. 1-char wide column of stars
-d vd=. uc SP $~ 0,~#items''  NB. 0-char wide empty column placeholder
-d arrw=. unis=. fact=. star=. vd  NB. void columns
-d lnos=. uc >brace each ":each items''  NB. line numbers
-d hold=. uc (HOLD fl vhold)  NB. marks "holds"
-d altd=. uc ('@'fl CH)  NB. marks altered values
-d quan=. uc UNITN nfx vquan
-d unin=. sp ,. > (uc&uniform) each UNITN  NB. nominal units
-if. 1 e. y do.
-  d unis=. sp ,. > (uc&uniform) each UNITS  NB. SI-units figures
-  d fact=. uc 'j'nfx vfact
-  d star=. uc sp ,.st
-end.
-if. 3 e. y do.
-  d arrw=. uc arrowch arrowgen''
-  if. mt arrw do. arrw=. vd else. arrw=. arrw ,. sp end.
-    NB. arrw comes with its own spacer
-end.
-d uttn=. sp ,.sp ,.uc TTn
-NB. z=. arrw ,.lnos ,.hold ,.altd ,.quan ,.unin ,.unis ,.star ,.fact ,.sp ,. uc TTn
-z=. 'arrw lnos hold altd quan unin unis star fact uttn'
-d z=. ". z rplc SP;',.'
-if. -. 4 e. y do. z=. }.z end.  NB. drop line {0}
-z=. z ,~ CAPT
-if. mt z do. z=. 1 1$SP end.  NB. to force panel-clear if void display
-z=. (-.vhidd) # z  NB. remove hidden lines
-)
-
-force0=: 3 : '0,}.y'  NB. force leading 0 in any v-cache
-
-  NB. snapsot of ct2 from temp 1 Thursday 20 September 2018  16:16:27
-ct2=: 3 : 0
-  NB. =: used!! <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-  NB. NEW ct -- y-arg ignored
-  NB. returns "no t-table" message if none has been loaded
-if. absent'CAPT' do. ,:40 message'' return. end.
-  NB. trivial display of just CAPT if no items
-if. 1=nn=: #ii=: items'' do. ,:CAPT return. end.
-uc=: uucp"1
-sp2s=:  SP $~ nn,2                NB. column-separator
-bars=: '|' $~ nn,2                NB. column-separator
-stas=: ' * ' $~ nn,3              NB. column-separator
-equs=: ' = ' $~ nn,3              NB. column-separator
-arrw=: uc arrowch arrowgen''      NB. widechar array of arrows
-lnos=: >brace each ii             NB. braced line nos
-hold=: HOLD fl vhold              NB. vhold as col of HOLD symbols
-altd=: ALTERED fl CH              NB. CH as col of ALTERED symbols
-knin=: >UNITN                     NB. kosher col of nominal units
-unin=: > (uc&uniform) each UNITN  NB. SI-levelled col of nominal units
-knis=: >UNITS                     NB. kosher col of SI-units
-unis=: > (uc&uniform) each UNITS  NB. SI-levelled col of SI-units
-  NB. …can we assume UNITN and UNITS are always kosher? <<<<<<<<<<<<<<
-qtys=: (UNITN nfx vquan) ,. SP ,. unin  NB. "quantities" col
-  NB. qtys is the one to replace with uu-generated strings
-NB. fact=: 'j'nfx vfact           NB. WTF is 'j' format ??? <<<<<<
-fact=: >": each vfact
-siqn=: >": each vsiqn
-ksis=: siqn ,. SP ,. knis         NB. kosher y-arg for uu
-qty2=: rjust uc knin&uu__uun ksis       NB. qtys using knin&uu
-uttn=: >TTn                       NB. …is TTn always 'unicode'? <<<<<<
-select. DIAGNOSTICS
-case. 0 do.  NB. 
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.sp2s ,.uttn
-case. 1 do.  NB. 
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.stas ,.siqn ,.SP ,.unis
-case. 2 do.  NB.  
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.bars ,.knin ,.stas ,.ksis
-case. 3 do.  NB.  ==2 using qty2
- z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.bars ,.knin ,.stas ,.ksis
-case. 4 do.  NB.  qty2 c/f qtys
- z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.equs ,.qtys
-	NB. ...need to line-up central SP
-	NB. suggest: provide a trailing fill, then replace with SP
-	NB. needs to be a feature of uu
-end.
-if. 0=DIAGNOSTICS do. lin0=. CAPT
-else. lin0=. sw' (CAPT) with: DIAGNOSTICS=(DIAGNOSTICS)' end.
-lin0 , z #~ force0 -.vhidd        NB. remove hidden lines ALSO {0}
-)
-
-]DIAGNOSTICS=: 0
-
-
-ct=: ct1  NB. use NEW VERSION
-NB. ct=: ct1 bind 1 3  NB. include SI column
-
 cubert=: 3&%:
 
 dadd=: 4 : 0
@@ -783,10 +685,12 @@ filename=: '.' taketo [: |. '/' taketo |.
 
 finfo=: 3 : 0
   NB. reads (y=0) or writes (y=1) TTINFO to (infopath)
+smoutput '>>> finfo: REWRITE THIS!!'
 ]infopath=: TPATH_TTABLES sl 'INFO.txt'
 NB. smoutput '=>> enter finfo y=',(":y),'  $TTINFO=',":$TTINFO
 msss=. ''
 if. y do.
+  assert. 'literal' -: datatype TTINFO
   TTINFO fwrite infopath
   empty''  NB. ignore any fwrite error
 else.
@@ -1495,7 +1399,7 @@ seltext=: empty
 
 setcols=: 4 : 0
   NB. create field-args for: cols
-i=. I. x=c=. 0{y
+i=. I. x=c=. utf8 0{y
 d=. (|.2,$i)$ }.(2#i),$c  NB. 2-col array
 (c)=: <"1 (($d)$0 1)-~d
 'assigned: ',": deb c
@@ -2122,6 +2026,11 @@ if. x and fexist file do.
   42 message mfile return.
 end.
   NB. Save file and report the result...
+if.-. 'literal' -: datatype z do.
+  smoutput sw'>>> ttsav: z to be saved is:  (datatype z) shape=($z)'
+  z=. utf8 x2f z
+  smoutput sw'>>> ttsav: z now: (datatype z) shape=($z)'
+end.
 bytes=. z fwrite file
 sess_ttsave 28 message bytes; mfile
 if. bytes>0 do.  NB. t-table was saved ok
@@ -2251,6 +2160,11 @@ yy=. 5}.y
 select. inst
 )
 
+COMPILE_TAIL=: 0 : 0
+end.
+if. all inst e. az do. snapshot'' end.
+)
+
 assnum=: 3 : 0
 assert. isNum y
 assert. -. any isNaN y
@@ -2288,7 +2202,7 @@ for_line. <;._2 CAL do.
   end.
   z=.LF,~ z, sw '                 (phrase)'
 end.
-Z=: z=. z,'end.',LF
+Z=: z=. z,COMPILE_TAIL
 tabengine1=: (3 : z)"1
 NB. tv 5 !:5<'tabengine1'
 i.0 0

@@ -11,6 +11,14 @@ coclass 'cal'
 AABUILT=: '2018-09-20  08:53:22'
 AABUILT=: '2018-09-20  14:13:29'
 AABUILT=: '2018-09-20  16:16:59'
+AABUILT=: '2018-09-20  19:10:31'
+AABUILT=: '2018-09-20  23:36:28'
+AABUILT=: '2018-09-20  23:59:50'
+AABUILT=: '2018-09-21  00:00:58'
+AABUILT=: '2018-09-21  00:35:53'
+AABUILT=: '2018-09-21  01:33:03'
+AABUILT=: '2018-09-21  01:55:55'
+AABUILT=: '2018-09-21  02:24:50'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -158,6 +166,8 @@ case.    do.
 end.
 )
 
+force0=: 0 , }.
+
 invalid=: (3 : 0)"0
 
 if. -. 128!:5 y do. 0 return. end.
@@ -169,6 +179,13 @@ undefined=: (3 : 0)"0
 if. -. 128!:5 y do. 0 return. end.
 '_.' -: 5!:6 <'y'
 )
+
+
+
+
+mjustBordered=. ([: dtb (' ' i."1~ ]) |. ] ,~ ' ' $~ #)"1
+deleteLeadingBlankColumns=. ] }."1~ [: +/ [: *./\ [: *./ ' ' = ]
+mjust=: ([: deleteLeadingBlankColumns mjustBordered) f.
 
 '==================== [cal] main.ijs ===================='
 cocurrent 'cal'
@@ -526,99 +543,6 @@ ttafl label ; unitn ; (,":y); fmla
 6 message y
 )
 
-ct1=: 3 : 0
-
-
-
-if. 0=#y do. y=. ,3 end.
-
-if. absent'CAPT' do. ,:40 message'' return. end.
-if. 1=#items'' do. ,:CAPT return. end.
-d=. ] ; $ ; datatype
-uc=. uucp"1
-d sp=. uc SP $~ 1,~#items''
-d st=. uc ST $~ 1,~#items''
-d vd=. uc SP $~ 0,~#items''
-d arrw=. unis=. fact=. star=. vd
-d lnos=. uc >brace each ":each items''
-d hold=. uc (HOLD fl vhold)
-d altd=. uc ('@'fl CH)
-d quan=. uc UNITN nfx vquan
-d unin=. sp ,. > (uc&uniform) each UNITN
-if. 1 e. y do.
-  d unis=. sp ,. > (uc&uniform) each UNITS
-  d fact=. uc 'j'nfx vfact
-  d star=. uc sp ,.st
-end.
-if. 3 e. y do.
-  d arrw=. uc arrowch arrowgen''
-  if. mt arrw do. arrw=. vd else. arrw=. arrw ,. sp end.
-
-end.
-d uttn=. sp ,.sp ,.uc TTn
-z=. 'arrw lnos hold altd quan unin unis star fact uttn'
-d z=. ". z rplc SP;',.'
-if. -. 4 e. y do. z=. }.z end.
-z=. z ,~ CAPT
-if. mt z do. z=. 1 1$SP end.
-z=. (-.vhidd) # z
-)
-
-force0=: 3 : '0,}.y'
-
-
-ct2=: 3 : 0
-
-
-
-if. absent'CAPT' do. ,:40 message'' return. end.
-
-if. 1=nn=: #ii=: items'' do. ,:CAPT return. end.
-uc=: uucp"1
-sp2s=:  SP $~ nn,2
-bars=: '|' $~ nn,2
-stas=: ' * ' $~ nn,3
-equs=: ' = ' $~ nn,3
-arrw=: uc arrowch arrowgen''
-lnos=: >brace each ii
-hold=: HOLD fl vhold
-altd=: ALTERED fl CH
-knin=: >UNITN
-unin=: > (uc&uniform) each UNITN
-knis=: >UNITS
-unis=: > (uc&uniform) each UNITS
-
-qtys=: (UNITN nfx vquan) ,. SP ,. unin
-
-fact=: >": each vfact
-siqn=: >": each vsiqn
-ksis=: siqn ,. SP ,. knis
-qty2=: rjust uc knin&uu__uun ksis
-uttn=: >TTn
-select. DIAGNOSTICS
-case. 0 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.sp2s ,.uttn
-case. 1 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.stas ,.siqn ,.SP ,.unis
-case. 2 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.bars ,.knin ,.stas ,.ksis
-case. 3 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.bars ,.knin ,.stas ,.ksis
-case. 4 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.equs ,.qtys
-
-
-
-end.
-if. 0=DIAGNOSTICS do. lin0=. CAPT
-else. lin0=. sw' (CAPT) with: DIAGNOSTICS=(DIAGNOSTICS)' end.
-lin0 , z #~ force0 -.vhidd
-)
-
-]DIAGNOSTICS=: 0
-
-
-ct=: ct1
 cubert=: 3&%:
 
 dadd=: 4 : 0
@@ -925,9 +849,11 @@ filename=: '.' taketo [: |. '/' taketo |.
 
 finfo=: 3 : 0
 
+smoutput '>>> finfo: REWRITE THIS!!'
 ]infopath=: TPATH_TTABLES sl 'INFO.txt'
 msss=. ''
 if. y do.
+  assert. 'literal' -: datatype TTINFO
   TTINFO fwrite infopath
   empty''
 else.
@@ -1605,7 +1531,7 @@ seltext=: empty
 
 setcols=: 4 : 0
 
-i=. I. x=c=. 0{y
+i=. I. x=c=. utf8 0{y
 d=. (|.2,$i)$ }.(2#i),$c
 (c)=: <"1 (($d)$0 1)-~d
 'assigned: ',": deb c
@@ -2230,6 +2156,11 @@ if. x and fexist file do.
   42 message mfile return.
 end.
 
+if.-. 'literal' -: datatype z do.
+  smoutput sw'>>> ttsav: z to be saved is:  (datatype z) shape=($z)'
+  z=. utf8 x2f z
+  smoutput sw'>>> ttsav: z now: (datatype z) shape=($z)'
+end.
 bytes=. z fwrite file
 sess_ttsave 28 message bytes; mfile
 if. bytes>0 do.
@@ -2351,6 +2282,11 @@ yy=. 5}.y
 select. inst
 )
 
+COMPILE_TAIL=: 0 : 0
+end.
+if. all inst e. az do. snapshot'' end.
+)
+
 assnum=: 3 : 0
 assert. isNum y
 assert. -. any isNaN y
@@ -2388,10 +2324,101 @@ for_line. <;._2 CAL do.
   end.
   z=.LF,~ z, sw '                 (phrase)'
 end.
-Z=: z=. z,'end.',LF
+Z=: z=. z,COMPILE_TAIL
 tabengine1=: (3 : z)"1
 i.0 0
 )
+
+'==================== [cal] ct.ijs ===================='
+cocurrent 'cal'
+
+ct1=: 3 : 0
+
+
+
+if. 0=#y do. y=. ,3 end.
+
+if. absent'CAPT' do. ,:40 message'' return. end.
+if. 1=#items'' do. ,:CAPT return. end.
+d=. ] ; $ ; datatype
+uc=. uucp"1
+d sp=. uc SP $~ 1,~#items''
+d st=. uc ST $~ 1,~#items''
+d vd=. uc SP $~ 0,~#items''
+d arrw=. unis=. fact=. star=. vd
+d lnos=. uc >brace each ":each items''
+d hold=. uc (HOLD fl vhold)
+d altd=. uc ('@'fl CH)
+d quan=. uc UNITN nfx vquan
+d unin=. sp ,. > (uc&uniform) each UNITN
+if. 1 e. y do.
+  d unis=. sp ,. > (uc&uniform) each UNITS
+  d fact=. uc 'j'nfx vfact
+  d star=. uc sp ,.st
+end.
+if. 3 e. y do.
+  d arrw=. uc arrowch arrowgen''
+  if. mt arrw do. arrw=. vd else. arrw=. arrw ,. sp end.
+
+end.
+d uttn=. sp ,.sp ,.uc TTn
+z=. 'arrw lnos hold altd quan unin unis star fact uttn'
+d z=. ". z rplc SP;',.'
+if. -. 4 e. y do. z=. }.z end.
+z=. z ,~ CAPT
+if. mt z do. z=. 1 1$SP end.
+z=. (-.vhidd) # z
+)
+
+
+
+
+
+
+ct2=: 3 : 0
+
+if. absent'CAPT' do. ,:40 message'' return. end.
+
+if. 2>nn=. #ii=. items'' do. ,:CAPT return. end.
+uc=. uucp"1
+sp2s=.  SP $~ nn,2
+bars=. '|' $~ nn,2
+stas=. ' * ' $~ nn,3
+equs=. ' = ' $~ nn,3
+arrw=. uc arrowch arrowgen''
+lnos=. >brace each ii
+hold=. HOLD fl vhold
+altd=. ALTERED fl CH
+knin=. >UNITN
+unin=. > (uc&uniform) each UNITN
+knis=. >UNITS
+unis=. > (uc&uniform) each UNITS
+
+qtys=. (UNITN nfx vquan) ,. SP ,. unin
+
+siqn=. >": each vsiqn
+ksis=. siqn ,. SP ,. knis
+qty2=. mjust uc knin&uu__uun ksis
+uttn=. >TTn
+select. DIAGNOSTICS
+case. 0 do.
+ z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qty2 ,.sp2s ,.uttn
+case. 1 do.
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.stas ,.siqn ,.SP ,.unis
+case. 2 do.
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.bars ,.knin ,.stas ,.ksis
+case. 3 do.
+ z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.bars ,.knin ,.stas ,.ksis
+case. 4 do.
+ z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.equs ,.qtys
+end.
+if. 0=DIAGNOSTICS do. lin0=. CAPT
+else. lin0=. sw' (CAPT) with: DIAGNOSTICS=(DIAGNOSTICS)' end.
+lin0 , z #~ force0 -.vhidd
+)
+
+DIAGNOSTICS=: 0
+ct=: ct2
 
 '==================== [cal] inversion.ijs ===================='
 cocurrent 'cal'
