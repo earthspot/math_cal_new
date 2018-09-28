@@ -8,12 +8,14 @@ VERSION=: '2.0.0'
 NB. ========================================================
 start=: 3 : 0
   NB. start the CAL-engine
-  NB. start 0 -- serves/implements new instr: Inic
-  NB. start '' -- serves/implements instr: Init
+  NB. start 0 -- serves/implements new instruction: Inic
+  NB. start '' -- serves/implements instruction: Init
 sss''        NB. recommended session trace settings
 load TPATH_UU sl 'uu.ijs'  NB. creates: uuinit_z_
 uuconnect''
+make_tabengineCore''  NB. the core of: tabengine
 tt_z_=: tabengine_z_=: tabengine_cal_
+  NB. >>>>> WILL BREAK WHEN CAL BECOMES A CLASS!
 globmake'' NB. make global nouns
 cmake''    NB. make the i/f tables
 NB. DODGY... getversion TPATH_CAL
@@ -45,6 +47,3 @@ i.0 0
 NB. ======================================================
 NB. DO NOT CALL start_cal_ HERE---CAL MUST NOT SELF-START!
 NB. ======================================================
-
-compile''  NB. make the compiled version of tabengine
-tabengine=: tabengine1

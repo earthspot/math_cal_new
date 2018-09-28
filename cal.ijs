@@ -1,5 +1,5 @@
 0 :0
-Thursday 20 September 2018  14:09:28
+Friday 28 September 2018  20:27:49
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -8,17 +8,8 @@ CAL: scientific calculator engine
 clear 'cal'
 coclass 'cal'
 
-AABUILT=: '2018-09-20  08:53:22'
-AABUILT=: '2018-09-20  14:13:29'
-AABUILT=: '2018-09-20  16:16:59'
-AABUILT=: '2018-09-20  19:10:31'
-AABUILT=: '2018-09-20  23:36:28'
-AABUILT=: '2018-09-20  23:59:50'
-AABUILT=: '2018-09-21  00:00:58'
-AABUILT=: '2018-09-21  00:35:53'
-AABUILT=: '2018-09-21  01:33:03'
-AABUILT=: '2018-09-21  01:55:55'
-AABUILT=: '2018-09-21  02:24:50'
+AABUILT=: '2018-09-28  20:27:57'
+AABUILT=: '2018-09-28  20:30:48'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -188,6 +179,10 @@ deleteLeadingBlankColumns=. ] }."1~ [: +/ [: *./\ [: *./ ' ' = ]
 mjust=: ([: deleteLeadingBlankColumns mjustBordered) f.
 
 '==================== [cal] main.ijs ===================='
+0 :0
+Friday 28 September 2018  18:34:24
+)
+
 cocurrent 'cal'
 ARGEXP=: 0 : 0
 validbool  b=. _".yy
@@ -849,23 +844,23 @@ filename=: '.' taketo [: |. '/' taketo |.
 
 finfo=: 3 : 0
 
-smoutput '>>> finfo: REWRITE THIS!!'
+
 ]infopath=: TPATH_TTABLES sl 'INFO.txt'
-msss=. ''
 if. y do.
   assert. 'literal' -: datatype TTINFO
-  TTINFO fwrite infopath
-  empty''
+  empty TTINFO fwrite infopath
 else.
-  z=. fread infopath
-  if. z -: _1 do.
-    msss=. 43 message infopath
+  if. _1 -: z=. fread infopath do.
+    43 message infopath
   else.
-    TTINFO=: z
-    msss=. 44 message '…',~ 30 {. TTINFO rplc LF;SP
+    44 message infopath ; shortened TTINFO=:z
   end.
 end.
-msss return.
+)
+
+shortened=: 3 : 0
+
+'…',~ 30 {. y rplc LF;SP
 )
 
 fixfmla=: ('/';'%') rplc~ ]
@@ -1233,16 +1228,11 @@ merge=: 3 : 0
 
 message=: 4 : 0
 
+
 MESSAGE_ID=: x
-prefix=. brack 'cal#',(":x)
-]z=. boxopen y
-]msg=. dtb x{MESSAGE
-]msg=. SP takeafter msg
-for_i. i.#z do.
-  ]msg=. msg rplc ('#',":i) ; ": i pick z
-end.
-msg=. msg rplc (,'#') ; ": 0 pick z
-prefix,SP,msg
+mm=. 3}.dtb x{MESSAGELIST
+'y0 y1 y2 y3'=. 4{.boxopen y
+empty MESSAGE=: sw '[cal#(x)] ',mm
 )
 
 nfx=: ''&$: : (4 : 0)
@@ -1466,7 +1456,7 @@ ii=. x2b >brace each ":each i.#x
 r $ y rplc , io,.ii
 )
 
-repeatable=: [: *./ 'abcdefghijklmnopqrstuvwxyz0123456789' e.~ ]
+changesTtable=: [: *./ 'abcdefghijklmnopqrstuvwxyz0123456789' e.~ ]
 
 reselect=: empty
 
@@ -1686,70 +1676,6 @@ end.
 sP0=: 4 : 'x,.y'
 sP1=: 4 : '(x,.SP),.y'
 sP2=: 4 : '((x,.SP),.SP),.y'
-
-suits=: 1:
-
-
-
-
-
-
-
-
-
-
-
-tabengine0=: 3 : 0"1
-if. isBoxed y do. y=. nb y end.
-INSTR_z_=: y=. dltb y
-
-
-if. 'Inic'-: y do. start_cal_ 0 return. end.
-if. 'Init'-: y do. start_cal_ 1 return. end.
-sesi 'tabengine ',(quote y),TAB,NB,' TRACI_cal_'
-0 enlog y
-if. 'Repe'-: dltb y do. y=. LASTINSTR end.
-cmd=. 4{. instr=. dltb y
-yy=: dltb 4}. instr
-
-
-
-
-select. cmd
-
-case. ''     do. tabengine'CTBU'return.
-case. 'QCMD' do. CCc e.~ <yy    return.
-case. 'RETA' do. assert. yy-:":RETURNED return.
-case. 'RETU' do. RETURNED       return.
-case. 'Undo' do. undo 1         return.
-case. 'Redo' do. undo 0         return.
-case.        do.
-if. repeatable cmd do. LASTINSTR_z_=: instr end.
-end.
-if. 0>nc<'CCc' do.
-  z=. '>>> CAL not initialized: ' ; instr
-  z return.
-end.
-icmd=. CCc i. <cmd
-if. icmd=#CCc do. '>>> bad instruction:' ; instr return. end.
-EXP=: exp=. > icmd { CCx
-
-
-af=. (bf=. ARGS e. ;: exp) # ARGS
-sesi exp ; af
-tests=. ; ".each (I.bf) { ARGEX
-if. -.all tests do. nb 'bad:' ; (nb af) ; 'in:' ; yy return. end.
-
-
-
-1 enlog RETURNED=: ".exp
-
-
-
-if. all cmd e. az do. snapshot'' end.
-RETURNED [progress _
-)
-
 targs=: [: {. [: }. [: |: [: ;: a2x
 tbx=: ijs
 
@@ -2042,7 +1968,6 @@ CH=: recal 0
 snapshot 0
 dirty 0
 warnplex''
-finfo 1
 27 message tag; filename file
 )
 
@@ -2213,11 +2138,11 @@ undo=: 3 : 0
 invalexe''
 if. y do.
   tag=. 'undo'
-  if. 1=ZNN do. 34 message'' return. end.
+  if. 1=ZNN do. 34 message tag return. end.
   ZNN=: 1>.ZNN-1
 else.
   tag=. 'redo'
-  if. ZNO=ZNN do. 25 message'' return. end.
+  if. ZNO=ZNN do. 34 message tag return. end.
   ZNN=: ZNO<.ZNN+1
 end.
 sess_undo 33 message tag; ZNN; ZNO
@@ -2275,25 +2200,39 @@ xseq=: 3 : 'sor clos dpmx TD'
 cocurrent 'cal'
 
 COMPILE_HEAD=: 0 : 0
-if. isBoxed y do. y=. nb y end.
-INSTR_z_=: instr=. y
 yy=. 5}.y
 'inst rz zz'=. 3{.smcut3 y
 select. inst
 )
 
-COMPILE_TAIL=: 0 : 0
+tabengine=: 3 : 0 "1
+
+
+
+progress _
+if. isBoxed y do. y=. nb y end.
+select. INST=: 4{. INSTR=: y
+case. 'Init' do. start 1
+case. 'Inic' do. start 0
+case. 'Repe' do. RETURNED=: tabengineCore LASTINSTR
+case.        do. RETURNED=: tabengineCore INSTR
 end.
-if. all inst e. az do. snapshot'' end.
+if. changesTtable INST do.
+  snapshot''
+  LASTINSTR=: INSTR
+end.
+RETURNED return.
 )
 
 assnum=: 3 : 0
+
+
 assert. isNum y
 assert. -. any isNaN y
 y return.
 )
 
-compile=: 3 : 0
+make_tabengineCore=: 3 : 0
 
 z=. COMPILE_HEAD
 for_line. <;._2 CAL do.
@@ -2324,8 +2263,10 @@ for_line. <;._2 CAL do.
   end.
   z=.LF,~ z, sw '                 (phrase)'
 end.
-Z=: z=. z,COMPILE_TAIL
-tabengine1=: (3 : z)"1
+z=. z,'end.',LF
+
+
+tabengineCore=: (3 : z)"1
 i.0 0
 )
 
@@ -2805,14 +2746,16 @@ INFO void info''                   \info about t-table
 INTD void ":initialized''          \query if start'' was run
 ITMS void }.items''                \list of non-0 item#s
 JXDO yy   ". yy                    \run J code in this loc
+MSSG void MESSAGE                  \message text from last instruction
+MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
 PLOT rzz  r plotz~ zz              \gen plot data with x-axis
 PTHS void tpaths''                 \all CAL+TABULA paths
 QCMD yy   CCc e.~ <yy              \=query valid command
 QUER void querycal''               \query interface defn
-QSCI void uuengine instr           \query scientific notation threshold
-QSIC void uuengine instr           \query SI conformance level
-QSIG void uuengine instr           \query significant figures
+QSCI void uuengine INSTR           \query scientific notation threshold
+QSIC void uuengine INSTR           \query SI conformance level
+QSIG void uuengine INSTR           \query significant figures
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
@@ -2839,12 +2782,12 @@ UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
 VALU r    getvalue r               \value of item -corrected
 VERS void VERSION                  \version of engine
-VUUC yy   uuengine instr           \UUC (filtered by yy)
-VUUF yy   uuengine instr           \UUF (filtered by yy)
-VUUN yy   uuengine instr           \UUN (filtered by yy)
-WUUC yy   uuengine instr           \UUC (filtered by yy case-insens)
-WUUF yy   uuengine instr           \UUF (filtered by yy case-insens)
-WUUN yy   uuengine instr           \UUN (filtered by yy case-insens)
+VUUC yy   uuengine INSTR           \UUC (filtered by yy)
+VUUF yy   uuengine INSTR           \UUF (filtered by yy)
+VUUN yy   uuengine INSTR           \UUN (filtered by yy)
+WUUC yy   uuengine INSTR           \UUC (filtered by yy case-insens)
+WUUF yy   uuengine INSTR           \UUF (filtered by yy case-insens)
+WUUN yy   uuengine INSTR           \UUN (filtered by yy case-insens)
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
@@ -2973,10 +2916,10 @@ save void ttsave ''                \save current t-table
 savo yy   ttsavo yy                \save as yy over existing
 savs void ttsavs ''                \save t-table COPY as SAMPLE
 savt void ttsavt ''                \save t-table from caption
-ssci n    uuengine instr           \set scientific notation threshold
-sicl n    uuengine instr           \set SI conformance level (heritage)
-ssic n    uuengine instr           \set SI conformance level
-ssig n    uuengine instr           \set significant figures
+ssci n    uuengine INSTR           \set scientific notation threshold
+sicl n    uuengine INSTR           \set SI conformance level (heritage)
+ssic n    uuengine INSTR           \set SI conformance level
+ssig n    uuengine INSTR           \set significant figures
 sort rrr  1 ttsort rrr             \sort by perm
 sqrl r    r fnline~ 'sqr'          \copy item squared
 sqrv r    r setvalue~ sqr vr       \squared value of r
@@ -3009,7 +2952,7 @@ t3mv r    r setvalue~ vr*1000      \item times 1000
 unhi void hide 0                   \unhide all items
 unit rzz  zz changeunits r         \set units of item
 unsc r    '' scaleunits r          \unscaled units
-uuuu yy   uuengine instr           \call uu converter directly
+uuuu yy   uuengine INSTR           \call uu converter directly
 valu rv   v setvalue r             \set value of item
 vunn rzz  zz setvunits r           \set value+units of item
 yoct r    'y' scaleunits r         \yocto- item
@@ -3034,54 +2977,58 @@ validlit   zz=. dropwd yy
 )
 
 '==================== [cal] message.ijs ===================='
+0 :0
+Friday 28 September 2018  18:04:47
+)
+
 cocurrent 'cal'
 
-MESSAGE=: cmx 0 : 0
-0 new empty calculator
-1 >>> bad line(s): #
-2 >>> incompatible units: [#0] [#1]
-3 line {#0} units changed from [#1] to [#2]
-4 >>> incompatible units: #0[#1] #2[#3]
-5 lines: #0 combined under: #1
-6 line {#} copied
-7 line {#} duplicated
-8 >>> cannot duplicate line {#}
-9 line {#0} copied under fn: #1
-10 >>> {#} is not a valid line
-11 >>> unknown arg: #
-12 >>> line {#} orphaned
-13 >>> line {#0} --value unaltered: #1
-14 >>> setfmla: line {#}: bad: #1
-15 line {#0} --new formula: #1
-16 line {#0} accepts value: #1
-17 >>> line {#0} resists value: #1
-18 line {#0} is now in units: [#1]
+MESSAGELIST=: cmx 0 : 0
+ 0 new empty t-table
+ 1 >>> bad line(s): {(y)}
+ 2 >>> incompatible units: [(y0)] [(y1)]
+ 3 line {(y0)} units changed from [(y1)] to [(y2)]
+ 4 >>> incompatible units: (y0)[(y1)] (y2)[(y3)]
+ 5 lines {(y0)} combined under: (y1)
+ 6 line {(y0)} copied
+ 7 line {(y0)} duplicated
+ 8 >>> cannot duplicate line {(y0)}
+ 9 line {(y0)} copied under fn: (y1)
+10 >>> {(y0)} is not a valid line
+11 >>> unknown arg: (y)
+12 >>> line {(y0)} orphaned
+13 >>> line {(y0)} value unaltered: (y1)
+14 >>> setfmla: line {(y0)} bad: (y1)
+15 line {(y0)} new formula: (y1)
+16 line {(y0)} accepts value: (y1)
+17 >>> line {(y0)} resists value: (y1)
+18 line {(y0)} converted to units: [(y1)]
 19 >>> no t-table specified
-20 >>> t-table: # --not found
-21 lines deleted: #
-22 >>> cannot delete: #
-23 >>> deleted lines #0 but cannot delete: #1
-24 >>> lines {#0} and {#1} are incompatible --cannot merge
-25 >>> lines {#0} and {#1} both have formulas --cannot merge
-26 old line {#0} merged with line {#1}
-27 #0loaded: #1
-28 written: #0 to: #1
-29 >>> not saved: give t-table a name
-30 saved t-table: #0 [#1 bytes]
-31 >>> t-table: # --not saved
-32 sorted by permutation: #
-33 #0 ZNN: #1  ZNO: #2
-34 >>> cannot undo any more
-35 >>> cannot redo any more
+20 >>> t-table (y0) not found
+21 line(s) deleted: {(y)}
+22 >>> cannot delete: (y0)
+23 >>> deleted line(s) {(y0)} but cannot delete line {(y1)}
+24 >>> cannot merge incompatible lines {(y0)} and {(y1)}
+25 >>> cannot merge lines {(y0)}, {(y1)} because both have formulas
+26 old line {(y0)} merged with line {(y1)}
+27 (y0)loaded: (y1)
+28 written (y0) bytes to file (y1)
+29 >>> not saved because t-table has no name
+30 saved t-table: (y0) [(y1) bytes]
+31 >>> t-table (y0) not saved
+32 sorted by permutation (y0)
+33 (y0) ZNN: (y1)  ZNO: (y2)
+34 >>> cannot (y) any more
+35 (unused)
 36 >>> no lines are hidden
-37 lines newly hidden: #0
-38 t-table: # --deleted
-39 >>> t-table: # --is not in your user library
-40 >>> no t-table has been loaded
-41 >>> line {#} has no formula
-42 >>> t-table: # --not saved: already exists
-43 >>> file not found: #
-44 TTINFO cached: #
+37 (y0) lines newly hidden
+38 t-table (y0) deleted
+39 >>> t-table (y0) is not in tabula-user library
+40 >>> no t-table loaded yet
+41 >>> line {(y0)} has no formula
+42 >>> no action because t-table (y0) already exists
+43 >>> cache file (y0) not found
+44 cache file (y0) yields text: (y1)
 )
 
 '==================== [cal] tabmath.ijs ===================='
@@ -3321,7 +3268,9 @@ start=: 3 : 0
 sss''
 load TPATH_UU sl 'uu.ijs'
 uuconnect''
+make_tabengineCore''
 tt_z_=: tabengine_z_=: tabengine_cal_
+
 globmake''
 cmake''
 progress _
@@ -3343,5 +3292,3 @@ RETURNED=: ''
 TTn=: ,:'tn'
 i.0 0
 )
-compile''
-tabengine=: tabengine1

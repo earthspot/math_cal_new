@@ -1,7 +1,9 @@
 	NB. cal - main.ijs
 '==================== [cal] main.ijs ===================='
 NB. CAL scientific calculator engine
-NB. IAC Wednesday 29 August 2018  20:41:04
+0 :0
+Friday 28 September 2018  18:34:24
+)
 
 cocurrent 'cal'
 
@@ -685,25 +687,23 @@ filename=: '.' taketo [: |. '/' taketo |.
 
 finfo=: 3 : 0
   NB. reads (y=0) or writes (y=1) TTINFO to (infopath)
-smoutput '>>> finfo: REWRITE THIS!!'
+  NB. NO LONGER CALLED AUTOMATICALLY by: ttload
 ]infopath=: TPATH_TTABLES sl 'INFO.txt'
-NB. smoutput '=>> enter finfo y=',(":y),'  $TTINFO=',":$TTINFO
-msss=. ''
 if. y do.
   assert. 'literal' -: datatype TTINFO
-  TTINFO fwrite infopath
-  empty''  NB. ignore any fwrite error
+  empty TTINFO fwrite infopath  NB. ignore fwrite error code
 else.
-  z=. fread infopath
-  if. z -: _1 do.
-    msss=. 43 message infopath
-  else.
-    TTINFO=: z
-    msss=. 44 message '…',~ 30 {. TTINFO rplc LF;SP
+  if. _1 -: z=. fread infopath do.
+    43 message infopath  NB. can't find the cache file
+  else.  NB. confirm cache file read-into TTINFO
+    44 message infopath ; shortened TTINFO=:z
   end.
 end.
-NB. smoutput '=>> exits finfo y=',(":y),'  $TTINFO=',":$TTINFO
-msss return.
+)
+
+shortened=: 3 : 0
+  NB. short 1-line taste of text: y
+'…',~ 30 {. y rplc LF;SP
 )
 
 fixfmla=: ('/';'%') rplc~ ]
@@ -1084,17 +1084,12 @@ merge=: 3 : 0
 )
 
 message=: 4 : 0
-  NB. uses table MESSAGE with inserted numbers (y)
+  NB. report x{MESSAGELIST substituting (boxed atoms of) (y)
+  NB. creates caches: MESSAGE, MESSAGE_ID
 MESSAGE_ID=: x
-prefix=. brack 'cal#',(":x)
-]z=. boxopen y
-]msg=. dtb x{MESSAGE
-]msg=. SP takeafter msg  NB. to permit leading message ID
-for_i. i.#z do.
-  ]msg=. msg rplc ('#',":i) ; ": i pick z
-end.
-msg=. msg rplc (,'#') ; ": 0 pick z  NB. # is short for #0
-prefix,SP,msg
+mm=. 3}.dtb x{MESSAGELIST  NB. drop prefixed message-ID (3 bytes)
+'y0 y1 y2 y3'=. 4{.boxopen y
+empty MESSAGE=: sw '[cal#(x)] ',mm
 )
 
 nfx=: ''&$: : (4 : 0)
@@ -1330,7 +1325,7 @@ ii=. x2b >brace each ":each i.#x
 r $ y rplc , io,.ii
 )
 
-repeatable=: [: *./ 'abcdefghijklmnopqrstuvwxyz0123456789' e.~ ]
+changesTtable=: [: *./ 'abcdefghijklmnopqrstuvwxyz0123456789' e.~ ]
 
 reselect=: empty
 
@@ -1555,70 +1550,6 @@ end.
 sP0=: 4 : 'x,.y'
 sP1=: 4 : '(x,.SP),.y'
 sP2=: 4 : '((x,.SP),.SP),.y'
-
-suits=: 1:
-
-  NB. tabengine 
-  NB. 	- the CAL-engine interface
-  NB. y (trimmed) is instruction string: inst
-  NB.   <cmd> <arg> <data>
-  NB.   <cmd> (always 4 chars) chooses: arg, exp
-  NB.   <arg> (max 4 chars) is a pattern to tell
-  NB.  how <data> goes into arg-caches:
-  NB.  n r rr rrr rv rzz
-  NB.  for use inside: ".exp
-
-tabengine0=: 3 : 0"1
-if. isBoxed y do. y=. nb y end.
-INSTR_z_=: y=. dltb y
-  NB. FIRST THING TO DO: service the instr: Init
-  NB. This avoids assuming globals already present, e.g. TRACI
-if. 'Inic'-: y do. start_cal_ 0 return. end.
-if. 'Init'-: y do. start_cal_ 1 return. end.
-sesi 'tabengine ',(quote y),TAB,NB,' TRACI_cal_'
-0 enlog y
-if. 'Repe'-: dltb y do. y=. LASTINSTR end.
-cmd=. 4{. instr=. dltb y    NB. the command
-yy=: dltb 4}. instr         NB. the subsequent text
-  NB. Instructions - special cases ...
-  NB. Defined in: CAL but only as dummies for reference.
-  NB. No guarantee the CAL version corresponds to
-  NB. what is actually implemented.
-select. cmd
-  NB. case. 'Init'-----done above
-case. ''     do. tabengine'CTBU'return.
-case. 'QCMD' do. CCc e.~ <yy    return.
-case. 'RETA' do. assert. yy-:":RETURNED return.
-case. 'RETU' do. RETURNED       return.
-case. 'Undo' do. undo 1         return.
-case. 'Redo' do. undo 0         return.
-case.        do.     NB. other (cmd)
-if. repeatable cmd do. LASTINSTR_z_=: instr end.
-end.
-if. 0>nc<'CCc' do.
-  z=. '>>> CAL not initialized: ' ; instr
-  z return.
-end.
-icmd=. CCc i. <cmd  NB. index# of (cmd)
-if. icmd=#CCc do. '>>> bad instruction:' ; instr return. end.
-EXP=: exp=. > icmd { CCx  NB. expression to execute
-  NB. Fill discretionary arg caches ...
-  NB. to evaluate within: exp
-af=. (bf=. ARGS e. ;: exp) # ARGS  NB. args found in exp
-sesi exp ; af
-tests=. ; ".each (I.bf) { ARGEX
-if. -.all tests do. nb 'bad:' ; (nb af) ; 'in:' ; yy return. end.
-  NB. Execute: exp ...
-  NB. lowercase (cmd) return error/confirm-message
-  NB. uppercase (cmd) return data-noun
-1 enlog RETURNED=: ".exp
-  NB. snapshot t-table ONLY if lowcase (cmd)
-  NB. This excludes: Init, Undo, Redo,
-  NB.  and cmds that return a data-noun.
-if. all cmd e. az do. snapshot'' end.
-RETURNED [progress _
-)
-
 targs=: [: {. [: }. [: |: [: ;: a2x
 tbx=: ijs
 
@@ -1911,7 +1842,6 @@ CH=: recal 0
 snapshot 0
 dirty 0  NB. resets the dirty-bit
 warnplex''
-finfo 1  NB. cache non-trivial info to textfile: infopath
 27 message tag; filename file
 )
 
@@ -1935,7 +1865,7 @@ CH=: recal 0
 
 ttnames=: 3 : 0
   NB. the various forms of t-table name
-  NB. Implements instr: TNMS
+  NB. Implements instruction: TNMS
 z=. ''
 for_no. ;:'CAPT CAPU TITF TITL TFIL TFIT TNAM TNMX' do.
   nom=. ,>no
@@ -2084,11 +2014,11 @@ undo=: 3 : 0
 invalexe''
 if. y do.
   tag=. 'undo'
-  if. 1=ZNN do. 34 message'' return. end.
+  if. 1=ZNN do. 34 message tag return. end.
   ZNN=: 1>.ZNN-1
 else.
   tag=. 'redo'
-  if. ZNO=ZNN do. 25 message'' return. end.
+  if. ZNO=ZNN do. 34 message tag return. end.
   ZNN=: ZNO<.ZNN+1
 end.
 sess_undo 33 message tag; ZNN; ZNO
@@ -2146,33 +2076,51 @@ i.0 0
 xseq=: 3 : 'sor clos dpmx TD'
 
 NB. ================================================
-
 NB. compile CAL
 
 cocurrent 'cal'
 
 COMPILE_HEAD=: 0 : 0
-NB. CAL compiled into explicit verb
-if. isBoxed y do. y=. nb y end.
-INSTR_z_=: instr=. y
+NB. CAL instruction set --> explicit verb: tabengineCore
+NB. Assume y is string (unboxing already done by wrapper)
 yy=. 5}.y
 'inst rz zz'=. 3{.smcut3 y
 select. inst
 )
 
-COMPILE_TAIL=: 0 : 0
+tabengine=: 3 : 0 "1
+  NB. wrapper for tabengineCore
+  NB. computes RETURNED LASTINSTR INSTR INST
+  NB. avoiding damaging drop-thru result from tabengineCore
+progress _  NB. init progress-bar used by verb: inversion
+if. isBoxed y do. y=. nb y end.
+NB. verb: tabengineCore is invalid/absent until verb: start is run.
+NB. So the first tabengine call in a session must be one of:
+NB.    tabengine 'Init'
+NB.    tabengine 'Inic'
+select. INST=: 4{. INSTR=: y  NB. (y) is now a string
+case. 'Init' do. start 1  NB. start with SAMPLE t-table
+case. 'Inic' do. start 0  NB. start with empty t-table
+case. 'Repe' do. RETURNED=: tabengineCore LASTINSTR
+case.        do. RETURNED=: tabengineCore INSTR
 end.
-if. all inst e. az do. snapshot'' end.
+if. changesTtable INST do.
+  snapshot''  NB. supports INST: Undo/Redo
+  LASTINSTR=: INSTR  NB. supports INST: Repe
+end.
+RETURNED return.
 )
 
 assnum=: 3 : 0
+  NB. appears ONLY in: compile
+  NB. called ONLY by: tabengineCore
 assert. isNum y
 assert. -. any isNaN y
 y return.
 )
 
-compile=: 3 : 0
-  NB. compile CAL
+make_tabengineCore=: 3 : 0
+  NB. compile (CAL-interface) CAL-->tabengineCore
 z=. COMPILE_HEAD
 for_line. <;._2 CAL do.
   'inst patt phrase'=. 3{.smcut3 >line
@@ -2202,8 +2150,10 @@ for_line. <;._2 CAL do.
   end.
   z=.LF,~ z, sw '                 (phrase)'
 end.
-Z=: z=. z,COMPILE_TAIL
-tabengine1=: (3 : z)"1
-NB. tv 5 !:5<'tabengine1'
+z=. z,'end.',LF
+  NB. No more generated code must follow this "end."
+  NB. in case it wipes out the returned value from the semantics.
+tabengineCore=: (3 : z)"1
+NB. tv 5 !:5<'tabengineCore'
 i.0 0
 )

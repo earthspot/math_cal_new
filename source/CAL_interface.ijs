@@ -39,14 +39,16 @@ INFO void info''                   \info about t-table
 INTD void ":initialized''          \query if start'' was run
 ITMS void }.items''                \list of non-0 item#s
 JXDO yy   ". yy                    \run J code in this loc
+MSSG void MESSAGE                  \message text from last instruction
+MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
 PLOT rzz  r plotz~ zz              \gen plot data with x-axis
 PTHS void tpaths''                 \all CAL+TABULA paths
 QCMD yy   CCc e.~ <yy              \=query valid command
 QUER void querycal''               \query interface defn
-QSCI void uuengine instr           \query scientific notation threshold
-QSIC void uuengine instr           \query SI conformance level
-QSIG void uuengine instr           \query significant figures
+QSCI void uuengine INSTR           \query scientific notation threshold
+QSIC void uuengine INSTR           \query SI conformance level
+QSIG void uuengine INSTR           \query significant figures
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
@@ -73,12 +75,12 @@ UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
 VALU r    getvalue r               \value of item -corrected
 VERS void VERSION                  \version of engine
-VUUC yy   uuengine instr           \UUC (filtered by yy)
-VUUF yy   uuengine instr           \UUF (filtered by yy)
-VUUN yy   uuengine instr           \UUN (filtered by yy)
-WUUC yy   uuengine instr           \UUC (filtered by yy case-insens)
-WUUF yy   uuengine instr           \UUF (filtered by yy case-insens)
-WUUN yy   uuengine instr           \UUN (filtered by yy case-insens)
+VUUC yy   uuengine INSTR           \UUC (filtered by yy)
+VUUF yy   uuengine INSTR           \UUF (filtered by yy)
+VUUN yy   uuengine INSTR           \UUN (filtered by yy)
+WUUC yy   uuengine INSTR           \UUC (filtered by yy case-insens)
+WUUF yy   uuengine INSTR           \UUF (filtered by yy case-insens)
+WUUN yy   uuengine INSTR           \UUN (filtered by yy case-insens)
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
@@ -207,10 +209,10 @@ save void ttsave ''                \save current t-table
 savo yy   ttsavo yy                \save as yy over existing
 savs void ttsavs ''                \save t-table COPY as SAMPLE
 savt void ttsavt ''                \save t-table from caption
-ssci n    uuengine instr           \set scientific notation threshold
-sicl n    uuengine instr           \set SI conformance level (heritage)
-ssic n    uuengine instr           \set SI conformance level
-ssig n    uuengine instr           \set significant figures
+ssci n    uuengine INSTR           \set scientific notation threshold
+sicl n    uuengine INSTR           \set SI conformance level (heritage)
+ssic n    uuengine INSTR           \set SI conformance level
+ssig n    uuengine INSTR           \set significant figures
 sort rrr  1 ttsort rrr             \sort by perm
 sqrl r    r fnline~ 'sqr'          \copy item squared
 sqrv r    r setvalue~ sqr vr       \squared value of r
@@ -243,7 +245,7 @@ t3mv r    r setvalue~ vr*1000      \item times 1000
 unhi void hide 0                   \unhide all items
 unit rzz  zz changeunits r         \set units of item
 unsc r    '' scaleunits r          \unscaled units
-uuuu yy   uuengine instr           \call uu converter directly
+uuuu yy   uuengine INSTR           \call uu converter directly
 valu rv   v setvalue r             \set value of item
 vunn rzz  zz setvunits r           \set value+units of item
 yoct r    'y' scaleunits r         \yocto- item
