@@ -19,7 +19,7 @@ NB. ========================================================
   NB. (Instr: "Repe" not implemented below: recognized by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '12 Sep 2018  17:49:27'  \CAL last saved
+QSAV void '22 Sep 2018  22:43:15'  \CAL last saved
 Inic void start 0                  \=(re-)start with clear tt
 Init void start 1                  \=(re-)start with SAMPLE tt
 Repe void dummy''                  \=repeat last action
@@ -88,6 +88,7 @@ addl rv   r fnline~ '+',":v        \copy item adding v
 addp rv   r setvalue~ vr*1+v%100   \inc item by v%
 addv rv   r setvalue~ vr+v         \inc item by v
 add1 r    r setvalue~ vr+1         \inc item by 1
+ad1p r    r setvalue~ vr*1.01      \inc item by 1%
 appe yy   ttappend yy              \append named t-table
 atto r    'a' scaleunits r         \atto- item
 cent r    'c' scaleunits r         \centi- item
@@ -225,6 +226,7 @@ subl rv   r fnline~ '-~',~":v      \copy item - v
 subp rv   r setvalue~ vr*1-v%100   \dec item by v%
 subv rv   r setvalue~ vr-v         \dec item by v
 sub1 r    r setvalue~ vr-1         \dec item by 1
+sb1p r    r setvalue~ vr*0.99      \dec item by 1%
 tera r    'T' scaleunits r         \tera- item
 titl yy   settitle yy              \set t-table caption
 tnam yy   file=: yy                \set t-table file name
