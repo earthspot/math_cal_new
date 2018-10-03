@@ -47,53 +47,52 @@ z=. (-.vhidd) # z  NB. remove hidden lines
 
 NB. ------------------------------------------------------------------
   NB. NEW ct -- ignores its y-arg, returns "unicode" table
-  NB.  CAL instruction CTAB returns this verb's output unaltered,
+  NB.  CAL instruction CTAB returns ct output unaltered,
   NB.  CAL instruction CTBU returns (lit) utf-8 LF-separated string.
   NB. Some work-nouns will be redundant in distributed version
-  NB. "kosher" here means no fancy unicoded chars, only ascii forms
-  NB. (kosher is the internal working data format for UU)
 ct2=: 3 : 0
+  NB. y is diagnostic mode: y=='' for operational use
   NB. returns "no t-table" message if no t-table loaded…
 if. absent'CAPT' do. ,:40 message'' return. end.
   NB. If no items return trivial display of just CAPT
 if. 2>nn=. #ii=. items'' do. ,:CAPT return. end.
-uc=. uucp"1
-sp2s=.  SP $~ nn,2                NB. column-separator
-bars=. '|' $~ nn,2                NB. column-separator
-stas=. ' * ' $~ nn,3              NB. column-separator
-equs=. ' = ' $~ nn,3              NB. column-separator
-arrw=. uc arrowch arrowgen''      NB. widechar array of arrows
-lnos=. >brace each ii             NB. braced line nos
-hold=. HOLD fl vhold              NB. vhold as col of HOLD symbols
-altd=. ALTERED fl CH              NB. CH as col of ALTERED symbols
-knin=. >UNITN                     NB. kosher col of nominal units
-unin=. > (uc&uniform) each UNITN  NB. SI-conformed col of nominal units
-knis=. >UNITS                     NB. kosher col of SI-units
-unis=. > (uc&uniform) each UNITS  NB. SI-conformed col of SI-units
-  NB. …can we assume UNITN and UNITS are always kosher? <<<<<<<<<<<<<<
-qtys=. (UNITN nfx vquan) ,. SP ,. unin  NB. "quantities" col
-  NB. qtys is the one to replace with uu-generated strings
+wc=. uucp"1                       NB. (string) y as wc chars
+SEP1=. '|' $~ nn,2                NB. column-separator
+SEP2=. ' * ' $~ nn,3              NB. column-separator
+SEP3=. ' = ' $~ nn,3              NB. column-separator
+arrw=. wc arrowch arrowgen''      NB.0 wcchar array of arrows
+lnos=. >brace each ii             NB.0 braced line nos
+hold=. HOLD fl vhold              NB.0 vhold as col of HOLD symbols
+altd=. ALTERED fl CH              NB.0 CH as col of ALTERED symbols
+un=. >UNITN                       NB.0 col of nominal units
+sicn=. > (wc&uniform) each UNITN  NB. SI-levelled col of nominal units
+us=. >UNITS                       NB.0 col of SI-units
+sics=. > (wc&uniform) each UNITS  NB. SI-levelled col of SI-units
+qtys=. (UNITN nfx vquan) ,. SP ,. sicn  NB. "quantities" col
+  NB. qtys is the one to replace with uu-generated strings (==qty2)
 NB. fact=. 'j'nfx vfact           NB. WTF is 'j' format ??? <<<<<<
 siqn=. >": each vsiqn
-ksis=. siqn ,. SP ,. knis         NB. kosher y-arg for uu
-qty2=. mjust uc knin&uu__uun ksis NB. qtys using knin&uu
-uttn=. >TTn                       NB. …is TTn always 'unicode'? <<<<<<
-select. DIAGNOSTICS
-case. 0 do.  NB. FOR OPERATIONAL USE
- z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qty2 ,.sp2s ,.uttn
+uuqy=. siqn ,.SP ,.us             NB.0 y-arg for uu
+qty2=. mjust wc un&uu__uun uuqy   NB.0 qtys using un&uu
+  NB. NB.0 are the only nouns needed for (default) x=0
+  NB. consider not assigning the others if shaving execution time
+select. y
 case. 1 do.  NB. old "quantities" col, include SI-form of data
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.stas ,.siqn ,.SP ,.unis
-case. 2 do.  NB. old "quantities" col, include kosher SI-data 
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.bars ,.knin ,.stas ,.ksis
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.SEP2 ,.siqn ,.SP ,.sics
+case. 2 do.  NB. old "quantities" col, include SI-data 
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.SEP1 ,.un ,.SEP2 ,.uuqy
 case. 3 do.  NB.  ==2 using qty2 based on uu
- z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.bars ,.knin ,.stas ,.ksis
+ z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.SEP1 ,.un ,.SEP2 ,.uuqy
 case. 4 do.  NB.  qty2 c/f qtys
- z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.equs ,.qtys
+ z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.SEP3 ,.qtys
+case.   do.  NB. OPERATIONAL USE
+ y=. 0  NB. <<< FORCE y
+ z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qty2 ,.SP ,.SP ,.TTn
 end.
-if. 0=DIAGNOSTICS do. lin0=. CAPT
-else. lin0=. sw' (CAPT) with: DIAGNOSTICS=(DIAGNOSTICS)' end.
+if. 0=y do. lin0=. CAPT
+else.       lin0=. sw' +++ (CAPT) in diagnostic mode y=(y)'
+end.
 lin0 , z #~ force0 -.vhidd        NB. remove hidden lines ALSO {0}
 )
 
-DIAGNOSTICS=: 0
 ct=: ct2		NB. USE NEW ct <<<<<<<<<<<<<<<<<<

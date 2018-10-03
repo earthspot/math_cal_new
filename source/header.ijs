@@ -1,5 +1,5 @@
 0 :0
-Friday 28 September 2018  20:27:49
+Monday 1 October 2018  23:28:47
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -8,5 +8,16 @@ CAL: scientific calculator engine
 clear 'cal'  NB. >>>>> CONSIDER DELETING THIS LINE IN RELEASED ADDON
 coclass 'cal'
 
-AABUILT=: '2018-09-28  20:27:57'
-AABUILT=: '2018-09-28  20:30:48'
+AABUILT=: '2018-10-01  23:31:46'
+AABUILT=: '2018-10-01  23:34:48'
+AABUILT=: '2018-10-01  23:37:16'
+AABUILT=: '2018-10-01  23:44:33'
+AABUILT=: '2018-10-03  18:00:50'
+AABUILT=: '2018-10-03  18:14:57'
+AABUILT=: '2018-10-03  18:15:42'
+AABUILT=: '2018-10-03  18:40:22'
+AABUILT=: '2018-10-03  19:26:42'
+AABUILT=: '2018-10-03  19:28:26'
+AABUILT=: '2018-10-03  20:41:40'
+AABUILT=: '2018-10-03  21:37:42'
+AABUILT=: '2018-10-03  23:01:25'

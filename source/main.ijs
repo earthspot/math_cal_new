@@ -559,7 +559,7 @@ feval=: 4 : 0
    ". 'exe=:',fn  NB. now (global)exe is: exe<y>
    NB. In case exe contains a bad fmla...
    try. z=. exe x  [z0=. z
-   catch. z=. INVALID
+   catch. z=. BAD_EXE_VALUE
    end.
    sess (brack y),(":z0),TAB,(":z),' from ',fn,'(',(":x),')'
  else.  NB. just return existing value
@@ -578,7 +578,7 @@ case. 1 do. fexp_siunits y return.
 case. 2 do. fexp_nominal y return.
 end.
 NB. else return a notionally bad formula:
-'INVALID'
+'<bad-formula>'
 )
 
 fexp1=: 3 : 0
@@ -720,10 +720,8 @@ for_i. }.items'' do.
 end.
 )
 
-fixtthdr=: 3 : '(-#TTn){.y'
-fl=: 4 : ',.y{ _2{.uucp x'
-flags=: ] + 0 * items
-floor=: <.
+flags=: ] + 0 * items		NB. vector of zero flags
+fl=: [: ,. ] { _2 {. [: uucp [	NB. boolean y as col of symbols
 
 fmla_extn=: 3 : 0
   NB. (fmla ; extn) of full formula string: y
@@ -887,7 +885,7 @@ VERSION
   NB.  └───┴───┴────────┘
 goodfmla=: 0&$: : (4 : 0)
 typ=. #. ';:' e. y
-sep=. typ { '::;' , bad=.'?'  NB. YES: :; is right order
+sep=. typ { '::;' , bad=.'?'  NB. YES: \; is right order
   NB. chars should never occur in: fmla itself,
   NB. or formula will get munged !!
   NB. typ=0 --> fmla is the whole of y
@@ -1560,16 +1558,6 @@ l=. >z=. cut'i vhidd vmodl vhold vfact vqua0 vquan vsiq0 vsiqn'  NB. alter to su
 l ,. CO ,. SP ,. ": >".each z
 )
 
-tidy=: 3 : 0
-  NB. force v* nouns to become real, as they should be
-  NB. (side effect: suppresses undefineds & invalids
-vqua0=: real vqua0
-vquan=: real vquan
-vsiq0=: real vsiq0
-vsiqn=: real vsiqn
-i.0 0
-)
-
 title=: 3 : 0
   NB. access the title stored for current t-table
   NB. used by: tabengine
@@ -1818,13 +1806,8 @@ empty erase 'TT'      NB. delete TT as a redundant cache
 z=. convert each UNITN=: boxvec TTu  NB. nominal units
 UNITS=: (>&{.) each z    NB. SI-units
 vfact=: 0,>(>&{:) each }.z  NB. (*vfact): {UNITN}-->{UNITS}
-  NB. Fixup the table just loaded
-  NB. vquan=: fixtthdr vquan
-  NB. vfact=: fixtthdr vfact
-  NB. UNITN=: fixtthdr UNITN
-  NB. UNITS=: fixtthdr UNITS
   NB. Now setup work flags
-CH=:    flags 0    NB. "Changed" flags
+CH=: flags 0       NB. "Changed" flags
 if. 1=#vhidd do. vhidd=: flags 0 end.  NB. =1 if row is hidden when displayed
 if. 1=#vmodl do. vmodl=: flags 1 end.  NB. The break-back model to be used
 vhold=: flags 0    NB. TEST ONLY >>>>> default==no holds saved in t-table
@@ -2061,17 +2044,26 @@ validnum=: isNo
 validrr=: validitems *. isLen2
 validrv=: isLen2 *. ([: isItem {.) *. [: isFNo {:
 
-warnplex=: 3 : 0
-  NB. warning if any v-buffer is complex
+warnplex=: 0 ddefine
+  NB. warns if any v-buffer is complex
+if. 0=WARNPLEX do. i.0 0 return. end.
 z=. ;:'vfact vhidd vhold vmodl vqua0 vquan vsiq0 vsiqn'
-for_no. z do.
-  if. 'complex' -: datatype ".>no do.
-  wdinfo (>no),' is COMPLEX!',LF,'Check for INVALIDs'
-  return.
+cplx=. 0
+for_no. z do. val=. ".nom=. >no
+  if. 'complex' -: datatype val do.
+  cplx=. 1
+    if. x do.  NB. fixup offending v-buffer
+      do sw '(nom)=: real (nom)'
+    else.
+      wdinfo nom,' is COMPLEX!',LF,'Check it for invalid atoms'
+      return.
+    end.
   end.
 end.
-i.0 0
+(cplx#'NOT '),'all v-buffers were real'
 )
+
+tidy=: 1&warnplex
 
 xseq=: 3 : 'sor clos dpmx TD'
 
@@ -2107,6 +2099,7 @@ end.
 if. changesTtable INST do.
   snapshot''  NB. supports INST: Undo/Redo
   LASTINSTR=: INSTR  NB. supports INST: Repe
+  warnplex''
 end.
 RETURNED return.
 )

@@ -12,6 +12,7 @@ az=: 'abcdefghijklmnopqrstuvwxyz'
 ARROWCH0=: ' ┌│└┌├└├b→'	NB. arrow drawing chars (option)
 ARROWCH1=: ' ┌│└┌├└├b>'	NB. arrow drawing chars (option)
 ARROWCH2=: ' +|+++++b>'	NB. arrow drawing chars (option)
+BAD_EXE_VALUE=: __		NB. returned when exe-verb fails
 BS=: '\'
 CM=: ','
 CO=: ':'
@@ -35,6 +36,4 @@ TIMEOUT=: 5		NB. seconds (see: blazing_saddle)
 UNDEF=: 'untitled'
 UNDEF_CAPT=: 'untitled'
 TOLERANCE=: 1e_5		NB. default tolerance for comparing physical quantities
-
-INVALID=: _.j_.
-UNDEFINED=: _.
+WARNPLEX=: 1		NB. 1==run warnplex after each recalc

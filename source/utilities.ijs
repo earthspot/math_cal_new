@@ -3,6 +3,15 @@
 
 cocurrent 'cal'
 
+
+  NB. WARNING: CAL overrides stdlib defn of verb: items
+  NB. This changes the valency of: items.
+  NB. This needs a forward-definition of (items) to prevent
+  NB. |syntax error: script
+  NB. wherever "items" appears in a tacit defn
+items=: 3 : 'i. #TTn'	NB. fwd-ref fixup
+
+
 sl=: 4 : 0
   NB. RELIABLE path catenator
   NB. IAC Thursday 30 August 2018  16:42:51
@@ -24,7 +33,6 @@ crr=: > , '=: ' , cr
 detb=: 3 : 'deb y rplc TAB ; SP'	NB. c/f deb, but TAB-->SP
 dtlf=: #~ ([: +./\. (10{a.)&~:)   NB. delete trailing LF's
 extx=: (0 < [: # ]) # ] , [ #~ [: -. '.' e. ]
-fl=: [: ,. ] { _2 {. [: uucp [	NB. boolean y as col of symbols
 ifdefined=: 0 <: [: 4!:0 <
 ijs=: ]'.ijs'&extx
 isBoxed=: 32 = 3!:0
@@ -33,7 +41,6 @@ isNo=: isNum *. isScalar
 isNaN=: 128!:5
 isNum=: 1 4 8 64 128 e.~ 3!:0
 isScalar=: [: {. 0 = [: $ $
-items=: 3 : 'i. #TTn'	NB. fwd-ref fixup
 listnameswithprefix=: 0 1 2 3&$: :(] ((] -: ({.~ #))S:0 _ # [)~ a: , [ 4!:1~ [: {. ])
 max=: $:/ :>.
 mt=: 0 e. $
@@ -113,18 +120,6 @@ end.
 )
 
 force0=: 0 , }.  NB. force leading 0 in any v-cache
-
-invalid=: (3 : 0)"0
-  NB. test for presence of INVALID
-if. -. 128!:5 y do. 0 return. end.
-'_.j_.' -: 5!:6 <'y'
-)
-
-undefined=: (3 : 0)"0
-  NB. test for presence of UNDEFINED
-if. -. 128!:5 y do. 0 return. end.
-'_.' -: 5!:6 <'y'
-)
 
   NB. mjust: "middle-SP justification" (c/f ljust, rjust)
   NB. NOTE: intermediate verbs are transient (=. not =:)

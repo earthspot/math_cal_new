@@ -29,6 +29,7 @@ NB. try. start_exch_'' catch. end.
 if. y-:0 do. ttnew''  NB. new empty t-table
 else. ttload''        NB. load the t-table named: SAMPLE
 end.
+warnplex'' [ WARNPLEX=: 1
 )
 
 

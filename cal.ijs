@@ -1,5 +1,5 @@
 0 :0
-Friday 28 September 2018  20:27:49
+Monday 1 October 2018  23:28:47
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -8,8 +8,19 @@ CAL: scientific calculator engine
 clear 'cal'
 coclass 'cal'
 
-AABUILT=: '2018-09-28  20:27:57'
-AABUILT=: '2018-09-28  20:30:48'
+AABUILT=: '2018-10-01  23:31:46'
+AABUILT=: '2018-10-01  23:34:48'
+AABUILT=: '2018-10-01  23:37:16'
+AABUILT=: '2018-10-01  23:44:33'
+AABUILT=: '2018-10-03  18:00:50'
+AABUILT=: '2018-10-03  18:14:57'
+AABUILT=: '2018-10-03  18:15:42'
+AABUILT=: '2018-10-03  18:40:22'
+AABUILT=: '2018-10-03  19:26:42'
+AABUILT=: '2018-10-03  19:28:26'
+AABUILT=: '2018-10-03  20:41:40'
+AABUILT=: '2018-10-03  21:37:42'
+AABUILT=: '2018-10-03  23:01:25'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -19,6 +30,7 @@ az=: 'abcdefghijklmnopqrstuvwxyz'
 ARROWCH0=: ' ┌│└┌├└├b→'
 ARROWCH1=: ' ┌│└┌├└├b>'
 ARROWCH2=: ' +|+++++b>'
+BAD_EXE_VALUE=: __
 BS=: '\'
 CM=: ','
 CO=: ':'
@@ -42,13 +54,20 @@ TIMEOUT=: 5
 UNDEF=: 'untitled'
 UNDEF_CAPT=: 'untitled'
 TOLERANCE=: 1e_5
-
-INVALID=: _.j_.
-UNDEFINED=: _.
+WARNPLEX=: 1
 
 '==================== [cal] utilities.ijs ===================='
 
 cocurrent 'cal'
+
+
+
+
+
+
+
+items=: 3 : 'i. #TTn'
+
 
 sl=: 4 : 0
 
@@ -71,7 +90,6 @@ crr=: > , '=: ' , cr
 detb=: 3 : 'deb y rplc TAB ; SP'
 dtlf=: #~ ([: +./\. (10{a.)&~:)
 extx=: (0 < [: # ]) # ] , [ #~ [: -. '.' e. ]
-fl=: [: ,. ] { _2 {. [: uucp [
 ifdefined=: 0 <: [: 4!:0 <
 ijs=: ]'.ijs'&extx
 isBoxed=: 32 = 3!:0
@@ -80,7 +98,6 @@ isNo=: isNum *. isScalar
 isNaN=: 128!:5
 isNum=: 1 4 8 64 128 e.~ 3!:0
 isScalar=: [: {. 0 = [: $ $
-items=: 3 : 'i. #TTn'
 listnameswithprefix=: 0 1 2 3&$: :(] ((] -: ({.~ #))S:0 _ # [)~ a: , [ 4!:1~ [: {. ])
 max=: $:/ :>.
 mt=: 0 e. $
@@ -158,18 +175,6 @@ end.
 )
 
 force0=: 0 , }.
-
-invalid=: (3 : 0)"0
-
-if. -. 128!:5 y do. 0 return. end.
-'_.j_.' -: 5!:6 <'y'
-)
-
-undefined=: (3 : 0)"0
-
-if. -. 128!:5 y do. 0 return. end.
-'_.' -: 5!:6 <'y'
-)
 
 
 
@@ -718,7 +723,7 @@ feval=: 4 : 0
    ". 'exe=:',fn
 
    try. z=. exe x  [z0=. z
-   catch. z=. INVALID
+   catch. z=. BAD_EXE_VALUE
    end.
    sess (brack y),(":z0),TAB,(":z),' from ',fn,'(',(":x),')'
  else.
@@ -736,7 +741,7 @@ case. 0 do. fexp_virtual y return.
 case. 1 do. fexp_siunits y return.
 case. 2 do. fexp_nominal y return.
 end.
-'INVALID'
+'<bad-formula>'
 )
 
 fexp1=: 3 : 0
@@ -876,10 +881,8 @@ for_i. }.items'' do.
 end.
 )
 
-fixtthdr=: 3 : '(-#TTn){.y'
-fl=: 4 : ',.y{ _2{.uucp x'
 flags=: ] + 0 * items
-floor=: <.
+fl=: [: ,. ] { _2 {. [: uucp [
 
 fmla_extn=: 3 : 0
 
@@ -1686,16 +1689,6 @@ l=. >z=. cut'i vhidd vmodl vhold vfact vqua0 vquan vsiq0 vsiqn'
 l ,. CO ,. SP ,. ": >".each z
 )
 
-tidy=: 3 : 0
-
-
-vqua0=: real vqua0
-vquan=: real vquan
-vsiq0=: real vsiq0
-vsiqn=: real vsiqn
-i.0 0
-)
-
 title=: 3 : 0
 
 
@@ -1945,12 +1938,7 @@ z=. convert each UNITN=: boxvec TTu
 UNITS=: (>&{.) each z
 vfact=: 0,>(>&{:) each }.z
 
-
-
-
-
-
-CH=:    flags 0
+CH=: flags 0
 if. 1=#vhidd do. vhidd=: flags 0 end.
 if. 1=#vmodl do. vmodl=: flags 1 end.
 vhold=: flags 0
@@ -2184,17 +2172,26 @@ validnum=: isNo
 validrr=: validitems *. isLen2
 validrv=: isLen2 *. ([: isItem {.) *. [: isFNo {:
 
-warnplex=: 3 : 0
+warnplex=: 0 ddefine
 
+if. 0=WARNPLEX do. i.0 0 return. end.
 z=. ;:'vfact vhidd vhold vmodl vqua0 vquan vsiq0 vsiqn'
-for_no. z do.
-  if. 'complex' -: datatype ".>no do.
-  wdinfo (>no),' is COMPLEX!',LF,'Check for INVALIDs'
-  return.
+cplx=. 0
+for_no. z do. val=. ".nom=. >no
+  if. 'complex' -: datatype val do.
+  cplx=. 1
+    if. x do.
+      do sw '(nom)=: real (nom)'
+    else.
+      wdinfo nom,' is COMPLEX!',LF,'Check it for invalid atoms'
+      return.
+    end.
   end.
 end.
-i.0 0
+(cplx#'NOT '),'all v-buffers were real'
 )
+
+tidy=: 1&warnplex
 
 xseq=: 3 : 'sor clos dpmx TD'
 cocurrent 'cal'
@@ -2220,6 +2217,7 @@ end.
 if. changesTtable INST do.
   snapshot''
   LASTINSTR=: INSTR
+  warnplex''
 end.
 RETURNED return.
 )
@@ -2314,51 +2312,50 @@ z=. (-.vhidd) # z
 
 
 
-
-
 ct2=: 3 : 0
+
 
 if. absent'CAPT' do. ,:40 message'' return. end.
 
 if. 2>nn=. #ii=. items'' do. ,:CAPT return. end.
-uc=. uucp"1
-sp2s=.  SP $~ nn,2
-bars=. '|' $~ nn,2
-stas=. ' * ' $~ nn,3
-equs=. ' = ' $~ nn,3
-arrw=. uc arrowch arrowgen''
+wc=. uucp"1
+SEP1=. '|' $~ nn,2
+SEP2=. ' * ' $~ nn,3
+SEP3=. ' = ' $~ nn,3
+arrw=. wc arrowch arrowgen''
 lnos=. >brace each ii
 hold=. HOLD fl vhold
 altd=. ALTERED fl CH
-knin=. >UNITN
-unin=. > (uc&uniform) each UNITN
-knis=. >UNITS
-unis=. > (uc&uniform) each UNITS
-
-qtys=. (UNITN nfx vquan) ,. SP ,. unin
+un=. >UNITN
+sicn=. > (wc&uniform) each UNITN
+us=. >UNITS
+sics=. > (wc&uniform) each UNITS
+qtys=. (UNITN nfx vquan) ,. SP ,. sicn
 
 siqn=. >": each vsiqn
-ksis=. siqn ,. SP ,. knis
-qty2=. mjust uc knin&uu__uun ksis
-uttn=. >TTn
-select. DIAGNOSTICS
-case. 0 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qty2 ,.sp2s ,.uttn
+uuqy=. siqn ,.SP ,.us
+qty2=. mjust wc un&uu__uun uuqy
+
+
+select. y
 case. 1 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.stas ,.siqn ,.SP ,.unis
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.SEP2 ,.siqn ,.SP ,.sics
 case. 2 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.bars ,.knin ,.stas ,.ksis
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.SEP1 ,.un ,.SEP2 ,.uuqy
 case. 3 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.bars ,.knin ,.stas ,.ksis
+ z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.SEP1 ,.un ,.SEP2 ,.uuqy
 case. 4 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.equs ,.qtys
+ z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.SEP3 ,.qtys
+case.   do.
+ y=. 0
+ z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qty2 ,.SP ,.SP ,.TTn
 end.
-if. 0=DIAGNOSTICS do. lin0=. CAPT
-else. lin0=. sw' (CAPT) with: DIAGNOSTICS=(DIAGNOSTICS)' end.
+if. 0=y do. lin0=. CAPT
+else.       lin0=. sw' +++ (CAPT) in diagnostic mode y=(y)'
+end.
 lin0 , z #~ force0 -.vhidd
 )
 
-DIAGNOSTICS=: 0
 ct=: ct2
 
 '==================== [cal] inversion.ijs ===================='
@@ -3282,6 +3279,7 @@ progress _
 if. y-:0 do. ttnew''
 else. ttload''
 end.
+warnplex'' [ WARNPLEX=: 1
 )
 
 globmake=: 3 : 0
