@@ -47,6 +47,3 @@ exe3=: 3 : 'a*2*PI [a=. 2{y'
 exe4=: 3 : 'a*b [a=. 1{y [b=. 3{y'
 exe5=: 3 : 'v*v%r [v=. 4{y [r=. 2{y'
 exe9=: 3 : 'i choice(a,b) [i=. 6{y [a=. 7{y [b=. 8{y'
-
-uunicode 3
-sig 3

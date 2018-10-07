@@ -34,6 +34,3 @@ This is a sample t-table to demonstrate graph plotting.
 To plot something, insert a max value in line {1}
 then pick menu: File > Plot 0 to (value)
 )
-
-uunicode 1
-sig 2

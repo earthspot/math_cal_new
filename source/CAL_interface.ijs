@@ -49,6 +49,7 @@ QUER void querycal''               \query interface defn
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
+QSIZ void uuengine INSTR           \query zero attraction
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
@@ -192,8 +193,6 @@ pl1v r    r plotv~ 1               \setup plot 1 to v
 plvv r    r plotv~ _               \setup plot -v to v
 plus rrr  '+'combine rrr           \new sum of items
 powe rr   '^'combine rr            \new power of 2 items
-prec n    sig n                    \set places of decimals
-psci n    sci n                    \set sci units cut-in value
 ptdl r    r fnline~ 'PI2%~'        \copy item by 2*PI
 ptdv r    r setvalue~ vr%PI2       \item divided-by 2*PI
 ptml r    r fnline~ 'PI2*'         \copy item times 2*PI
@@ -211,9 +210,9 @@ savo yy   ttsavo yy                \save as yy over existing
 savs void ttsavs ''                \save t-table COPY as SAMPLE
 savt void ttsavt ''                \save t-table from caption
 ssci n    uuengine INSTR           \set scientific notation threshold
-sicl n    uuengine INSTR           \set SI conformance level (heritage)
 ssic n    uuengine INSTR           \set SI conformance level
 ssig n    uuengine INSTR           \set significant figures
+ssiz n    uuengine INSTR           \set zero attraction threshold
 sort rrr  1 ttsort rrr             \sort by perm
 sqrl r    r fnline~ 'sqr'          \copy item squared
 sqrv r    r setvalue~ sqr vr       \squared value of r

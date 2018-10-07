@@ -48,6 +48,3 @@ This is a test ttable,
 to test inversion algorithms
 and compare results.
 )
-
-uunicode 1
-sig 2

@@ -21,6 +21,11 @@ AABUILT=: '2018-10-03  19:28:26'
 AABUILT=: '2018-10-03  20:41:40'
 AABUILT=: '2018-10-03  21:37:42'
 AABUILT=: '2018-10-03  23:01:25'
+AABUILT=: '2018-10-07  02:35:42'
+AABUILT=: '2018-10-07  02:38:21'
+AABUILT=: '2018-10-07  02:46:07'
+AABUILT=: '2018-10-07  03:13:27'
+AABUILT=: '2018-10-07  03:18:12'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -1609,12 +1614,6 @@ end.
 
 showing=: empty
 
-sig=: 3 : 0
-if. 0=#y do. SIG
-else. SIG_z_=: {.y
-end.
-)
-
 siunits=: 3 : 0
 
 si=. y{UNITS
@@ -2055,8 +2054,6 @@ end.
 if. 0<$TTINFO do.
   z=. z,LF2,'TTINFO=: 0 ',CO,' 0',LF,TTINFO,LF,')'
 end.
-z=. z,LF2,'uunicode ',":uunicode''
-z=. z,LF,'sig ',":sig''
 if. file-: UNDEF do. 29 message'' return. end.
 retco=. archive filename file
 data=: z
@@ -2753,6 +2750,7 @@ QUER void querycal''               \query interface defn
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
+QSIZ void uuengine INSTR           \query zero attraction
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
@@ -2896,8 +2894,6 @@ pl1v r    r plotv~ 1               \setup plot 1 to v
 plvv r    r plotv~ _               \setup plot -v to v
 plus rrr  '+'combine rrr           \new sum of items
 powe rr   '^'combine rr            \new power of 2 items
-prec n    sig n                    \set places of decimals
-psci n    sci n                    \set sci units cut-in value
 ptdl r    r fnline~ 'PI2%~'        \copy item by 2*PI
 ptdv r    r setvalue~ vr%PI2       \item divided-by 2*PI
 ptml r    r fnline~ 'PI2*'         \copy item times 2*PI
@@ -2915,9 +2911,9 @@ savo yy   ttsavo yy                \save as yy over existing
 savs void ttsavs ''                \save t-table COPY as SAMPLE
 savt void ttsavt ''                \save t-table from caption
 ssci n    uuengine INSTR           \set scientific notation threshold
-sicl n    uuengine INSTR           \set SI conformance level (heritage)
 ssic n    uuengine INSTR           \set SI conformance level
 ssig n    uuengine INSTR           \set significant figures
+ssiz n    uuengine INSTR           \set zero attraction threshold
 sort rrr  1 ttsort rrr             \sort by perm
 sqrl r    r fnline~ 'sqr'          \copy item squared
 sqrv r    r setvalue~ sqr vr       \squared value of r
@@ -3083,7 +3079,7 @@ tabengine_z_=: tabengine_cal_
 
 uuconnect=: 3 : 0
 
-uun=: uuinit_z_''
+uun=: '' conew 'uu'
 uuengine=: uuengine__uun
 
 compat		=: compatible__uun
@@ -3092,19 +3088,15 @@ convert		=: convert__uun
 cnvj		=: cnvj__uun
 format		=: format__uun
 selfcanc		=: selfcanc__uun
-sic		=: sic__uun
-sci		=: sci__uun
-sig		=: sig__uun
 udat		=: udat__uun
 udiv		=: udiv__uun
 udumb		=: udumb__uun
 uniform		=: uniform__uun
-uunicode=: sic
 i.0 0
 )
 
 0 :0
---- uuengine instructions...
+--- uuengine instructions: see ~Gituu/source/
 adj		adju	NOT DONE
 compat		cpat
 compatlist	cpli
@@ -3115,7 +3107,6 @@ scino		scin
 selfcanc		slfc
 set_ucase		setu
 sci		QSCI
-sig		QSIG
 udat		udat
 udiv		udiv
 udumb		udum
@@ -3139,10 +3130,7 @@ format (formatOUT)	nfx
 scino		NOTUSED
 selfcanc		combine
 setsci (sci)	NOTUSED	
-setsig (sig)	NOTUSED
 set_ucase		NOTUSED
-sci		califace[QSCI,psci] (local sci uses SCI)
-sig		califace[QSIG,prec] (local sig uses SIG) ttsav
 startuu		NOTUSED
 ucase		NOTUSED …is TABULA accessing UU directly?
 udat		ttauc ttauf

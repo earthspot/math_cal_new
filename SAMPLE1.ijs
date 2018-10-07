@@ -39,6 +39,3 @@ vfact=: numvec 0 : 0
 exe4=: 3 : 'a*b*c [a=. 1{y [b=. 2{y [c=. 3{y'
 exe7=: 3 : 'a*b [a=. 5{y [b=. 6{y'
 exe8=: 3 : 'a%b [a=. 4{y [b=. 7{y'
-
-uunicode 1
-sig 2

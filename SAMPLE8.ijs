@@ -14,6 +14,3 @@ vfact=: numvec 0 : 0
 0
 1
 )
-
-uunicode 1
-sig 2

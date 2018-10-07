@@ -7,7 +7,8 @@ tabengine_z_=: tabengine_cal_
 
 uuconnect=: 3 : 0
   NB. setup the verbs that need to call into UU
-uun=: uuinit_z_''  NB. CAL's locator to its UU instance
+NB. uun=: uuinit_uu_''  NB. CAL's locator to its UU instance
+uun=: '' conew 'uu'
 uuengine=: uuengine__uun  NB. do everything through this keyhole?
   NB. ...NO. Work with individual localizations first…
 compat		=: compatible__uun
@@ -18,21 +19,20 @@ format		=: format__uun
 NB. scino 		=: scino__uun	NB. NOTUSED?
 selfcanc		=: selfcanc__uun
 NB. set_ucase		=: set_ucase__uun	NB. NOTUSED?
-sic		=: sic__uun
-sci		=: sci__uun
-sig		=: sig__uun
+NB. sic		=: sic__uun	NB. NOTUSED
+NB. sci		=: sci__uun	NB. defined but not used
 udat		=: udat__uun
 udiv		=: udiv__uun
 udumb		=: udumb__uun
 uniform		=: uniform__uun
 NB. uurowsc		=: uurowsc__uun	NB. NOTUSED?
 NB. uurowsf		=: uurowsf__uun	NB. NOTUSED?
-uunicode=: sic  NB. >>> HERITAGE!
+NB. uunicode=: sic  NB. >>> HERITAGE! -was only used inside t-table scripts
 i.0 0
 )
 
 0 :0
---- uuengine instructions...
+--- uuengine instructions: see ~Gituu/source/
 adj		adju	NOT DONE
 compat		cpat
 compatlist	cpli
@@ -43,7 +43,6 @@ scino		scin
 selfcanc		slfc
 set_ucase		setu
 sci		QSCI
-sig		QSIG
 udat		udat
 udiv		udiv
 udumb		udum
@@ -67,10 +66,7 @@ format (formatOUT)	nfx
 scino		NOTUSED
 selfcanc		combine
 setsci (sci)	NOTUSED	
-setsig (sig)	NOTUSED
 set_ucase		NOTUSED
-sci		califace[QSCI,psci] (local sci uses SCI)
-sig		califace[QSIG,prec] (local sig uses SIG) ttsav
 startuu		NOTUSED
 ucase		NOTUSED …is TABULA accessing UU directly?
 udat		ttauc ttauf

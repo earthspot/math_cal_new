@@ -17,13 +17,13 @@ NB. ---------------------------------------------------------
 NB. uloc_z_=: <,'0'  NB. >>>>>>>>>>>>>>>>> FUDGE
 load UUFILE  NB. >>> RELOADS _uu_ FROM ITS LAST BUILTFILE
 
-3 : 0''
-if. absent 'uloc_z_' do.
-  uuinitTest_uu_''
-  smoutput '>>> CAL run: created locator for locale: ',": >uloc_z_
-end.
-i.0 0
-)
+NB. 3 : 0''
+NB. if. absent 'uloc_z_' do.
+NB.   uuinitTest_uu_''
+NB.   smoutput '>>> CAL run: created locator for locale: ',": >uloc_z_
+NB. end.
+NB. i.0 0
+NB. )
 
 clear 'cal'
 load BUILTFILE	

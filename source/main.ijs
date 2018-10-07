@@ -1477,12 +1477,6 @@ end.
 
 showing=: empty
 
-sig=: 3 : 0
-if. 0=#y do. SIG
-else. SIG_z_=: {.y
-end.
-)
-
 siunits=: 3 : 0
   NB. convert item y to SI units
 si=. y{UNITS  NB. the SI units
@@ -1925,8 +1919,8 @@ end.
 if. 0<$TTINFO do.
   z=. z,LF2,'TTINFO=: 0 ',CO,' 0',LF,TTINFO,LF,')'
 end.
-z=. z,LF2,'uunicode ',":uunicode''  NB. restore SI conformance level
-z=. z,LF,'sig ',":sig''  NB. restore significant figures
+NB. z=. z,LF2,'uunicode ',":uunicode''  NB. restore SI conformance level
+NB. z=. z,LF,'sig ',":sig''  NB. restore significant figures
 if. file-: UNDEF do. 29 message'' return. end.
 retco=. archive filename file
 data=: z   NB. DIAGNOSTIC TO ACCOMPANY: file

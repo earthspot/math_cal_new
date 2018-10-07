@@ -43,6 +43,3 @@ exe4=: 3 : 'a*b [a=. 1{y [b=. 3{y'
 exe5=: 3 : 'a%b [a=. 2{y [b=. 4{y'
 exe7=: 3 : 'a*b [a=. 4{y [b=. 6{y'
 exe9=: 3 : 'a*b [a=. 7{y [b=. 8{y'
-
-uunicode 1
-sig 2
