@@ -7,6 +7,22 @@ NB. (See: globvars in: start.ijs for those that do change)
 
 cocurrent 'cal'
 
+HELP=: 0 : 0
+============
+HELP for CAL
+============
+cv''
+…show the v-caches
+
+cx''
+…check for any complex nouns in _cal_
+
+tt'CTBU'
+…show current t-table
+
+
+)
+
 AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 az=: 'abcdefghijklmnopqrstuvwxyz'
 ARROWCH0=: ' ┌│└┌├└├b→'	NB. arrow drawing chars (option)

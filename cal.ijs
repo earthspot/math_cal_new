@@ -12,9 +12,27 @@ AABUILT=: '2018-10-08  02:46:05'
 AABUILT=: '2018-10-08  02:51:15'
 AABUILT=: '2018-10-08  02:56:54'
 AABUILT=: '2018-10-08  03:03:48'
+AABUILT=: '2018-10-08  11:34:04'
+AABUILT=: '2018-10-08  12:31:57'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
+
+HELP=: 0 : 0
+============
+HELP for CAL
+============
+cv''
+…show the v-caches
+
+cx''
+…check for any complex nouns in _cal_
+
+tt'CTBU'
+…show current t-table
+
+
+)
 
 AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 az=: 'abcdefghijklmnopqrstuvwxyz'
@@ -121,7 +139,7 @@ loc=. >coname''
 nocomplex=. 1
 for_no. nl 0 do.  val=. ".nom=. >no
   if. 16=3!:0 val do.
-    smoutput nb 'cx:' ; nom ; 'is complex'
+    ssw 'cx: noun: (nom) is complex'
     nocomplex=. 0
   end.
 end.
@@ -274,9 +292,11 @@ tgt fcopynew sce
 )
 
 arrowch=: 3 : 0
-sess=. empty
+ssw=. empty
+
+
 zz=. i.0 0
-if. 0=#y do. i.0 0 return. end.
+if. 0=#y do. ' ' return. end.
 for_i. i.#y do.
 'c b e'=. i{y [ rev=. 0
 if. b>e do. 'e b rev'=. b ; e ; 1 end.
@@ -297,7 +317,7 @@ ZZ=: zz
 
 zz2=. |: |. aheads pack acomb zz
 zz3=. zz2 <. #uarr=. uucp ARROWCH
-sess 'arrowch: codes used:' ; ~. ,zz2
+ssw 'arrowch: codes used: (~.,zz2)'
 zz3 { uarr,'?'
 )
 

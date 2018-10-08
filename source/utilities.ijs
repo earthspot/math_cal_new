@@ -65,7 +65,7 @@ loc=. >coname''
 nocomplex=. 1
 for_no. nl 0 do.  val=. ".nom=. >no
   if. 16=3!:0 val do.
-    smoutput nb 'cx:' ; nom ; 'is complex'
+    ssw 'cx: noun: (nom) is complex'
     nocomplex=. 0
   end.
 end.

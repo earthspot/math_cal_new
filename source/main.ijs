@@ -114,11 +114,11 @@ tgt fcopynew sce
 )
 
 arrowch=: 3 : 0
-sess=. empty
-NB. use as follows: arrowch arrowgen''
-NB. y is arrowgen'' output
+ssw=. empty
+  NB. use as follows: arrowch arrowgen''
+  NB. y is arrowgen'' output (an integer table)
 zz=. i.0 0
-if. 0=#y do. i.0 0 return. end.
+if. 0=#y do. ' ' return. end.  NB. no arrows to show
 for_i. i.#y do.
 'c b e'=. i{y [ rev=. 0
 if. b>e do. 'e b rev'=. b ; e ; 1 end.
@@ -137,10 +137,10 @@ end.
 zz=. zz,z
 end.  NB. i
 ZZ=: zz
-  NB. Globalize these for debugging...
+  NB. To debug, globalize (=:) these work-vars...
 zz2=. |: |. aheads pack acomb zz
 zz3=. zz2 <. #uarr=. uucp ARROWCH  NB. limit to #uarr
-sess 'arrowch: codes used:' ; ~. ,zz2
+ssw 'arrowch: codes used: (~.,zz2)'
 zz3 { uarr,'?'
 )
 
