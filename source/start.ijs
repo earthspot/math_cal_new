@@ -5,13 +5,24 @@ cocurrent 'cal'
 
 VERSION=: '2.0.0'
 
+sl_z_=: 4 : 0
+  NB. RELIABLE path catenator
+  NB. IAC Monday 8 October 2018  02:42:10
+  NB. IDENTICAL COPY IN ~Gituu/source/paths.ijs (VERIFY!)
+SL=. '/'
+if. SL={:x do. x=. }:x end.
+if. SL={.y do. x=. }.y end.
+x,SL,y
+)
+
+
 NB. ========================================================
 start=: 3 : 0
   NB. start the CAL-engine
   NB. start 0 -- serves/implements new instruction: Inic
   NB. start '' -- serves/implements instruction: Init
 sss''        NB. recommended session trace settings
-load TPATH_UU sl 'uu.ijs'  NB. creates: uuinit_z_
+load TPATH_UU sl 'uu.ijs'
 uuconnect''
 make_tabengineCore''  NB. the core of: tabengine
 tt_z_=: tabengine_z_=: tabengine_cal_

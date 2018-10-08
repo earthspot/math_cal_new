@@ -162,7 +162,7 @@ a=. empty''
 
 baditem=: 3 : 0
   NB. 1 if y is bad item, and sets global: BADITEM
-if. y e. }.items'' do.
+if. validitem y do.
   0 [ BADITEM=: ''
 else.
   1 [ BADITEM=: 1 message y
@@ -172,7 +172,7 @@ end.
 baditems=: 3 : 0
   NB. 1 if y has bad items, and sets global: BADITEMS
   NB. c/f baditem
-if. all z=. y e. }.items'' do.
+if. all z=.validitem y do.
   0 [ BADITEMS=: ''
 else.
   1 [ BADITEMS=: 1 message (-.z)#y
@@ -245,7 +245,7 @@ ceiling=: >.
 
 changeunits=: 4 : 0
   NB. change the units of item: y to units: (str)x
-if. -.y e. }.items'' do. 1 message y return. end.
+if. -.validitem y do. 1 message y return. end.
 'un0 cyc fac0'=. convert z=. >y{UNITN
 'un1 cyc fac1'=. convert x0=. x
   NB. Accept incompats UNLESS y involved in a formula
@@ -360,9 +360,21 @@ end.
 i.0 0
 )
 
+compat=: 4 : 0
+  NB. compatible? -units x, y
+uuengine'CPAT ',x,'>',y
+) 
+
 compat_i=: 4 : 0
   NB. compatible? -item ids: x, y
 (>x{UNITS) compat (>y{UNITS)
+)
+
+convert=: 3 : 0
+  NB. convert units y to SI-units
+  NB. returns: (units ; cycles ; factor)
+  NB. cycles is now unused: always (_)
+uuengine'CONV ',y
 )
 
 copyline=: 3 : 0
@@ -430,8 +442,8 @@ docompatlist=: 0&$: :(4 : 0)
   NB. build list of compatible units to item#: y
   NB. Boolean x=1 means: convert list to current simode
 z=. >y{UNITN
-if. x do. compatlist z
-else. uniform each compatlist z
+if. x do. uniform each uuengine'CPLI',z
+else. uuengine'CPLI',z
 end.
 )
 
@@ -452,7 +464,7 @@ dummy=: empty
 
 duplicate=: 3 : 0
   NB. exactly duplicate item y
-if. y e. }.items'' do.
+if. validitem y do.
   0 ttsort (items''),y    NB. x=0 does a blind-sort
   7 message y
 else.
@@ -839,7 +851,7 @@ nom
 
 getvalue=: 3 : 0
   NB. get the value of item y (adjusted)
-if. y e. }.items'' do.
+if. validitem y do.
   unit=. >y{UNITN
   unit adj y{vquan  NB. adjust value
 else.
@@ -906,10 +918,8 @@ if. x do. sep else. typ end.
 
 gooditem=: 3 : 0
   NB. empty'' if y is good item, else message
-if. y e. }.items'' do.
-  empty''
-else.
-  10 message y
+if. validitem y do. empty''
+else. 10 message y
 end.
 )
 
@@ -926,7 +936,7 @@ hide=: 3 : 0
 if. y-:0 do.
   vhidd=: flags 0
   36 message''
-elseif. all y e. items'' do.
+elseif. validitems y do.
   vhidd=: 1 y}vhidd
   37 message y
 elseif.  do.
@@ -1051,8 +1061,6 @@ if. -. isNum y do. 0 return. end.
 _ e. |y
 )
 
-isItem=: 3 : 'y e. }.items 0'
-isItems=: 3 : 'all y e. }.items 0'
 isNum=: ([: 1: 0 + ]) ::0:  NB. i.e. can you add 1 to y?
 isnums=: [: *./ '0123456789' e.~ ]
 isnums=: (0 < #) *. [: *./ '0123456789' e.~ ]  NB. replacement
@@ -1095,7 +1103,9 @@ nfx=: ''&$: : (4 : 0)
 f=. (#y)$ boxopen x  NB. formats for each element of y
 z=. i.0 0
 for_i. i.#y do.
-  z=. z , (>i{f) format i{y
+  z=. z , (>i{f) format__uun i{y
+	NB. use of non-public UU-verb as a method
+	NB. -permitted ONLY for a non-operational verb like nfx.
 end.
 pad rjust z
 )
@@ -1358,10 +1368,12 @@ if. 'literal'-:datatype y do.  NB. y is the actual units to be scaled [TEST ONLY
   un0=. y
   y=. 0    NB. nominal item# (invalid, for test-only)
 else.    NB. ASSUME y is item# in t-table...
-  if. -.y e. }.items'' do. 1 message y return. end.
+  if. -.validitem y do. 1 message y return. end.
   un0=. >y{UNITN
 end.
-'a f0 un2 b'=. cnvj un0    NB. f0: scale factor, un2: unscaled units, a b: discarded
+NB. 'a f0 un2 b'=. cnvj un0
+'a f0 un2 b'=. uuengine'CNVJ ',un0
+  NB. f0: scale factor, un2: unscaled units, a b: discarded
 sp=. ;:'= da h k ? ? M ? ? G ? ? T ? ? P ? ? E ? ? Z ? ? Y   y ? ? z ? ? a ? ? f ? ? p ? ? n ? ? mu ? ? m  c  d'
 NB.     0 1  2 3 4 5 6 7 8 9    12    15    18    21    24 _24   _21   _18   _15   _12    _9    _6     _3 _2 _1
 NB. no valid scale-prefix for 10^4 etc, so these have: ? in: sp
@@ -1427,31 +1439,22 @@ CAPT=: y
 
 setvalue=: 4 : 0
   NB. set x as the value of item y
-if. y e. }.items'' do.
-  unit=. '_',>y{UNITN  NB. prefix '_' works adj in reverse
-  x=. unit adj x  NB. adjust value of x
-  if. x= y{vquan do.
-    13 message y; x return.
-  end.
-  vqua0=: vquan
-  vquan=: x y}vquan
-  CH=: recal y
-  if. y{CH do.
-    16 message y; x
-  else.
-    17 message y; x
-  end.
-else.
-  10 message y
+if. -.validitem y do. 10 message y return. end.
+unit=. '_',>y{UNITN  NB. prefix '_' works adj in reverse
+x=. unit adj x  NB. adjust value of x
+if. x= y{vquan do. 13 message y; x return. end.
+vqua0=: vquan
+vquan=: x y}vquan
+CH=: recal y
+if. y{CH do. 16 message y; x
+else. 17 message y; x
 end.
 )
 
 setvunits=: 4 : 0
   NB. set x as the value+units of item y
   NB. if x contains QT then split off name: nm
-if. -. y e. }.items'' do.
-  10 message y return.
-end.
+if. -.validitem y do. 10 message y return. end.
 r=. y
 nm=. dltb QT takeafter x
 zz=. dltb QT taketo x
@@ -1460,7 +1463,7 @@ un=. SP takeafter zz
 smoutput '+++ setvunits y=',(":y),' vs=',vs,' un=',un,' nm=',nm
 if. 0<#nm do. r relabel nm end.
 if. 0<#un do. r changeunits~ un end.
-r setvalue~ v
+v setvalue r
 )
 
 shortpath=: 3 : 0
@@ -2036,7 +2039,7 @@ validitems=: 3 : 'all y e. }.items 0'
 validlit=: isLit
 validnum=: isNo
 validrr=: validitems *. isLen2
-validrv=: isLen2 *. ([: isItem {.) *. [: isFNo {:
+validrv=: isLen2 *. ([: validitem {.) *. [: isFNo {:
 
 warnplex=: 0 ddefine
   NB. warns if any v-buffer is complex

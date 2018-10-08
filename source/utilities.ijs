@@ -10,17 +10,6 @@ cocurrent 'cal'
   NB. |syntax error: script
   NB. wherever "items" appears in a tacit defn
 items=: 3 : 'i. #TTn'	NB. fwd-ref fixup
-
-
-sl=: 4 : 0
-  NB. RELIABLE path catenator
-  NB. IAC Thursday 30 August 2018  16:42:51
-SL=. '/'
-if. SL={:x do. x=. }:x end.
-if. SL={.y do. x=. }.y end.
-x,SL,y
-)
-
 absent_z_=: [: +./ 0 > [: nc ;:	NB. true if ANY names in y absent
 begins_z_=: ] -: [ {.~ [: # ]	NB. eg: z begins NB
 bh=:    ] }.~ [: >: ' ' i.~ ]	NB. behead y up to 1st SP

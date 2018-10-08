@@ -1,5 +1,5 @@
 0 :0
-Monday 1 October 2018  23:28:47
+Monday 8 October 2018  02:45:50
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -8,24 +8,10 @@ CAL: scientific calculator engine
 clear 'cal'
 coclass 'cal'
 
-AABUILT=: '2018-10-01  23:31:46'
-AABUILT=: '2018-10-01  23:34:48'
-AABUILT=: '2018-10-01  23:37:16'
-AABUILT=: '2018-10-01  23:44:33'
-AABUILT=: '2018-10-03  18:00:50'
-AABUILT=: '2018-10-03  18:14:57'
-AABUILT=: '2018-10-03  18:15:42'
-AABUILT=: '2018-10-03  18:40:22'
-AABUILT=: '2018-10-03  19:26:42'
-AABUILT=: '2018-10-03  19:28:26'
-AABUILT=: '2018-10-03  20:41:40'
-AABUILT=: '2018-10-03  21:37:42'
-AABUILT=: '2018-10-03  23:01:25'
-AABUILT=: '2018-10-07  02:35:42'
-AABUILT=: '2018-10-07  02:38:21'
-AABUILT=: '2018-10-07  02:46:07'
-AABUILT=: '2018-10-07  03:13:27'
-AABUILT=: '2018-10-07  03:18:12'
+AABUILT=: '2018-10-08  02:46:05'
+AABUILT=: '2018-10-08  02:51:15'
+AABUILT=: '2018-10-08  02:56:54'
+AABUILT=: '2018-10-08  03:03:48'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -61,6 +47,14 @@ UNDEF_CAPT=: 'untitled'
 TOLERANCE=: 1e_5
 WARNPLEX=: 1
 
+'==================== [z] paths.ijs ===================='
+]TPATH_UU=:  jpath'~Gituu/'
+]TPATH_CAL=: jpath'~Gitcal/'
+]TPATH_CAL_LOG=: jpath '~/'
+]TPATH_SAMPLES=: TPATH_CAL
+]TPATH_TTABLES=: jpath '~/tabula-user/'
+]TPATH_ARCHIVE=: jpath '~/j-temp/ttarchive'
+
 '==================== [cal] utilities.ijs ===================='
 
 cocurrent 'cal'
@@ -72,17 +66,6 @@ cocurrent 'cal'
 
 
 items=: 3 : 'i. #TTn'
-
-
-sl=: 4 : 0
-
-
-SL=. '/'
-if. SL={:x do. x=. }:x end.
-if. SL={.y do. x=. }.y end.
-x,SL,y
-)
-
 absent_z_=: [: +./ 0 > [: nc ;:
 begins_z_=: ] -: [ {.~ [: # ]
 bh=:    ] }.~ [: >: ' ' i.~ ]
@@ -336,7 +319,7 @@ a=. empty''
 
 baditem=: 3 : 0
 
-if. y e. }.items'' do.
+if. validitem y do.
   0 [ BADITEM=: ''
 else.
   1 [ BADITEM=: 1 message y
@@ -346,7 +329,7 @@ end.
 baditems=: 3 : 0
 
 
-if. all z=. y e. }.items'' do.
+if. all z=.validitem y do.
   0 [ BADITEMS=: ''
 else.
   1 [ BADITEMS=: 1 message (-.z)#y
@@ -418,7 +401,7 @@ ceiling=: >.
 
 changeunits=: 4 : 0
 
-if. -.y e. }.items'' do. 1 message y return. end.
+if. -.validitem y do. 1 message y return. end.
 'un0 cyc fac0'=. convert z=. >y{UNITN
 'un1 cyc fac1'=. convert x0=. x
 
@@ -531,9 +514,21 @@ end.
 i.0 0
 )
 
+compat=: 4 : 0
+
+uuengine'CPAT ',x,'>',y
+) 
+
 compat_i=: 4 : 0
 
 (>x{UNITS) compat (>y{UNITS)
+)
+
+convert=: 3 : 0
+
+
+
+uuengine'CONV ',y
 )
 
 copyline=: 3 : 0
@@ -599,8 +594,8 @@ docompatlist=: 0&$: :(4 : 0)
 
 
 z=. >y{UNITN
-if. x do. compatlist z
-else. uniform each compatlist z
+if. x do. uniform each uuengine'CPLI',z
+else. uuengine'CPLI',z
 end.
 )
 
@@ -621,7 +616,7 @@ dummy=: empty
 
 duplicate=: 3 : 0
 
-if. y e. }.items'' do.
+if. validitem y do.
   0 ttsort (items''),y
   7 message y
 else.
@@ -1003,7 +998,7 @@ nom
 
 getvalue=: 3 : 0
 
-if. y e. }.items'' do.
+if. validitem y do.
   unit=. >y{UNITN
   unit adj y{vquan
 else.
@@ -1064,10 +1059,8 @@ if. x do. sep else. typ end.
 
 gooditem=: 3 : 0
 
-if. y e. }.items'' do.
-  empty''
-else.
-  10 message y
+if. validitem y do. empty''
+else. 10 message y
 end.
 )
 
@@ -1084,7 +1077,7 @@ hide=: 3 : 0
 if. y-:0 do.
   vhidd=: flags 0
   36 message''
-elseif. all y e. items'' do.
+elseif. validitems y do.
   vhidd=: 1 y}vhidd
   37 message y
 elseif.  do.
@@ -1204,8 +1197,6 @@ if. -. isNum y do. 0 return. end.
 _ e. |y
 )
 
-isItem=: 3 : 'y e. }.items 0'
-isItems=: 3 : 'all y e. }.items 0'
 isNum=: ([: 1: 0 + ]) ::0:
 isnums=: [: *./ '0123456789' e.~ ]
 isnums=: (0 < #) *. [: *./ '0123456789' e.~ ]
@@ -1248,7 +1239,9 @@ nfx=: ''&$: : (4 : 0)
 f=. (#y)$ boxopen x
 z=. i.0 0
 for_i. i.#y do.
-  z=. z , (>i{f) format i{y
+  z=. z , (>i{f) format__uun i{y
+
+
 end.
 pad rjust z
 )
@@ -1499,10 +1492,11 @@ if. 'literal'-:datatype y do.
   un0=. y
   y=. 0
 else.
-  if. -.y e. }.items'' do. 1 message y return. end.
+  if. -.validitem y do. 1 message y return. end.
   un0=. >y{UNITN
 end.
-'a f0 un2 b'=. cnvj un0
+'a f0 un2 b'=. uuengine'CNVJ ',un0
+
 sp=. ;:'= da h k ? ? M ? ? G ? ? T ? ? P ? ? E ? ? Z ? ? Y   y ? ? z ? ? a ? ? f ? ? p ? ? n ? ? mu ? ? m  c  d'
 
 if. 'literal'-:datatype x do.
@@ -1564,31 +1558,22 @@ CAPT=: y
 
 setvalue=: 4 : 0
 
-if. y e. }.items'' do.
-  unit=. '_',>y{UNITN
-  x=. unit adj x
-  if. x= y{vquan do.
-    13 message y; x return.
-  end.
-  vqua0=: vquan
-  vquan=: x y}vquan
-  CH=: recal y
-  if. y{CH do.
-    16 message y; x
-  else.
-    17 message y; x
-  end.
-else.
-  10 message y
+if. -.validitem y do. 10 message y return. end.
+unit=. '_',>y{UNITN
+x=. unit adj x
+if. x= y{vquan do. 13 message y; x return. end.
+vqua0=: vquan
+vquan=: x y}vquan
+CH=: recal y
+if. y{CH do. 16 message y; x
+else. 17 message y; x
 end.
 )
 
 setvunits=: 4 : 0
 
 
-if. -. y e. }.items'' do.
-  10 message y return.
-end.
+if. -.validitem y do. 10 message y return. end.
 r=. y
 nm=. dltb QT takeafter x
 zz=. dltb QT taketo x
@@ -1597,7 +1582,7 @@ un=. SP takeafter zz
 smoutput '+++ setvunits y=',(":y),' vs=',vs,' un=',un,' nm=',nm
 if. 0<#nm do. r relabel nm end.
 if. 0<#un do. r changeunits~ un end.
-r setvalue~ v
+v setvalue r
 )
 
 shortpath=: 3 : 0
@@ -2167,7 +2152,7 @@ validitems=: 3 : 'all y e. }.items 0'
 validlit=: isLit
 validnum=: isNo
 validrr=: validitems *. isLen2
-validrv=: isLen2 *. ([: isItem {.) *. [: isFNo {:
+validrv=: isLen2 *. ([: validitem {.) *. [: isFNo {:
 
 warnplex=: 0 ddefine
 
@@ -3082,11 +3067,8 @@ uuconnect=: 3 : 0
 uun=: '' conew 'uu'
 uuengine=: uuengine__uun
 
-compat		=: compatible__uun
-compatlist	=: compatlist__uun
-convert		=: convert__uun
-cnvj		=: cnvj__uun
-format		=: format__uun
+
+
 selfcanc		=: selfcanc__uun
 udat		=: udat__uun
 udiv		=: udiv__uun
@@ -3094,74 +3076,6 @@ udumb		=: udumb__uun
 uniform		=: uniform__uun
 i.0 0
 )
-
-0 :0
---- uuengine instructions: see ~Gituu/source/
-adj		adju	NOT DONE
-compat		cpat
-compatlist	cpli
-convert		conv
-cnvj		cnvj
-format		fmat
-scino		scin
-selfcanc		slfc
-set_ucase		setu
-sci		QSCI
-udat		udat
-udiv		udiv
-udumb		udum
-uurowsc		uroc
-uurowsf		urof
-)
-
-0 :0
-CAL used to need: ucode and ucods
-but currently…
-  ucode is unused
-  ucods is called only by ct0_cal_
-  ct_cal_=: ct1_cal_
--
----USE OF PUBLIC WORDS BY CAL Sunday 2 September 2018...
-compatible	incompat(combine) compat compat_i
-compatlist	docompatlist compare incompat(combine) compat compat_i
-convert		changeunits fexp1 fexp_nominal ttadl ttafl ttappend ttload
-cnvj (cnvCunit)	scaleunits
-format (formatOUT)	nfx
-scino		NOTUSED
-selfcanc		combine
-setsci (sci)	NOTUSED	
-set_ucase		NOTUSED
-startuu		NOTUSED
-ucase		NOTUSED …is TABULA accessing UU directly?
-udat		ttauc ttauf
-udiv		combine fnline
-udumb		ttauc
-uniform		ct1 docompatlist
-uurowsc		NOTUSED
-uurowsf		NOTUSED
-UUC_uu_		califace[VUUC]
-UUF_uu_		califace[VUUF]
-ucods_uu_		NOTUSED
-adj (placeholder)	getvalue setvalue
-  getvalue	califace[VALU] plotv
-  setvalue	califace[...] plotxSwift plotx plotz setvunits
----TO DO:
-	suffix all these with: _uu ?
-	elim NOTUSED from UU
-	elim direct use of _uu_
-	see if any can be avoided
-	consider a keyhole: uuengine (adverb if any dyadic)
-	restore adj_uu_ -but base it on format*
-)
-
-'==================== [z] paths.ijs ===================='
-]TPATH_CAL=: jpath'~Gitcal/'
-]TPATH_CAL_LOG=: jpath '~/'
-]TPATH_SAMPLES=: TPATH_CAL
-]TPATH_TTABLES=: jpath '~/tabula-user/'
-]TPATH_ARCHIVE=: jpath '~/j-temp/ttarchive'
-
-tpaths''
 
 '==================== [cal] sesses.ijs ===================='
 0 :0
@@ -3248,6 +3162,17 @@ sss_z_=: sss
 cocurrent 'cal'
 
 VERSION=: '2.0.0'
+
+sl_z_=: 4 : 0
+
+
+
+SL=. '/'
+if. SL={:x do. x=. }:x end.
+if. SL={.y do. x=. }.y end.
+x,SL,y
+)
+
 start=: 3 : 0
 
 
