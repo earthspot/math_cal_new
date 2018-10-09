@@ -1098,18 +1098,6 @@ mm=. 3}.dtb x{MESSAGELIST  NB. drop prefixed message-ID (3 bytes)
 empty MESSAGE=: sw '[cal#(x)] ',mm
 )
 
-nfx=: ''&$: : (4 : 0)
-  NB. format numbers y into col using formats: x
-f=. (#y)$ boxopen x  NB. formats for each element of y
-z=. i.0 0
-for_i. i.#y do.
-  z=. z , (>i{f) format__uun i{y
-	NB. use of non-public UU-verb as a method
-	NB. -permitted ONLY for a non-operational verb like nfx.
-end.
-pad rjust z
-)
-
 nochange=: empty
 noop=: empty
 notitem=: ([: -. ] e. [: }. items) ::1:

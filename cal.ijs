@@ -14,6 +14,8 @@ AABUILT=: '2018-10-08  02:56:54'
 AABUILT=: '2018-10-08  03:03:48'
 AABUILT=: '2018-10-08  11:34:04'
 AABUILT=: '2018-10-08  12:31:57'
+AABUILT=: '2018-10-08  22:02:35'
+AABUILT=: '2018-10-09  04:09:14'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -1254,18 +1256,6 @@ mm=. 3}.dtb x{MESSAGELIST
 empty MESSAGE=: sw '[cal#(x)] ',mm
 )
 
-nfx=: ''&$: : (4 : 0)
-
-f=. (#y)$ boxopen x
-z=. i.0 0
-for_i. i.#y do.
-  z=. z , (>i{f) format__uun i{y
-
-
-end.
-pad rjust z
-)
-
 nochange=: empty
 noop=: empty
 notitem=: ([: -. ] e. [: }. items) ::1:
@@ -2290,11 +2280,11 @@ d arrw=. unis=. fact=. star=. vd
 d lnos=. uc >brace each ":each items''
 d hold=. uc (HOLD fl vhold)
 d altd=. uc ('@'fl CH)
-d quan=. uc UNITN nfx vquan
+	d quan=. uc UNITN nfx vquan
 d unin=. sp ,. > (uc&uniform) each UNITN
 if. 1 e. y do.
   d unis=. sp ,. > (uc&uniform) each UNITS
-  d fact=. uc 'j'nfx vfact
+	  d fact=. uc 'j'nfx vfact
   d star=. uc sp ,.st
 end.
 if. 3 e. y do.
@@ -2321,6 +2311,8 @@ if. absent'CAPT' do. ,:40 message'' return. end.
 
 if. 2>nn=. #ii=. items'' do. ,:CAPT return. end.
 wc=. uucp"1
+fmt=. ":"0
+ufmt=. [: wc&uniform"1 >
 SEP1=. '|' $~ nn,2
 SEP2=. ' * ' $~ nn,3
 SEP3=. ' = ' $~ nn,3
@@ -2328,32 +2320,31 @@ arrw=. wc arrowch arrowgen''
 lnos=. >brace each ii
 hold=. HOLD fl vhold
 altd=. ALTERED fl CH
+sicn=. ufmt UNITN
+sics=. ufmt UNITS
+fact=. rjust fmt vfact
+quan=. rjust fmt vquan
+siqn=. rjust fmt vsiqn
 un=. >UNITN
-sicn=. > (wc&uniform) each UNITN
 us=. >UNITS
-sics=. > (wc&uniform) each UNITS
-qtys=. (UNITN nfx vquan) ,. SP ,. sicn
-
-siqn=. >": each vsiqn
 uuqy=. siqn ,.SP ,.us
-qty2=. mjust wc un&uu__uun uuqy
+qtys=. mjust wc un uu__uun uuqy
 
 
+ lin0=. sw' +++ (CAPT) in diagnostic mode y=(y)'
 select. y
+case. 0 do.
+ lin0=. sw'y=(y)       lnos       fact       quan     siqn sics'
+ z=. arrw ,.lnos ,.hold ,.altd ,.fact ,.SP ,.quan ,.SP ,.siqn ,.SP ,.sics
 case. 1 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.SEP2 ,.siqn ,.SP ,.sics
+ lin0=. sw'y=(y)       lnos ------quan un-- ----uuqy-----  -----qtys--------'
+ z=. arrw ,.lnos ,.SP ,.quan ,.SP ,.un ,.SP ,.uuqy ,.SP ,.qtys
 case. 2 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.SEP1 ,.un ,.SEP2 ,.uuqy
-case. 3 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.SEP1 ,.un ,.SEP2 ,.uuqy
-case. 4 do.
- z=. arrw ,.lnos ,.hold ,.altd ,.qty2 ,.SEP3 ,.qtys
+ lin0=. sw'y=(y)       lnos       qtys        ||      quan un        siqn us'
+ z=. arrw ,.lnos ,.hold ,.altd ,.qtys ,.SEP1 ,.quan ,.SP ,.un ,.SP ,.siqn ,.SP ,.us
 case.   do.
- y=. 0
- z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qty2 ,.SP ,.SP ,.TTn
-end.
-if. 0=y do. lin0=. CAPT
-else.       lin0=. sw' +++ (CAPT) in diagnostic mode y=(y)'
+ lin0=. CAPT
+ z=. arrw ,.lnos ,.hold ,.altd ,.SP ,.qtys ,.SP ,.SP ,.TTn
 end.
 lin0 , z #~ force0 -.vhidd
 )
@@ -3075,6 +3066,8 @@ pi=: 1p1
 
 dfr=: *&(180%pi)
 rfd=: *&(pi%180)
+BP=: 373.15
+FP=: 273.15
 
 '==================== [cal] public ===================='
 

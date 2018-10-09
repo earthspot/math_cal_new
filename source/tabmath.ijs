@@ -66,3 +66,9 @@ dfr=: *&(180%pi)
 rfd=: *&(pi%180)
 
 NB. =========================================================
+NB. Physical consts
+
+BP=: 373.15	NB. [K] Boiling point of water
+FP=: 273.15	NB. [K] Freezing point of water
+
+NB. =========================================================

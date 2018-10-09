@@ -15,9 +15,6 @@ NB. compat		=: compatible__uun
 NB. compatlist	=: compatlist__uun
 NB. convert		=: convert__uun
 NB. cnvj		=: cnvj__uun
-NB. format		=: format__uun
-	NB. format only used by (non-operational verb) nfx
-	NB. which now directly calls format__uun
 NB. scino 		=: scino__uun	NB. NOTUSED?
 selfcanc		=: selfcanc__uun
 NB. set_ucase		=: set_ucase__uun	NB. NOTUSED?
