@@ -7,27 +7,6 @@ Friday 28 September 2018  18:34:24
 
 cocurrent 'cal'
 
-NB. ========================================================
-NB. Table to interpret / validate symbolic args in CAL
-NB. No TAB chars! Use only spaces, to preserve columns.
-NB. USE THIS VERB'S CODE to identify a symbolic arg
-NB. EXAMPLE:
-NB. vr -means the "quantity" (number) of item: r
-NB.    -implemented as: vr=. r{vquan  (see below.)
-NB. ========================================================
-ARGEXP=: 0 : 0
-validbool  b=. _".yy
-validnum   n=. _".yy
-validitem  r=. {. _".yy
-validnum   v=. 1{ _".yy
-validnum   vr=. r{vquan
-validrr    rr=. _".yy
-validitems rrr=. _".yy
-validrv    rv=. _".yy
-validlit   yy
-validlit   zz=. dropwd yy
-)
-
 Cols=: 4 : 0
   NB. get multiple col-pairs
 z=. 0$0
@@ -458,7 +437,6 @@ for_n. i do.      NB. list: i is 1 2 3 ...
 end.
 )
 
-dropwd=: ] }.~ [: >: ' ' i.~ ]
 dumbs=: }.@I.@(-.@hasfb)
 dummy=: empty
 
@@ -1441,17 +1419,17 @@ end.
 
 setvunits=: 4 : 0
   NB. set x as the value+units of item y
-  NB. if x contains QT then split off name: nm
+  NB. if x contains QT then split at QT: (zz;name)
 if. -.validitem y do. 10 message y return. end.
 r=. y
-nm=. dltb QT takeafter x
+name=. dltb QT takeafter x
 zz=. dltb QT taketo x
-v=. ".vs=. SP taketo zz
-un=. SP takeafter zz
-smoutput '+++ setvunits y=',(":y),' vs=',vs,' un=',un,' nm=',nm
-if. 0<#nm do. r relabel nm end.
-if. 0<#un do. r changeunits~ un end.
-v setvalue r
+valu=. ".valustr=. SP taketo zz
+units=. SP takeafter zz
+sllog 'setvunits y zz valustr valu units name'
+if. 0<#name do. r relabel name end.
+if. 0<#units do. r changeunits~ units end.
+valu setvalue r
 )
 
 shortpath=: 3 : 0
@@ -2078,8 +2056,8 @@ NB.    tabengine 'Inic'
 select. INST=: 4{. INSTR=: y  NB. (y) is now a string
 case. 'Init' do. start 1  NB. start with SAMPLE t-table
 case. 'Inic' do. start 0  NB. start with empty t-table
-case. 'Repe' do. RETURNED=: tabengineCore LASTINSTR
-case.        do. RETURNED=: tabengineCore INSTR
+case. 'Repe' do. RETURNED=: tabengineCore :: tabengineError LASTINSTR
+case.        do. RETURNED=: tabengineCore :: tabengineError INSTR
 end.
 if. changesTtable INST do.
   snapshot''  NB. supports INST: Undo/Redo
@@ -2089,9 +2067,14 @@ end.
 RETURNED return.
 )
 
+tabengineError=: 3 : 0
+  NB. analyse reason for tabengineCore:: error
+smoutput '>>> tabengineError: bad instruction: ', ; y
+)
+
 assnum=: 3 : 0
-  NB. appears ONLY in: compile
-  NB. called ONLY by: tabengineCore
+  NB. appears ONLY in: make_tabengineCore
+  NB. called ONLY by: tabengineCore (generated)
 assert. isNum y
 assert. -. any isNaN y
 y return.
@@ -2128,10 +2111,11 @@ for_line. <;._2 CAL do.
   end.
   z=.LF,~ z, sw '                 (phrase)'
 end.
+z=. z,sw'case. do. assert. 0 (NB) >>> UNKNOWN INSTRUCTION',LF
 z=. z,'end.',LF
-  NB. No more generated code must follow this "end."
+  NB. No more generated code must follow this "end."-statement
   NB. in case it wipes out the returned value from the semantics.
 tabengineCore=: (3 : z)"1
-NB. tv 5 !:5<'tabengineCore'
+NB. tv 5!:5<'tabengineCore'  NB. diagnostic display of generated verb
 i.0 0
 )

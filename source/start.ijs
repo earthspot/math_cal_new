@@ -25,8 +25,6 @@ sss''        NB. recommended session trace settings
 load TPATH_UU sl 'uu.ijs'
 uuconnect''
 make_tabengineCore''  NB. the core of: tabengine
-tt_z_=: tabengine_z_=: tabengine_cal_
-  NB. >>>>> WILL BREAK WHEN CAL BECOMES A CLASS!
 globmake'' NB. make global nouns
 cmake''    NB. make the i/f tables
 NB. DODGY... getversion TPATH_CAL
@@ -43,12 +41,19 @@ end.
 warnplex'' [ WARNPLEX=: 1
 )
 
+tt_z_=: tabengine_z_=: tabengine_cal_
+
+ttt_z_=: 3 : 0
+z=:  tabengine_cal_ y
+zz=: tabengine_cal_ 'CTBU'
+(":z),LF,LF,zz
+)
+
 
 NB. ========================================================
 globmake=: 3 : 0
   NB. Init global nouns
 file=: tbx UNDEF
-ARGS=: targs ARGEX=: <;._2 ARGEXP	NB. i/f args-table
 ARROWCH=: ARROWCH1	NB. arrow-drawing chars (see consts.ijs)
 DIRTY=: 0		NB. =1 means t-table needs saving
 RETURNED=: ''	NB. noun returned by i/f call

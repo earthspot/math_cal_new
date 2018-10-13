@@ -9,7 +9,7 @@ NB. ========================================================
   NB. The tabengine instruction set.
   NB. DON'T USE HARD TAB chars! Use only spaces!
   NB.  1st col: name of instruction (always 4 bytes)
-  NB.  2nd col: arg format (always <:4 bytes - see above: ARGEXP)
+  NB.  2nd col: arg format (always <:4 bytes)
   NB.  3rd col: implements the instruction
   NB.  \ begins comment (description).
   NB. NAMING CONVENTION for instructions:
@@ -19,7 +19,7 @@ NB. ========================================================
   NB. (Instr: "Repe" not implemented below: recognized by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '22 Sep 2018  22:43:15'  \CAL last saved
+QSAV void '13 Oct 2018  03:43:22'  \CAL last saved
 Inic void start 0                  \=(re-)start with clear tt
 Init void start 1                  \=(re-)start with SAMPLE tt
 Repe void dummy''                  \=repeat last action
@@ -74,6 +74,7 @@ UCMU r    1 docompatlist r         \item compat units (simode)
 UCOM r    docompatlist r           \item compat units (system)
 UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
+UUUU yy   uuengine INSTR           \call uu converter directly
 VALU r    getvalue r               \value of item -corrected
 VERS void VERSION                  \version of engine
 VUUC yy   uuengine INSTR           \UUC (filtered by yy)
@@ -246,7 +247,6 @@ t3mv r    r setvalue~ vr*1000      \item times 1000
 unhi void hide 0                   \unhide all items
 unit rzz  zz changeunits r         \set units of item
 unsc r    '' scaleunits r          \unscaled units
-uuuu yy   uuengine INSTR           \call uu converter directly
 valu rv   v setvalue r             \set value of item
 vunn rzz  zz setvunits r           \set value+units of item
 yoct r    'y' scaleunits r         \yocto- item
@@ -254,20 +254,4 @@ yott r    'Y' scaleunits r         \yotta- item
 zept r    'z' scaleunits r         \zepto- item
 zero r    0 setvalue r             \set item to 0
 zett r    'Z' scaleunits r         \zetta- item
-)
-
-NB. ========================================================
-  NB. Table to validate and interpret tabengine arg options
-  NB. No TAB chars! Use only spaces!
-ARGEXP=: 0 : 0
-validbool  b=. _".yy
-validnum   n=. _".yy
-validitem  r=. {. _".yy
-validnum   v=. 1{ _".yy
-validnum   vr=. r{vquan
-validrr    rr=. _".yy
-validitems rrr=. _".yy
-validrv    rv=. _".yy
-validlit   yy
-validlit   zz=. dropwd yy
 )

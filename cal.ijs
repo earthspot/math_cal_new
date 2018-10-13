@@ -16,6 +16,11 @@ AABUILT=: '2018-10-08  11:34:04'
 AABUILT=: '2018-10-08  12:31:57'
 AABUILT=: '2018-10-08  22:02:35'
 AABUILT=: '2018-10-09  04:09:14'
+AABUILT=: '2018-10-13  01:26:37'
+AABUILT=: '2018-10-13  02:36:55'
+AABUILT=: '2018-10-13  02:43:41'
+AABUILT=: '2018-10-13  02:45:04'
+AABUILT=: '2018-10-13  02:58:42'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -197,18 +202,6 @@ Friday 28 September 2018  18:34:24
 )
 
 cocurrent 'cal'
-ARGEXP=: 0 : 0
-validbool  b=. _".yy
-validnum   n=. _".yy
-validitem  r=. {. _".yy
-validnum   v=. 1{ _".yy
-validnum   vr=. r{vquan
-validrr    rr=. _".yy
-validitems rrr=. _".yy
-validrv    rv=. _".yy
-validlit   yy
-validlit   zz=. dropwd yy
-)
 
 Cols=: 4 : 0
 
@@ -1585,14 +1578,14 @@ setvunits=: 4 : 0
 
 if. -.validitem y do. 10 message y return. end.
 r=. y
-nm=. dltb QT takeafter x
+name=. dltb QT takeafter x
 zz=. dltb QT taketo x
-v=. ".vs=. SP taketo zz
-un=. SP takeafter zz
-smoutput '+++ setvunits y=',(":y),' vs=',vs,' un=',un,' nm=',nm
-if. 0<#nm do. r relabel nm end.
-if. 0<#un do. r changeunits~ un end.
-v setvalue r
+valu=. ".valustr=. SP taketo zz
+units=. SP takeafter zz
+sllog 'setvunits y zz valustr valu units name'
+if. 0<#name do. r relabel name end.
+if. 0<#units do. r changeunits~ units end.
+valu setvalue r
 )
 
 shortpath=: 3 : 0
@@ -2203,8 +2196,8 @@ if. isBoxed y do. y=. nb y end.
 select. INST=: 4{. INSTR=: y
 case. 'Init' do. start 1
 case. 'Inic' do. start 0
-case. 'Repe' do. RETURNED=: tabengineCore LASTINSTR
-case.        do. RETURNED=: tabengineCore INSTR
+case. 'Repe' do. RETURNED=: tabengineCore :: tabengineError LASTINSTR
+case.        do. RETURNED=: tabengineCore :: tabengineError INSTR
 end.
 if. changesTtable INST do.
   snapshot''
@@ -2212,6 +2205,11 @@ if. changesTtable INST do.
   warnplex''
 end.
 RETURNED return.
+)
+
+tabengineError=: 3 : 0
+
+smoutput '>>> tabengineError: bad instruction: ', ; y
 )
 
 assnum=: 3 : 0
@@ -2253,6 +2251,7 @@ for_line. <;._2 CAL do.
   end.
   z=.LF,~ z, sw '                 (phrase)'
 end.
+z=. z,sw'case. do. assert. 0 (NB) >>> UNKNOWN INSTRUCTION',LF
 z=. z,'end.',LF
 
 
@@ -2771,6 +2770,7 @@ UCMU r    1 docompatlist r         \item compat units (simode)
 UCOM r    docompatlist r           \item compat units (system)
 UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
+UUUU yy   uuengine INSTR           \call uu converter directly
 VALU r    getvalue r               \value of item -corrected
 VERS void VERSION                  \version of engine
 VUUC yy   uuengine INSTR           \UUC (filtered by yy)
@@ -2943,7 +2943,6 @@ t3mv r    r setvalue~ vr*1000      \item times 1000
 unhi void hide 0                   \unhide all items
 unit rzz  zz changeunits r         \set units of item
 unsc r    '' scaleunits r          \unscaled units
-uuuu yy   uuengine INSTR           \call uu converter directly
 valu rv   v setvalue r             \set value of item
 vunn rzz  zz setvunits r           \set value+units of item
 yoct r    'y' scaleunits r         \yocto- item
@@ -3080,8 +3079,6 @@ uuconnect=: 3 : 0
 uun=: '' conew 'uu'
 uuengine=: uuengine__uun
 
-
-
 selfcanc		=: selfcanc__uun
 udat		=: udat__uun
 udiv		=: udiv__uun
@@ -3211,7 +3208,6 @@ warnplex'' [ WARNPLEX=: 1
 globmake=: 3 : 0
 
 file=: tbx UNDEF
-ARGS=: targs ARGEX=: <;._2 ARGEXP
 ARROWCH=: ARROWCH1
 DIRTY=: 0
 RETURNED=: ''
