@@ -828,27 +828,12 @@ nom
 )
 
 getvalue=: 3 : 0
-  NB. get the value of item y (adjusted)
-if. validitem y do.
-  unit=. >y{UNITN
-  unit adj y{vquan  NB. adjust value
+  NB. get the value of item y
+if. validitem y do. y{vquan
 else.
   10 message y
 end.
 )
-
-NB. ==================================================
-adj=: 4 : 0
-  NB. adjust (num) y according to (unit) x
-  NB. serves verbs: getvalue, setvalue ONLY
-  NB. FORMERLY DONE BY adj_uu_
-  NB. Intercept the call here to see how best to do it
-  NB. now that adj_uu has been eliminated.
-  NB. IAC Wednesday 5 September 2018  12:33:44
-ssw '>>> DUMMY adj: x=(x) y=(y)'
-y return.
-)
-NB. ==================================================
 
 getversion=: 3 : 0
   NB. get version# from manifest file in TPATH (y)
@@ -1223,7 +1208,6 @@ f_1 f1 y
 )
 
 plotz=: 4 : 0
-NB. ??? SHOULD THIS USE: adj ?
   NB. plot t-table using vec input to item: x
   NB. y is item ID, x is X-data (J-expression)
 vals=. ".x  NB. assume x is validated: num vec exprn
@@ -1406,8 +1390,6 @@ CAPT=: y
 setvalue=: 4 : 0
   NB. set x as the value of item y
 if. -.validitem y do. 10 message y return. end.
-unit=. '_',>y{UNITN  NB. prefix '_' works adj in reverse
-x=. unit adj x  NB. adjust value of x
 if. x= y{vquan do. 13 message y; x return. end.
 vqua0=: vquan
 vquan=: x y}vquan

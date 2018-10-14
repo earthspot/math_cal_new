@@ -72,10 +72,12 @@ TPUC void TPATH_UUC                \reference path to constants
 TPUF void TPATH_UUF                \reference path to functions
 UCMU r    1 docompatlist r         \item compat units (simode)
 UCOM r    docompatlist r           \item compat units (system)
+UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
 UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
 UUUU yy   uuengine INSTR           \call uu converter directly
-VALU r    getvalue r               \value of item -corrected
+VALF r    getformattedvalue r      \value of item -formatted string
+VALU r    getvalue r               \value of item -numeric
 VERS void VERSION                  \version of engine
 VUUC yy   uuengine INSTR           \UUC (filtered by yy)
 VUUF yy   uuengine INSTR           \UUF (filtered by yy)

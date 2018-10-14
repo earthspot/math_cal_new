@@ -21,6 +21,7 @@ AABUILT=: '2018-10-13  02:36:55'
 AABUILT=: '2018-10-13  02:43:41'
 AABUILT=: '2018-10-13  02:45:04'
 AABUILT=: '2018-10-13  02:58:42'
+AABUILT=: '2018-10-14  02:38:35'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -625,7 +626,6 @@ for_n. i do.
 end.
 )
 
-dropwd=: ] }.~ [: >: ' ' i.~ ]
 dumbs=: }.@I.@(-.@hasfb)
 dummy=: empty
 
@@ -1013,23 +1013,12 @@ nom
 
 getvalue=: 3 : 0
 
-if. validitem y do.
-  unit=. >y{UNITN
-  unit adj y{vquan
+if. validitem y do. y{vquan
 else.
   10 message y
 end.
 )
-adj=: 4 : 0
 
-
-
-
-
-
-ssw '>>> DUMMY adj: x=(x) y=(y)'
-y return.
-)
 getversion=: 3 : 0
 
 z=. fread y,'manifest.ijs'
@@ -1562,8 +1551,6 @@ CAPT=: y
 setvalue=: 4 : 0
 
 if. -.validitem y do. 10 message y return. end.
-unit=. '_',>y{UNITN
-x=. unit adj x
 if. x= y{vquan do. 13 message y; x return. end.
 vqua0=: vquan
 vquan=: x y}vquan
@@ -2715,7 +2702,7 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '22 Sep 2018  22:43:15'  \CAL last saved
+QSAV void '13 Oct 2018  03:43:22'  \CAL last saved
 Inic void start 0                  \=(re-)start with clear tt
 Init void start 1                  \=(re-)start with SAMPLE tt
 Repe void dummy''                  \=repeat last action
@@ -2952,20 +2939,6 @@ zero r    0 setvalue r             \set item to 0
 zett r    'Z' scaleunits r         \zetta- item
 )
 
-
-ARGEXP=: 0 : 0
-validbool  b=. _".yy
-validnum   n=. _".yy
-validitem  r=. {. _".yy
-validnum   v=. 1{ _".yy
-validnum   vr=. r{vquan
-validrr    rr=. _".yy
-validitems rrr=. _".yy
-validrv    rv=. _".yy
-validlit   yy
-validlit   zz=. dropwd yy
-)
-
 '==================== [cal] message.ijs ===================='
 0 :0
 Friday 28 September 2018  18:04:47
@@ -3071,8 +3044,6 @@ FP=: 273.15
 '==================== [cal] public ===================='
 
 cocurrent 'cal'
-
-tabengine_z_=: tabengine_cal_
 
 uuconnect=: 3 : 0
 
@@ -3191,8 +3162,6 @@ sss''
 load TPATH_UU sl 'uu.ijs'
 uuconnect''
 make_tabengineCore''
-tt_z_=: tabengine_z_=: tabengine_cal_
-
 globmake''
 cmake''
 progress _
@@ -3203,6 +3172,14 @@ if. y-:0 do. ttnew''
 else. ttload''
 end.
 warnplex'' [ WARNPLEX=: 1
+)
+
+tt_z_=: tabengine_z_=: tabengine_cal_
+
+ttt_z_=: 3 : 0
+z=:  tabengine_cal_ y
+zz=: tabengine_cal_ 'CTBU'
+(":z),LF,LF,zz
 )
 
 globmake=: 3 : 0

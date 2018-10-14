@@ -3,8 +3,6 @@
 
 cocurrent 'cal'
 
-tabengine_z_=: tabengine_cal_
-
 uuconnect=: 3 : 0
   NB. setup the verbs that need to call into UU
 NB. uun=: uuinit_uu_''  NB. CAL's locator to its UU instance
