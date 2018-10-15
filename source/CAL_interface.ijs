@@ -19,7 +19,7 @@ NB. ========================================================
   NB. (Instr: "Repe" not implemented below: recognized by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '13 Oct 2018  03:43:22'  \CAL last saved
+QSAV void '15 Oct 2018  01:00:00'  \CAL last saved
 Inic void start 0                  \=(re-)start with clear tt
 Init void start 1                  \=(re-)start with SAMPLE tt
 Repe void dummy''                  \=repeat last action
@@ -70,11 +70,13 @@ TPTT void TPATH_TTABLES            \reference path to t-tables
 TPUU void TPATH_UU                 \reference path to UU addon
 TPUC void TPATH_UUC                \reference path to constants
 TPUF void TPATH_UUF                \reference path to functions
-UCMU r    1 docompatlist r         \item compat units (simode)
+UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 UCOM r    docompatlist r           \item compat units (system)
 UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
-UNIS r    r{UNITS                  \units of item -SI
-UNIT r    r{UNITN                  \units of item -nominal
+UNIS r    r{UNITS                  \SI units of item (system)
+UNSU r    uniform r{UNITS          \SI units of item (SIC-mode)
+UNIT r    r{UNITN                  \units of item -nominal (system)
+UNTU r    uniform r{UNITN          \units of item -nominal (SIC-mode)
 UUUU yy   uuengine INSTR           \call uu converter directly
 VALF r    getformattedvalue r      \value of item -formatted string
 VALU r    getvalue r               \value of item -numeric

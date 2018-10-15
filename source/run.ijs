@@ -32,10 +32,10 @@ smoutput '--- run.ijs: CAL BUILTFILE loaded: ',BUILTFILE
 load TESTFILE
 smoutput '--- run.ijs: CAL TESTFILE completed without discrepancies: ',TESTFILE
 
-smoutput tabengine 'Init'
-smoutput tabengine 'load 3'  NB. non-trivial asteroid t-table
-smoutput tabengine 'ssic 1'  NB. set unicode conformance level
-smoutput tabengine 'CTBU'    NB. show loaded t-table
+smoutput tabengine_cal_ 'Init'
+smoutput tabengine_cal_ 'load 3'  NB. non-trivial asteroid t-table
+smoutput tabengine_cal_ 'ssic 1'  NB. set unicode conformance level
+smoutput tabengine_cal_ 'CTBU'    NB. show loaded t-table
 
 NB. ---------------------------------------------------------
 
@@ -53,12 +53,12 @@ load '~Gittab/tabula.ijs'
 
 
 0 :0
-smoutput 'CAL: Init ',tabengine 'Init'
-smoutput 'CAL: VERS ',tabengine 'VERS'  NB. VERSION number
-smoutput 'CAL: CTBU ',tabengine 'CTBU'
-smoutput 'CAL: {1} 100 ',tabengine 'valu 1 100'
+smoutput 'CAL: Init ',tabengine_cal_ 'Init'
+smoutput 'CAL: VERS ',tabengine_cal_ 'VERS'  NB. VERSION number
+smoutput 'CAL: CTBU ',tabengine_cal_ 'CTBU'
+smoutput 'CAL: {1} 100 ',tabengine_cal_ 'valu 1 100'
 -
-smoutput OUT_z_=: tabengine IN_z_=: >cutopen 0 :0
+smoutput OUT_z_=: tabengine_cal_ IN_z_=: >cutopen 0 :0
 VERS
 CTBU
 addp 1 1

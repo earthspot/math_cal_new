@@ -827,11 +827,25 @@ nom=. 'exe',":y
 nom
 )
 
+NB. getvalue=: 3 : 0
+NB.   NB. get the value of item y
+NB. if. validitem y do. y{vquan
+NB. else.
+NB.   10 message y
+NB. end.
+NB. )
+
 getvalue=: 3 : 0
-  NB. get the value of item y
-if. validitem y do. y{vquan
-else.
-  10 message y
+  NB. get the value of item y (quicker version)
+try. y{vquan
+catch. 10 message y
+end.
+)
+
+getformattedvalue=: 3 : 0
+  NB. get value, units of item y and format y by units
+if. validitem y do. (>y{UNITN)format y{vquan
+else. ''
 end.
 )
 

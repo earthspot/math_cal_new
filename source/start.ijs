@@ -41,7 +41,7 @@ end.
 warnplex'' [ WARNPLEX=: 1
 )
 
-tt_z_=: tabengine_z_=: tabengine_cal_
+tt_z_=: tabengine_cal_
 
 ttt_z_=: 3 : 0
 z=:  tabengine_cal_ y

@@ -9,6 +9,7 @@ NB. uun=: uuinit_uu_''  NB. CAL's locator to its UU instance
 uun=: '' conew 'uu'
 uuengine=: uuengine__uun  NB. do everything through this keyhole?
   NB. ...NO. Work with individual localizations first…
+format		=: format__uun
 NB. compat		=: compatible__uun
 NB. compatlist	=: compatlist__uun
 NB. convert		=: convert__uun

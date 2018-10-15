@@ -22,6 +22,12 @@ AABUILT=: '2018-10-13  02:43:41'
 AABUILT=: '2018-10-13  02:45:04'
 AABUILT=: '2018-10-13  02:58:42'
 AABUILT=: '2018-10-14  02:38:35'
+AABUILT=: '2018-10-14  22:37:53'
+AABUILT=: '2018-10-14  23:42:07'
+AABUILT=: '2018-10-15  00:09:50'
+AABUILT=: '2018-10-15  00:11:25'
+AABUILT=: '2018-10-15  00:13:22'
+AABUILT=: '2018-10-15  00:39:23'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -1010,12 +1016,17 @@ nom=. 'exe',":y
 (nom)=: 3 : (fexp y)
 nom
 )
-
 getvalue=: 3 : 0
 
-if. validitem y do. y{vquan
-else.
-  10 message y
+try. y{vquan
+catch. 10 message y
+end.
+)
+
+getformattedvalue=: 3 : 0
+
+if. validitem y do. (>y{UNITN)format y{vquan
+else. ''
 end.
 )
 
@@ -2755,10 +2766,12 @@ TPUC void TPATH_UUC                \reference path to constants
 TPUF void TPATH_UUF                \reference path to functions
 UCMU r    1 docompatlist r         \item compat units (simode)
 UCOM r    docompatlist r           \item compat units (system)
+UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
 UNIS r    r{UNITS                  \units of item -SI
 UNIT r    r{UNITN                  \units of item -nominal
 UUUU yy   uuengine INSTR           \call uu converter directly
-VALU r    getvalue r               \value of item -corrected
+VALF r    getformattedvalue r      \value of item -formatted string
+VALU r    getvalue r               \value of item -numeric
 VERS void VERSION                  \version of engine
 VUUC yy   uuengine INSTR           \UUC (filtered by yy)
 VUUF yy   uuengine INSTR           \UUF (filtered by yy)
@@ -3050,6 +3063,7 @@ uuconnect=: 3 : 0
 uun=: '' conew 'uu'
 uuengine=: uuengine__uun
 
+format		=: format__uun
 selfcanc		=: selfcanc__uun
 udat		=: udat__uun
 udiv		=: udiv__uun
@@ -3174,7 +3188,7 @@ end.
 warnplex'' [ WARNPLEX=: 1
 )
 
-tt_z_=: tabengine_z_=: tabengine_cal_
+tt_z_=: tabengine_cal_
 
 ttt_z_=: 3 : 0
 z=:  tabengine_cal_ y
