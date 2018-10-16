@@ -28,6 +28,9 @@ AABUILT=: '2018-10-15  00:09:50'
 AABUILT=: '2018-10-15  00:11:25'
 AABUILT=: '2018-10-15  00:13:22'
 AABUILT=: '2018-10-15  00:39:23'
+AABUILT=: '2018-10-15  23:15:12'
+AABUILT=: '2018-10-16  00:31:44'
+AABUILT=: '2018-10-16  00:50:58'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -189,7 +192,7 @@ case. '' do.
 case.    do.
   THEN=: NOW=: 6!:1''
   TIMEOUT=:y
-  sllog 'NOW THEN TIMEOUT msg' [msg=:'go'
+  sllog 'NOW THEN TIMEOUT go'
   empty''
 end.
 )
@@ -324,19 +327,21 @@ zz3 { uarr,'?'
 )
 
 arrowgen=: 3 : 0
+	pushme 'arrowgen'
 
 a=. empty''
-  c=. 0
-  for_i. }.items'' do.
-    if. 0< +/r=. i{TD do.
-      for_j. r-.0 do.
-        sess_arrowgen 'arrow ',(": c,j,i)
-        a=. a,(c,j,i)
-      end.
-      c=. c+1
+c=. 0
+for_i. }.items'' do.
+  if. 0< +/r=. i{TD do.
+    for_j. r-.0 do.
+	sllog 'arrowgen c j i'
+      a=. a,(c,j,i)
     end.
+    c=. c+1
   end.
-  a
+end.
+	popme 'arrowgen'
+a return.
 )
 
 baditem=: 3 : 0
@@ -373,8 +378,8 @@ deltaz beval y
 )
 
 beval=: 4 : 0
+	pushme'beval'
 
-sess=. empty
 
 
 
@@ -382,7 +387,7 @@ sess=. empty
 
 a=. ancestors y
 r1=. r=. a{vsiqn
-sess 'beval: y=',(":y),' x=',(":x),' a=',(":a)
+sllog 'beval x y a'
 if. (0~:x)*.(hasf y) do.
   deltaz=. x
   amodel=: a{(vmodl * -.holds'')
@@ -394,7 +399,8 @@ if. (0~:x)*.(hasf y) do.
 
   r1=. r inversion deltaz
 end.
-sess 'beval: a=',(":a),' r=',(":r),' r1=',(":r1)
+sllog 'beval a r r1'
+	popme'beval'
 r1 a }vsiqn
 
 
@@ -498,9 +504,9 @@ for_i. i.#y do.
     elseif. 1 do.  unitf=. unitf,SP,unit
     end.
   case. '/' do.
-    if. 1=$y do.  unitf=. '' udiv unit
+    if. 1=$y do.  unitf=. '' udiv__uun unit
     elseif. i=0 do.  unitf=. unit
-    elseif. 1 do.  unitf=. unitf udiv unit
+    elseif. 1 do.  unitf=. unitf udiv__uun unit
     end.
   case. x do.
     if. i=0 do. unitf=. unit end.
@@ -512,7 +518,7 @@ fmla=. fmla, ': ', }.vn
 if. 1=$y do. label=. x,brace y
 else. label=. (SP;x)stringreplace }. ;SP,each brace each y
 end.
-unitf=. selfcanc unitf
+unitf=. selfcanc__uun unitf
 ttafl label ; unitf ; (":y); fmla
 5 message y; x
 )
@@ -597,7 +603,9 @@ descendants=: 3 : '(>:I.}.y{|:(clos dpmx TD))'
 dirty=: ''&$: : (4 : 0)
 
 
-if. 0<#x do. sess_dirty nb 'dirty' ; y ; ' NB. called by:' ; x end.
+if. 0<#x do.
+  msg '+++ dirty (y) --called by: (x)'
+end.
 select. y
 case. '' do.  DIRTY return.
 case. 0 do.  DIRTY=: 0
@@ -722,19 +730,18 @@ fcalc=: 3 : 0
 
 
 
-sess=. empty
 z=. vsiqn
-if. 0<$xseq y do.
-  sess 'fcalc: y=',(":y),' xseq=',(":xseq y)
-  for_i. xseq y do.
+if. 0<$xseq_y=.xseq y do.
+  sllog 'fcalc y xseq_y'
+  for_i. xseq_y do.
     z=.(z feval i)i}z
   end.
 end.
 )
 
 feval=: 4 : 0
+	pushme'feval'
 
- sess=. empty
 
  z=. y{x
  fn=.'exe',":y
@@ -746,11 +753,12 @@ feval=: 4 : 0
    try. z=. exe x  [z0=. z
    catch. z=. BAD_EXE_VALUE
    end.
-   sess (brack y),(":z0),TAB,(":z),' from ',fn,'(',(":x),')'
+	msg '[(y)] (z0)(TAB)(z) from (fn) (x)'
  else.
-   sess (brack y),(":z),' unchanged'
+	msg '[(y)] (z) unchanged'
  end.
- z
+	popme'feval'
+ z return.
 )
 
 fexp=: 3 : 0
@@ -766,14 +774,19 @@ end.
 )
 
 fexp1=: 3 : 0
+	pushme'fexp1'
 
 
 
 select. fmlatyp y
-case. 0 do. fexp_virtual y return.
-case. 2 do. fexp_nominal y return.
+case. 0 do.
+	popme'fexp1'
+  fexp_virtual y return.
+case. 2 do.
+	popme'fexp1'
+  fexp_nominal y return.
 end.
-sess=. empty
+
 dep=. 0-.~y{TD
 'fmla extn'=. fmla_extn y
 
@@ -784,18 +797,19 @@ for_i. i.$dep do.
   'n unit'=. '('cut detb v-.')'
   idp=. ": i{dep
   fac=. % >{: convert unit
-  sess nb 'fac=' ; fac ; 'unit=' ; unit
+  sllog 'fexp1 fac unit'
   fmla=. fmla , tmp rplc '<n>';n; '<idp>';idp; '<fac>';":fac
 end.
-fmla
+	popme'fexp1'
+fmla return.
 )
 
 fexp_nominal=: 3 : 0
+	pushme'fexp_nominal'
 
 
 
 
-sess=. empty
 assert 2=fmlatyp y
 dep=. 0-.~y{TD
 'fmla extn'=. fmla_extn y
@@ -810,9 +824,11 @@ for_i. i.$dep do.
   'n unit'=. '('cut detb v-.')'
   idp=. ": i{dep
   fac=. % >{: convert unit
-  sess nb 'fac=' ; fac ; 'unit=' ; unit
+	sllog 'fexp_nominal fac unit'
   z=. z , tmp rplc '<n>';n; '<idp>';idp; '<fac>';":fac
 end.
+	popme'fexp_nominal'
+z return.
 )
 
 fexp_siunits=: 3 : 0
@@ -821,7 +837,6 @@ fexp_siunits=: 3 : 0
 
 
 assert 1=fmlatyp y
-sess=. empty
 dep=. 0-.~y{TD
 'fmla extn'=. fmla_extn y
 
@@ -841,7 +856,6 @@ fexp_virtual=: 3 : 0
 
 
 
-sess=. empty
 dep=. 0-.~y{TD
 'fmla extn'=. fmla_extn y
 
@@ -943,7 +957,7 @@ elseif. (,x)-:,'-' do.
 elseif. +./x E. 'abs int dbl hlv' do.
   fmla=. x,' a'
 elseif. (,x)-:,'%' do.
-  unitu=. ''udiv unitn
+  unitu=. ''udiv__uun unitn
   label=. SL,brace y
   fmla=. '%a: a',(paren unitn),SP,(brack unitu)
 
@@ -1025,7 +1039,7 @@ end.
 
 getformattedvalue=: 3 : 0
 
-if. validitem y do. (>y{UNITN)format y{vquan
+if. validitem y do. (>y{UNITN)format__uun y{vquan
 else. ''
 end.
 )
@@ -1642,7 +1656,6 @@ y=. 1 1 }.y
 sortTD=: 4 : 0
 
 
-sess=. empty
 t=. 0 promo x
 z=. t{TD
 
@@ -1762,7 +1775,7 @@ CH=: recal 0
 
 ttappend=: 3 : 0
 
-sess_ttappend 'y:' ; y
+sllog'ttappend y'
 invalexe''
 SWAPPED=: 0
 file1=: expandedPath y
@@ -1780,7 +1793,7 @@ UNITNsav=: UNITN
 vhidd=: vmodl=: _
 load file1
 CAPT=: CAPTsav
-if. TAB e. TT do. sess '>>> WARNING: TT CONTAINS TABCHAR' end.
+if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
 
 empty 't' setcols TT
 nt0=. #TTn
@@ -1792,7 +1805,7 @@ z=. ". debc TT cols td
 if. 1=$$z do. z=. |: ,:z end.
 TD=: TD , (<:nt0) dadd z
 TTf=: TTf, fixttf TT cols tf
-empty erase 'TT'
+empty erase 'TT TTu TTs'
 
 
 
@@ -1825,12 +1838,12 @@ tag,'appended: ',file1
 
 ttauc=: 3 : 0
 
-ttadl udumb USAV=: 0 udat y
+ttadl udumb__uun USAV=: 0 udat__uun y
 )
 
 ttauf=: 3 : 0
 
-'label unitf fext'=. 1 udat y
+'label unitf fext'=. 1 udat__uun y
 select. sep=. 1 goodfmla fext
 case. '*' do. fext=. '*' appextn fext
 case. ';' do. fext=. fext,SP,brack unitf
@@ -1908,7 +1921,7 @@ elseif. -.fexist file do.
 end.
 vhidd=: vmodl=: _
 load file
-if. TAB e. TT do. sess '>>> WARNING: TT CONTAINS TABCHAR' end.
+if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
 
 empty 't' setcols TT
 TTn=: debc TT hcols tn
@@ -2004,11 +2017,11 @@ ttsaveCopyAs=: 1&$: : (4 : 0)
 
 SAVEDfile=. file
 SAVEDdirty=. dirty''
-msg=. x ttsav y
+mmm=. x ttsav y
 
 file=: SAVEDfile
 dirty SAVEDdirty
-msg
+mmm
 )
 
 ttsava=: ttsav
@@ -2022,7 +2035,7 @@ ttsav=: 1&$: : (4 : 0)
 
 
 
-sess_ttsave 'ttsav' ; y
+	msg '+++ ttsav (y)'
 
 
 if. 0<#y do. file=: expandedPath y end.
@@ -2058,14 +2071,14 @@ if.-. 'literal' -: datatype z do.
   smoutput sw'>>> ttsav: z now: (datatype z) shape=($z)'
 end.
 bytes=. z fwrite file
-sess_ttsave 28 message bytes; mfile
+	msg 28 message bytes; mfile
 if. bytes>0 do.
-  msg=. 30 message mfile; bytes
+  mmm=. 30 message mfile; bytes
   dirty 0
 else.
-  sess_ttsave msg=. 31 message mfile
+  msg mmm=. 31 message mfile
 end.
-msg
+mmm return.
 )
 
 ttsort=: 4 : 0
@@ -2116,7 +2129,7 @@ else.
   if. ZNO=ZNN do. 34 message tag return. end.
   ZNN=: ZNO<.ZNN+1
 end.
-sess_undo 33 message tag; ZNN; ZNO
+msg 33 message tag; ZNN; ZNO
 ZNN snapshot''
 )
 
@@ -2574,7 +2587,7 @@ for_fi. 'fit'nl 3 do.  fit=. >fi
   sess1 '+++ applying guess: ',fit
   fit apply''
   if. Y almostequals (fbY=: fwd bwd Y) do. bwd Y return.
-  else. sllog 'Y fbY msg' [msg=. fit,' failed, continuing...'
+  else. sllog 'Y fbY mmm' [mmm=. fit,' failed, continuing...'
   end.
 end.
 
@@ -2713,7 +2726,7 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '13 Oct 2018  03:43:22'  \CAL last saved
+QSAV void '15 Oct 2018  01:00:00'  \CAL last saved
 Inic void start 0                  \=(re-)start with clear tt
 Init void start 1                  \=(re-)start with SAMPLE tt
 Repe void dummy''                  \=repeat last action
@@ -2764,11 +2777,13 @@ TPTT void TPATH_TTABLES            \reference path to t-tables
 TPUU void TPATH_UU                 \reference path to UU addon
 TPUC void TPATH_UUC                \reference path to constants
 TPUF void TPATH_UUF                \reference path to functions
-UCMU r    1 docompatlist r         \item compat units (simode)
+UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 UCOM r    docompatlist r           \item compat units (system)
 UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
-UNIS r    r{UNITS                  \units of item -SI
-UNIT r    r{UNITN                  \units of item -nominal
+UNIS r    r{UNITS                  \SI units of item (system)
+UNSU r    uniform r{UNITS          \SI units of item (SIC-mode)
+UNIT r    r{UNITN                  \units of item -nominal (system)
+UNTU r    uniform r{UNITN          \units of item -nominal (SIC-mode)
 UUUU yy   uuengine INSTR           \call uu converter directly
 VALF r    getformattedvalue r      \value of item -formatted string
 VALU r    getvalue r               \value of item -numeric
@@ -3053,104 +3068,121 @@ dfr=: *&(180%pi)
 rfd=: *&(pi%180)
 BP=: 373.15
 FP=: 273.15
-
-'==================== [cal] public ===================='
+'==================== [cal] traceverbs ===================='
 
 cocurrent 'cal'
 
-uuconnect=: 3 : 0
+0 :0
+Monday 15 October 2018  23:51:04
+-
+Discretionary silencing of unwanted msg and sllog calls.
+Small footprint when facility switched off.
+-
+THIS SOURCE FILE IS COMMON TO ALL TABULA ADDONS.
+Check the dates for most recent version.
+-
+Traceable verbs must…
+ -use msg and/or sllog to output trace messages
+ -call pushme on entry
+ -call popme on exit (and before all return.s)
+Verb pushme pushes name of running verb onto the ME-list.
+Verb popme (called on exit) pops it.
+LATEST_ONLY silences all except the top of the ME-list
+Correct use of pushme/popme suppresses surplus msg calls.
+(See verb: uniform for example of correct usage.)
+)
 
-uun=: '' conew 'uu'
-uuengine=: uuengine__uun
+TRACEVERBS=: 0$a:
+LATEST_ONLY=: 1
+ME=: ''
 
-format		=: format__uun
-selfcanc		=: selfcanc__uun
-udat		=: udat__uun
-udiv		=: udiv__uun
-udumb		=: udumb__uun
-uniform		=: uniform__uun
+msg=: empty
+sesstrace=: empty
+sllog=: empty
+
+pushme=: 1 ddefine
+
+ME=: ~. ME ,~ ;:y
+if. x do. msg '+++ (y): ENTERED' end.
 i.0 0
 )
 
-'==================== [cal] sesses.ijs ===================='
-0 :0
-REPLACE THIS SCRIPT WITH TRACEVERBS/msg/sllog as in UU
-…then replace all sess_* calls. All are in: main.ijs
-… in the verbs: arrowgen dirty ttappend ttsav undo
+popme=: 1 ddefine
+
+if. x do. msg '--- (y): EXITS' end.
+ME=: ME -. ;:y
+i.0 0
 )
 
-cocurrent 'cal'
-
-TRACE=: 0
-TRACI=: 0
-
-SSS=: 0 : 0
-cocurrent 'cal'
-sess1=: sess
-sess_arrowgen=: empty
-sess_cal=: sess
-sess_dirty=: sess
-sess_ct=: sess
-sess_ttappend=: sess
-sess_ttload=: sess
-sess_ttsave=: sess
-sess_undo=: empty
-trace 1
-traci 0
-)
+make_msg=: 1 ddefine
 
 
 
 
-sss=: 3 : 0
-sess=: 3 : 'if. TRACE do. smoutput y end.'
-sesi=: 3 : 'if. TRACI do. smoutput y end.'
-sllog=: sess@llog
+ME=: ''
+talks=. x
 select. y
-case. '' do.
-sess1=: sess
-sess_arrowgen=: empty
-sess_cal=: sess
-sess_dirty=: sess
-sess_ct=: sess
-sess_ttappend=: sess
-sess_ttload=: sess
-sess_ttsave=: sess
-sess_undo=: empty
-case. 1 do.
-sess=: smoutput
-sesi=: smoutput
-sllog=: smoutput@llog
-sess1=: smoutput
-sess_arrowgen=: smoutput
-sess_cal=: smoutput
-sess_dirty=: smoutput
-sess_ct=: smoutput
-sess_ttappend=: smoutput
-sess_ttload=: smoutput
-sess_ttsave=: smoutput
-sess_undo=: smoutput
 case. 0 do.
-sllog=: empty
-sess1=: empty
-sess_arrowgen=: empty
-sess_cal=: empty
-sess_dirty=: empty
-sess_ct=: empty
-sess_ttappend=: empty
-sess_ttload=: empty
-sess_ttsave=: empty
-sess_undo=: empty
-case. '?'  do.
-  smoutput >crr each 'sess'nl 3
-case.   do.
-  smoutput '>>> unsupported y: ',":y
-  sss '?'
+  sesstrace=: empty
+  msg=: empty
+  sllog=: empty
+  if. talks do. smoutput '--- make_msg: msg is OFF',LF end.
+case. 1 do.
+  sesstrace=: sesstrace1
+  msg=: sesstrace&sw
+  sllog=: sesstrace&llog
+  if. talks do. smoutput '+++ make_msg: msg is via TRACEVERBS',LF end.
+case. 2 do.
+  sesstrace=: smoutput
+  msg=: sesstrace&sw
+  sllog=: sesstrace&llog
+  if. talks do. smoutput '+++ make_msg: msg is ON',LF end.
 end.
 i.0 0
 )
 
-sss_z_=: sss
+sesstrace1=: 3 : 'if. traced ME do. smoutput y else. i.0 0 end.'
+
+traced=: 3 : 0
+
+
+
+
+
+
+z=. boxopen y
+if. LATEST_ONLY do. z=. {. z end.
+any z e. a: default 'TRACEVERBS'
+)
+
+traceverbs=: 3 : 0
+  NB. sets/resets TRACEVERBS
+  NB. y== ''	-returns boxed list of traced verbs
+  NB. y== 0	-no verbs to be traced / disable tracing
+  NB. y e. 1 2 3…	-predefined lists of verbs to trace
+  NB. y== '+myverb1 myverb2' -trace these verbs also
+  NB. y== '-myverb1 myverb2' -stop tracing these verbs
+  NB. y== 'myverb1 myverb2'  -openlist of ALL the verbs to trace
+  NB. y== 'OFF' -no tracing
+  NB. y== 'ON'  -tracing controlled (by TRACEVERBS and LATEST_ONLY)
+  NB. y== 'ALL' -tracing on, but unconditional
+z=.''
+mm1=. make_msg bind 1  NB. must switch on, too.
+select. {.y
+case. 'O' do. make_msg (y-:'ON')
+case. 'A' do. make_msg 2
+case. ' ' do. z=. TRACEVERBS  
+case. 0   do. z=. TRACEVERBS=: 0$a:
+case. 1   do. mm1 z=. TRACEVERBS=: ;: 'xx'
+case. 2   do. mm1 z=. TRACEVERBS=: ;: 'xx xxx'
+case. 3   do. mm1 z=. TRACEVERBS=: ;: 'xx xxx xxxx'
+case. '+' do. mm1 z=. TRACEVERBS=: ~. TRACEVERBS ,~ ;: y-.'+'
+case. '-' do. mm1 z=. TRACEVERBS=: TRACEVERBS -. ;: y-.'-'
+case.     do. mm1 z=. TRACEVERBS=: ~. ;: y  NB. assume y is an openlist of verbs
+end.
+smoutput '+++ traceverbs: #traced=',":#z
+smoutput >TRACEVERBS
+)
 
 '==================== [cal] start.ijs ===================='
 
@@ -3172,7 +3204,8 @@ start=: 3 : 0
 
 
 
-sss''
+traceverbs 'OFF'
+sess1=: empty
 load TPATH_UU sl 'uu.ijs'
 uuconnect''
 make_tabengineCore''
@@ -3194,6 +3227,16 @@ ttt_z_=: 3 : 0
 z=:  tabengine_cal_ y
 zz=: tabengine_cal_ 'CTBU'
 (":z),LF,LF,zz
+)
+
+uuconnect=: 3 : 0
+
+
+
+uun=: '' conew 'uu'
+uuengine		=: uuengine__uun
+uniform		=: uniform__uun
+i.0 0
 )
 
 globmake=: 3 : 0

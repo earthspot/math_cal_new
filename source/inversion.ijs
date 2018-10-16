@@ -266,7 +266,7 @@ for_fi. 'fit'nl 3 do.  fit=. >fi
   sess1 '+++ applying guess: ',fit
   fit apply''  NB. -->makes: bwd (trial backward mapping)
   if. Y almostequals (fbY=: fwd bwd Y) do. bwd Y return.
-  else. sllog 'Y fbY msg' [msg=. fit,' failed, continuing...'
+  else. sllog 'Y fbY mmm' [mmm=. fit,' failed, continuing...'
   end.
 end.
 	NB. if none of the fits work, fall back on N-R algorithm

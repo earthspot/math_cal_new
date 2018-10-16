@@ -103,7 +103,7 @@ case. '' do.		NB. Bool: time is up?
 case.    do.		NB. Initialize (y= seconds)
   THEN=: NOW=: 6!:1''
   TIMEOUT=:y
-  sllog 'NOW THEN TIMEOUT msg' [msg=:'go'
+  sllog 'NOW THEN TIMEOUT go'
   empty''
 end.
 )

@@ -21,9 +21,11 @@ start=: 3 : 0
   NB. start the CAL-engine
   NB. start 0 -- serves/implements new instruction: Inic
   NB. start '' -- serves/implements instruction: Init
-sss''        NB. recommended session trace settings
+traceverbs 'OFF'
+NB. sess1=: smoutput  NB. for inversion.ijs tracing
+sess1=: empty  NB. >>>>> DISABLE inversion.ijs tracing
 load TPATH_UU sl 'uu.ijs'
-uuconnect''
+uuconnect''  NB. create and use an instance of class 'uu'
 make_tabengineCore''  NB. the core of: tabengine
 globmake'' NB. make global nouns
 cmake''    NB. make the i/f tables
@@ -49,8 +51,16 @@ zz=: tabengine_cal_ 'CTBU'
 (":z),LF,LF,zz
 )
 
+uuconnect=: 3 : 0
+  NB. Create an instance of class 'uu' and connect to it.
+  NB. Setup local verbs that shadow the UU-instantiation verbs.
+  NB. Other UU-instantiation connections are called directly
+uun=: '' conew 'uu'
+uuengine		=: uuengine__uun
+uniform		=: uniform__uun
+i.0 0
+)
 
-NB. ========================================================
 globmake=: 3 : 0
   NB. Init global nouns
 file=: tbx UNDEF

@@ -124,19 +124,21 @@ zz3 { uarr,'?'
 )
 
 arrowgen=: 3 : 0
+	pushme 'arrowgen'
   NB. array of "arrow" args
 a=. empty''
-  c=. 0        NB. 1st arrow col to use
-  for_i. }.items'' do.
-    if. 0< +/r=. i{TD do.  NB. row i: any dependencies?
-      for_j. r-.0 do.
-        sess_arrowgen 'arrow ',(": c,j,i)
-        a=. a,(c,j,i)
-      end.
-      c=. c+1      NB. next col
-    end.      NB. inputs
-  end.        NB. items
-  a        NB. arrow args
+c=. 0       NB. 1st arrow col to use
+for_i. }.items'' do.
+  if. 0< +/r=. i{TD do.  NB. row i: any dependencies?
+    for_j. r-.0 do.
+	sllog 'arrowgen c j i'
+      a=. a,(c,j,i)
+    end.
+    c=. c+1      NB. next col
+  end.      NB. inputs
+end.        NB. items
+	popme 'arrowgen'
+a return.   NB. arrow args
 )
 
 baditem=: 3 : 0
@@ -173,8 +175,8 @@ deltaz beval y      NB. compute plausible inputs to y
 )
 
 beval=: 4 : 0
+	pushme'beval'
   NB. saddle to call: inversion
-sess=. empty
   NB. y==pivot node
   NB. x==CHANGE in value of pivot node
   NB. returns updated values for vsiqn.
@@ -182,7 +184,7 @@ sess=. empty
   NB. DOES get initial values from vsiqn
 a=. ancestors y
 r1=. r=. a{vsiqn         NB. initial values of ancestors
-sess 'beval: y=',(":y),' x=',(":x),' a=',(":a)
+sllog 'beval x y a'
 if. (0~:x)*.(hasf y) do.
   deltaz=. x  NB. the CHANGE in value of node y
 NB.   amodel=: a{(model * -.holds'')  NB. global, for use by: inversion
@@ -195,7 +197,8 @@ NB.   amodel=: a{(model * -.holds'')  NB. global, for use by: inversion
     NB. >>>>> NEED TO CREATE TEMP FN: fwd (-as seq of exe-fns working on r only)
   r1=. r inversion deltaz    NB. updated values for ancestors
 end.
-sess 'beval: a=',(":a),' r=',(":r),' r1=',(":r1)
+sllog 'beval a r r1'
+	popme'beval'
 r1 a }vsiqn
   NB. Does NOT replace the pivot value (y{vsiqn) itself.
   NB. See how the calling fn (bcalc?) handles (y{vsiqn) and deltaz.
@@ -301,9 +304,9 @@ for_i. i.#y do.
     elseif. 1 do.  unitf=. unitf,SP,unit  NB. ...continue the sequence
     end.
   case. '/' do.
-    if. 1=$y do.  unitf=. '' udiv unit  NB. and that will be all.
+    if. 1=$y do.  unitf=. '' udiv__uun unit  NB. and that will be all.
     elseif. i=0 do.  unitf=. unit  NB. start the sequence...
-    elseif. 1 do.  unitf=. unitf udiv unit  NB. ...continue the sequence (usu. just 2)
+    elseif. 1 do.  unitf=. unitf udiv__uun unit  NB. ...continue the sequence (usu. just 2)
     end.
   case. x do.  NB. catch-all to cover x='^' and any residual oddity
     if. i=0 do. unitf=. unit end.  NB. hazard a guess that just 1st unit will suffice
@@ -315,7 +318,7 @@ fmla=. fmla, ': ', }.vn  NB. attach the fmla "ext".
 if. 1=$y do. label=. x,brace y
 else. label=. (SP;x)stringreplace }. ;SP,each brace each y
 end.
-unitf=. selfcanc unitf  NB. NEW <<<<<<<<<<<<<<<<<
+unitf=. selfcanc__uun unitf  NB. NEW <<<<<<<<<<<<<<<<<
 ttafl label ; unitf ; (":y); fmla
 5 message y; x
 )
@@ -400,7 +403,9 @@ descendants=: 3 : '(>:I.}.y{|:(clos dpmx TD))'
 dirty=: ''&$: : (4 : 0)
   NB. Exclusively reads+sets: DIRTY
   NB. if 0<#x then x shows where set/reset
-if. 0<#x do. sess_dirty nb 'dirty' ; y ; ' NB. called by:' ; x end.
+if. 0<#x do.
+  msg '+++ dirty (y) --called by: (x)'
+end.
 select. y
 case. '' do.  DIRTY return.
 case. 0 do.  DIRTY=: 0
@@ -527,20 +532,19 @@ fcalc=: 3 : 0
   NB. forward calculation
   NB. pivot=. y
   NB. returns recalced values for assigning to: vsiqn
-sess=. empty
 z=. vsiqn  NB. >>>>> meant to supply values for items not in: xseq
-if. 0<$xseq y do.
-  sess 'fcalc: y=',(":y),' xseq=',(":xseq y)
-  for_i. xseq y do.
+if. 0<$xseq_y=.xseq y do.
+  sllog 'fcalc y xseq_y'
+  for_i. xseq_y do.
     z=.(z feval i)i}z
   end.
 end.
 )
 
 feval=: 4 : 0
+	pushme'feval'
   NB. return updated value of item: y
- sess=. empty
- NB. x is up-to-date state of vsiqn, don't use vsiqn directly
+  NB. x is up-to-date state of vsiqn, don't use vsiqn directly
  z=. y{x  NB. the existing value of item: y
  fn=.'exe',":y  NB. name of the exe<n> verb (if present)
  if. hasf y do.
@@ -551,11 +555,12 @@ feval=: 4 : 0
    try. z=. exe x  [z0=. z
    catch. z=. BAD_EXE_VALUE
    end.
-   sess (brack y),(":z0),TAB,(":z),' from ',fn,'(',(":x),')'
+	msg '[(y)] (z0)(TAB)(z) from (fn) (x)'
  else.  NB. just return existing value
-   sess (brack y),(":z),' unchanged'
+	msg '[(y)] (z) unchanged'
  end.
- z  NB. return value of item y whether updated or not
+	popme'feval'
+ z return.  NB. value of item y whether updated or not
 )
 
 fexp=: 3 : 0
@@ -572,15 +577,19 @@ NB. else return a notionally bad formula:
 )
 
 fexp1=: 3 : 0
+	pushme'fexp1'
   NB. verb-ready expression from formula of item# y
   NB. This version of fexp applies to formulas
   NB. separated by ':', valid in SI units.
 select. fmlatyp y
-case. 0 do. fexp_virtual y return.
-case. 2 do. fexp_nominal y return.
+case. 0 do.
+	popme'fexp1'
+  fexp_virtual y return.
+case. 2 do.
+	popme'fexp1'
+  fexp_nominal y return.
 end.
-NB. else assume (fmlatyp y) is 1 (':'-separated)
-sess=. empty
+  NB. else assume (fmlatyp y) is 1 (':'-separated)
 dep=. 0-.~y{TD
 'fmla extn'=. fmla_extn y
   NB. ASSUME dependent units given explicitly ...
@@ -591,18 +600,19 @@ for_i. i.$dep do.      NB. scan dep units
   'n unit'=. '('cut detb v-.')'    NB. (n;unit) from: 'n(unit)'
   idp=. ": i{dep      NB. the i-th dependency (=id)
   fac=. % >{: convert unit    NB. conversion factor
-  sess nb 'fac=' ; fac ; 'unit=' ; unit
+  sllog 'fexp1 fac unit'
   fmla=. fmla , tmp rplc '<n>';n; '<idp>';idp; '<fac>';":fac
 end.
-fmla
+	popme'fexp1'
+fmla return.
 )
 
 fexp_nominal=: 3 : 0
+	pushme'fexp_nominal'
   NB. verb-ready expression from formula of item# y
   NB. This version of fexp applies to formulas
   NB. separated by ';', valid only in nominal units.
   NB. Serves: fexp
-sess=. empty
 assert 2=fmlatyp y  NB. else should not be called
 dep=. 0-.~y{TD    NB. dependencies
 'fmla extn'=. fmla_extn y
@@ -617,9 +627,11 @@ for_i. i.$dep do.    NB. scan dependencies
   'n unit'=. '('cut detb v-.')'  NB. (n;unit) from: 'n(unit)'
   idp=. ": i{dep    NB. the i-th dependency (=id)
   fac=. % >{: convert unit  NB. var conv-factor
-  sess nb 'fac=' ; fac ; 'unit=' ; unit
+	sllog 'fexp_nominal fac unit'
   z=. z , tmp rplc '<n>';n; '<idp>';idp; '<fac>';":fac
 end.
+	popme'fexp_nominal'
+z return.
 )
 
 fexp_siunits=: 3 : 0
@@ -628,7 +640,6 @@ fexp_siunits=: 3 : 0
   NB. separated by ':', valid in SI units.
   NB. Serves: fexp
 assert 1=fmlatyp y  NB. else should not be called
-sess=. empty
 dep=. 0-.~y{TD
 'fmla extn'=. fmla_extn y
   NB. ASSUME dependent units given explicitly ...
@@ -648,7 +659,6 @@ fexp_virtual=: 3 : 0
   NB. This version of fexp applies to formulas
   NB. with no extn, assumed valid in SI units.
   NB. Serves: fexp
-sess=. empty
 dep=. 0-.~y{TD
 'fmla extn'=. fmla_extn y
   NB. Use dep alone to fetch reqd values: a, b,...
@@ -752,7 +762,7 @@ elseif. (,x)-:,'-' do.  NB. item negated
 elseif. +./x E. 'abs int dbl hlv' do.  NB. preserve units
   fmla=. x,' a'
 elseif. (,x)-:,'%' do.  NB. item inverted
-  unitu=. ''udiv unitn
+  unitu=. ''udiv__uun unitn
   label=. SL,brace y  NB. e.g. '/{2}'
   fmla=. '%a: a',(paren unitn),SP,(brack unitu)
   NB. e.g. '% a: a(h) [/h]'
@@ -844,7 +854,7 @@ end.
 
 getformattedvalue=: 3 : 0
   NB. get value, units of item y and format y by units
-if. validitem y do. (>y{UNITN)format y{vquan
+if. validitem y do. (>y{UNITN)format__uun y{vquan
 else. ''
 end.
 )
@@ -1484,10 +1494,9 @@ y=. 1 1 }.y  NB. drop the row+col headers of dependency mx y
 sortTD=: 4 : 0
   NB. sorts TD by perm: x
   NB. usage: t sortTD TD
-sess=. empty
 t=. 0 promo x    NB. ensure perm: t doesn't move (hdr) item 0
 z=. t{TD
-NB. sess w=. w,: ".each w=. ;: 'z t taz' [taz=. t{az
+NB. w=. w,: ".each w=. ;: 'z t taz' [taz=. t{az
   NB. RATIONALE:
   NB.         a b c d e f g h
   NB. if  i=. 0 1 2 3 4 5 6 7
@@ -1605,7 +1614,7 @@ CH=: recal 0
 
 ttappend=: 3 : 0
   NB. append the chosen t-table to the one loaded
-sess_ttappend 'y:' ; y
+sllog'ttappend y'
 invalexe''      NB. existing 'exe' verbs are invalid
 SWAPPED=: 0      NB. fmla order (overridden by t-table script)
 file1=: expandedPath y    NB. y is generalised file descriptor
@@ -1623,7 +1632,7 @@ UNITNsav=: UNITN
 vhidd=: vmodl=: _
 load file1
 CAPT=: CAPTsav  NB. discard new caption and restore old one
-if. TAB e. TT do. sess '>>> WARNING: TT CONTAINS TABCHAR' end.
+if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
 empty 't' setcols TT  NB. to set: tn tu ts td tf
 nt0=. #TTn  NB. remember the last TT size
@@ -1635,7 +1644,7 @@ z=. ". debc TT cols td
 if. 1=$$z do. z=. |: ,:z end.  NB. >>>>>>>>> fix for munged 1-col TD
 TD=: TD , (<:nt0) dadd z
 TTf=: TTf, fixttf TT cols tf
-empty erase 'TT'  NB. delete TT as a redundant cache
+empty erase 'TT TTu TTs'  NB. delete caches as redundant
   NB. re-create vfact and the units cols
   NB. z=. convert each UNITN=: boxvec TTu  NB. nominal units
   NB. UNITS=: (>&{.) each z  NB. SI-units
@@ -1668,12 +1677,12 @@ tag,'appended: ',file1
 
 ttauc=: 3 : 0
   NB. add line from consts table to t-table
-ttadl udumb USAV=: 0 udat y  NB. y is seltext''
+ttadl udumb__uun USAV=: 0 udat__uun y  NB. y is seltext''
 )
 
 ttauf=: 3 : 0
   NB. add line from functs table to t-table
-'label unitf fext'=. 1 udat y  NB. y is text selected
+'label unitf fext'=. 1 udat__uun y  NB. y is text selected
 select. sep=. 1 goodfmla fext
 case. '*' do. fext=. '*' appextn fext
 case. ';' do. fext=. fext,SP,brack unitf
@@ -1751,7 +1760,7 @@ elseif. -.fexist file do.
 end.
 vhidd=: vmodl=: _
 load file
-if. TAB e. TT do. sess '>>> WARNING: TT CONTAINS TABCHAR' end.
+if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
 empty 't' setcols TT  NB. to set: tn tu ts td tf
 TTn=: debc TT hcols tn
@@ -1847,11 +1856,11 @@ ttsaveCopyAs=: 1&$: : (4 : 0)
   NB. save a COPY of the current t-table as: y
 SAVEDfile=. file
 SAVEDdirty=. dirty''
-msg=. x ttsav y   NB. x=1 detects any name clash, returns error msg
+mmm=. x ttsav y   NB. x=1 detects any name clash, returns error messsage
   NB. Restore (changed): file, dirty''
 file=: SAVEDfile
 dirty SAVEDdirty
-msg  NB. return any messages from ttsav
+mmm  NB. return any messages from ttsav
 )
 
 ttsava=: ttsav                          NB. save t-table as y
@@ -1865,7 +1874,7 @@ ttsav=: 1&$: : (4 : 0)
   NB. save the t-table as: y
   NB. x=1 -- DENY overwrite of existing file y
   NB. x=0 -- ALLOW overwrite of existing file y
-sess_ttsave 'ttsav' ; y  NB. the unexpanded name: y
+	msg '+++ ttsav (y)'  NB. the unexpanded name: y
   NB. if empty y use existing (file) as last set by: ttload
   NB. else accept filename y as the new (file)
 if. 0<#y do. file=: expandedPath y end.
@@ -1904,14 +1913,14 @@ if.-. 'literal' -: datatype z do.
   smoutput sw'>>> ttsav: z now: (datatype z) shape=($z)'
 end.
 bytes=. z fwrite file
-sess_ttsave 28 message bytes; mfile
+	msg 28 message bytes; mfile
 if. bytes>0 do.  NB. t-table was saved ok
-  msg=. 30 message mfile; bytes
+  mmm=. 30 message mfile; bytes
   dirty 0        NB. flag: t-table no longer needs saving
 else.            NB. file could not be saved...
-  sess_ttsave msg=. 31 message mfile
+  msg mmm=. 31 message mfile
 end.
-msg  NB. return resulting message to top-end
+mmm return.  NB. return resulting message for top-end
 )
 
 ttsort=: 4 : 0
@@ -1963,7 +1972,7 @@ else.
   if. ZNO=ZNN do. 34 message tag return. end.
   ZNN=: ZNO<.ZNN+1
 end.
-sess_undo 33 message tag; ZNN; ZNO
+msg 33 message tag; ZNN; ZNO
 ZNN snapshot''
 )
 
