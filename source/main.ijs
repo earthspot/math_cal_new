@@ -235,16 +235,15 @@ if. (-. un0-:un1) *. ((hasdep y)+.(hasf y)) do.
   2 message z ; x
   return.
 else.
-NB.   smoutput 'changeunits:'
-NB.   smoutput z ,: ".each z=. ;: 'x0 un0 un1 fac0 fac1'
   UNITS=: (<un1) y}UNITS  NB. needed if (-. un0-:un1)
   UNITN=: (<x0) y}UNITN
   vfact=: fac1 y}vfact
+  vdisp=: displacement >UNITN
   vsiq0=: vsiqn
   vqua0=: vquan
-  vquan=: vsiqn % vfact
-  TTs=: ('ts',>}.UNITS) ,. SP
-  TTu=: ('tu',>}.UNITN) ,. SP
+NB.   vquan=: vsiqn % vfact  NB. SUPERSEDED with vdisp...
+  recal 0  NB. realigns vquan with siqn in a compatible way
+	NB. only matters with temperature scales, or where vdisp~:0
   3 message y ; z ; x0
 end.
 )
@@ -1275,7 +1274,8 @@ vsiq0=: vfact*vqua0  NB. follows nominal values, not internal ones
 vsiqn=: vfact*vquan
 if. hasf y do. vsiqn=: bcalc y end.
 vsiqn=: fcalc y    NB. fwd after break-back to recalc all descendants
-vquan=: vsiqn*(%vfact)  NB. update the nominal values
+NB. vquan=: vsiqn*(%vfact)  NB. update the nominal values
+vquan=: (vdisp -~ vsiqn)%vfact  NB. update the nominal values
   NB. if undefined units, vsiqn%vfact --> |NaN error
 vquan~:vqua0    NB. =1 where the item has changed
 )
@@ -1453,12 +1453,13 @@ end.
 showing=: empty
 
 siunits=: 3 : 0
-  NB. convert item y to SI units
+  NB. convert item {y} to SI units
 si=. y{UNITS  NB. the SI units
 UNITN=: si y}UNITN
-vquan=: (y{vsiqn) y}vquan
-vqua0=: (y{vsiq0) y}vqua0
-vfact=: 1 y}vfact
+vquan=: (y{vsiqn) y}vquan  NB. SI-units: move vsiqn entry into vquan
+vqua0=: (y{vsiq0) y}vqua0  NB. SI-units: move vsiq0 entry into vqua0
+vfact=: 1 y}vfact  NB. SI-units: factor is always 1
+vdisp=: 0 y}vdisp  NB. SI-units: displacement is always 0
 CH=: recal 0
 'siunits' dirty 1
 18 message y; >si
@@ -1519,13 +1520,6 @@ sP2=: 4 : '((x,.SP),.SP),.y'
 targs=: [: {. [: }. [: |: [: ;: a2x
 tbx=: ijs
 
-testvs=: 3 : 0
-  NB. test fn: show 'v' values
-i=. items''      NB. to index the columns
-l=. >z=. cut'i vhidd vmodl vhold vfact vqua0 vquan vsiq0 vsiqn'  NB. alter to suit
-l ,. CO ,. SP ,. ": >".each z
-)
-
 title=: 3 : 0
   NB. access the title stored for current t-table
   NB. used by: tabengine
@@ -1542,9 +1536,6 @@ for_t. z do.
   smoutput 'shell' c (quote'open ') c CM c >t
 end.
 )
-
-trace=: 3 : 'if. (y=.{.y) e. 0 1 do. TRACE=:y else. TRACE=:-.TRACE end.'
-traci=: 3 : 'if. (y=.{.y) e. 0 1 do. TRACI=:y else. TRACI=:-.TRACI end.'
 
 tranhold=: _1&$: :(4 : 0)
   NB. smoutput '==< tranhold x=#  y=$' rplc '#' ; (":x) ; '$' ; (":y)
@@ -1571,14 +1562,13 @@ ttadl=: 3 : 0
   NB. (check cyc~:0 at this point?)
   NB. See: TTlist for vars comprising the t-table to be adjusted
 TTn=: TTn,ytn
-TTu=: TTu,ytu
-TTs=: TTs,yts
 TD=: TD,0  NB. dumb line
 TTf=: TTf,SP  NB. dumb line
 UNITN=: UNITN,<ytu
 UNITS=: UNITS,<yts
 vquan=: vquan,yvalu
-vfact=: vfact,fac
+vfact=: vfact , fac
+vdisp=: vdisp , displacement ytu
 ttfix''
   NB. (c/f ttafl, no need to recal here)
 'ttadl' dirty 1
@@ -1593,8 +1583,6 @@ ttafl=: 3 : 0
   NB. See: TTlist for vars comprising the t-table
   NB. to be adjusted
 TTn=: TTn,,ytn
-TTu=: TTu,,ytu
-TTs=: TTs,,yts
 TD=: TD,,".ytd
   NB. Type 2 needs results units from orig formula
   NB. to correctly specify back-conversion
@@ -1604,8 +1592,9 @@ end.
 TTf=: TTf,,ytf
 UNITN=: UNITN,<,ytu
 UNITS=: UNITS,<,yts
-vquan=: vquan,0    NB. placeholder, to be recomputed
-vfact=: vfact,fac
+vquan=: vquan,0    NB. placeholder, recomputed by: recal
+vfact=: vfact , fac
+vdisp=: vdisp , displacement ytu
 ttfix''
 invalexe''
 CH=: recal 0
@@ -1625,10 +1614,11 @@ end.
 CAPTsav=. CAPT
 vquanS=. vquan
 vfactS=. vfact
+vdispS=. vdisp
 vmodlS=. vmodl
 vhiddS=. vhidd
 UNITSsav=. UNITS
-UNITNsav=: UNITN
+UNITNsav=. UNITN
 vhidd=: vmodl=: _
 load file1
 CAPT=: CAPTsav  NB. discard new caption and restore old one
@@ -1638,22 +1628,16 @@ empty 't' setcols TT  NB. to set: tn tu ts td tf
 nt0=. #TTn  NB. remember the last TT size
 TTn=: TTn, debc TT cols tn
 nt1=. #TTn  NB. the current TT size
-TTu=: TTu, TTu2=. debc TT cols tu
-TTs=: TTs, debc TT cols ts
 z=. ". debc TT cols td
 if. 1=$$z do. z=. |: ,:z end.  NB. >>>>>>>>> fix for munged 1-col TD
 TD=: TD , (<:nt0) dadd z
 TTf=: TTf, fixttf TT cols tf
-empty erase 'TT TTu TTs'  NB. delete caches as redundant
   NB. re-create vfact and the units cols
-  NB. z=. convert each UNITN=: boxvec TTu  NB. nominal units
-  NB. UNITS=: (>&{.) each z  NB. SI-units
-  NB. vfact=: >(>&{:) each z  NB. (*vfact): {UNITN}-->{UNITS}
-  NB. vfact=: 0,}.vfact    NB. cos convert munges 0
-z=. convert each UNITN2=: boxvec TTu2
+z=. convert each UNITN2=: boxvec debc TT cols tu
 UNITN=: UNITNsav,UNITN2    NB. nominal units
 UNITS=: UNITSsav,(>&{.) each z  NB. SI-units
 vfact=: vfactS, >(>&{:) each z
+vdisp=: displacement >UNITN
   NB. REsetup work flags
 CH=:    flags 0    NB. "Changed" flags
 vhold=: flags 0    NB. TEST ONLY >>>>> default==no holds for TT
@@ -1666,13 +1650,26 @@ end.
 vqua0=: vquan=: vquanS, }.vquan
 vsiq0=: vsiqn=: vquan*vfact
   NB. 'exe' fns may be appended to the t-table
-  NB. but replace them anyway
+  NB. but replace them ALL anyway
 genexe each I. hasfb''
 tag=. SWAPPED#'\'  NB. indicator: needs saving in cleaned-up form
 reselect 0
 CH=: recal 0
 'ttappend' dirty 1
+eraseRedundantCaches 'TT TTu TTs UNITNsav UNITN2'
 tag,'appended: ',file1
+)
+
+eraseRedundantCaches=: 3 : 0
+  NB. patchup until time to do some spring-cleaning!!
+erase y
+smoutput '>>> THESE CACHES DELETED: ',y
+)
+
+displacement=: 3 : 0 "1
+  NB. displacements of list y. Use like this:
+  NB. vdisp=: displacement >UNITN
+uuengine 'DISP',y
 )
 
 ttauc=: 3 : 0
@@ -1730,17 +1727,23 @@ ttdelete_one=: 3 : 0
 )
 
 ttfix=: 3 : 0
-  NB. fixup the tt-vars after line addition/del
-  NB. assume TTn is up-to-date
+  NB. fixup the tt-vars after adding new line(s)
+  NB. called by: ttadl, ttafl
+  NB. assume TTn is up-to-date…
 t=. #TTn    NB. id of new last item of t-table
-  NB. extend by overtake ({.) all TT-compatibles to accommodate t
-vqua0=: vquan=: t{.vquan
-vsiq0=: vsiqn=: vquan*vfact
+  NB. extend by "overtake" ({.) all TT-compatible lists…
+vquan=: t{.vquan
+vsiqn=: t{.vsiqn
 vhold=: t{.vhold
 CH=:    t{.CH
 vmodl=: t{.vmodl,100#1    NB. additional items are assigned model: 1
 vhidd=: t{.vhidd
 TD=:    t{.TD
+  NB. …cannot leave vqua0 vsiq0 the wrong shape
+  NB. however we choose to lose info about the last change
+  NB. rather than try to preserve it…
+vqua0=: vquan
+vsiq0=: vsiqn
 'ttfix' dirty 1
 )
 
@@ -1764,8 +1767,8 @@ if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
 empty 't' setcols TT  NB. to set: tn tu ts td tf
 TTn=: debc TT hcols tn
-TTu=: debc TT hcols tu
-TTs=: debc TT hcols ts
+TTu=. debc TT hcols tu	NB. only needed inside this verb
+TTs=. debc TT hcols ts	NB. only needed inside this verb
 TD=: 0,". debc TT cols td
 if. 1=$$TD do. TD=:|:,:TD end.  NB. >>>>>>>>> fix for munged 1-col TD
 TTf=: fixttf TT hcols tf
@@ -1773,7 +1776,8 @@ empty erase 'TT'      NB. delete TT as a redundant cache
   NB. re-create vfact and the units cols
 z=. convert each UNITN=: boxvec TTu  NB. nominal units
 UNITS=: (>&{.) each z    NB. SI-units
-vfact=: 0,>(>&{:) each }.z  NB. (*vfact): {UNITN}-->{UNITS}
+vfact=: 0,>(>&{:) each }.z
+vdisp=: displacement >UNITN
   NB. Now setup work flags
 CH=: flags 0       NB. "Changed" flags
 if. 1=#vhidd do. vhidd=: flags 0 end.  NB. =1 if row is hidden when displayed
@@ -1832,12 +1836,10 @@ invalexe''      NB. existing 'exe' verbs are invalid
 invalinfo''     NB. existing  info display is invalid
 TTINFO=:''      NB. create empty
 TTn=: ,:'tn'
-TTu=: ,:'tu'
-TTs=: ,:'ts'
 TD=: 1 1$0
 TTf=: ,:'tf'
 UNITN=: UNITS=: ,<'??'
-vfact=: vquan=: ,0
+vdisp=: vfact=: vquan=: ,0
 CH=:    flags 0    NB. "Changed" flags
 vhold=: flags 0    NB. TEST ONLY >>>>> default==no holds for TT
 vmodl=: flags 1    NB. The break-back model to be used
@@ -1879,7 +1881,13 @@ ttsav=: 1&$: : (4 : 0)
   NB. else accept filename y as the new (file)
 if. 0<#y do. file=: expandedPath y end.
 NB. ...hence if y-:'' then file is left as it stands
-  NB. Rebuild TT from fields...
+  NB. Restore TTs TTu just for this verb…
+NB. TTs=. ('ts',>}.UNITS) ,. SP
+NB. TTu=. ('tu',>}.UNITN) ,. SP
+	NB. .......why ,. SP ??
+TTs=. ('ts',>}.UNITS)
+TTu=. ('tu',>}.UNITN)
+  NB. Rebuild TT from fields…
 TT=:  TTn sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
 empty 't' setcols TT
 z=. crr'CAPT'
@@ -1937,8 +1945,6 @@ invalexe''    NB. existing 'exe' verbs are invalid
 TTn=: t relabelitems TTn
 TTn=: t{TTn
 NB. TTn=: t relabelitems t{TTn
-TTu=: t{TTu
-TTs=: t{TTs
 if. x do.
   TD=: t sortTD TD  NB. correctly displace the dependencies
 else.
@@ -1948,6 +1954,7 @@ TTf=: t{TTf
 UNITN=: t{UNITN
 UNITS=: t{UNITS
 vfact=: t{vfact
+vdisp=: t{vdisp
 vqua0=: vquan=: t{vquan
 vsiq0=: vsiqn=: t{vsiqn
 vhold=: t{vhold
@@ -1997,6 +2004,7 @@ NB.  smoutput nb 'Line' ; i ; 'UNITN' ; unitn ; 'UNITS' ; units
 end.
 if. ch do.
   vfact=: z
+NB. vdisp won't change
   recal 0
   '+++ exchange rates updated'
 else.

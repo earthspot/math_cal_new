@@ -31,6 +31,13 @@ AABUILT=: '2018-10-15  00:39:23'
 AABUILT=: '2018-10-15  23:15:12'
 AABUILT=: '2018-10-16  00:31:44'
 AABUILT=: '2018-10-16  00:50:58'
+AABUILT=: '2018-10-17  13:21:04'
+AABUILT=: '2018-10-17  14:17:56'
+AABUILT=: '2018-10-17  15:39:21'
+AABUILT=: '2018-10-17  15:51:55'
+AABUILT=: '2018-10-17  16:20:14'
+AABUILT=: '2018-10-17  16:26:25'
+AABUILT=: '2018-10-17  16:26:54'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -73,7 +80,7 @@ SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'
 SL=: '/'
-SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTn TTu TTs TTf UNITN UNITS CAPT'
+SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vdisp vhidd vhold vmodl CH TD TTn TTf UNITN UNITS CAPT'
 SP=: ' '
 ST=: '*'
 TIMEOUT=: 5
@@ -144,8 +151,8 @@ n=. -+/x e. '0123456789'
 
 
 cv=: 3 : 0
-h=: ;:'vfact vqua0 vquan vsiq0 vsiqn'
-]z=: (<vv vfact),(<vv vqua0),(<vv vquan),(<vv vsiq0),(<vv vsiqn)
+h=: ;:'vfact vdisp vqua0 vquan vsiq0 vsiqn'
+]z=: (<vv vfact),(<vv vdisp),(<vv vqua0),(<vv vquan),(<vv vsiq0),(<vv vsiqn)
 h,:z
 )
 
@@ -440,11 +447,11 @@ else.
   UNITS=: (<un1) y}UNITS
   UNITN=: (<x0) y}UNITN
   vfact=: fac1 y}vfact
+  vdisp=: displacement >UNITN
   vsiq0=: vsiqn
   vqua0=: vquan
-  vquan=: vsiqn % vfact
-  TTs=: ('ts',>}.UNITS) ,. SP
-  TTu=: ('tu',>}.UNITN) ,. SP
+  recal 0
+
   3 message y ; z ; x0
 end.
 )
@@ -1444,7 +1451,7 @@ vsiq0=: vfact*vqua0
 vsiqn=: vfact*vquan
 if. hasf y do. vsiqn=: bcalc y end.
 vsiqn=: fcalc y
-vquan=: vsiqn*(%vfact)
+vquan=: (vdisp -~ vsiqn)%vfact
 
 vquan~:vqua0
 )
@@ -1621,6 +1628,7 @@ UNITN=: si y}UNITN
 vquan=: (y{vsiqn) y}vquan
 vqua0=: (y{vsiq0) y}vqua0
 vfact=: 1 y}vfact
+vdisp=: 0 y}vdisp
 CH=: recal 0
 'siunits' dirty 1
 18 message y; >si
@@ -1680,13 +1688,6 @@ sP2=: 4 : '((x,.SP),.SP),.y'
 targs=: [: {. [: }. [: |: [: ;: a2x
 tbx=: ijs
 
-testvs=: 3 : 0
-
-i=. items''
-l=. >z=. cut'i vhidd vmodl vhold vfact vqua0 vquan vsiq0 vsiqn'
-l ,. CO ,. SP ,. ": >".each z
-)
-
 title=: 3 : 0
 
 
@@ -1703,9 +1704,6 @@ for_t. z do.
   smoutput 'shell' c (quote'open ') c CM c >t
 end.
 )
-
-trace=: 3 : 'if. (y=.{.y) e. 0 1 do. TRACE=:y else. TRACE=:-.TRACE end.'
-traci=: 3 : 'if. (y=.{.y) e. 0 1 do. TRACI=:y else. TRACI=:-.TRACI end.'
 
 tranhold=: _1&$: :(4 : 0)
 
@@ -1732,14 +1730,13 @@ ttadl=: 3 : 0
 
 
 TTn=: TTn,ytn
-TTu=: TTu,ytu
-TTs=: TTs,yts
 TD=: TD,0
 TTf=: TTf,SP
 UNITN=: UNITN,<ytu
 UNITS=: UNITS,<yts
 vquan=: vquan,yvalu
-vfact=: vfact,fac
+vfact=: vfact , fac
+vdisp=: vdisp , displacement ytu
 ttfix''
 
 'ttadl' dirty 1
@@ -1754,8 +1751,6 @@ ttafl=: 3 : 0
 
 
 TTn=: TTn,,ytn
-TTu=: TTu,,ytu
-TTs=: TTs,,yts
 TD=: TD,,".ytd
 
 
@@ -1766,7 +1761,8 @@ TTf=: TTf,,ytf
 UNITN=: UNITN,<,ytu
 UNITS=: UNITS,<,yts
 vquan=: vquan,0
-vfact=: vfact,fac
+vfact=: vfact , fac
+vdisp=: vdisp , displacement ytu
 ttfix''
 invalexe''
 CH=: recal 0
@@ -1786,10 +1782,11 @@ end.
 CAPTsav=. CAPT
 vquanS=. vquan
 vfactS=. vfact
+vdispS=. vdisp
 vmodlS=. vmodl
 vhiddS=. vhidd
 UNITSsav=. UNITS
-UNITNsav=: UNITN
+UNITNsav=. UNITN
 vhidd=: vmodl=: _
 load file1
 CAPT=: CAPTsav
@@ -1799,22 +1796,16 @@ empty 't' setcols TT
 nt0=. #TTn
 TTn=: TTn, debc TT cols tn
 nt1=. #TTn
-TTu=: TTu, TTu2=. debc TT cols tu
-TTs=: TTs, debc TT cols ts
 z=. ". debc TT cols td
 if. 1=$$z do. z=. |: ,:z end.
 TD=: TD , (<:nt0) dadd z
 TTf=: TTf, fixttf TT cols tf
-empty erase 'TT TTu TTs'
 
-
-
-
-
-z=. convert each UNITN2=: boxvec TTu2
+z=. convert each UNITN2=: boxvec debc TT cols tu
 UNITN=: UNITNsav,UNITN2
 UNITS=: UNITSsav,(>&{.) each z
 vfact=: vfactS, >(>&{:) each z
+vdisp=: displacement >UNITN
 
 CH=:    flags 0
 vhold=: flags 0
@@ -1833,7 +1824,20 @@ tag=. SWAPPED#'\'
 reselect 0
 CH=: recal 0
 'ttappend' dirty 1
+eraseRedundantCaches 'TT TTu TTs UNITNsav UNITN2'
 tag,'appended: ',file1
+)
+
+eraseRedundantCaches=: 3 : 0
+
+erase y
+smoutput '>>> THESE CACHES DELETED: ',y
+)
+
+displacement=: 3 : 0 "1
+
+
+uuengine 'DISP',y
 )
 
 ttauc=: 3 : 0
@@ -1893,15 +1897,21 @@ ttdelete_one=: 3 : 0
 ttfix=: 3 : 0
 
 
+
 t=. #TTn
 
-vqua0=: vquan=: t{.vquan
-vsiq0=: vsiqn=: vquan*vfact
+vquan=: t{.vquan
+vsiqn=: t{.vsiqn
 vhold=: t{.vhold
 CH=:    t{.CH
 vmodl=: t{.vmodl,100#1
 vhidd=: t{.vhidd
 TD=:    t{.TD
+
+
+
+vqua0=: vquan
+vsiq0=: vsiqn
 'ttfix' dirty 1
 )
 
@@ -1925,8 +1935,8 @@ if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
 
 empty 't' setcols TT
 TTn=: debc TT hcols tn
-TTu=: debc TT hcols tu
-TTs=: debc TT hcols ts
+TTu=. debc TT hcols tu
+TTs=. debc TT hcols ts
 TD=: 0,". debc TT cols td
 if. 1=$$TD do. TD=:|:,:TD end.
 TTf=: fixttf TT hcols tf
@@ -1935,6 +1945,7 @@ empty erase 'TT'
 z=. convert each UNITN=: boxvec TTu
 UNITS=: (>&{.) each z
 vfact=: 0,>(>&{:) each }.z
+vdisp=: displacement >UNITN
 
 CH=: flags 0
 if. 1=#vhidd do. vhidd=: flags 0 end.
@@ -1993,12 +2004,10 @@ invalexe''
 invalinfo''
 TTINFO=:''
 TTn=: ,:'tn'
-TTu=: ,:'tu'
-TTs=: ,:'ts'
 TD=: 1 1$0
 TTf=: ,:'tf'
 UNITN=: UNITS=: ,<'??'
-vfact=: vquan=: ,0
+vdisp=: vfact=: vquan=: ,0
 CH=:    flags 0
 vhold=: flags 0
 vmodl=: flags 1
@@ -2039,6 +2048,10 @@ ttsav=: 1&$: : (4 : 0)
 
 
 if. 0<#y do. file=: expandedPath y end.
+
+
+TTs=. ('ts',>}.UNITS)
+TTu=. ('tu',>}.UNITN)
 
 TT=:  TTn sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
 empty 't' setcols TT
@@ -2094,8 +2107,6 @@ t=. t-.t-.(items'')
 invalexe''
 TTn=: t relabelitems TTn
 TTn=: t{TTn
-TTu=: t{TTu
-TTs=: t{TTs
 if. x do.
   TD=: t sortTD TD
 else.
@@ -2105,6 +2116,7 @@ TTf=: t{TTf
 UNITN=: t{UNITN
 UNITS=: t{UNITS
 vfact=: t{vfact
+vdisp=: t{vdisp
 vqua0=: vquan=: t{vquan
 vsiq0=: vsiqn=: t{vsiqn
 vhold=: t{vhold
@@ -2941,8 +2953,6 @@ sb1p r    r setvalue~ vr*0.99      \dec item by 1%
 tera r    'T' scaleunits r         \tera- item
 titl yy   settitle yy              \set t-table caption
 tnam yy   file=: yy                \set t-table file name
-trac n    trace n                  \toggle TRACE
-trai n    traci n                  \toggle TRACI
 t1dl r    r fnline~ '10%~'         \copy item by 10
 t1ml r    r fnline~ '10*'          \copy item times 10
 t2dl r    r fnline~ '100%~'        \copy item by 100
@@ -3156,18 +3166,18 @@ any z e. a: default 'TRACEVERBS'
 )
 
 traceverbs=: 3 : 0
-  NB. sets/resets TRACEVERBS
-  NB. y== ''	-returns boxed list of traced verbs
-  NB. y== 0	-no verbs to be traced / disable tracing
-  NB. y e. 1 2 3…	-predefined lists of verbs to trace
-  NB. y== '+myverb1 myverb2' -trace these verbs also
-  NB. y== '-myverb1 myverb2' -stop tracing these verbs
-  NB. y== 'myverb1 myverb2'  -openlist of ALL the verbs to trace
-  NB. y== 'OFF' -no tracing
-  NB. y== 'ON'  -tracing controlled (by TRACEVERBS and LATEST_ONLY)
-  NB. y== 'ALL' -tracing on, but unconditional
+
+
+
+
+
+
+
+
+
+
 z=.''
-mm1=. make_msg bind 1  NB. must switch on, too.
+mm1=. make_msg bind 1
 select. {.y
 case. 'O' do. make_msg (y-:'ON')
 case. 'A' do. make_msg 2
@@ -3178,7 +3188,7 @@ case. 2   do. mm1 z=. TRACEVERBS=: ;: 'xx xxx'
 case. 3   do. mm1 z=. TRACEVERBS=: ;: 'xx xxx xxxx'
 case. '+' do. mm1 z=. TRACEVERBS=: ~. TRACEVERBS ,~ ;: y-.'+'
 case. '-' do. mm1 z=. TRACEVERBS=: TRACEVERBS -. ;: y-.'-'
-case.     do. mm1 z=. TRACEVERBS=: ~. ;: y  NB. assume y is an openlist of verbs
+case.     do. mm1 z=. TRACEVERBS=: ~. ;: y
 end.
 smoutput '+++ traceverbs: #traced=',":#z
 smoutput >TRACEVERBS

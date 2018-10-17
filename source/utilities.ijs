@@ -53,8 +53,8 @@ n=. -+/x e. '0123456789'  NB. n<0 -to count from end
 	NB. Diagnostic check...
 	NB. show the v-caches
 cv=: 3 : 0
-h=: ;:'vfact vqua0 vquan vsiq0 vsiqn'
-]z=: (<vv vfact),(<vv vqua0),(<vv vquan),(<vv vsiq0),(<vv vsiqn)
+h=: ;:'vfact vdisp vqua0 vquan vsiq0 vsiqn'
+]z=: (<vv vfact),(<vv vdisp),(<vv vqua0),(<vv vquan),(<vv vsiq0),(<vv vsiqn)
 h,:z
 )
 

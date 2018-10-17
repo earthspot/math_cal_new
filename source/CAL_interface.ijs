@@ -234,8 +234,6 @@ sb1p r    r setvalue~ vr*0.99      \dec item by 1%
 tera r    'T' scaleunits r         \tera- item
 titl yy   settitle yy              \set t-table caption
 tnam yy   file=: yy                \set t-table file name
-trac n    trace n                  \toggle TRACE
-trai n    traci n                  \toggle TRACI
 t1dl r    r fnline~ '10%~'         \copy item by 10
 t1ml r    r fnline~ '10*'          \copy item times 10
 t2dl r    r fnline~ '100%~'        \copy item by 100
