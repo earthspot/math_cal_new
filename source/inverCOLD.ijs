@@ -1,38 +1,51 @@
-	NB. cal - inversion.ijs
-'==================== [cal] inversion.ijs ===================='
+	NB. cal - inverCOLD.ijs
+'==================== [cal] inverCOLD.ijs ===================='
+NB. CAL scientific calculator engine
+NB. TABULA inversion -- new design -- inverCOLD from inversionC "blazing saddle"
+NB. copy of ~/dev/cal/source/inversion.ijs -slightly edited
 0 :0
-Friday 19 October 2018  04:24:30
+Friday 19 October 2018  02:59:45
 -
-CURRENTLY DISABLED -just kept for backup support and comparison.
+from temp 2010
 )
 
-cocurrent 'cal'
+coclass z=.'inverCOLD'
+clear z
+LOC=: z
 
-NB. DISABLES ALL USES OF inversionX and any verbs calling it
-inversionX=: DONT_CALL_inversionX
-inversionB=: DONT_CALL_inversionB
-inversionB2=: DONT_CALL_inversionB2
-
-
+patch=: 3 : 0
+ide 1
+ssw '+++ (LOC) patched-in.'
 NB. ———————————————————————————————————————————————————————————
 	NB. Algorithm plugboard (from patch 66)
-	NB. ALTER to plug-in a different inversion algorithm:
-NB. inversion=: blazing_saddle
 inversion=: inversionC	NB. <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-saddle=: blazing_saddle	NB. see: inversionC
-MAXCOUNTDOWN=: 1000	NB. sets limit to gNR^:_ (inversionNR)
+saddle=: blazing_saddle	NB. called by inversionC
+MAXCOUNTDOWN=: 1000	NB. sets limit to gNR^:_ (called by inversionNR)
 MAXPASSES=: 200	NB. sets limit to the stepped loop
 MAXNESTED=: 3	NB. NESTED rarely exceeds 1 unless code error
-NB. TOLERANCE=: 1e_5	NB. if larger, inversion resists fewer Y-values
-NB. Set TOLERANCE in consts.ijs or in configfile
+TOLERANCE=: 1e_9	NB. if larger, inversion resists fewer Y-values
+TIMEOUT=: 999999
 NB. ———————————————————————————————————————————————————————————
+inversionX_z_ =: inversion_inverCOLD_	NB. --> verb defn below
+i.0 0
+)
+
+link=: 3 : 0
+  NB. reconnect fwd and amodel at each inversion call
+  NB. needs to be defined in a higher script, e.g. cal.ijs
+fwd_z_=: fwd_cal_
+amodel_z_=: amodel_cal_
+i.0 0
+)
+
+timeout=: empty	NB. used by: blazing_saddle
 
 progress=: 3 : 0
-NB. wd_tab_ :: 0: 'msgs'
-NB. wd 'msgs'
+wd_tab_ :: 0: 'msgs'
+wd 'msgs'
 PROGRESS_z_=: y
-NB. wd_tab_ :: 0: 'msgs'
-NB. wd 'msgs'
+wd_tab_ :: 0: 'msgs'
+wd 'msgs'
 )
 
 reportvars=: 3 : 0
@@ -254,6 +267,7 @@ NB. —————————————————————————�
 inversionC=: 4 : 0
 	NB. try a series of conjectures -->verb: bwd
 	NB. args:   X0 inversionC dY
+link''
 NB. erase 'x__ y__ ii__ X__ X X0 Y0 X1 Y1 dY Y d_Y d_X d1X xt dyt'
 Y=: dY + Y0=: fwd X0=: x [ dY=: y
 NB. HEURISTIC: choose the "almostequal" criterion
@@ -261,7 +275,7 @@ NB. Both depend on the value of global: TOLERANCE
 if. Y=0 do. 	almostequals=: hitandmiss
 else. 		almostequals=: tolerant
 end.
-sess1 LF,LF, me=. 'inversionC'
+sess1 LF,LF, me=. 'inversionC_inverCOLD_'
 sllog 'me Y dY Y0 X0'
 fixup_amodel''
 Y1=: fwd X1=: X0 + (amodel*0.1)  NB. an extra sample pt {X1,Y1) on the curve
@@ -270,7 +284,7 @@ for_fi. 'fit'nl 3 do.  fit=. >fi
   sess1 '+++ applying guess: ',fit
   fit apply''  NB. -->makes: bwd (trial backward mapping)
   if. Y almostequals (fbY=: fwd bwd Y) do. bwd Y return.
-  else. sllog 'Y fbY mmm' [mmm=. fit,' failed, continuing...'
+  else. sllog 'Y fbY msg' [msg=. fit,' failed, continuing...'
   end.
 end.
 	NB. if none of the fits work, fall back on N-R algorithm
@@ -280,6 +294,7 @@ x saddle y
 fit1=: 3 : 0
 	NB. conjecture X= A*(Y^B) -- fit parameters A,B
 me=. 'fit1'
+ln=. ^.	NB. natural logarithm
 sllog 'me Y1 X1 Y0 X0'  NB. Assume these wkvars set-up by: inversionC
 ]B=: (ln (X0%X1)) % (ln (Y0%Y1))
 ]A=: X0 % (Y0^B)

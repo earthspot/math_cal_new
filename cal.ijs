@@ -38,6 +38,10 @@ AABUILT=: '2018-10-17  15:51:55'
 AABUILT=: '2018-10-17  16:20:14'
 AABUILT=: '2018-10-17  16:26:25'
 AABUILT=: '2018-10-17  16:26:54'
+AABUILT=: '2018-10-19  04:20:21'
+AABUILT=: '2018-10-19  04:25:01'
+AABUILT=: '2018-10-19  04:26:55'
+AABUILT=: '2018-10-19  04:33:57'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -2373,21 +2377,277 @@ lin0 , z #~ force0 -.vhidd
 
 ct=: ct2
 
-'==================== [cal] inversion.ijs ===================='
+'==================== [cal] inversion_CONTROLLER.ijs ===================='
+0 :0
+Friday 19 October 2018  02:59:45
+-
+resides in _cal_ and calls in-turn into 
+a choice of installed inver* locales.
+-
+pivotal verb: inversion itself is called by: beval ("backward-evaluation")
+-
+NOTATION:
+! -- must not change for duration of (inversion-)invocation
+] -- computed from other workvars
+? -- notional -- need not be created here
+====
+?X		notional abscissa in the abstract algorithm
+?Y		notional ordinate in the abstract algorithm
+!X0		==argLEFT; X initial value, from invocation
+?Y0		Y initial value ==fwd(X0) ==fwdX0
+]X1		X final value returned by: inversion
+?Y1		Y final value ==fwd(X1)
+!dY		(non-iterative) INCREMENT of manual alt'n to Y
+!dY0		==argRIGHT; the INCREMENT of manual alt'n to Y
+		--NOT the overtyped Y itself, == Y0D !!!
+!Y0D		==Y0+argRIGHT ==Y0+dY0
+?X1		value ret'd s.t. dY0 ~= fwd(X1)-fwd(X0)
+]dX		limit of d1X, d2X, …, d_X, …, dX (as retd by: g)
+		--the change to be made to X0 to bring it to X1
+]d_X		iterated estimate of ΔX (d_X--> dX as n--> _)
+]d1X		1st value of d_X, starts at 1 (nudged)
+?d2X		2nd value of d_X, …etc
+-
+Verb: endstop -simply returns x-arg unchanged
+(Does it have to generate the error message itself?
+ Or return a value of X which won't yield the delta: y ?)
+---NO, it seems. Just return an unchanged X.
+--the result is the "resists value" message.
+-
+TO DO: Walkthru how cal responds to endstop, recognising/signalling failure.
+)
+
 cocurrent 'cal'
-inversionX=: DONT_CALL_inversionX
-inversionB=: DONT_CALL_inversionB
-inversionB2=: DONT_CALL_inversionB2
+
+inversion=: inversion_inverC1_ :: endstop
+
+endstop=: 4 : 0
+smoutput '>>> endstop: called.'
+x return.
+)
+
+progress=: 3 : 0
+PROGRESS_z_=: y
+)
 
 
+'==================== [cal] inverC1.ijs ===================='
+0 :0
+Friday 19 October 2018  02:59:45
+-
+Fits a simple function (fit*) to: fwd
+(based on 2001 NR and 2003 C)
+WARNING: changes amodel to simplest form: all ancestors held bar one.
+>>>>> NO! --does not use amodel yet.
+-
+I DON'T LIKE fwd_z_ and amodel_z_
+-It means only one instantiation of CAL can run at once.
+)
+
+coclass z=.'inverC1'
+clear z
+lo=: <LOC=: z
+TOLERANCE=: 1e_9
+fit=: fit2
+link=: 3 : 0
+
+
+fwd_z_=: fwd_cal_
+amodel_z_=: amodel_cal_
+i.0 0
+)
+
+inversion=: 4 : 0
+
+erase 'X0 fwdX0 dY0 d1X dX X1'
+me=. sw'inversion_(LOC)_' [argLEFT=. x [argRIGHT=. y
+link''
+sess1 sw'+++ (me): (LF) argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
+X0=: argLEFT
+Y0=: fwdX0=: fwd(X0)
+dY=: argRIGHT
+
+Y0D=: Y=: Y0+dY
+fit''
+X1=: bwd Y0D
+)
+
+fit0=: 3 : 0
+
+
+me=. sw'fit0_(LOC)_'
+sllog 'me dY Y Y0 X0'
+]A=: X0 % (Y0^B)
+bwd=: 13 : 'A + y'
+i.0 0
+)
+
+fit1=: 3 : 0
+
+
+me=. sw'fit1_(LOC)_'
+ln=. ^.
+sllog 'me dY Y Y0 X0'
+]B=: (ln (X0%X1)) % (ln (Y0%Y1))NB----BUT X1 Y1 UNSET!!
+]A=: X0 % (Y0^B)
+bwd=: 13 : 'A * (y^B)'
+i.0 0
+)
+
+fit2=: 3 : 0
+
+
+
+
+me=. sw'fit2_(LOC)_'
+sllog 'me dY Y Y0 X0'
+]A=: X0 - (Y0 * B)
+bwd=: 13 : 'A + (B*y)'
+i.0 0
+)
+
+fitPI=: 3 : 0
+
+me=. sw'fitPI_(LOC)_'
+bwd=: 13 : 'y%PI'
+i.0 0
+)
+
+fitNEG=: 3 : 0
+
+me=. sw'fitNEG_(LOC)_'
+bwd=: 13 : '- y'
+bwd=: -
+i.0 0
+)
+
+markfirst=: i. = [: i. [: # [
+marklast=:  i: = [: i. [: # [
+fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'
+tolerant=: 4 : '(mdiff=:|x-y) <: TOLERANCE * (>./|x,y)'
+hitandmiss=: 4 : '(|x-y) <: TOLERANCE'
+
+'==================== [cal] inverNRS.ijs ===================='
+0 :0
+Friday 19 October 2018  02:59:45
+-
+from temp 2009
+>>> UNFINISHED <<<
+ot 2006
+ot 2001
+)
+
+coclass z=.'inverNRS'
+clear z
+lo=: <LOC=: z
+
+patch=: 3 : 0
+ide 1
+ssw '+++ (LOC) patched-in.'
+TRACE_z_=: 1
+TRACEPLOT_z_=: 1
+MAXCOUNTDOWN=: 100
+inversionX_z_ =: inversion_inverNRS_
+load temp 2006
+plot 0
+)
+
+inversion=: 4 : 0
+
+erase 'X0 fwdX0 dY0 d1X dX X1'
+me=. sw'inversion_(LOC)_' [argLEFT=. x [argRIGHT=. y
+link''
+sess1 sw'+++ (me): (LF) argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
+X0=: argLEFT
+Y0=: fwdX0=: fwd(X0)
+dY0=: argRIGHT
+Y1=: Y0D=: Y0+dY0
+
+
+scaled=: 1 - dY0 %~ Y0 -~ ]
+fwdSC=: scaled @: fwd
+
+
+d1X=: ($X0)$1
+if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
+countdown MAXCOUNTDOWN
+record 0
+sllog 'me X0 dY0 d1X COUNTDOWN MAXCOUNTDOWN'
+dX=: g^:_ d1X
+ sllog 'me dX d1X'
+2 record''
+X1=: X0+dX
+)
+g=: gloop
+
+gerr=: 3 : 0
+smoutput '>>> g error'
+y return.
+)
+
+gloop=: 3 : 0
+
+me=. 'g_inverNRS_'
+sllog 'me argRIGHT' [argRIGHT=. y
+countdown''
+d_X=. argRIGHT
+d_Y=. (fwd X0+d_X) -(fwd X0)
+d_X=. real amodel * d_X * dY0 % d_Y
+  1 record d_X
+d_X
+
+)
+
+link=: 3 : 0
+
+
+fwd_z_=: fwd_cal_
+amodel_z_=: amodel_cal_
+i.0 0
+)
+
+'==================== [cal] inverCOLD.ijs ===================='
+0 :0
+Friday 19 October 2018  02:59:45
+-
+from temp 2010
+)
+
+coclass z=.'inverCOLD'
+clear z
+LOC=: z
+
+patch=: 3 : 0
+ide 1
+ssw '+++ (LOC) patched-in.'
 
 inversion=: inversionC
 saddle=: blazing_saddle
 MAXCOUNTDOWN=: 1000
 MAXPASSES=: 200
 MAXNESTED=: 3
+TOLERANCE=: 1e_9
+TIMEOUT=: 999999
+inversionX_z_ =: inversion_inverCOLD_
+i.0 0
+)
+
+link=: 3 : 0
+
+
+fwd_z_=: fwd_cal_
+amodel_z_=: amodel_cal_
+i.0 0
+)
+
+timeout=: empty
+
 progress=: 3 : 0
+wd_tab_ :: 0: 'msgs'
+wd 'msgs'
 PROGRESS_z_=: y
+wd_tab_ :: 0: 'msgs'
+wd 'msgs'
 )
 
 reportvars=: 3 : 0
@@ -2586,11 +2846,12 @@ end.
 inversionC=: 4 : 0
 
 
+link''
 Y=: dY + Y0=: fwd X0=: x [ dY=: y
 if. Y=0 do. 	almostequals=: hitandmiss
 else. 		almostequals=: tolerant
 end.
-sess1 LF,LF, me=. 'inversionC'
+sess1 LF,LF, me=. 'inversionC_inverCOLD_'
 sllog 'me Y dY Y0 X0'
 fixup_amodel''
 Y1=: fwd X1=: X0 + (amodel*0.1)
@@ -2599,7 +2860,7 @@ for_fi. 'fit'nl 3 do.  fit=. >fi
   sess1 '+++ applying guess: ',fit
   fit apply''
   if. Y almostequals (fbY=: fwd bwd Y) do. bwd Y return.
-  else. sllog 'Y fbY mmm' [mmm=. fit,' failed, continuing...'
+  else. sllog 'Y fbY msg' [msg=. fit,' failed, continuing...'
   end.
 end.
 
@@ -2609,6 +2870,7 @@ x saddle y
 fit1=: 3 : 0
 
 me=. 'fit1'
+ln=. ^.
 sllog 'me Y1 X1 Y0 X0'
 ]B=: (ln (X0%X1)) % (ln (Y0%Y1))
 ]A=: X0 % (Y0^B)
