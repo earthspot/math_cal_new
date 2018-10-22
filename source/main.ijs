@@ -317,7 +317,8 @@ fmla=. fmla, ': ', }.vn  NB. attach the fmla "ext".
 if. 1=$y do. label=. x,brace y
 else. label=. (SP;x)stringreplace }. ;SP,each brace each y
 end.
-unitf=. selfcanc__uun unitf  NB. NEW <<<<<<<<<<<<<<<<<
+NB. unitf=. selfcanc__uun unitf  NB. NEW <<<<<<<<<<<<<<<<<
+unitf=. uuengine 'SELF',unitf
 ttafl label ; unitf ; (":y); fmla
 5 message y; x
 )
@@ -355,7 +356,7 @@ convert=: 3 : 0
   NB. convert units y to SI-units
   NB. returns: (units ; cycles ; factor)
   NB. cycles is now unused: always (_)
-uuengine'CONV ',y
+uuengine'CONV',y
 )
 
 copyline=: 3 : 0
@@ -1256,8 +1257,7 @@ if. ST e. z do. (,ST) return. end.
   NB. Remove trailing slash ...
 if. SL={:z do. z=. }:z end.
   NB. Do some simple cancelling-out...
-NB. (NOT-IMPLEMENTED YET)
-,z
+z=. uuengine 'SELF',z
 )
 
 promo=: 4 : 'x,y-.x'
@@ -1345,8 +1345,7 @@ else.    NB. ASSUME y is item# in t-table...
   if. -.validitem y do. 1 message y return. end.
   un0=. >y{UNITN
 end.
-NB. 'a f0 un2 b'=. cnvj un0
-'a f0 un2 b'=. uuengine'CNVJ ',un0
+'a f0 un2 b'=. uuengine'CNVJ',un0
   NB. f0: scale factor, un2: unscaled units, a b: discarded
 sp=. ;:'= da h k ? ? M ? ? G ? ? T ? ? P ? ? E ? ? Z ? ? Y   y ? ? z ? ? a ? ? f ? ? p ? ? n ? ? mu ? ? m  c  d'
 NB.     0 1  2 3 4 5 6 7 8 9    12    15    18    21    24 _24   _21   _18   _15   _12    _9    _6     _3 _2 _1

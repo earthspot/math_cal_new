@@ -1,13 +1,13 @@
-	NB. cal - inverC1.ijs
-'==================== [cal] inverC1.ijs ===================='
-NB. TABULA inversion -- inverC1 -- product of 2 items
+	NB. cal - inverC0.ijs
+'==================== [cal] inverC0.ijs ===================='
+NB. TABULA inversion -- inverC0 -- multiply by a constant
 0 :0
-Monday 22 October 2018  05:26:53
+Monday 22 October 2018  05:59:56
 -
-TEST WITH line {5} of SAMPLE 4
+TEST WITH line {4} of SAMPLE 4 -- PI * X[1]
 )
 
-coclass z=.'inverC1'
+coclass z=.'inverC0'
 clear z
 LOC=: z
 TOLERANCE=: 1e_9	NB. if larger, inversion resists fewer Y-values
@@ -33,13 +33,14 @@ X1
 )
 
 fit=: 3 : 0
-NB. Conjecture:	Y = sum X		==fwd X
-NB. Partition dY0 evenly across those X-entries not masked by amodel -->inc
-NB. Alternative strategy would be to weight (inc) by existing values.
-NB. No coefficients need fitting
+NB. Conjecture:
+NB. 	Y = B * X	==fwd X
+NB. It follows that:
+NB. 	X = Y%B	==bwd Y
 me=. sw'fit_(LOC)_'
-inc=: amodel * dY0%(+/amodel)
-bwd=: 3 : '+/ X0 + inc'  NB. bwd: Y --> X
+]B=: 0.0001 (fwd D:1) X0  NB. In time, use D. -but currently crashes.
+bwd=: 13 : 'y%B'  NB. bwd: Y --> X
+  NB. …using: "13 :" freezes-in values of parameters
 i.0 0
 )
 

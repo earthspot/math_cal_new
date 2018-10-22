@@ -5,9 +5,8 @@ utilities.ijs
 main.ijs
 ct.ijs
 inversion_CONTROLLER.ijs
+inverC0.ijs
 inverC1.ijs
-inverNRS.ijs
-inverCOLD.ijs
 CAL_interface.ijs
 message.ijs
 tabmath.ijs

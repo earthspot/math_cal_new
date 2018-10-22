@@ -29,7 +29,7 @@ uuconnect''  NB. create and use an instance of class 'uu'
 make_tabengineCore''  NB. the core of: tabengine
 globmake'' NB. make global nouns
 cmake''    NB. make the i/f tables
-NB. DODGY... getversion TPATH_CAL
+inversion=: inversion_inverC0_ :: inversion_inverC1_ :: endstop
 progress _ NB. init progress signalling to idle state
 0 enlog 0  NB. start a new log file
   NB. RELOAD general math fns (to addto/override) ...

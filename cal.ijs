@@ -42,6 +42,20 @@ AABUILT=: '2018-10-19  04:20:21'
 AABUILT=: '2018-10-19  04:25:01'
 AABUILT=: '2018-10-19  04:26:55'
 AABUILT=: '2018-10-19  04:33:57'
+AABUILT=: '2018-10-20  11:24:10'
+AABUILT=: '2018-10-20  11:36:37'
+AABUILT=: '2018-10-20  11:41:20'
+AABUILT=: '2018-10-21  00:33:26'
+AABUILT=: '2018-10-21  23:02:34'
+AABUILT=: '2018-10-21  23:47:08'
+AABUILT=: '2018-10-22  05:51:45'
+AABUILT=: '2018-10-22  05:52:29'
+AABUILT=: '2018-10-22  06:09:17'
+AABUILT=: '2018-10-22  06:22:06'
+AABUILT=: '2018-10-22  06:25:02'
+AABUILT=: '2018-10-22  06:32:56'
+AABUILT=: '2018-10-22  06:37:16'
+AABUILT=: '2018-10-22  06:43:53'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -186,6 +200,17 @@ if. 0<: 4!:0 <y do. y~ return. end.
 (y)=:x
 )
 
+breakback=: 3 : 0
+
+cocurrent 'tabby'
+a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
+wd 'pc form closeok; pn ',nom
+wd 'cc g isidraw'
+wd 'set g minwh ', ":(|.$a)
+wd 'pshow'
+glsel 'g'
+glpixels 0 0 , (|.$a), ,a
+)
 timeout=: 3 : 0
 select. y
 case. _ do.
@@ -529,7 +554,7 @@ fmla=. fmla, ': ', }.vn
 if. 1=$y do. label=. x,brace y
 else. label=. (SP;x)stringreplace }. ;SP,each brace each y
 end.
-unitf=. selfcanc__uun unitf
+unitf=. uuengine 'SELF',unitf
 ttafl label ; unitf ; (":y); fmla
 5 message y; x
 )
@@ -567,7 +592,7 @@ convert=: 3 : 0
 
 
 
-uuengine'CONV ',y
+uuengine'CONV',y
 )
 
 copyline=: 3 : 0
@@ -1438,7 +1463,7 @@ if. ST e. z do. (,ST) return. end.
 
 if. SL={:z do. z=. }:z end.
 
-,z
+z=. uuengine 'SELF',z
 )
 
 promo=: 4 : 'x,y-.x'
@@ -1523,7 +1548,7 @@ else.
   if. -.validitem y do. 1 message y return. end.
   un0=. >y{UNITN
 end.
-'a f0 un2 b'=. uuengine'CNVJ ',un0
+'a f0 un2 b'=. uuengine'CNVJ',un0
 
 sp=. ;:'= da h k ? ? M ? ? G ? ? T ? ? P ? ? E ? ? Z ? ? Y   y ? ? z ? ? a ? ? f ? ? p ? ? n ? ? mu ? ? m  c  d'
 
@@ -2381,15 +2406,22 @@ ct=: ct2
 0 :0
 Friday 19 October 2018  02:59:45
 -
-resides in _cal_ and calls in-turn into 
-a choice of installed inver* locales.
+INVERSION TEST: SAMPLE4
 -
-pivotal verb: inversion itself is called by: beval ("backward-evaluation")
+Verb: inversion -resides in _cal_ and calls in-turn into inver* locales.
+-
+key verb: inversion itself is called by: beval ("backward-evaluation")
+-
+breakback''	shows a diagram of the basic inversion algorithm
+	breakback_cal_ -defined in utilities.ijs
 -
 NOTATION:
-! -- must not change for duration of (inversion-)invocation
-] -- computed from other workvars
-? -- notional -- need not be created here
+  ! -- must not change for duration of (inversion-)invocation
+  ] -- computed from other workvars
+  ? -- notional -- need not be created here
+  argLEFT(x), argRIGHT(y) -- args of invocation: argLEFT inversion argRIGHT
+	argLEFT  is typically: X0
+	argRIGHT is typically: dY0
 ====
 ?X		notional abscissa in the abstract algorithm
 ?Y		notional ordinate in the abstract algorithm
@@ -2401,7 +2433,6 @@ NOTATION:
 !dY0		==argRIGHT; the INCREMENT of manual alt'n to Y
 		--NOT the overtyped Y itself, == Y0D !!!
 !Y0D		==Y0+argRIGHT ==Y0+dY0
-?X1		value ret'd s.t. dY0 ~= fwd(X1)-fwd(X0)
 ]dX		limit of d1X, d2X, …, d_X, …, dX (as retd by: g)
 		--the change to be made to X0 to bring it to X1
 ]d_X		iterated estimate of ΔX (d_X--> dX as n--> _)
@@ -2419,10 +2450,10 @@ TO DO: Walkthru how cal responds to endstop, recognising/signalling failure.
 
 cocurrent 'cal'
 
-inversion=: inversion_inverC1_ :: endstop
+inversion=: endstop
 
 endstop=: 4 : 0
-smoutput '>>> endstop: called.'
+ssw '>>> endstop: called with: x=[(x)] y=[(y)]'
 x return.
 )
 
@@ -2430,560 +2461,93 @@ progress=: 3 : 0
 PROGRESS_z_=: y
 )
 
+markfirst=: i. = [: i. [: # [
+marklast=:  i: = [: i. [: # [
+fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'
+tolerant=: 4 : '(mdiff=:|x-y) <: TOLERANCE * (>./|x,y)'
+hitandmiss=: 4 : '(|x-y) <: TOLERANCE'
+
+'==================== [cal] inverC0.ijs ===================='
+0 :0
+Monday 22 October 2018  05:59:56
+-
+TEST WITH line {4} of SAMPLE 4 -- PI * X[1]
+)
+
+coclass z=.'inverC0'
+clear z
+LOC=: z
+TOLERANCE=: 1e_9
+
+inversion=: 4 : 0
+
+erase 'X0 Y0 Y0D dY0 X1'
+me=. sw'inversion_(LOC)_' [argLEFT=: x [argRIGHT=: y
+fwd=: fwd_cal_
+amodel=: amodel_cal_
+ssw'+++ (me): argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
+
+X0=: argLEFT
+Y0=: fwd(X0)
+dY0=: argRIGHT
+Y0D=: Y0+dY0
+fit''
+X1=: bwd Y0D
+ssw'+++ (me): Y0D=(Y0D) should approximate fwd X1=(fwd X1)'
+assert. Y0D hitandmiss fwd X1
+X1
+)
+
+fit=: 3 : 0
+me=. sw'fit_(LOC)_'
+]B=: 0.0001 (fwd D:1) X0
+bwd=: 13 : 'y%B'
+
+i.0 0
+)
+
+hitandmiss=: 4 : '(|x-y) <: TOLERANCE'
 
 '==================== [cal] inverC1.ijs ===================='
 0 :0
-Friday 19 October 2018  02:59:45
+Monday 22 October 2018  05:26:53
 -
-Fits a simple function (fit*) to: fwd
-(based on 2001 NR and 2003 C)
-WARNING: changes amodel to simplest form: all ancestors held bar one.
->>>>> NO! --does not use amodel yet.
--
-I DON'T LIKE fwd_z_ and amodel_z_
--It means only one instantiation of CAL can run at once.
+TEST WITH line {5} of SAMPLE 4
 )
 
 coclass z=.'inverC1'
 clear z
-lo=: <LOC=: z
+LOC=: z
 TOLERANCE=: 1e_9
-fit=: fit2
-link=: 3 : 0
-
-
-fwd_z_=: fwd_cal_
-amodel_z_=: amodel_cal_
-i.0 0
-)
 
 inversion=: 4 : 0
 
-erase 'X0 fwdX0 dY0 d1X dX X1'
-me=. sw'inversion_(LOC)_' [argLEFT=. x [argRIGHT=. y
-link''
-sess1 sw'+++ (me): (LF) argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
-X0=: argLEFT
-Y0=: fwdX0=: fwd(X0)
-dY=: argRIGHT
+erase 'X0 Y0 Y0D dY0 X1'
+me=. sw'inversion_(LOC)_' [argLEFT=: x [argRIGHT=: y
+fwd=: fwd_cal_
+amodel=: amodel_cal_
+ssw'+++ (me): argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
 
-Y0D=: Y=: Y0+dY
+X0=: argLEFT
+Y0=: fwd(X0)
+dY0=: argRIGHT
+Y0D=: Y0+dY0
 fit''
 X1=: bwd Y0D
+ssw'+++ (me): Y0D=(Y0D) should approximate fwd X1=(fwd X1)'
+assert. Y0D hitandmiss fwd X1
+X1
 )
 
-fit0=: 3 : 0
+fit=: 3 : 0
+me=. sw'fit_(LOC)_'
+inc=: amodel * dY0%(+/amodel)
+bwd=: 13 : 'y + inc'
 
-
-me=. sw'fit0_(LOC)_'
-sllog 'me dY Y Y0 X0'
-]A=: X0 % (Y0^B)
-bwd=: 13 : 'A + y'
 i.0 0
 )
 
-fit1=: 3 : 0
-
-
-me=. sw'fit1_(LOC)_'
-ln=. ^.
-sllog 'me dY Y Y0 X0'
-]B=: (ln (X0%X1)) % (ln (Y0%Y1))NB----BUT X1 Y1 UNSET!!
-]A=: X0 % (Y0^B)
-bwd=: 13 : 'A * (y^B)'
-i.0 0
-)
-
-fit2=: 3 : 0
-
-
-
-
-me=. sw'fit2_(LOC)_'
-sllog 'me dY Y Y0 X0'
-]A=: X0 - (Y0 * B)
-bwd=: 13 : 'A + (B*y)'
-i.0 0
-)
-
-fitPI=: 3 : 0
-
-me=. sw'fitPI_(LOC)_'
-bwd=: 13 : 'y%PI'
-i.0 0
-)
-
-fitNEG=: 3 : 0
-
-me=. sw'fitNEG_(LOC)_'
-bwd=: 13 : '- y'
-bwd=: -
-i.0 0
-)
-
-markfirst=: i. = [: i. [: # [
-marklast=:  i: = [: i. [: # [
-fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'
-tolerant=: 4 : '(mdiff=:|x-y) <: TOLERANCE * (>./|x,y)'
 hitandmiss=: 4 : '(|x-y) <: TOLERANCE'
-
-'==================== [cal] inverNRS.ijs ===================='
-0 :0
-Friday 19 October 2018  02:59:45
--
-from temp 2009
->>> UNFINISHED <<<
-ot 2006
-ot 2001
-)
-
-coclass z=.'inverNRS'
-clear z
-lo=: <LOC=: z
-
-patch=: 3 : 0
-ide 1
-ssw '+++ (LOC) patched-in.'
-TRACE_z_=: 1
-TRACEPLOT_z_=: 1
-MAXCOUNTDOWN=: 100
-inversionX_z_ =: inversion_inverNRS_
-load temp 2006
-plot 0
-)
-
-inversion=: 4 : 0
-
-erase 'X0 fwdX0 dY0 d1X dX X1'
-me=. sw'inversion_(LOC)_' [argLEFT=. x [argRIGHT=. y
-link''
-sess1 sw'+++ (me): (LF) argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
-X0=: argLEFT
-Y0=: fwdX0=: fwd(X0)
-dY0=: argRIGHT
-Y1=: Y0D=: Y0+dY0
-
-
-scaled=: 1 - dY0 %~ Y0 -~ ]
-fwdSC=: scaled @: fwd
-
-
-d1X=: ($X0)$1
-if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
-countdown MAXCOUNTDOWN
-record 0
-sllog 'me X0 dY0 d1X COUNTDOWN MAXCOUNTDOWN'
-dX=: g^:_ d1X
- sllog 'me dX d1X'
-2 record''
-X1=: X0+dX
-)
-g=: gloop
-
-gerr=: 3 : 0
-smoutput '>>> g error'
-y return.
-)
-
-gloop=: 3 : 0
-
-me=. 'g_inverNRS_'
-sllog 'me argRIGHT' [argRIGHT=. y
-countdown''
-d_X=. argRIGHT
-d_Y=. (fwd X0+d_X) -(fwd X0)
-d_X=. real amodel * d_X * dY0 % d_Y
-  1 record d_X
-d_X
-
-)
-
-link=: 3 : 0
-
-
-fwd_z_=: fwd_cal_
-amodel_z_=: amodel_cal_
-i.0 0
-)
-
-'==================== [cal] inverCOLD.ijs ===================='
-0 :0
-Friday 19 October 2018  02:59:45
--
-from temp 2010
-)
-
-coclass z=.'inverCOLD'
-clear z
-LOC=: z
-
-patch=: 3 : 0
-ide 1
-ssw '+++ (LOC) patched-in.'
-
-inversion=: inversionC
-saddle=: blazing_saddle
-MAXCOUNTDOWN=: 1000
-MAXPASSES=: 200
-MAXNESTED=: 3
-TOLERANCE=: 1e_9
-TIMEOUT=: 999999
-inversionX_z_ =: inversion_inverCOLD_
-i.0 0
-)
-
-link=: 3 : 0
-
-
-fwd_z_=: fwd_cal_
-amodel_z_=: amodel_cal_
-i.0 0
-)
-
-timeout=: empty
-
-progress=: 3 : 0
-wd_tab_ :: 0: 'msgs'
-wd 'msgs'
-PROGRESS_z_=: y
-wd_tab_ :: 0: 'msgs'
-wd 'msgs'
-)
-
-reportvars=: 3 : 0
-'X X0 dY'=. y
-sess1 '>>> inversion called: ',cr'inversion'
-sess1 '        which called: ',cr'inversionX'
-sess1 '    holds (amodel)= ',": amodel
-sess1 '    ancestors (X0)= ',": X0
-sess1 '  Y-increment (dY)= ',": dY
-sess1 '      returned (X)= ',": X
-sess1 LF,LF
-X return.
-)
-
-simple_saddle=: 4 : 0
-
-
-
-
-
-z=. x inversionX y
-reportvars z ; x ; y
-)
-
-ystages=: 1&$: : (4 : 0)
-
-if. y-:0 do. ,0 return. end.
-'z neg yy'=. '' ; (<:2*y>0) ; (|y)
-while. yy>:1 do. 'yy z'=. (yy-x) ; (z,x) end.
-z=. neg* 0 -.~ z,yy
-assert. y -: +/z
-sess1 '>>> ystages: ',":z
-z return.
-)
-0 :0
-ystages 5.3
-0.5 ystages 5.3
-ystages _5.3
-ystages 1
-ystages 0.99
-ystages 0
-)
-
-staged_saddle=: 4 : 0
-
-
-z=. x
-for_i. ystages y do.
-  z=. z inversionX i
-end.
-reportvars z ; x ; y
-)
-
-
-dYfrom=: 3 : 'real (fwd X0+y) - (fwd X0)'
-
-
-inversionB2=: 4 : 0
-sess1 '>>> entering TOOLED inverter: ',me=. 'inversionB2'
-
-X0=: x
-dY=: y
-
-
-Y0=: fwd X0
-Y=: Y0+dY
-
-d_X=: d1X=: 1
-
-
-
-d_Y=: dYfrom d_X
- sllog 'me X0 Y0 Y d1X d_Y'
-dX=: gB2^:_ d1X
-X=: X0 + dX
-)
-
-gB2=: 3 : 0
-
-
-
-
-
-
-
-
-
-countdown''
-d_X=: real y
-d_X=: d_X * dY % d_Y
-d_X=: d_X * amodel
-d_X=: real d_X
-d_Y=: dYfrom d_X
-d_X
-)
-
-Xtry=: 4 : 0
-
-
-
-stepsize=. y
-sess1'+++ Xtry:',llog 'x NESTED stepsize'
-
-if. NESTED>MAXNESTED do.
-  sess1'+++ Xtry: forces resist ',llog 'NESTED MAXNESTED'
-  (x ; stepsize) return.
-end.
-  try.
-    Ypre=. fwd Xpre=. x
-    Ypst=. fwd Xpst=. Xpre inversionNR stepsize
-  catch.
-    stepsize=. stepsize % 2
-    sess1 '+++ Xtry:catch -try again with ',llog 'x stepsize'
-    Ypre=. fwd Xpre=. x
-    'Xpst stepsize'=. Xpre Xtry stepsize [NESTED=:NESTED+1
-    Ypst=. fwd Xpst
-  end.
-Xpst ; stepsize
-)
-blazing_saddle=: 4 : 0
-
-
-
-sess1 LF, me=. 'blazing_saddle'
-timeout TIMEOUT
-Y0=: fwd X0=: x [ dY=: y
-
-sess1 '+++ Try to invert in a single step...'
-stepsize=. dY
-sllog 'stepsize X0 Y0 dY me'
-wd'msgs'
-try.
-  X=. X0 inversionNR dY
-  assert. X ~: X0
-  sess1 LF,LF,~ '+++ single step ok. Returns: ',llog 'COUNTDOWN X me'
-  X return.
-catch.
-  sess1 '>>> stepsize too big for single step: ',llog 'COUNTDOWN stepsize'
-end.
-wd'msgs'
-if. timeout'' do. X0 [sess1 '>>> timed out(1)' return. end.
-sess1 '+++ Halve stepsize until inversionNR ok...'
-whilst. fail=1 do.
-  wd'msgs'
-  try.   fail=.0
-    X=: X0 inversionNR stepsize=. stepsize%2
-  catch. fail=.1
-    if. too_small stepsize do. X0 return. end.
-  end.
-  if. timeout'' do. X0 [sess1 '>>> timed out(2)' return. end.
-end.
-wd'msgs'
-sllog 'stepsize'
-sess1 '+++ Loop until goal reached OR BUST...'
-wd'msgs'
-X=. X0  [d_Y=. 0
-passno=:0
-RUNNING=:1
-SER=: ''
-while. RUNNING do.
-  wd'msgs'
-  passno=:passno+1
-  'X stepsize'=. X Xtry stepsize [NESTED=:0
-  d_Y=. d_Y + stepsize
-  p=. d_Y%dY
-  p=. 30 %~ -log2 1-p
-  p=. <.100* p
-  SER=: SER, d_Y%dY
-  progress passno, p
-	sess1'+++ pass ok'
-  if. d_Y=dY do. RUNNING=:0
-    Y=. Y0 + d_Y
-    sess1 '+++ goal dY reached by d_Y:', llog 'Y Y0 dY d_Y X'
-  elseif. passno>MAXPASSES do. RUNNING=:0
-    sess1 '>>> MAXPASSES exceeded'
-    X0 return.
-  elseif. timeout'' do. RUNNING=:0
-    sess1 '>>> timed out'
-    X0 return.
-  end.
-  wd'msgs'
-end.
-sess1 '+++ Check if eventual X is acceptable...'
-if. (Y=.Y0+dY) = (fX=.fwd X) do.
-  sess1 '+++ perfect:',llog 'Y fX X me'
-  X return.
-elseif. Y almost fX do.
-  sess1 '+++ good enough:',llog 'Y fX X TOLERANCE me'
-  X return.
-elseif. do.
-  z__=: Y,fX
-  sess1 '>>> overall fail:',llog 'Y fX X ALMOST__ me'
-  X0 return.
-end.
-)
-inversionC=: 4 : 0
-
-
-link''
-Y=: dY + Y0=: fwd X0=: x [ dY=: y
-if. Y=0 do. 	almostequals=: hitandmiss
-else. 		almostequals=: tolerant
-end.
-sess1 LF,LF, me=. 'inversionC_inverCOLD_'
-sllog 'me Y dY Y0 X0'
-fixup_amodel''
-Y1=: fwd X1=: X0 + (amodel*0.1)
-
-for_fi. 'fit'nl 3 do.  fit=. >fi
-  sess1 '+++ applying guess: ',fit
-  fit apply''
-  if. Y almostequals (fbY=: fwd bwd Y) do. bwd Y return.
-  else. sllog 'Y fbY msg' [msg=. fit,' failed, continuing...'
-  end.
-end.
-
-x saddle y
-)
-
-fit1=: 3 : 0
-
-me=. 'fit1'
-ln=. ^.
-sllog 'me Y1 X1 Y0 X0'
-]B=: (ln (X0%X1)) % (ln (Y0%Y1))
-]A=: X0 % (Y0^B)
-bwd=: 13 : 'A * (B ^~ y)'
-i.0 0
-)
-
-fit2=: 3 : 0
-
-
-
-me=. 'fit2'
-sllog 'me Y1 X1 Y0 X0'
-]B=: ((X0-X1)) % ((Y0-Y1))
-]A=: X0 - (Y0 * B)
-bwd=: 13 : 'A + (B * y)'
-i.0 0
-)
-tentative_saddle=: 4 : 0
-
-
-
-
-sess1 me=. 'tentative_saddle'
-Y=: dY + Y0=: fwd X0=: x [ dY=: y
-sess1 llog 'me X0 Y0 dY Y'
-try.   fail=.0
-  X=: X0 inversionNR dY
-  sess1 '>>> ',me,': success first try!',LF,LF,LF
-  X return.
-catch. fail=.1
-  sess1 '>>> ',me,': dY too big: ',llog 'Y Y0 dY'
-end.
-
-i=. dY % 2
-whilst. fail=1 do.
-  try.   fail=.0
-    X=: X0 inversionNR i
-  catch. fail=.1
-    i=. i % 2
-    if. 1e_5 > |i do.
-      sess1 '>>> ',me,': i goes too small (=exit): ',llog 'i dY'
-      X0 return.
-    end.
-  end.
-  sess1 '>>> ',me,': tried: ',llog 'i fail'
-end.
-
-i=. i%8
-
-n=. dY % i
-z=. X0
-sess1 '>>> ',me,': check: ',llog 'n z'
-for_j. i.n do.
-  try. z=. z inversionNR i
-  catch.
-    sess1 '>>> ',me,': step j too big (=exit): ',llog 'j z i'
-    X0 return.
-  end.
-  sess1 '>>> ',me,': check: ',llog 'j z i'
-end.
-X=: z
-
-if. Y=fwd X do. X
-else. X0
-  X0 [sess1 '>>> ',me,': fails altogether.'
-end.
-)
-inversionNR=: 4 : 0
-
-
-
-
-
-me=. 'inversionNR'
-dy=. y
-d1X=. 1
-
-if. (fwd x+d1X) = fwd x do. d1X=. 1.111111 end.
-countdown MAXCOUNTDOWN
-xt_cal_=: x
-dyt_cal_=: dy
-dX=. gNR^:_ d1X
-x + dX
-)
-
-gNR=: 3 : 0
-
-
-countdown''
-d_X=. y
-d_Y=. (fwd xt_cal_+d_X) -(fwd xt_cal_)
-d_X=. real amodel * d_X * dyt_cal_ % d_Y
-d_X
-)
-
-markfirst=: i. = [: i. [: # [
-marklast=:  i: = [: i. [: # [
-fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'
-tolerant=: 4 : '(mdiff=:|x-y) <: TOLERANCE * (>./|x,y)'
-hitandmiss=: 4 : '(|x-y) <: TOLERANCE'
-
-too_small=: 3 : 0
-if. 1e_5 >: |y do.
-  sess1 '>>> too_small stepsize: ',":y
-  1 return.
-end.
-0 return.
-)
-0 :0
-  too_small 1e_6
-  -. too_small 1e_4
-)
 
 '==================== [cal] CAL_interface.ijs ===================='
 cocurrent 'cal'
@@ -3483,6 +3047,7 @@ uuconnect''
 make_tabengineCore''
 globmake''
 cmake''
+inversion=: inversion_inverC0_ :: inversion_inverC1_ :: endstop
 progress _
 0 enlog 0
 

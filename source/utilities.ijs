@@ -86,6 +86,19 @@ if. 0<: 4!:0 <y do. y~ return. end.
 (y)=:x
 )
 
+breakback=: 3 : 0
+  NB. show diagram of breakback work-vars
+cocurrent 'tabby' NB. to get a search-path including jgl2
+a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
+wd 'pc form closeok; pn ',nom
+wd 'cc g isidraw'
+wd 'set g minwh ', ":(|.$a)
+wd 'pshow'
+glsel 'g'
+glpixels 0 0 , (|.$a), ,a
+)
+NB. breakback''
+
 timeout=: 3 : 0
 select. y
 case. _ do.		NB. set infinite timeout
