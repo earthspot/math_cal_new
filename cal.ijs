@@ -56,6 +56,15 @@ AABUILT=: '2018-10-22  06:25:02'
 AABUILT=: '2018-10-22  06:32:56'
 AABUILT=: '2018-10-22  06:37:16'
 AABUILT=: '2018-10-22  06:43:53'
+AABUILT=: '2018-10-22  14:12:34'
+AABUILT=: '2018-10-22  16:46:45'
+AABUILT=: '2018-10-22  16:57:45'
+AABUILT=: '2018-10-22  17:26:22'
+AABUILT=: '2018-10-22  17:27:40'
+AABUILT=: '2018-10-22  18:16:06'
+AABUILT=: '2018-10-22  18:19:01'
+AABUILT=: '2018-10-22  19:21:11'
+AABUILT=: '2018-10-22  19:30:54'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -102,9 +111,10 @@ SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vdisp vhidd vhold vmodl CH TD TTn TTf UN
 SP=: ' '
 ST=: '*'
 TIMEOUT=: 5
+TOLERANCE=: 1e_5
 UNDEF=: 'untitled'
 UNDEF_CAPT=: 'untitled'
-TOLERANCE=: 1e_5
+UNSET=: '<UNSET>'
 WARNPLEX=: 1
 
 '==================== [z] paths.ijs ===================='
@@ -433,6 +443,7 @@ if. (0~:x)*.(hasf y) do.
 
 
 
+  INVERSION=: UNSET
   r1=. r inversion deltaz
 end.
 sllog 'beval a r r1'
@@ -2228,8 +2239,6 @@ end.
 (cplx#'NOT '),'all v-buffers were real'
 )
 
-tidy=: 1&warnplex
-
 xseq=: 3 : 'sor clos dpmx TD'
 cocurrent 'cal'
 
@@ -2454,9 +2463,36 @@ inversion=: endstop
 
 endstop=: 4 : 0
 ssw '>>> endstop: called with: x=[(x)] y=[(y)]'
+INVERSION=: 'endstop'
 x return.
 )
 
+inversionC=: 4 : 0
+
+
+
+
+
+me=. sw'inversion_(LOC)_' [argLEFT=: x [argRIGHT=: y
+erase 'X Y X0 Y0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
+fwd=: fwd_cal_
+amodel=: amodel_cal_
+ssw LF,'+++ (me): argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
+
+X0=: argLEFT
+Y0=: fwd(X0)
+dY0=: argRIGHT
+Y0D=: Y0+dY0
+fit''
+X1=: bwd Y0D
+ssw'+++ (me): Y0D=(Y0D) ~= fwdX1=(fwd X1) ??'
+assert. Y0D approximates_cal_ fwd X1
+ssw'--- (me): …yes, close enough. […Exits]'
+INVERSION_cal_=: me
+X1 return.
+)
+
+thRootOf=: ] ^ [: % [
 progress=: 3 : 0
 PROGRESS_z_=: y
 )
@@ -2465,7 +2501,7 @@ markfirst=: i. = [: i. [: # [
 marklast=:  i: = [: i. [: # [
 fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'
 tolerant=: 4 : '(mdiff=:|x-y) <: TOLERANCE * (>./|x,y)'
-hitandmiss=: 4 : '(|x-y) <: TOLERANCE'
+approximates=: 4 : '(|x-y) <: TOLERANCE'
 
 '==================== [cal] inverC0.ijs ===================='
 0 :0
@@ -2477,26 +2513,8 @@ TEST WITH line {4} of SAMPLE 4 -- PI * X[1]
 coclass z=.'inverC0'
 clear z
 LOC=: z
-TOLERANCE=: 1e_9
 
-inversion=: 4 : 0
-
-erase 'X0 Y0 Y0D dY0 X1'
-me=. sw'inversion_(LOC)_' [argLEFT=: x [argRIGHT=: y
-fwd=: fwd_cal_
-amodel=: amodel_cal_
-ssw'+++ (me): argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
-
-X0=: argLEFT
-Y0=: fwd(X0)
-dY0=: argRIGHT
-Y0D=: Y0+dY0
-fit''
-X1=: bwd Y0D
-ssw'+++ (me): Y0D=(Y0D) should approximate fwd X1=(fwd X1)'
-assert. Y0D hitandmiss fwd X1
-X1
-)
+inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
 me=. sw'fit_(LOC)_'
@@ -2506,48 +2524,182 @@ bwd=: 13 : 'y%B'
 i.0 0
 )
 
-hitandmiss=: 4 : '(|x-y) <: TOLERANCE'
-
 '==================== [cal] inverC1.ijs ===================='
 0 :0
 Monday 22 October 2018  05:26:53
 -
-TEST WITH line {5} of SAMPLE 4
+TEST WITH line {5,6} of SAMPLE 4
 )
 
 coclass z=.'inverC1'
 clear z
 LOC=: z
-TOLERANCE=: 1e_9
 
-inversion=: 4 : 0
-
-erase 'X0 Y0 Y0D dY0 X1'
-me=. sw'inversion_(LOC)_' [argLEFT=: x [argRIGHT=: y
-fwd=: fwd_cal_
-amodel=: amodel_cal_
-ssw'+++ (me): argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
-
-X0=: argLEFT
-Y0=: fwd(X0)
-dY0=: argRIGHT
-Y0D=: Y0+dY0
-fit''
-X1=: bwd Y0D
-ssw'+++ (me): Y0D=(Y0D) should approximate fwd X1=(fwd X1)'
-assert. Y0D hitandmiss fwd X1
-X1
-)
+inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
 me=. sw'fit_(LOC)_'
 inc=: amodel * dY0%(+/amodel)
-bwd=: 13 : 'y + inc'
-
+bwd=: 3 : 'X0 + inc'
 i.0 0
 )
 
-hitandmiss=: 4 : '(|x-y) <: TOLERANCE'
+'==================== [cal] inverC2.ijs ===================='
+0 :0
+Monday 22 October 2018  18:03:32
+-
+TEST WITH lines {7,8} of SAMPLE 4
+)
+
+coclass z=.'inverC2'
+clear z
+LOC=: z
+
+inversion=: inversionC_cal_ f.
+
+fit=: 3 : 0
+
+me=. sw'fit_(LOC)_'
+unheldX=. -. heldX=. (amodel=0)
+m=. +/unheldX
+fac=: Y0D % Y0
+facX=: heldX+ unheldX* (m)thRootOf_cal_ fac
+ssw'+++ (me): X=(X0) unheldX=(unheldX) fac=(fac) facX=(facX)'
+assert. fac = */facX
+bwd=: 3 : 'X0 * facX'
+i.0 0
+)
+
+'==================== [cal] inverC3.ijs ===================='
+0 :0
+Monday 22 October 2018  18:02:28
+-
+TEST WITH line {9} of SAMPLE 4 -- X[1]^2
+)
+
+coclass z=.'inverC3'
+clear z
+LOC=: z
+
+inversion=: inversionC_cal_ f.
+
+fit=: 3 : 0
+bwd=: 13 : 'y^0.5'
+i.0 0
+)
+
+'==================== [cal] inverC4.ijs ===================='
+0 :0
+Monday 22 October 2018  18:43:42
+-
+TEST WITH lines {10} of SAMPLE 4
+)
+
+coclass z=.'inverC4'
+clear z
+LOC=: z
+
+inversion=: inversionC_cal_ f.
+
+fit=: 3 : 0
+
+me=. sw'fit_(LOC)_'
+
+bwd=: %
+i.0 0
+)
+
+'==================== [cal] inverC5.ijs ===================='
+0 :0
+Monday 22 October 2018  18:36:29
+-
+TEST WITH lines {11} of SAMPLE 4
+)
+
+coclass z=.'inverC5'
+clear z
+LOC=: z
+
+inversion=: inversionC_cal_ f.
+
+fit=: 3 : 0
+
+me=. sw'fit_(LOC)_'
+unheldX=. -. heldX=. (amodel=0)
+fac=: Y0D % Y0
+ssw'+++ (me): X=(X0) unheldX=(unheldX) fac=(fac)'
+
+assert. {.unheldX
+bwd=: 13 : 'X0 * fac,1'
+i.0 0
+)
+
+'==================== [cal] inverC6.ijs ===================='
+0 :0
+Monday 22 October 2018  18:36:29
+-
+TEST WITH lines {12} of SAMPLE 4
+-
+BASED ON inverC5 with items in the reverse order.
+It would be redundant if beval recognised the need to reverse X0.
+)
+
+coclass z=.'inverC6'
+clear z
+LOC=: z
+
+inversion=: inversionC_cal_ f.
+
+fit=: 3 : 0
+
+me=. sw'fit_(LOC)_'
+unheldX=. -. heldX=. (amodel=0)
+fac=: Y0D % Y0
+ssw'+++ (me): X=(X0) unheldX=(unheldX) fac=(fac)'
+
+assert. {:unheldX
+bwd=: 13 : 'X0 * 1,fac'
+i.0 0
+)
+
+'==================== [cal] inverC7.ijs ===================='
+0 :0
+Monday 22 October 2018  17:42:41
+-
+Expand this script to handle a new conjecture about (fwd X)
+)
+
+coclass z=.'inverC7'
+clear z
+LOC=: z
+
+inversion=: assert bind 0
+
+'==================== [cal] inverC8.ijs ===================='
+0 :0
+Monday 22 October 2018  17:42:27
+-
+Expand this script to handle a new conjecture about (fwd X)
+)
+
+coclass z=.'inverC8'
+clear z
+LOC=: z
+
+inversion=: assert bind 0
+
+'==================== [cal] inverC9.ijs ===================='
+0 :0
+Monday 22 October 2018  17:42:07
+-
+Expand this script to handle a new conjecture about (fwd X)
+)
+
+coclass z=.'inverC9'
+clear z
+LOC=: z
+
+inversion=: assert bind 0
 
 '==================== [cal] CAL_interface.ijs ===================='
 cocurrent 'cal'
@@ -3047,7 +3199,7 @@ uuconnect''
 make_tabengineCore''
 globmake''
 cmake''
-inversion=: inversion_inverC0_ :: inversion_inverC1_ :: endstop
+inversion=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::endstop
 progress _
 0 enlog 0
 

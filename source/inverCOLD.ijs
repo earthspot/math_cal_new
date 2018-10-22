@@ -272,7 +272,7 @@ NB. erase 'x__ y__ ii__ X__ X X0 Y0 X1 Y1 dY Y d_Y d_X d1X xt dyt'
 Y=: dY + Y0=: fwd X0=: x [ dY=: y
 NB. HEURISTIC: choose the "almostequal" criterion
 NB. Both depend on the value of global: TOLERANCE
-if. Y=0 do. 	almostequals=: hitandmiss
+if. Y=0 do. 	almostequals=: approximates
 else. 		almostequals=: tolerant
 end.
 sess1 LF,LF, me=. 'inversionC_inverCOLD_'
@@ -407,11 +407,11 @@ fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'  NB. hold all except for one
 
 NB. ========================================================
 NB. tolerant - is the "official" J definition of tolerant equality
-NB. But we prefer to use: hitandmiss
+NB. But we prefer to use: approximates
 NB. in conjunction with N-R when the target value (Y0+dY) is zero
 
 tolerant=: 4 : '(mdiff=:|x-y) <: TOLERANCE * (>./|x,y)'
-hitandmiss=: 4 : '(|x-y) <: TOLERANCE'
+approximates=: 4 : '(|x-y) <: TOLERANCE'
 NB. ========================================================
 
 

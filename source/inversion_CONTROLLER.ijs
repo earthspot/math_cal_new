@@ -52,8 +52,37 @@ inversion=: endstop  NB. overridden by: start
 
 endstop=: 4 : 0
 ssw '>>> endstop: called with: x=[(x)] y=[(y)]'
+INVERSION=: 'endstop'
 x return.
 )
+
+inversionC=: 4 : 0
+  NB. === CURVE-FITTING INVERTER SADDLE for inverC* ===
+  NB. serves locales: 'inverC*' (* = 1..9)
+  NB. needs special case of verb: fit
+  NB. in order to generate: bwd: Y0D --> X1
+  NB. >>> WARNING: executes in the caller's locale! <<<
+me=. sw'inversion_(LOC)_' [argLEFT=: x [argRIGHT=: y
+erase 'X Y X0 Y0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
+fwd=: fwd_cal_
+amodel=: amodel_cal_
+ssw LF,'+++ (me): argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
+  NB.>>> NOW USE ONLY the workvars erased above…
+X0=: argLEFT
+Y0=: fwd(X0)	NB. cached: does not change.
+dY0=: argRIGHT
+Y0D=: Y0+dY0
+fit''  NB. -->makes verb: bwd (fitted-coefficients backward mapping)
+X1=: bwd Y0D
+ssw'+++ (me): Y0D=(Y0D) ~= fwdX1=(fwd X1) ??'
+assert. Y0D approximates_cal_ fwd X1
+ssw'--- (me): …yes, close enough. […Exits]'
+INVERSION_cal_=: me
+X1 return.
+)
+
+thRootOf=: ] ^ [: % [
+NB. z ; 5 thRootOf z=.32
 
 progress=: 3 : 0
 NB. wd_tab_ :: 0: 'msgs'
@@ -69,8 +98,8 @@ fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'  NB. hold all except for one
 
 NB. ========================================================
 NB. tolerant - implements the "official" J definition of tolerant equality
-NB. But we prefer to use: hitandmiss
+NB. But we prefer to use: approximates
 NB. in conjunction with N-R when the target value (Y0+dY) is zero
 
 tolerant=: 4 : '(mdiff=:|x-y) <: TOLERANCE * (>./|x,y)'
-hitandmiss=: 4 : '(|x-y) <: TOLERANCE'
+approximates=: 4 : '(|x-y) <: TOLERANCE'

@@ -195,6 +195,7 @@ NB.   amodel=: a{(model * -.holds'')  NB. global, for use by: inversion
     NB. vmodl (global) is predetermined model to use (normally 1)
     NB. -the actual model used is: amodel, having 0 forced for each item "held".
     NB. >>>>> NEED TO CREATE TEMP FN: fwd (-as seq of exe-fns working on r only)
+  INVERSION=: UNSET
   r1=. r inversion deltaz    NB. updated values for ancestors
 end.
 sllog 'beval a r r1'
@@ -2037,8 +2038,6 @@ for_no. z do. val=. ".nom=. >no
 end.
 (cplx#'NOT '),'all v-buffers were real'
 )
-
-tidy=: 1&warnplex
 
 xseq=: 3 : 'sor clos dpmx TD'
 

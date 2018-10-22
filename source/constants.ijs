@@ -49,7 +49,8 @@ SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vdisp vhidd vhold vmodl CH TD TTn TTf UN
 SP=: ' '
 ST=: '*'
 TIMEOUT=: 5		NB. seconds (see: blazing_saddle)
+TOLERANCE=: 1e_5		NB. default tolerance for comparing physical quantities
 UNDEF=: 'untitled'
 UNDEF_CAPT=: 'untitled'
-TOLERANCE=: 1e_5		NB. default tolerance for comparing physical quantities
+UNSET=: '<UNSET>'
 WARNPLEX=: 1		NB. 1==run warnplex after each recalc
