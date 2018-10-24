@@ -1,7 +1,7 @@
 	NB. cal - message.ijs
 '==================== [cal] message.ijs ===================='
 0 :0
-Friday 28 September 2018  18:04:47
+Tuesday 23 October 2018  21:34:58
 )
 
 cocurrent 'cal'
@@ -42,7 +42,7 @@ MESSAGELIST=: cmx 0 : 0
 32 sorted by permutation (y0)
 33 (y0) ZNN: (y1)  ZNO: (y2)
 34 >>> cannot (y) any more
-35 (unused)
+35 >>> no action because too many items have Holds: (y0)
 36 >>> no lines are hidden
 37 (y0) lines newly hidden
 38 t-table (y0) deleted

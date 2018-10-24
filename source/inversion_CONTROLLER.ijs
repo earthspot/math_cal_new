@@ -2,9 +2,9 @@
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 NB. TABULA inversion controller via daisychain technique
 0 :0
-Friday 19 October 2018  02:59:45
+Tuesday 23 October 2018  18:23:07
 -
-INVERSION TEST: SAMPLE4
+INVERSION TEST: use SAMPLE4
 -
 Verb: inversion -resides in _cal_ and calls in-turn into inver* locales.
 -
@@ -43,29 +43,39 @@ Verb: endstop -simply returns x-arg unchanged
 ---NO, it seems. Just return an unchanged X.
 --the result is the "resists value" message.
 -
-TO DO: Walkthru how cal responds to endstop, recognising/signalling failure.
+TO DO: Walkthru how cal responds to endstop,
+ recognising/signalling failure.
 )
 
 cocurrent 'cal'
 
-inversion=: endstop  NB. overridden by: start
+inversion=: endstop  NB. placeholder, overridden by: start
 
 endstop=: 4 : 0
-ssw '>>> endstop: called with: x=[(x)] y=[(y)]'
-INVERSION=: 'endstop'
+  NB. ALWAYS the final verb in the daisychain - signals an error
+ssw '>>> endstop: called with:(LF)   (x) inversion (y)'
+register 'endstop'
 x return.
 )
 
+register=: 3 : 0
+  NB. needs importing into locale using (f.)
+z [INVERSION_cal_=: INVERSION_cal_ , <z=. y
+)
+
 inversionC=: 4 : 0
+me=. 'inversion_',(>coname''),'_'
   NB. === CURVE-FITTING INVERTER SADDLE for inverC* ===
   NB. serves locales: 'inverC*' (* = 1..9)
   NB. needs special case of verb: fit
   NB. in order to generate: bwd: Y0D --> X1
   NB. >>> WARNING: executes in the caller's locale! <<<
-me=. sw'inversion_(LOC)_' [argLEFT=: x [argRIGHT=: y
+NB. ssw=. msg_cal_  NB. fetch CURRENT SETTING of the CAL trace verb
+argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
 fwd=: fwd_cal_
 amodel=: amodel_cal_
+register=. register_cal_ f.
 ssw LF,'+++ (me): argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
   NB.>>> NOW USE ONLY the workvars erased above…
 X0=: argLEFT
@@ -74,15 +84,12 @@ dY0=: argRIGHT
 Y0D=: Y0+dY0
 fit''  NB. -->makes verb: bwd (fitted-coefficients backward mapping)
 X1=: bwd Y0D
-ssw'+++ (me): Y0D=(Y0D) ~= fwdX1=(fwd X1) ??'
+ssw'... (me): Y0D=(Y0D) ~= fwdX1=(fwd X1) ??'
 assert. Y0D approximates_cal_ fwd X1
 ssw'--- (me): …yes, close enough. […Exits]'
-INVERSION_cal_=: me
+register me
 X1 return.
 )
-
-thRootOf=: ] ^ [: % [
-NB. z ; 5 thRootOf z=.32
 
 progress=: 3 : 0
 NB. wd_tab_ :: 0: 'msgs'

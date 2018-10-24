@@ -50,7 +50,7 @@ NB. )
 smoutput '+++ Gitcal run: load latest TABBY build...'
 load '~Gittab/tabula.ijs'
 
-
+onload_cal_=: do
 
 0 :0
 smoutput 'CAL: Init ',tabengine_cal_ 'Init'

@@ -1,5 +1,5 @@
 0 :0
-Monday 8 October 2018  02:45:50
+Tuesday 23 October 2018  20:25:44
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -7,64 +7,23 @@ CAL: scientific calculator engine
 
 clear 'cal'
 coclass 'cal'
+onload_z_=: empty
 
-AABUILT=: '2018-10-08  02:46:05'
-AABUILT=: '2018-10-08  02:51:15'
-AABUILT=: '2018-10-08  02:56:54'
-AABUILT=: '2018-10-08  03:03:48'
-AABUILT=: '2018-10-08  11:34:04'
-AABUILT=: '2018-10-08  12:31:57'
-AABUILT=: '2018-10-08  22:02:35'
-AABUILT=: '2018-10-09  04:09:14'
-AABUILT=: '2018-10-13  01:26:37'
-AABUILT=: '2018-10-13  02:36:55'
-AABUILT=: '2018-10-13  02:43:41'
-AABUILT=: '2018-10-13  02:45:04'
-AABUILT=: '2018-10-13  02:58:42'
-AABUILT=: '2018-10-14  02:38:35'
-AABUILT=: '2018-10-14  22:37:53'
-AABUILT=: '2018-10-14  23:42:07'
-AABUILT=: '2018-10-15  00:09:50'
-AABUILT=: '2018-10-15  00:11:25'
-AABUILT=: '2018-10-15  00:13:22'
-AABUILT=: '2018-10-15  00:39:23'
-AABUILT=: '2018-10-15  23:15:12'
-AABUILT=: '2018-10-16  00:31:44'
-AABUILT=: '2018-10-16  00:50:58'
-AABUILT=: '2018-10-17  13:21:04'
-AABUILT=: '2018-10-17  14:17:56'
-AABUILT=: '2018-10-17  15:39:21'
-AABUILT=: '2018-10-17  15:51:55'
-AABUILT=: '2018-10-17  16:20:14'
-AABUILT=: '2018-10-17  16:26:25'
-AABUILT=: '2018-10-17  16:26:54'
-AABUILT=: '2018-10-19  04:20:21'
-AABUILT=: '2018-10-19  04:25:01'
-AABUILT=: '2018-10-19  04:26:55'
-AABUILT=: '2018-10-19  04:33:57'
-AABUILT=: '2018-10-20  11:24:10'
-AABUILT=: '2018-10-20  11:36:37'
-AABUILT=: '2018-10-20  11:41:20'
-AABUILT=: '2018-10-21  00:33:26'
-AABUILT=: '2018-10-21  23:02:34'
-AABUILT=: '2018-10-21  23:47:08'
-AABUILT=: '2018-10-22  05:51:45'
-AABUILT=: '2018-10-22  05:52:29'
-AABUILT=: '2018-10-22  06:09:17'
-AABUILT=: '2018-10-22  06:22:06'
-AABUILT=: '2018-10-22  06:25:02'
-AABUILT=: '2018-10-22  06:32:56'
-AABUILT=: '2018-10-22  06:37:16'
-AABUILT=: '2018-10-22  06:43:53'
-AABUILT=: '2018-10-22  14:12:34'
-AABUILT=: '2018-10-22  16:46:45'
-AABUILT=: '2018-10-22  16:57:45'
-AABUILT=: '2018-10-22  17:26:22'
-AABUILT=: '2018-10-22  17:27:40'
-AABUILT=: '2018-10-22  18:16:06'
-AABUILT=: '2018-10-22  18:19:01'
-AABUILT=: '2018-10-22  19:21:11'
-AABUILT=: '2018-10-22  19:30:54'
+AABUILT=: '2018-10-23  20:28:39'
+AABUILT=: '2018-10-23  20:49:38'
+AABUILT=: '2018-10-23  21:59:16'
+AABUILT=: '2018-10-23  22:19:28'
+AABUILT=: '2018-10-23  22:29:46'
+AABUILT=: '2018-10-23  22:59:14'
+AABUILT=: '2018-10-24  00:27:40'
+AABUILT=: '2018-10-24  00:39:16'
+AABUILT=: '2018-10-24  00:42:52'
+AABUILT=: '2018-10-24  00:46:54'
+AABUILT=: '2018-10-24  00:49:10'
+AABUILT=: '2018-10-24  00:52:46'
+AABUILT=: '2018-10-24  00:54:48'
+AABUILT=: '2018-10-24  01:00:20'
+AABUILT=: '2018-10-24  01:05:17'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -97,9 +56,11 @@ CO=: ':'
 DT=: '.'
 ALTERED=: '@'
 HOLD=: '='
+INVERSION=: ''
 LOGNAME=: 'cal_log.txt'
 MAXINVERT=: 30
 NB=: 'NB.'
+OVERHELDS=: ''
 PAD=: 10
 PFMT=: 'line'
 PLOTNAME=: '/users/ianclark/myplot.pdf'
@@ -112,6 +73,7 @@ SP=: ' '
 ST=: '*'
 TIMEOUT=: 5
 TOLERANCE=: 1e_5
+UL=: '_'
 UNDEF=: 'untitled'
 UNDEF_CAPT=: 'untitled'
 UNSET=: '<UNSET>'
@@ -165,6 +127,7 @@ num=: _.&".
 paren=: 1 |. ')(' , ":
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs
+thRootOf=: ] ^ [: % [
 to=: [ + [: i. [: >: -~
 
 
@@ -176,9 +139,19 @@ n=. -+/x e. '0123456789'
 (n}.x),n{.":100000000+y
 )
 
+breakback=: 3 : 0
 
-
+cocurrent 'tabby'
+a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
+wd 'pc form closeok; pn ',nom
+wd 'cc g isidraw'
+wd 'set g minwh ', ":(|.$a)
+wd 'pshow'
+glsel 'g'
+glpixels 0 0 , (|.$a), ,a
+)
 cv=: 3 : 0
+
 h=: ;:'vfact vdisp vqua0 vquan vsiq0 vsiqn'
 ]z=: (<vv vfact),(<vv vdisp),(<vv vqua0),(<vv vquan),(<vv vsiq0),(<vv vsiqn)
 h,:z
@@ -210,17 +183,6 @@ if. 0<: 4!:0 <y do. y~ return. end.
 (y)=:x
 )
 
-breakback=: 3 : 0
-
-cocurrent 'tabby'
-a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
-wd 'pc form closeok; pn ',nom
-wd 'cc g isidraw'
-wd 'set g minwh ', ":(|.$a)
-wd 'pshow'
-glsel 'g'
-glpixels 0 0 , (|.$a), ,a
-)
 timeout=: 3 : 0
 select. y
 case. _ do.
@@ -243,6 +205,11 @@ case.    do.
 end.
 )
 
+listitems=: SP ddefine
+
+}. ;SP ,each brace each y
+)
+
 force0=: 0 , }.
 
 
@@ -251,6 +218,12 @@ force0=: 0 , }.
 mjustBordered=. ([: dtb (' ' i."1~ ]) |. ] ,~ ' ' $~ #)"1
 deleteLeadingBlankColumns=. ] }."1~ [: +/ [: *./\ [: *./ ' ' = ]
 mjust=: ([: deleteLeadingBlankColumns mjustBordered) f.
+
+all=: *./
+any=: +./
+and=: *.
+or=:  +.
+not=: -.
 
 '==================== [cal] main.ijs ===================='
 0 :0
@@ -436,19 +409,27 @@ r1=. r=. a{vsiqn
 sllog 'beval x y a'
 if. (0~:x)*.(hasf y) do.
   deltaz=. x
-  amodel=: a{(vmodl * -.holds'')
+  amodel=: a{ (vmodl * -.holds'')
+
+  if. all a{holds'' do.
+    OVERHELDS=: a-. a-. I. holds''
+    vsiqn return.
+  else. OVERHELDS=: ''
+  end.
   fwd=: ffwd&y
 
 
 
 
 
-  INVERSION=: UNSET
   r1=. r inversion deltaz
 end.
+  smoutput '--- beval: heuristics used: '
+  smoutput INVERSION
 sllog 'beval a r r1'
 	popme'beval'
 r1 a }vsiqn
+
 
 
 )
@@ -1213,32 +1194,6 @@ z=. 1e_10
 
 invalexe=: 3 : 'erase listnameswithprefix ''exe'''
 invalinfo=: empty
-
-
-
-
-
-inversion=: 4 : 0
-X=. x inversionX y
-sess1 11 message y
-sess1 (>'amodel:' ; 'x:' ; 'X:') ,. ":(amodel,:x),X
-X
-)
-
-inversionB=: 4 : 0
-
-X0=: x
-dY=: y
-
-
-
-
-d1X=: 1
-d_Y=: (fwd X0+d1X) -(fwd X0)
-dX=: g^:(_) d1X
-X=: X0+dX
-)
-
 invert=: 3 : 0
 
 if. -.hasf y do. 41 message y return. end.
@@ -1489,6 +1444,7 @@ recal=: 3 : 0
 
 vsiq0=: vfact*vqua0
 vsiqn=: vfact*vquan
+INVERSION=:''
 if. hasf y do. vsiqn=: bcalc y end.
 vsiqn=: fcalc y
 vquan=: (vdisp -~ vsiqn)%vfact
@@ -1627,8 +1583,9 @@ if. x= y{vquan do. 13 message y; x return. end.
 vqua0=: vquan
 vquan=: x y}vquan
 CH=: recal y
-if. y{CH do. 16 message y; x
-else. 17 message y; x
+if. y{CH do. 16 message y;x
+elseif. 0<#OVERHELDS do. 35 message listitems OVERHELDS
+elseif. do. 17 message y;x
 end.
 )
 
@@ -2413,9 +2370,9 @@ ct=: ct2
 
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 0 :0
-Friday 19 October 2018  02:59:45
+Tuesday 23 October 2018  18:23:07
 -
-INVERSION TEST: SAMPLE4
+INVERSION TEST: use SAMPLE4
 -
 Verb: inversion -resides in _cal_ and calls in-turn into inver* locales.
 -
@@ -2454,7 +2411,8 @@ Verb: endstop -simply returns x-arg unchanged
 ---NO, it seems. Just return an unchanged X.
 --the result is the "resists value" message.
 -
-TO DO: Walkthru how cal responds to endstop, recognising/signalling failure.
+TO DO: Walkthru how cal responds to endstop,
+ recognising/signalling failure.
 )
 
 cocurrent 'cal'
@@ -2462,21 +2420,29 @@ cocurrent 'cal'
 inversion=: endstop
 
 endstop=: 4 : 0
-ssw '>>> endstop: called with: x=[(x)] y=[(y)]'
-INVERSION=: 'endstop'
+
+ssw '>>> endstop: called with:(LF)   (x) inversion (y)'
+register 'endstop'
 x return.
 )
 
+register=: 3 : 0
+
+z [INVERSION_cal_=: INVERSION_cal_ , <z=. y
+)
+
 inversionC=: 4 : 0
+me=. 'inversion_',(>coname''),'_'
 
 
 
 
 
-me=. sw'inversion_(LOC)_' [argLEFT=: x [argRIGHT=: y
+argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
 fwd=: fwd_cal_
 amodel=: amodel_cal_
+register=. register_cal_ f.
 ssw LF,'+++ (me): argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
 
 X0=: argLEFT
@@ -2485,14 +2451,13 @@ dY0=: argRIGHT
 Y0D=: Y0+dY0
 fit''
 X1=: bwd Y0D
-ssw'+++ (me): Y0D=(Y0D) ~= fwdX1=(fwd X1) ??'
+ssw'... (me): Y0D=(Y0D) ~= fwdX1=(fwd X1) ??'
 assert. Y0D approximates_cal_ fwd X1
 ssw'--- (me): …yes, close enough. […Exits]'
-INVERSION_cal_=: me
+register me
 X1 return.
 )
 
-thRootOf=: ] ^ [: % [
 progress=: 3 : 0
 PROGRESS_z_=: y
 )
@@ -2512,17 +2477,17 @@ TEST WITH line {4} of SAMPLE 4 -- PI * X[1]
 
 coclass z=.'inverC0'
 clear z
-LOC=: z
 
 inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
-me=. sw'fit_(LOC)_'
-]B=: 0.0001 (fwd D:1) X0
-bwd=: 13 : 'y%B'
-
+assert. amodel -: ,1
+]B=: 0.00000001 (fwd D:1) X0
+bwd=: B %~ ]
 i.0 0
 )
+
+onload 'smoutput 3 inversion_inverC0_ 9.5'
 
 '==================== [cal] inverC1.ijs ===================='
 0 :0
@@ -2533,12 +2498,10 @@ TEST WITH line {5,6} of SAMPLE 4
 
 coclass z=.'inverC1'
 clear z
-LOC=: z
 
 inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
-me=. sw'fit_(LOC)_'
 inc=: amodel * dY0%(+/amodel)
 bwd=: 3 : 'X0 + inc'
 i.0 0
@@ -2553,18 +2516,15 @@ TEST WITH lines {7,8} of SAMPLE 4
 
 coclass z=.'inverC2'
 clear z
-LOC=: z
 
 inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
 
-me=. sw'fit_(LOC)_'
 unheldX=. -. heldX=. (amodel=0)
 m=. +/unheldX
 fac=: Y0D % Y0
 facX=: heldX+ unheldX* (m)thRootOf_cal_ fac
-ssw'+++ (me): X=(X0) unheldX=(unheldX) fac=(fac) facX=(facX)'
 assert. fac = */facX
 bwd=: 3 : 'X0 * facX'
 i.0 0
@@ -2579,12 +2539,12 @@ TEST WITH line {9} of SAMPLE 4 -- X[1]^2
 
 coclass z=.'inverC3'
 clear z
-LOC=: z
 
 inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
-bwd=: 13 : 'y^0.5'
+assert. amodel -: ,1
+bwd=: 0.5 ^~ ]
 i.0 0
 )
 
@@ -2593,18 +2553,17 @@ i.0 0
 Monday 22 October 2018  18:43:42
 -
 TEST WITH lines {10} of SAMPLE 4
+HOW ON EARTH does it manage line {13} also?
 )
 
 coclass z=.'inverC4'
 clear z
-LOC=: z
 
 inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
 
-me=. sw'fit_(LOC)_'
-
+assert. amodel -: ,1
 bwd=: %
 i.0 0
 )
@@ -2618,25 +2577,25 @@ TEST WITH lines {11} of SAMPLE 4
 
 coclass z=.'inverC5'
 clear z
-LOC=: z
 
 inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
 
-me=. sw'fit_(LOC)_'
 unheldX=. -. heldX=. (amodel=0)
 fac=: Y0D % Y0
-ssw'+++ (me): X=(X0) unheldX=(unheldX) fac=(fac)'
-
-assert. {.unheldX
-bwd=: 13 : 'X0 * fac,1'
+select. amodel
+case. 1 1 do. bwd=: 13 : 'X0 * fac,1'
+case. 1 0 do. bwd=: 13 : 'X0 * fac,1'
+case. 0 1 do. bwd=: 13 : 'X0 * 1,%fac'
+case.     do. assert. 0
+end.
 i.0 0
 )
 
 '==================== [cal] inverC6.ijs ===================='
 0 :0
-Monday 22 October 2018  18:36:29
+Tuesday 23 October 2018  22:58:04
 -
 TEST WITH lines {12} of SAMPLE 4
 -
@@ -2646,19 +2605,19 @@ It would be redundant if beval recognised the need to reverse X0.
 
 coclass z=.'inverC6'
 clear z
-LOC=: z
 
 inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
 
-me=. sw'fit_(LOC)_'
 unheldX=. -. heldX=. (amodel=0)
 fac=: Y0D % Y0
-ssw'+++ (me): X=(X0) unheldX=(unheldX) fac=(fac)'
-
-assert. {:unheldX
-bwd=: 13 : 'X0 * 1,fac'
+select. amodel
+case. 1 1 do. bwd=: 13 : 'X0 * 1,fac'
+case. 1 0 do. bwd=: 13 : 'X0 * 1,fac'
+case. 0 1 do. bwd=: 13 : 'X0 * 1,~%fac'
+case.     do. assert. 0
+end.
 i.0 0
 )
 
@@ -2671,7 +2630,6 @@ Expand this script to handle a new conjecture about (fwd X)
 
 coclass z=.'inverC7'
 clear z
-LOC=: z
 
 inversion=: assert bind 0
 
@@ -2684,7 +2642,6 @@ Expand this script to handle a new conjecture about (fwd X)
 
 coclass z=.'inverC8'
 clear z
-LOC=: z
 
 inversion=: assert bind 0
 
@@ -2697,9 +2654,75 @@ Expand this script to handle a new conjecture about (fwd X)
 
 coclass z=.'inverC9'
 clear z
-LOC=: z
 
 inversion=: assert bind 0
+
+'==================== [cal] inverNRS.ijs ===================='
+0 :0
+Tuesday 23 October 2018  17:12:57
+)
+
+coclass z=.'inverNRS'
+clear z
+
+MAXCOUNTDOWN=: 1000
+
+
+
+
+fwd=: empty
+ssw=: empty
+register=: register_cal_ f.
+record=: empty
+inversion=: 4 : 0
+me=. 'inversion_',(>coname''),'_'
+
+
+argLEFT=. x [argRIGHT=. y
+erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
+fwd=: fwd_cal_
+amodel=: amodel_cal_
+ssw=: msg_cal_
+ssw'+++ (me): (LF) argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
+countdown MAXCOUNTDOWN
+ssw'... (me): COUNTDOWN=(COUNTDOWN_z_) MAXCOUNTDOWN=(MAXCOUNTDOWN)'
+
+X0=: argLEFT
+Y0=: fwdX0=: fwd(X0)
+dY0=: argRIGHT
+Y1=: Y0D=: Y0+dY0
+
+
+scaled=: 1 - dY0 %~ Y0 -~ ]
+fwdSC=: scaled@:fwd
+
+d1X=: ($X0)$1
+
+if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
+  0 record X0
+ssw '... (me): X0=(X0) dY0=(dY0) d1X=(d1X)'
+dX=: g^:_ d1X
+
+ssw '--- (me): dX=(dX) d1X=(d1X)'
+  2 record''
+X1=: X0+dX
+register me
+X1 return.
+)
+
+g=: 3 : 0
+
+
+
+countdown''
+d_X=. y
+d_Y=. (fwd X0+d_X) -(fwd X0)
+d_X=. real amodel * d_X * dY0 % d_Y
+ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
+  1 record d_X
+d_X return.
+
+)
 
 '==================== [cal] CAL_interface.ijs ===================='
 cocurrent 'cal'
@@ -2957,7 +2980,7 @@ zett r    'Z' scaleunits r         \zetta- item
 
 '==================== [cal] message.ijs ===================='
 0 :0
-Friday 28 September 2018  18:04:47
+Tuesday 23 October 2018  21:34:58
 )
 
 cocurrent 'cal'
@@ -2998,7 +3021,7 @@ MESSAGELIST=: cmx 0 : 0
 32 sorted by permutation (y0)
 33 (y0) ZNN: (y1)  ZNO: (y2)
 34 >>> cannot (y) any more
-35 (unused)
+35 >>> no action because too many items have Holds: (y0)
 36 >>> no lines are hidden
 37 (y0) lines newly hidden
 38 t-table (y0) deleted
@@ -3034,21 +3057,21 @@ mod=: |~
 times=: *
 
 choice=: 4 : '((0>.1<.x)){y'
-sin=: 1&o.
-cos=: 2&o.
-tan=: 3&o.
+sin=: 1&o."0
+cos=: 2&o."0
+tan=: 3&o."0
 
-sinh=: 5&o.
-cosh=: 6&o.
-tanh=: 7&o.
+sinh=: 5&o."0
+cosh=: 6&o."0
+tanh=: 7&o."0
 
-arcsin=: _1&o.
-arccos=: _2&o.
-arctan=: _3&o.
+arcsin=: _1&o."0
+arccos=: _2&o."0
+arctan=: _3&o."0
 
-arcsinh=: _5&o.
-arccosh=: _6&o.
-arctanh=: _7&o.
+arcsinh=: _5&o."0
+arccosh=: _6&o."0
+arctanh=: _7&o."0
 
 pi=: 1p1
 
@@ -3172,6 +3195,75 @@ smoutput '+++ traceverbs: #traced=',":#z
 smoutput >TRACEVERBS
 )
 
+'==================== [cal] recordplot.ijs ===================='
+0 :0
+Monday 22 October 2018  23:39:56
+-
+cx real countdown --are HANDY verbs
+1 record d_X
+)
+
+cocurrent 'cal'
+requirePlot=: empty
+
+plot=: 3 : 0
+ssw 'plot: $RECORD=($y)'
+smoutput <y
+)
+TRACEPLOT=: 0
+MAXRECORD=: 30
+
+rplot=: 3 : 'plot real RECORD'
+
+record=: 0 ddefine
+me=. 'record'
+argLEFT=. x [argRIGHT=. y
+sllog 'me argLEFT argRIGHT'
+select. argLEFT
+case. 0 do.
+  requirePlot''
+  RECORD=: ,.argRIGHT*0
+case. 1 do.
+  if. MAXRECORD > {:$RECORD do.
+    RECORD=:RECORD,.argRIGHT
+  end.
+case. 2 do.
+  RECORDSIZE=: {:$RECORD
+  sllog 'me RECORDSIZE X0'
+  warnplex''
+  cx''
+  if. all converging RECORD do.
+    plot RECORD
+    smoutput '--- record: converges'
+  else.
+
+    smoutput '>>> record: DOES NOT CONVERGE.'
+    smoutput '    To see it anyway, use:',LF,'   rplot'''''
+  end.
+end.
+i.0 0
+)
+
+converging=: (3 : 0)"1
+
+
+
+
+if. TRACEPLOT do. plot y end.
+E=. +/ % #
+var=.  E@:*: - *:@:E
+
+if. all ({.y)=y do. 1 return. end.
+
+
+v=. var\y
+b=. (}:v) > (}.v)
+if. all b do. 1 return. end.
+
+j=. b i: 0
+j< 0.2 * #b
+)
+
 '==================== [cal] start.ijs ===================='
 
 cocurrent 'cal'
@@ -3199,10 +3291,9 @@ uuconnect''
 make_tabengineCore''
 globmake''
 cmake''
-inversion=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::endstop
+inversion=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRS_ ::endstop
 progress _
 0 enlog 0
-
 
 if. y-:0 do. ttnew''
 else. ttload''
@@ -3237,3 +3328,4 @@ RETURNED=: ''
 TTn=: ,:'tn'
 i.0 0
 )
+onload 'start 1'

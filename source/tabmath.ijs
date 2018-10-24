@@ -43,27 +43,28 @@ choice=: 4 : '((0>.1<.x)){y'
 
 NB. =========================================================
 NB. FROM trig.ijs
+NB. BUT… all made "0
 
-sin=: 1&o.
-cos=: 2&o.
-tan=: 3&o.
+sin=: 1&o."0
+cos=: 2&o."0
+tan=: 3&o."0
 
-sinh=: 5&o.
-cosh=: 6&o.
-tanh=: 7&o.
+sinh=: 5&o."0
+cosh=: 6&o."0
+tanh=: 7&o."0
 
-arcsin=: _1&o.
-arccos=: _2&o.
-arctan=: _3&o.
+arcsin=: _1&o."0
+arccos=: _2&o."0
+arctan=: _3&o."0
 
-arcsinh=: _5&o.
-arccosh=: _6&o.
-arctanh=: _7&o.
+arcsinh=: _5&o."0
+arccosh=: _6&o."0
+arctanh=: _7&o."0
 
 pi=: 1p1
 
-dfr=: *&(180%pi)
-rfd=: *&(pi%180)
+dfr=: *&(180%pi)  NB. degrees from radians
+rfd=: *&(pi%180)  NB. radians from degrees
 
 NB. =========================================================
 NB. Physical consts

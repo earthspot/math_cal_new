@@ -9,7 +9,6 @@ Expand this script to handle a new conjecture about (fwd X)
 
 coclass z=.'inverC9'
 clear z
-LOC=: z
 
 inversion=: assert bind 0
 

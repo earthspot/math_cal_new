@@ -29,11 +29,11 @@ uuconnect''  NB. create and use an instance of class 'uu'
 make_tabengineCore''  NB. the core of: tabengine
 globmake'' NB. make global nouns
 cmake''    NB. make the i/f tables
-inversion=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::endstop
-progress _ NB. init progress signalling to idle state
+inversion=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRS_ ::endstop
+NB. inversion=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::endstop
+NB. inversion=: inversion_inverNRS_ ::endstop NB. <<<<< TO TEST N-R
+progress _ NB. init progressbar to idle state
 0 enlog 0  NB. start a new log file
-  NB. RELOAD general math fns (to addto/override) ...
-NB. load :: 0: TPATH_CAL, ijs'tabmath'  NB. now a source file
   NB. ENSURE up-to-date currency conversion table ...
 NB. load :: 0: TPATH_CAL, ijs'exch'
 NB. try. start_exch_'' catch. end.
@@ -74,3 +74,5 @@ i.0 0
 NB. ======================================================
 NB. DO NOT CALL start_cal_ HERE---CAL MUST NOT SELF-START!
 NB. ======================================================
+
+onload 'start 1'

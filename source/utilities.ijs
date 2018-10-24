@@ -39,6 +39,7 @@ num=: _.&".
 paren=: 1 |. ')(' , ":
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs	  NB. tbx: ext for t-tables (if it ever changes)
+thRootOf=: ] ^ [: % [  NB. x thRootOf y == y^1%x
 to=: [ + [: i. [: >: -~
 
 	NB. Generate integer-suffixed id
@@ -50,9 +51,21 @@ n=. -+/x e. '0123456789'  NB. n<0 -to count from end
 (n}.x),n{.":100000000+y	  NB. re-fit suffix
 )
 
-	NB. Diagnostic check...
-	NB. show the v-caches
+breakback=: 3 : 0
+  NB. show reference diagram of breakback work-vars
+cocurrent 'tabby' NB. to get a search-path including jgl2
+a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
+wd 'pc form closeok; pn ',nom
+wd 'cc g isidraw'
+wd 'set g minwh ', ":(|.$a)
+wd 'pshow'
+glsel 'g'
+glpixels 0 0 , (|.$a), ,a
+)
+NB. breakback''
+
 cv=: 3 : 0
+  NB. Diagnostic check: show the v-caches
 h=: ;:'vfact vdisp vqua0 vquan vsiq0 vsiqn'
 ]z=: (<vv vfact),(<vv vdisp),(<vv vqua0),(<vv vquan),(<vv vsiq0),(<vv vsiqn)
 h,:z
@@ -86,19 +99,6 @@ if. 0<: 4!:0 <y do. y~ return. end.
 (y)=:x
 )
 
-breakback=: 3 : 0
-  NB. show diagram of breakback work-vars
-cocurrent 'tabby' NB. to get a search-path including jgl2
-a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
-wd 'pc form closeok; pn ',nom
-wd 'cc g isidraw'
-wd 'set g minwh ', ":(|.$a)
-wd 'pshow'
-glsel 'g'
-glpixels 0 0 , (|.$a), ,a
-)
-NB. breakback''
-
 timeout=: 3 : 0
 select. y
 case. _ do.		NB. set infinite timeout
@@ -121,6 +121,11 @@ case.    do.		NB. Initialize (y= seconds)
 end.
 )
 
+listitems=: SP ddefine
+  NB. y is (integer) list of items
+}. ;SP ,each brace each y
+)
+
 force0=: 0 , }.  NB. force leading 0 in any v-cache
 
   NB. mjust: "middle-SP justification" (c/f ljust, rjust)
@@ -132,3 +137,9 @@ NB. deleteLeadingBlankColumns=: 13 : '(+/ *./\ *./ SP=y)}."1 y'
 deleteLeadingBlankColumns=. ] }."1~ [: +/ [: *./\ [: *./ ' ' = ]
 NB. mjust=: 13 : 'deleteLeadingBlankColumns mjustBordered y'
 mjust=: ([: deleteLeadingBlankColumns mjustBordered) f.
+
+all=: *./		NB. own copy of tabz verb
+any=: +./		NB. own copy of tabz verb
+and=: *.		NB. own copy of tabz verb
+or=:  +.		NB. own copy of tabz verb
+not=: -.		NB. own copy of tabz verb

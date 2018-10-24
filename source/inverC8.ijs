@@ -1,17 +1,25 @@
 	NB. cal - inverC8.ijs
 '==================== [cal] inverC8.ijs ===================='
-NB. TABULA inversion -- inverC8 -- DUMMY placeholder script
+NB. TABULA inversion -- inverC8 -- DIFFERENCE of 2 items
 0 :0
-Monday 22 October 2018  17:42:27
+Wednesday 24 October 2018  01:49:11
 -
-Expand this script to handle a new conjecture about (fwd X)
+Based on inverC6, with - for %
 )
 
 coclass z=.'inverC8'
 clear z
-LOC=: z
 
-inversion=: assert bind 0
+inversion=: inversionC_cal_ f.
 
-NB. The effect of this is ALWAYS to fail with: assertion failure
-NB. and thus pass control to the next "inversion" in the daisychain.
+fit=: 3 : 0
+  NB. Conjecture:	(fwd X)= Y= X[1] / X[2]
+dif=: Y0D - Y0  NB. the (scalar) difference turning: Y0 into: Y0D
+select. amodel
+case. 1 1 do. bwd=: 13 : 'X0 * 1,dif'  NB. bwd: Y --> X
+case. 1 0 do. bwd=: 13 : 'X0 * 1,dif'  NB. bwd: Y --> X
+case. 0 1 do. bwd=: 13 : 'X0 * 1,~-dif'  NB. bwd: Y --> X
+case.     do. assert. 0
+end.
+i.0 0
+)

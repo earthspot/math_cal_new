@@ -9,13 +9,13 @@ TEST WITH line {9} of SAMPLE 4 -- X[1]^2
 
 coclass z=.'inverC3'
 clear z
-LOC=: z
 
 inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
 NB. Conjecture:	(fwd X)= Y= X^2
 NB. It follows:	(bwd Y)= X= Y^0.5
-bwd=: 13 : 'y^0.5'  NB. bwd: Y --> X
+assert. amodel -: ,1  NB. ONLY VALID for 1 unheld item
+bwd=: 0.5 ^~ ]  NB. bwd: Y --> X
 i.0 0
 )

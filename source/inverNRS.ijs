@@ -1,91 +1,70 @@
 	NB. cal - inverNRS.ijs
 '==================== [cal] inverNRS.ijs ===================='
-NB. TABULA inversion -- 2009 inverNRS == 2001 inverNR -SCALED
+NB. TABULA inversion -- inverNRS -- Newton-Raphson heuristic
 0 :0
-Friday 19 October 2018  02:59:45
--
-from temp 2009
->>> UNFINISHED <<<
-ot 2006  NB. the edition of: record that's now used
-ot 2001  NB. basis from which this script is cloned
+Tuesday 23 October 2018  17:12:57
 )
 
 coclass z=.'inverNRS'
 clear z
-lo=: <LOC=: z
 
-patch=: 3 : 0
-ide 1
-ssw '+++ (LOC) patched-in.'
-TRACE_z_=: 1
-TRACEPLOT_z_=: 1
-MAXCOUNTDOWN=: 100
-NB. inversionX_z_ =: inversion__lo	NB. --> verb defn below
-inversionX_z_ =: inversion_inverNRS_	NB. --> verb defn below
-load temp 2006	NB. record RECORD plot --loads into THIS LOCALE
-plot 0		NB. show an empty window
-)
+MAXCOUNTDOWN=: 1000  NB. initializes: countdown
+  NB. …countdown sets upper bound to iterations of verb: g
+  NB. before it forces assertion failure
+  NB. thus passing control along the inversion daisychain.
+
+fwd=: empty  NB. reassigned below inside: inversion
+ssw=: empty  NB. reassigned below inside: inversion
+register=: register_cal_ f.  NB. fetch once on loading
+NB. record=: empty  NB. DISABLE convergence recording
+record=: record_cal_  NB. ENABLE convergence recording
 
 inversion=: 4 : 0
+me=. 'inversion_',(>coname''),'_'
 	NB. === NEWTON-RAPHSON (N-R) INVERTER ===
-erase 'X0 fwdX0 dY0 d1X dX X1'
-me=. sw'inversion_(LOC)_' [argLEFT=. x [argRIGHT=. y
-link''
-sess1 sw'+++ (me): (LF) argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
-NB.>>> NOW USE ONLY the workvars: argLEFT argRIGHT X0 d1X
-X0=: argLEFT
-Y0=: fwdX0=: fwd(X0)	NB. cached: does not change.
-dY0=: argRIGHT		NB. argRIGHT is INCREMENT of manual alteration to a computed line
-Y1=: Y0D=: Y0+dY0		NB. ==overtyped value
-  NB. scaled-fwd maps Y0-->1 and Y1-->0
-  NB. hence problem is to find the zeros of fwdSC
-scaled=: 1 - dY0 %~ Y0 -~ ]
-fwdSC=: scaled @: fwd
-  NB. Initialise progressive estimator d_X (==d1X here)
-  NB. 1st guess is uncritical BUT AVOID ZERO ΔY …
-d1X=: ($X0)$1
-if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end. NB. nudge slightly
+	NB. (Compare this explicit defn with inversionC_cal_)
+argLEFT=. x [argRIGHT=. y
+erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
+fwd=: fwd_cal_        NB. CAL forward-calculn currently in-effect
+amodel=: amodel_cal_  NB. CAL constraint-model currently in-effect
+ssw=: msg_cal_        NB. CAL trace-outputting currently in-effect
+ssw'+++ (me): (LF) argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
 countdown MAXCOUNTDOWN
-record 0							NB. <<<<<< record
-sllog 'me X0 dY0 d1X COUNTDOWN MAXCOUNTDOWN'
-dX=: g^:_ d1X	NB. limit of d1X-->d2X-->d_X -->dX
- sllog 'me dX d1X'
-2 record''	NB. "record" doesn't need to know X this call	NB. <<<<<< record
-X1=: X0+dX	NB. estimated X1 such that Y1 ~= fwd(X1)
+ssw'... (me): COUNTDOWN=(COUNTDOWN_z_) MAXCOUNTDOWN=(MAXCOUNTDOWN)'
+  NB.>>> NOW USE ONLY the workvars erased above…
+X0=: argLEFT
+Y0=: fwdX0=: fwd(X0)  NB. (cached) …constant within scope of: inversion
+dY0=: argRIGHT        NB. argRIGHT is INCREMENT of manual alteration to a computed line
+Y1=: Y0D=: Y0+dY0     NB. the user-overtyped value (reconstituted)
+  NB. scaled-fwd maps Y0-->1 and Y1-->0
+  NB. …reduces problem to finding the zeros of fwdSC
+scaled=: 1 - dY0 %~ Y0 -~ ]
+fwdSC=: scaled@:fwd
+  NB. Initialise progressive estimator d_X (==d1X at this point)
+d1X=: ($X0)$1
+  NB. …the 1st guess is uncritical BUT GUESS AGAIN IF WE GET ZERO ΔY
+if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end. NB. nudge slightly
+  0 record X0         NB. init the record subsystem. Needs X0 for 1st pt
+ssw '... (me): X0=(X0) dY0=(dY0) d1X=(d1X)'
+dX=: g^:_ d1X
+  NB. …dX is the limit of infinite series: d1X--> d2X-->… d_X-->… dX
+ssw '--- (me): dX=(dX) d1X=(d1X)'
+  2 record''	   NB. "record" doesn't need to know X for this call
+X1=: X0+dX	   NB. calculate X1 such that Y1 approximates fwd(X1)
+register me
+X1 return.
 )
 
-NB. fwd equivalences -- these save calls to: fwd
-NB. Y0	==fwd(X0)	==fwdX0
-
-NB. g=: gloop :: gerr
-g=: gloop
-
-gerr=: 3 : 0
-NB. error replacement of g
-smoutput '>>> g error'
-y return.
-)
-
-gloop=: 3 : 0
+g=: 3 : 0
 	NB. === NEWTON-RAPHSON (N-R) INVERTER ===
-NB.>>> d_X d_Y are LOCALS in this explicit defn
-me=. 'g_inverNRS_'
-sllog 'me argRIGHT' [argRIGHT=. y
-NB.>>> NOW USE ONLY the workvars: argLEFT argRIGHT X0 dY0 d_X d_Y
+  NB. >>> d_X d_Y are LOCALS inside this explicit defn
+  NB. >>> USES ONLY THESE workvars: argRIGHT X0 dY0 d_X d_Y
 countdown''
-d_X=. argRIGHT		NB. (d_X) recycled from previous pass
+d_X=. y         NB. =(d_X) return.ed from previous pass
 d_Y=. (fwd X0+d_X) -(fwd X0)
 d_X=. real amodel * d_X * dY0 % d_Y  NB. d_X adjusted from (y)
-NB.  sllog 'me X0 d_X dY0 d_Y'
-  1 record d_X		NB. for plotting trajectory of d_X	<<<<<<<<< record
-d_X			NB. Ret'd val -->(y) for the next pass
-  NB. --the final pass returns: (dX=:d_X) within the calling verb.
-)
-
-link=: 3 : 0
-  NB. reconnect fwd and amodel at each inversion call
-  NB. needs to be defined in a higher script, e.g. cal.ijs
-fwd_z_=: fwd_cal_
-amodel_z_=: amodel_cal_
-i.0 0
+ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
+  1 record d_X  NB. for plotting trajectory of d_X
+d_X return.     NB. Ret'd number becomes (y) at next pass
+  NB. …final pass of g^:_ returns: (dX=:)d_X within the calling verb.
 )

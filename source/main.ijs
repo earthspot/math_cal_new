@@ -187,22 +187,29 @@ r1=. r=. a{vsiqn         NB. initial values of ancestors
 sllog 'beval x y a'
 if. (0~:x)*.(hasf y) do.
   deltaz=. x  NB. the CHANGE in value of node y
-NB.   amodel=: a{(model * -.holds'')  NB. global, for use by: inversion
-  amodel=: a{(vmodl * -.holds'')  NB. global, for use by: inversion
+  amodel=: a{ (vmodl * -.holds'')  NB. global, for use by: inversion
+  NB. Recognise if too many items held for changes to vsiqn
+  if. all a{holds'' do.
+    OVERHELDS=: a-. a-. I. holds''
+    vsiqn return.
+  else. OVERHELDS=: ''
+  end.
   fwd=: ffwd&y      NB. fwd-transfer fn used by: inversion
     NB. (z+deltaz)<--fwd(r+deltar)
     NB. fn: inversion: r1(=r+deltar)<--fwd^_1(z+deltaz)
     NB. vmodl (global) is predetermined model to use (normally 1)
     NB. -the actual model used is: amodel, having 0 forced for each item "held".
     NB. >>>>> NEED TO CREATE TEMP FN: fwd (-as seq of exe-fns working on r only)
-  INVERSION=: UNSET
   r1=. r inversion deltaz    NB. updated values for ancestors
 end.
+  smoutput '--- beval: heuristics used: '
+  smoutput INVERSION  NB. initted to '' in: recal
 sllog 'beval a r r1'
 	popme'beval'
 r1 a }vsiqn
-  NB. Does NOT replace the pivot value (y{vsiqn) itself.
-  NB. See how the calling fn (bcalc?) handles (y{vsiqn) and deltaz.
+  NB. Does NOT alter vsiqn itself, but only returns (vsiqn) updated.
+  NB. (Currently the calling verb: bcalc throws this value away.)
+  NB. See bcalc for how it handles (y{vsiqn) and deltaz.
 )
 
 bend=: 3 : 0
@@ -985,35 +992,35 @@ z=. 1e_10  NB. low but not low enough to cause underflow
 invalexe=: 3 : 'erase listnameswithprefix ''exe'''
 invalinfo=: empty
 
-NB. ----------------------------------------------------------------
-NB. THIS DEFINITION IS OVERRIDDEN IN inversion.ijs <<<<<<<<<<<<<<<<<
-NB. with: inversion=: inversionC
-NB. ----------------------------------------------------------------
-  NB. saddle for calling inversionX (vectored)
-  NB. r1=. r inversion deltaz --the way it's called
-  NB.  where: deltaz (=y here) is dY in inversionB
-  NB.  and r is values of ancestors of pivot item# (fwd acts on this vec)
-
-inversion=: 4 : 0
-X=. x inversionX y
-sess1 11 message y  NB. makes no sense here, unless crudely display: y
-sess1 (>'amodel:' ; 'x:' ; 'X:') ,. ":(amodel,:x),X
-X
-)
-
-inversionB=: 4 : 0
-  NB. === NEWTON-RAPHSON INVERTER ===
-X0=: x  NB. the values of the pivot node ancestors
-dY=: y  NB. the increment to the pivot node value
-  NB. Initialise work-var d_Y for: g, the guessing fn
-  NB. d1Y = Y1-Y0
-  NB.  = (fwd X1)  -(fwd X0)
-  NB.  = (fwd X0+d1X)  -(fwd X0)
-d1X=: 1      NB. arbitrary value for the first guess
-d_Y=: (fwd X0+d1X) -(fwd X0)
-dX=: g^:(_) d1X    NB. the limiting case of d_X
-X=: X0+dX    NB. the target X such that Y = fwd X
-)
+NB. NB. ----------------------------------------------------------------
+NB. NB. THIS DEFINITION IS OVERRIDDEN IN inversion.ijs <<<<<<<<<<<<<<<<<
+NB. NB. with: inversion=: inversionC
+NB. NB. ----------------------------------------------------------------
+NB.   NB. saddle for calling inversionX (vectored)
+NB.   NB. r1=. r inversion deltaz --the way it's called
+NB.   NB.  where: deltaz (=y here) is dY in inversionB
+NB.   NB.  and r is values of ancestors of pivot item# (fwd acts on this vec)
+NB.
+NB. inversion=: 4 : 0
+NB. X=. x inversionX y
+NB. sess1 11 message y  NB. makes no sense here, unless crudely display: y
+NB. sess1 (>'amodel:' ; 'x:' ; 'X:') ,. ":(amodel,:x),X
+NB. X
+NB. )
+NB.
+NB. inversionB=: 4 : 0
+NB.   NB. === NEWTON-RAPHSON INVERTER ===
+NB. X0=: x  NB. the values of the pivot node ancestors
+NB. dY=: y  NB. the increment to the pivot node value
+NB.   NB. Initialise work-var d_Y for: g, the guessing fn
+NB.   NB. d1Y = Y1-Y0
+NB.   NB.  = (fwd X1)  -(fwd X0)
+NB.   NB.  = (fwd X0+d1X)  -(fwd X0)
+NB. d1X=: 1      NB. arbitrary value for the first guess
+NB. d_Y=: (fwd X0+d1X) -(fwd X0)
+NB. dX=: g^:(_) d1X    NB. the limiting case of d_X
+NB. X=: X0+dX    NB. the target X such that Y = fwd X
+NB. )
 
 invert=: 3 : 0
   NB. invert the formula of item y
@@ -1273,6 +1280,7 @@ recal=: 3 : 0
   NB. assumes proffered changes have been made by recal to vquan (only)
 vsiq0=: vfact*vqua0  NB. follows nominal values, not internal ones
 vsiqn=: vfact*vquan
+INVERSION=:''
 if. hasf y do. vsiqn=: bcalc y end.
 vsiqn=: fcalc y    NB. fwd after break-back to recalc all descendants
 NB. vquan=: vsiqn*(%vfact)  NB. update the nominal values
@@ -1418,9 +1426,11 @@ if. x= y{vquan do. 13 message y; x return. end.
 vqua0=: vquan
 vquan=: x y}vquan
 CH=: recal y
-if. y{CH do. 16 message y; x
-else. 17 message y; x
+if. y{CH do. 16 message y;x  NB. accepts value
+elseif. 0<#OVERHELDS do. 35 message listitems OVERHELDS
+elseif. do. 17 message y;x  NB. rejects value
 end.
+NB. OVERHELDS=: ''
 )
 
 setvunits=: 4 : 0
