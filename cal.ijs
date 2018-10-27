@@ -24,6 +24,9 @@ AABUILT=: '2018-10-24  00:52:46'
 AABUILT=: '2018-10-24  00:54:48'
 AABUILT=: '2018-10-24  01:00:20'
 AABUILT=: '2018-10-24  01:05:17'
+AABUILT=: '2018-10-24  22:57:21'
+AABUILT=: '2018-10-27  02:57:39'
+AABUILT=: '2018-10-27  03:32:25'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -1447,7 +1450,7 @@ vsiqn=: vfact*vquan
 INVERSION=:''
 if. hasf y do. vsiqn=: bcalc y end.
 vsiqn=: fcalc y
-vquan=: (vdisp -~ vsiqn)%vfact
+vquan=: (vsiqn-vdisp)%vfact
 
 vquan~:vqua0
 )
@@ -1731,9 +1734,10 @@ TD=: TD,0
 TTf=: TTf,SP
 UNITN=: UNITN,<ytu
 UNITS=: UNITS,<yts
-vquan=: vquan,yvalu
+vquan=: vquan , yvalu
 vfact=: vfact , fac
 vdisp=: vdisp , displacement ytu
+vsiqn=: vdisp + vquan*vfact
 ttfix''
 
 'ttadl' dirty 1
@@ -2582,7 +2586,6 @@ inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
 
-unheldX=. -. heldX=. (amodel=0)
 fac=: Y0D % Y0
 select. amodel
 case. 1 1 do. bwd=: 13 : 'X0 * fac,1'
@@ -2595,7 +2598,7 @@ i.0 0
 
 '==================== [cal] inverC6.ijs ===================='
 0 :0
-Tuesday 23 October 2018  22:58:04
+Wednesday 24 October 2018  01:44:38
 -
 TEST WITH lines {12} of SAMPLE 4
 -
@@ -2610,7 +2613,6 @@ inversion=: inversionC_cal_ f.
 
 fit=: 3 : 0
 
-unheldX=. -. heldX=. (amodel=0)
 fac=: Y0D % Y0
 select. amodel
 case. 1 1 do. bwd=: 13 : 'X0 * 1,fac'
@@ -2623,27 +2625,51 @@ i.0 0
 
 '==================== [cal] inverC7.ijs ===================='
 0 :0
-Monday 22 October 2018  17:42:41
+Wednesday 24 October 2018  01:40:54
 -
-Expand this script to handle a new conjecture about (fwd X)
+Based on inverC5, with - for %
 )
 
 coclass z=.'inverC7'
 clear z
 
-inversion=: assert bind 0
+inversion=: inversionC_cal_ f.
+
+fit=: 3 : 0
+
+dif=: Y0D - Y0
+select. amodel
+case. 1 1 do. bwd=: 13 : 'X0 * dif,1'
+case. 1 0 do. bwd=: 13 : 'X0 * dif,1'
+case. 0 1 do. bwd=: 13 : 'X0 * 1,-dif'
+case.     do. assert. 0
+end.
+i.0 0
+)
 
 '==================== [cal] inverC8.ijs ===================='
 0 :0
-Monday 22 October 2018  17:42:27
+Wednesday 24 October 2018  01:49:11
 -
-Expand this script to handle a new conjecture about (fwd X)
+Based on inverC6, with - for %
 )
 
 coclass z=.'inverC8'
 clear z
 
-inversion=: assert bind 0
+inversion=: inversionC_cal_ f.
+
+fit=: 3 : 0
+
+dif=: Y0D - Y0
+select. amodel
+case. 1 1 do. bwd=: 13 : 'X0 * 1,dif'
+case. 1 0 do. bwd=: 13 : 'X0 * 1,dif'
+case. 0 1 do. bwd=: 13 : 'X0 * 1,~-dif'
+case.     do. assert. 0
+end.
+i.0 0
+)
 
 '==================== [cal] inverC9.ijs ===================='
 0 :0
@@ -2673,7 +2699,8 @@ MAXCOUNTDOWN=: 1000
 fwd=: empty
 ssw=: empty
 register=: register_cal_ f.
-record=: empty
+record=: record_cal_
+
 inversion=: 4 : 0
 me=. 'inversion_',(>coname''),'_'
 
@@ -3211,7 +3238,7 @@ ssw 'plot: $RECORD=($y)'
 smoutput <y
 )
 TRACEPLOT=: 0
-MAXRECORD=: 30
+MAXRECORD=: 200
 
 rplot=: 3 : 'plot real RECORD'
 

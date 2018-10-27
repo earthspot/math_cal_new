@@ -249,7 +249,7 @@ else.
   vdisp=: displacement >UNITN
   vsiq0=: vsiqn
   vqua0=: vquan
-NB.   vquan=: vsiqn % vfact  NB. SUPERSEDED with vdisp...
+  vquan=: (vsiqn-vdisp)%vfact
   recal 0  NB. realigns vquan with siqn in a compatible way
 	NB. only matters with temperature scales, or where vdisp~:0
   3 message y ; z ; x0
@@ -1284,7 +1284,7 @@ INVERSION=:''
 if. hasf y do. vsiqn=: bcalc y end.
 vsiqn=: fcalc y    NB. fwd after break-back to recalc all descendants
 NB. vquan=: vsiqn*(%vfact)  NB. update the nominal values
-vquan=: (vdisp -~ vsiqn)%vfact  NB. update the nominal values
+vquan=: (vsiqn-vdisp)%vfact  NB. update the nominal values
   NB. if undefined units, vsiqn%vfact --> |NaN error
 vquan~:vqua0    NB. =1 where the item has changed
 )
@@ -1576,9 +1576,10 @@ TD=: TD,0  NB. dumb line
 TTf=: TTf,SP  NB. dumb line
 UNITN=: UNITN,<ytu
 UNITS=: UNITS,<yts
-vquan=: vquan,yvalu
+vquan=: vquan , yvalu
 vfact=: vfact , fac
 vdisp=: vdisp , displacement ytu
+vsiqn=: vdisp + vquan*vfact
 ttfix''
   NB. (c/f ttafl, no need to recal here)
 'ttadl' dirty 1
