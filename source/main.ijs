@@ -233,43 +233,107 @@ end.
 
 ceiling=: >.
 
+forceunits=: 4 : 0
+  NB. change the units of item {y} to units: (str)x
+  NB. WITHOUT altering the item value
+'targ junk coeft'=. convert x  NB. target SI-units
+UNITN=: (<x) y}UNITN
+UNITS=: (<targ) y}UNITS
+vfact=: coeft y}vfact
+vdisp=. displacement >UNITN  NB. REGENERATE IT FROM SCRATCH to use in...
+vsiqn=: vdisp + vquan*vfact
+)
+
+forcevalue=: 4 : 0
+  NB. force (num) x as the value of item y
+if. -.validitem y do. 10 message y return. end.
+if. x= y{vquan do. 13 message y; x return. end.
+vqua0=: vquan
+vquan=: x y}vquan
+vdisp=. displacement >UNITN  NB. REGENERATE IT FROM SCRATCH to use in...
+vsiqn=: vdisp + vquan*vfact
+)
+
+isFreeItem=: 3 : 0
+  NB. item {y} has no formula and no dependents
+(-.hasdep y) and (-.hasf y)
+)
+
 changeunits=: 4 : 0
-  NB. change the units of item: y to units: (str)x
+  NB. change the units of item {y} to units: (str)x
+ssw '+++ changeunits entered: x=(x) y=(y)'
 if. -.validitem y do. 1 message y return. end.
-'un0 cyc fac0'=. convert z=. >y{UNITN
-'un1 cyc fac1'=. convert x0=. x
-  NB. Accept incompats UNLESS y involved in a formula
-if. (-. un0-:un1) *. ((hasdep y)+.(hasf y)) do.
-  2 message z ; x
-  return.
-else.
-  UNITS=: (<un1) y}UNITS  NB. needed if (-. un0-:un1)
-  UNITN=: (<x0) y}UNITN
-  vfact=: fac1 y}vfact
-  vdisp=: displacement >UNITN
-  vsiq0=: vsiqn
-  vqua0=: vquan
-  vquan=: (vsiqn-vdisp)%vfact
-  recal 0  NB. realigns vquan with siqn in a compatible way
-	NB. only matters with temperature scales, or where vdisp~:0
-  3 message y ; z ; x0
+'targ junk coeft'=. convert x             NB. target SI-units
+'noml junk coefu'=. convert z=. >y{UNITN  NB. nominal SI-units
+if. isFreeItem y do.
+  x forceunits y
+  if. x compat z do.
+    3 message y ; z ; x  NB. "units changed"
+  else.
+    45 message y ; z ; x  NB. "units changed although incompatible"
+  end.
+elseif. x incompat z do.
+  2 message z ; x  NB. "incompatible units - can't change"
+elseif. do.  NB. compatible (x)
+  NB. change to compatible units & recalculate vquan
+  vsiq0=: vsiqn  NB. save prev value (for signalling where changed)
+  vqua0=: vquan  NB. save prev value (for signalling where changed)
+  UNITN=: (<x) y}UNITN  NB. new nominal units are (x) as given
+NB.   UNITS=: (<targ) y}UNITS  NB. BUT… won't these be unchanged??
+NB.   assert. targ -: y pick UNITS
+NB.   smoutput 'targ' ; targ ; y pick UNITS
+  vfact=: coeft y}vfact
+  v=. (y{vquan) scale_displace__uun~ coeft,coefu,dispt,dispu
+  vquan=: v y}vquan
+NB.   recal y  NB. >>> NEEDED??
+NB. if we don't recal then only item {y} can change
+NB. -which won't conceal any errors in this algorithm.
+  3 message y ; z ; x  NB. "units changed"
+end.
+)
+
+0 :0
+...
+NB.   NB. BUT… these are already cached...
+NB. NB. assert. noml -: y pick UNITS
+NB. NB. assert. dispu -: y pick vdisp
+NB. NB. assert. coefu -: y pick vfact
+NB. smoutput 'noml' ; noml ; y pick UNITS
+NB. smoutput 'dispu' ; dispu ; y pick vdisp
+NB. smoutput 'coefu' ; coefu ; y pick vfact
+if. (-. targ-:noml) do.  NB. incompatible units!
+  NB. accept proferred units (x) anyway, WITH NO CHANGE OF VALUE
+  NB. provided item {y} has no formula and has no dependents
+  if. ((hasdep y) or (hasf y)) do.
+    2 message z ; x  NB. "incompatible units - can't change"
+    return.
+  else.
+    UNITN=: (<x) y}UNITN
+    UNITS=: (<targ) y}UNITS
+    vfact=: coeft y}vfact
+    vdisp=: displacement >UNITN
+    45 message y ; z ; x  NB. "units changed although incompatible"
+  end.
+else.  NB. change to compatible units & recalculate nominal value
+  vsiq0=: vsiqn  NB. save prev value (for signalling where changed)
+  vqua0=: vquan  NB. save prev value (for signalling where changed)
+  UNITN=: (<x) y}UNITN  NB. new nominal units are (x) as given
+NB.   UNITS=: (<targ) y}UNITS  NB. BUT… won't these be unchanged??
+NB.   assert. targ -: y pick UNITS
+NB.   smoutput 'targ' ; targ ; y pick UNITS
+  vfact=: coeft y}vfact
+  v=. (y{vquan) scale_displace__uun~ coeft,coefu,dispt,dispu
+  vquan=: v y}vquan
+NB.   vdisp=: displacement >UNITN --OLD CODE
+NB.   vquan=: (vsiqn-vdisp)%vfact --OLD CODE
+NB.   recal y  NB. >>> NEEDED??
+NB. if we don't recal then only item {y} can change
+NB. -which won't conceal any errors in this algorithm.
+  3 message y ; z ; x  NB. "units changed"
 end.
 )
 
 clos=: dp2^:_
-
-cmake=: 3 : 0
-  NB. make the CAL-arrays
-'CCc CCa CCx CCd'=: 4 # <''
-for_li. f2b dtlf CAL do. lin=. >li
-  CCc=: CCc,<4{.lin
-  CCa=: CCa,<dtb 4{.5}.lin
-  'x d'=. BS cut 10}.lin
-  CCx=: CCx,<dtb x
-  CCd=: CCd,<dtb d
-end.
-i.0 0
-)
 
 cnn=: 3 : 0
   NB. output re-inputtable num-vec: y
@@ -1278,12 +1342,13 @@ recal=: 3 : 0
   NB. y is the pivot node and is the arg for: xseq
   NB. if pivot no importance, call: recal 0
   NB. assumes proffered changes have been made by recal to vquan (only)
-vsiq0=: vfact*vqua0  NB. follows nominal values, not internal ones
+vsiq0=: vfact*vqua0  NB. follows nominal values, not system ones
 vsiqn=: vfact*vquan
-INVERSION=:''
+INVERSION=:''  NB. identifies daisychain heuristic that actually completes
 if. hasf y do. vsiqn=: bcalc y end.
 vsiqn=: fcalc y    NB. fwd after break-back to recalc all descendants
 NB. vquan=: vsiqn*(%vfact)  NB. update the nominal values
+vdisp=: displacement >UNITN  NB. REGENERATE IT FROM SCRATCH to use in...
 vquan=: (vsiqn-vdisp)%vfact  NB. update the nominal values
   NB. if undefined units, vsiqn%vfact --> |NaN error
 vquan~:vqua0    NB. =1 where the item has changed
@@ -1430,22 +1495,48 @@ if. y{CH do. 16 message y;x  NB. accepts value
 elseif. 0<#OVERHELDS do. 35 message listitems OVERHELDS
 elseif. do. 17 message y;x  NB. rejects value
 end.
-NB. OVERHELDS=: ''
+OVERHELDS=: ''  NB. invalidate the cache
 )
 
+0 :0
 setvunits=: 4 : 0
-  NB. set x as the value+units of item y
+  NB. force (string) x as the value[[+units]+name] of item y
   NB. if x contains QT then split at QT: (zz;name)
 if. -.validitem y do. 10 message y return. end.
-r=. y
 name=. dltb QT takeafter x
 zz=. dltb QT taketo x
 valu=. ".valustr=. SP taketo zz
 units=. SP takeafter zz
+nomu=. >y{UNITN  NB. existing nominal units
 sllog 'setvunits y zz valustr valu units name'
-if. 0<#name do. r relabel name end.
-if. 0<#units do. r changeunits~ units end.
-valu setvalue r
+if. (0<#units) and (-.isFreeItem y) and (units incompat nomu) do.
+  2 message z ; units
+  return. 
+end.
+valu forcevalue y
+if. 0<#units do. y forceunits~ units end.
+if. 0<#name do. y relabel name end.
+i.0 0
+)
+
+setvunits=: 4 : 0
+  NB. force (string) x as the value[[+units]+name] of item y
+  NB. if x contains QT then split at QT: (zz;name)
+if. -.validitem y do. 10 message y return. end.
+name=. dltb QT takeafter x
+zz=. dltb QT taketo x
+valu=. ".valustr=. SP taketo zz
+unit=. SP takeafter zz
+nomu=. >y{UNITN  NB. existing nominal units
+sllog 'setvunits y zz valustr valu unit name'
+if. (0<#unit) and (-.isFreeItem y) and (unit incompat nomu) do.
+  2 message z ; unit
+  return. 
+end.
+if. 0<#name do. tabengine 'name' ; y ; name end.
+tabengine 'valu' ; y ; valu
+if. 0<#unit do. tabengine 'unit' ; y ; unit end.
+i.0 0
 )
 
 shortpath=: 3 : 0
@@ -1578,7 +1669,8 @@ UNITN=: UNITN,<ytu
 UNITS=: UNITS,<yts
 vquan=: vquan , yvalu
 vfact=: vfact , fac
-vdisp=: vdisp , displacement ytu
+NB. vdisp=: vdisp , displacement ytu
+vdisp=: displacement >UNITN  NB. REGENERATE IT FROM SCRATCH to use in...
 vsiqn=: vdisp + vquan*vfact
 ttfix''
   NB. (c/f ttafl, no need to recal here)

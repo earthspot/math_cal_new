@@ -27,6 +27,10 @@ AABUILT=: '2018-10-24  01:05:17'
 AABUILT=: '2018-10-24  22:57:21'
 AABUILT=: '2018-10-27  02:57:39'
 AABUILT=: '2018-10-27  03:32:25'
+AABUILT=: '2018-10-27  18:24:48'
+AABUILT=: '2018-10-27  23:12:42'
+AABUILT=: '2018-10-28  01:31:25'
+AABUILT=: '2018-10-28  01:18:33'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -155,8 +159,9 @@ glpixels 0 0 , (|.$a), ,a
 )
 cv=: 3 : 0
 
-h=: ;:'vfact vdisp vqua0 vquan vsiq0 vsiqn'
-]z=: (<vv vfact),(<vv vdisp),(<vv vqua0),(<vv vquan),(<vv vsiq0),(<vv vsiqn)
+item=. i.#vquan
+]z=. (<,.item),(<,.vfact),(<,.vdisp),(<,.vquan),(<,.vsiqn)
+h=. ;:'  item      vfact      vdisp      vquan      vsiqn'
 h,:z
 )
 
@@ -458,42 +463,86 @@ end.
 
 ceiling=: >.
 
+forceunits=: 4 : 0
+
+
+'targ junk coeft'=. convert x
+UNITN=: (<x) y}UNITN
+UNITS=: (<targ) y}UNITS
+vfact=: coeft y}vfact
+vdisp=. displacement >UNITN
+vsiqn=: vdisp + vquan*vfact
+)
+
+forcevalue=: 4 : 0
+
+if. -.validitem y do. 10 message y return. end.
+if. x= y{vquan do. 13 message y; x return. end.
+vqua0=: vquan
+vquan=: x y}vquan
+vdisp=. displacement >UNITN
+vsiqn=: vdisp + vquan*vfact
+)
+
+isFreeItem=: 3 : 0
+
+(-.hasdep y) and (-.hasf y)
+)
+
 changeunits=: 4 : 0
 
+ssw '+++ changeunits entered: x=(x) y=(y)'
 if. -.validitem y do. 1 message y return. end.
-'un0 cyc fac0'=. convert z=. >y{UNITN
-'un1 cyc fac1'=. convert x0=. x
-
-if. (-. un0-:un1) *. ((hasdep y)+.(hasf y)) do.
+'targ junk coeft'=. convert x
+'noml junk coefu'=. convert z=. >y{UNITN
+if. isFreeItem y do.
+  x forceunits y
+  if. x compat z do.
+    3 message y ; z ; x
+  else.
+    45 message y ; z ; x
+  end.
+elseif. x incompat z do.
   2 message z ; x
-  return.
-else.
-  UNITS=: (<un1) y}UNITS
-  UNITN=: (<x0) y}UNITN
-  vfact=: fac1 y}vfact
-  vdisp=: displacement >UNITN
+elseif. do.
+
   vsiq0=: vsiqn
   vqua0=: vquan
-  recal 0
+  UNITN=: (<x) y}UNITN
+  vfact=: coeft y}vfact
+  v=. (y{vquan) scale_displace__uun~ coeft,coefu,dispt,dispu
+  vquan=: v y}vquan
+  3 message y ; z ; x
+end.
+)
 
-  3 message y ; z ; x0
+0 :0
+...
+if. (-. targ-:noml) do.
+
+
+  if. ((hasdep y) or (hasf y)) do.
+    2 message z ; x
+    return.
+  else.
+    UNITN=: (<x) y}UNITN
+    UNITS=: (<targ) y}UNITS
+    vfact=: coeft y}vfact
+    vdisp=: displacement >UNITN
+    45 message y ; z ; x
+  end.
+else.
+  vsiq0=: vsiqn
+  vqua0=: vquan
+  UNITN=: (<x) y}UNITN
+  vfact=: coeft y}vfact
+  v=. (y{vquan) scale_displace__uun~ coeft,coefu,dispt,dispu
+  vquan=: v y}vquan
+  3 message y ; z ; x
 end.
 )
 
 clos=: dp2^:_
-
-cmake=: 3 : 0
-
-'CCc CCa CCx CCd'=: 4 # <''
-for_li. f2b dtlf CAL do. lin=. >li
-  CCc=: CCc,<4{.lin
-  CCa=: CCa,<dtb 4{.5}.lin
-  'x d'=. BS cut 10}.lin
-  CCx=: CCx,<dtb x
-  CCd=: CCd,<dtb d
-end.
-i.0 0
-)
 
 cnn=: 3 : 0
 
@@ -1450,6 +1499,7 @@ vsiqn=: vfact*vquan
 INVERSION=:''
 if. hasf y do. vsiqn=: bcalc y end.
 vsiqn=: fcalc y
+vdisp=: displacement >UNITN
 vquan=: (vsiqn-vdisp)%vfact
 
 vquan~:vqua0
@@ -1590,21 +1640,48 @@ if. y{CH do. 16 message y;x
 elseif. 0<#OVERHELDS do. 35 message listitems OVERHELDS
 elseif. do. 17 message y;x
 end.
+OVERHELDS=: ''
+)
+
+0 :0
+setvunits=: 4 : 0
+
+
+if. -.validitem y do. 10 message y return. end.
+name=. dltb QT takeafter x
+zz=. dltb QT taketo x
+valu=. ".valustr=. SP taketo zz
+units=. SP takeafter zz
+nomu=. >y{UNITN
+sllog 'setvunits y zz valustr valu units name'
+if. (0<#units) and (-.isFreeItem y) and (units incompat nomu) do.
+  2 message z ; units
+  return. 
+end.
+valu forcevalue y
+if. 0<#units do. y forceunits~ units end.
+if. 0<#name do. y relabel name end.
+i.0 0
 )
 
 setvunits=: 4 : 0
 
 
 if. -.validitem y do. 10 message y return. end.
-r=. y
 name=. dltb QT takeafter x
 zz=. dltb QT taketo x
 valu=. ".valustr=. SP taketo zz
-units=. SP takeafter zz
-sllog 'setvunits y zz valustr valu units name'
-if. 0<#name do. r relabel name end.
-if. 0<#units do. r changeunits~ units end.
-valu setvalue r
+unit=. SP takeafter zz
+nomu=. >y{UNITN
+sllog 'setvunits y zz valustr valu unit name'
+if. (0<#unit) and (-.isFreeItem y) and (unit incompat nomu) do.
+  2 message z ; unit
+  return. 
+end.
+if. 0<#name do. tabengine 'name' ; y ; name end.
+tabengine 'valu' ; y ; valu
+if. 0<#unit do. tabengine 'unit' ; y ; unit end.
+i.0 0
 )
 
 shortpath=: 3 : 0
@@ -1736,7 +1813,7 @@ UNITN=: UNITN,<ytu
 UNITS=: UNITS,<yts
 vquan=: vquan , yvalu
 vfact=: vfact , fac
-vdisp=: vdisp , displacement ytu
+vdisp=: displacement >UNITN
 vsiqn=: vdisp + vquan*vfact
 ttfix''
 
@@ -3058,6 +3135,7 @@ MESSAGELIST=: cmx 0 : 0
 42 >>> no action because t-table (y0) already exists
 43 >>> cache file (y0) not found
 44 cache file (y0) yields text: (y1)
+45 line {(y0)} units changed from [(y1)] to INCOMPATIBLE [(y2)]
 )
 
 '==================== [cal] tabmath.ijs ===================='
@@ -3317,7 +3395,6 @@ load TPATH_UU sl 'uu.ijs'
 uuconnect''
 make_tabengineCore''
 globmake''
-cmake''
 inversion=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRS_ ::endstop
 progress _
 0 enlog 0

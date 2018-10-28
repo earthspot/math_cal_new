@@ -52,4 +52,5 @@ MESSAGELIST=: cmx 0 : 0
 42 >>> no action because t-table (y0) already exists
 43 >>> cache file (y0) not found
 44 cache file (y0) yields text: (y1)
+45 line {(y0)} units changed from [(y1)] to INCOMPATIBLE [(y2)]
 )
