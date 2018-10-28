@@ -67,8 +67,8 @@ NB. breakback''
 cv=: 3 : 0
   NB. Diagnostic check: show the v-caches
 item=. i.#vquan
-]z=. (<,.item),(<,.vfact),(<,.vdisp),(<,.vquan),(<,.vsiqn) NB.,(<,.vqua0),(<,.vsiq0)
-h=. ;:'  item      vfact      vdisp      vquan      vsiqn' NB.      vqua0      vsiq0'
+]z=. (<,.item),(<,.vfact),(<,.vquan),(<,.vsiqn) NB. ,(<,.vqua0),(<,.vsiq0)
+h=. ;:'  item      vfact      vquan      vsiqn' NB.      vqua0      vsiq0'
 h,:z
 )
 

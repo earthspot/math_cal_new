@@ -31,6 +31,10 @@ AABUILT=: '2018-10-27  18:24:48'
 AABUILT=: '2018-10-27  23:12:42'
 AABUILT=: '2018-10-28  01:31:25'
 AABUILT=: '2018-10-28  01:18:33'
+AABUILT=: '2018-10-28  22:52:46'
+AABUILT=: '2018-10-28  23:21:20'
+AABUILT=: '2018-10-28  23:37:27'
+AABUILT=: '2018-10-28  23:44:54'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -75,7 +79,7 @@ SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'
 SL=: '/'
-SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vdisp vhidd vhold vmodl CH TD TTn TTf UNITN UNITS CAPT'
+SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTn TTf UNITN UNITS CAPT'
 SP=: ' '
 ST=: '*'
 TIMEOUT=: 5
@@ -160,8 +164,8 @@ glpixels 0 0 , (|.$a), ,a
 cv=: 3 : 0
 
 item=. i.#vquan
-]z=. (<,.item),(<,.vfact),(<,.vdisp),(<,.vquan),(<,.vsiqn)
-h=. ;:'  item      vfact      vdisp      vquan      vsiqn'
+]z=. (<,.item),(<,.vfact),(<,.vquan),(<,.vsiqn)
+h=. ;:'  item      vfact      vquan      vsiqn'
 h,:z
 )
 
@@ -470,8 +474,7 @@ forceunits=: 4 : 0
 UNITN=: (<x) y}UNITN
 UNITS=: (<targ) y}UNITS
 vfact=: coeft y}vfact
-vdisp=. displacement >UNITN
-vsiqn=: vdisp + vquan*vfact
+vsiqn=: (vdisp'') + vquan*vfact
 )
 
 forcevalue=: 4 : 0
@@ -480,21 +483,20 @@ if. -.validitem y do. 10 message y return. end.
 if. x= y{vquan do. 13 message y; x return. end.
 vqua0=: vquan
 vquan=: x y}vquan
-vdisp=. displacement >UNITN
-vsiqn=: vdisp + vquan*vfact
+vsiqn=: (vdisp'') + vquan*vfact
 )
 
 isFreeItem=: 3 : 0
 
-(-.hasdep y) and (-.hasf y)
+(-.hasdep y) and (-.hasf y) and (ST= y pick UNITN)
 )
 
 changeunits=: 4 : 0
 
 ssw '+++ changeunits entered: x=(x) y=(y)'
 if. -.validitem y do. 1 message y return. end.
-'targ junk coeft'=. convert x
-'noml junk coefu'=. convert z=. >y{UNITN
+'targ dispt coeft'=. convert x
+'noml dispu coefu'=. convert z=. >y{UNITN
 if. isFreeItem y do.
   x forceunits y
   if. x compat z do.
@@ -506,32 +508,6 @@ elseif. x incompat z do.
   2 message z ; x
 elseif. do.
 
-  vsiq0=: vsiqn
-  vqua0=: vquan
-  UNITN=: (<x) y}UNITN
-  vfact=: coeft y}vfact
-  v=. (y{vquan) scale_displace__uun~ coeft,coefu,dispt,dispu
-  vquan=: v y}vquan
-  3 message y ; z ; x
-end.
-)
-
-0 :0
-...
-if. (-. targ-:noml) do.
-
-
-  if. ((hasdep y) or (hasf y)) do.
-    2 message z ; x
-    return.
-  else.
-    UNITN=: (<x) y}UNITN
-    UNITS=: (<targ) y}UNITS
-    vfact=: coeft y}vfact
-    vdisp=: displacement >UNITN
-    45 message y ; z ; x
-  end.
-else.
   vsiq0=: vsiqn
   vqua0=: vquan
   UNITN=: (<x) y}UNITN
@@ -1499,10 +1475,8 @@ vsiqn=: vfact*vquan
 INVERSION=:''
 if. hasf y do. vsiqn=: bcalc y end.
 vsiqn=: fcalc y
-vdisp=: displacement >UNITN
-vquan=: (vsiqn-vdisp)%vfact
-
-vquan~:vqua0
+vquan=: (vsiqn-vdisp'')%vfact
+vquan ~: vqua0
 )
 
 reformCAL=: 3 : 0
@@ -1705,8 +1679,7 @@ UNITN=: si y}UNITN
 vquan=: (y{vsiqn) y}vquan
 vqua0=: (y{vsiq0) y}vqua0
 vfact=: 1 y}vfact
-vdisp=: 0 y}vdisp
-CH=: recal 0
+CH=: recal y
 'siunits' dirty 1
 18 message y; >si
 )
@@ -1813,8 +1786,7 @@ UNITN=: UNITN,<ytu
 UNITS=: UNITS,<yts
 vquan=: vquan , yvalu
 vfact=: vfact , fac
-vdisp=: displacement >UNITN
-vsiqn=: vdisp + vquan*vfact
+vsiqn=: (vdisp'') + vquan*vfact
 ttfix''
 
 'ttadl' dirty 1
@@ -1840,7 +1812,6 @@ UNITN=: UNITN,<,ytu
 UNITS=: UNITS,<,yts
 vquan=: vquan,0
 vfact=: vfact , fac
-vdisp=: vdisp , displacement ytu
 ttfix''
 invalexe''
 CH=: recal 0
@@ -1860,7 +1831,6 @@ end.
 CAPTsav=. CAPT
 vquanS=. vquan
 vfactS=. vfact
-vdispS=. vdisp
 vmodlS=. vmodl
 vhiddS=. vhidd
 UNITSsav=. UNITS
@@ -1883,7 +1853,6 @@ z=. convert each UNITN2=: boxvec debc TT cols tu
 UNITN=: UNITNsav,UNITN2
 UNITS=: UNITSsav,(>&{.) each z
 vfact=: vfactS, >(>&{:) each z
-vdisp=: displacement >UNITN
 
 CH=:    flags 0
 vhold=: flags 0
@@ -1894,7 +1863,7 @@ if. 1=#vmodl do. vmodl=: vmodlS, (nt1-nt0)#1
 else.     vmodl=: vmodlS, }.vmodl
 end.
 vqua0=: vquan=: vquanS, }.vquan
-vsiq0=: vsiqn=: vquan*vfact
+vsiq0=: vsiqn=: (vdisp'') + vquan*vfact
 
 
 genexe each I. hasfb''
@@ -1911,11 +1880,9 @@ eraseRedundantCaches=: 3 : 0
 erase y
 smoutput '>>> THESE CACHES DELETED: ',y
 )
+vdisp=: 3 : 0
 
-displacement=: 3 : 0 "1
-
-
-uuengine 'DISP',y
+([: uuengine 'DISP' , ])"1 >UNITN
 )
 
 ttauc=: 3 : 0
@@ -2023,14 +1990,13 @@ empty erase 'TT'
 z=. convert each UNITN=: boxvec TTu
 UNITS=: (>&{.) each z
 vfact=: 0,>(>&{:) each }.z
-vdisp=: displacement >UNITN
 
 CH=: flags 0
 if. 1=#vhidd do. vhidd=: flags 0 end.
 if. 1=#vmodl do. vmodl=: flags 1 end.
 vhold=: flags 0
 vqua0=: vquan
-vsiq0=: vsiqn=: vquan*vfact
+vsiq0=: vsiqn=: (vdisp'') + vquan*vfact
 
 
 genexe each I. hasfb''
@@ -2085,13 +2051,7 @@ TTn=: ,:'tn'
 TD=: 1 1$0
 TTf=: ,:'tf'
 UNITN=: UNITS=: ,<'??'
-vdisp=: vfact=: vquan=: ,0
-CH=:    flags 0
-vhold=: flags 0
-vmodl=: flags 1
-vhidd=: flags 0
-vqua0=: vquan
-vsiq0=: vsiqn=: vquan*vfact
+vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: CH=: vhold=: vmodl=: vhidd=: ,0
 file=:  tbx UNDEF
 settitle CAPT=: UNDEF_CAPT
 reselect 0
@@ -2194,7 +2154,6 @@ TTf=: t{TTf
 UNITN=: t{UNITN
 UNITS=: t{UNITS
 vfact=: t{vfact
-vdisp=: t{vdisp
 vqua0=: vquan=: t{vquan
 vsiq0=: vsiqn=: t{vsiqn
 vhold=: t{vhold
