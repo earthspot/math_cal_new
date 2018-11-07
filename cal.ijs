@@ -1,5 +1,5 @@
 0 :0
-Tuesday 23 October 2018  20:25:44
+Tuesday 6 November 2018  00:13:40
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -9,32 +9,18 @@ clear 'cal'
 coclass 'cal'
 onload_z_=: empty
 
-AABUILT=: '2018-10-23  20:28:39'
-AABUILT=: '2018-10-23  20:49:38'
-AABUILT=: '2018-10-23  21:59:16'
-AABUILT=: '2018-10-23  22:19:28'
-AABUILT=: '2018-10-23  22:29:46'
-AABUILT=: '2018-10-23  22:59:14'
-AABUILT=: '2018-10-24  00:27:40'
-AABUILT=: '2018-10-24  00:39:16'
-AABUILT=: '2018-10-24  00:42:52'
-AABUILT=: '2018-10-24  00:46:54'
-AABUILT=: '2018-10-24  00:49:10'
-AABUILT=: '2018-10-24  00:52:46'
-AABUILT=: '2018-10-24  00:54:48'
-AABUILT=: '2018-10-24  01:00:20'
-AABUILT=: '2018-10-24  01:05:17'
-AABUILT=: '2018-10-24  22:57:21'
-AABUILT=: '2018-10-27  02:57:39'
-AABUILT=: '2018-10-27  03:32:25'
-AABUILT=: '2018-10-27  18:24:48'
-AABUILT=: '2018-10-27  23:12:42'
-AABUILT=: '2018-10-28  01:31:25'
-AABUILT=: '2018-10-28  01:18:33'
-AABUILT=: '2018-10-28  22:52:46'
-AABUILT=: '2018-10-28  23:21:20'
-AABUILT=: '2018-10-28  23:37:27'
-AABUILT=: '2018-10-28  23:44:54'
+load '~tempuu/39.ijs'
+
+AABUILT=: '2018-11-06  00:14:29'
+AABUILT=: '2018-11-06  00:41:56'
+AABUILT=: '2018-11-06  01:02:09'
+AABUILT=: '2018-11-06  01:18:37'
+AABUILT=: '2018-11-06  23:20:31'
+AABUILT=: '2018-11-07  01:41:11'
+AABUILT=: '2018-11-07  01:46:21'
+AABUILT=: '2018-11-07  01:52:49'
+AABUILT=: '2018-11-07  02:59:03'
+AABUILT=: '2018-11-07  03:07:29'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -69,12 +55,14 @@ ALTERED=: '@'
 HOLD=: '='
 INVERSION=: ''
 LOGNAME=: 'cal_log.txt'
+LP=: '(' [ RP=: ')'
 MAXINVERT=: 30
 NB=: 'NB.'
 OVERHELDS=: ''
 PAD=: 10
 PFMT=: 'line'
-PLOTNAME=: '/users/ianclark/myplot.pdf'
+PLOT=: 0
+PLOTNAME_z_=: jpath'~tempuu/latestplot.pdf'
 SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'
@@ -239,7 +227,7 @@ not=: -.
 
 '==================== [cal] main.ijs ===================='
 0 :0
-Friday 28 September 2018  18:34:24
+Monday 29 October 2018  13:53:46
 )
 
 cocurrent 'cal'
@@ -416,6 +404,10 @@ beval=: 4 : 0
 
 
 
+if. (formula y) begins 'plot' do.
+  PLOT=: getvalue y
+  vsiqn return.
+end.
 a=. ancestors y
 r1=. r=. a{vsiqn
 sllog 'beval x y a'
@@ -470,19 +462,19 @@ ceiling=: >.
 forceunits=: 4 : 0
 
 
-'targ junk coeft'=. convert x
-UNITN=: (<x) y}UNITN
-UNITS=: (<targ) y}UNITS
-vfact=: coeft y}vfact
+'targ junk coeft'=. convert y
+UNITN=: (<y) x}UNITN
+UNITS=: (<targ) x}UNITS
+vfact=: coeft x}vfact
 vsiqn=: (vdisp'') + vquan*vfact
 )
 
 forcevalue=: 4 : 0
 
-if. -.validitem y do. 10 message y return. end.
-if. x= y{vquan do. 13 message y; x return. end.
+if. -.validitem x do. 10 message x return. end.
+if. y= x{vquan do. 13 message x; y return. end.
 vqua0=: vquan
-vquan=: x y}vquan
+vquan=: y x}vquan
 vsiqn=: (vdisp'') + vquan*vfact
 )
 
@@ -498,7 +490,7 @@ if. -.validitem y do. 1 message y return. end.
 'targ dispt coeft'=. convert x
 'noml dispu coefu'=. convert z=. >y{UNITN
 if. isFreeItem y do.
-  x forceunits y
+  y forceunits x
   if. x compat z do.
     3 message y ; z ; x
   else.
@@ -1348,6 +1340,17 @@ pad=: 3 : 0
 z=. - ($y) max 0,PAD
 z{.y
 )
+plot=: plotstub
+
+plotstub=: UNSET ddefine
+if. PLOT>0 do.
+  sy=. $y
+  if. 1<$$y do. y=. {.y end.
+  ssw 'plot: x=(x) $y=(LP)(sy)(RP) y=[(y)]'
+end.
+PLOT return.
+)
+
 plotv=: 4 : 0
 
 
@@ -1376,10 +1379,10 @@ for_v. x do.
 end.
 z=. }."1 remove_infinities z
 VDATA=: z
-plot2 y -.~ }.items''
+plot2Swift y -.~ }.items''
 )
 
-plot2=: 3 : 0
+plot2Swift=: 3 : 0
 
 
 d=. IX{VDATA
@@ -1393,9 +1396,9 @@ replot=: 3 : 0
 
 try.
 rrr=. y
-plot2 rrr -. IX
+plot2Swift rrr -. IX
 catch.
-    'plot2 failed (caches absent?)'
+    'plot2Swift failed (caches absent?)'
 end.
 )
 
@@ -1476,6 +1479,7 @@ INVERSION=:''
 if. hasf y do. vsiqn=: bcalc y end.
 vsiqn=: fcalc y
 vquan=: (vsiqn-vdisp'')%vfact
+vhold=: 0*vhold
 vquan ~: vqua0
 )
 
@@ -1617,7 +1621,6 @@ end.
 OVERHELDS=: ''
 )
 
-0 :0
 setvunits=: 4 : 0
 
 
@@ -1632,12 +1635,13 @@ if. (0<#units) and (-.isFreeItem y) and (units incompat nomu) do.
   2 message z ; units
   return. 
 end.
-valu forcevalue y
-if. 0<#units do. y forceunits~ units end.
+if. 0<#units do. y forceunits units end.
 if. 0<#name do. y relabel name end.
+y forcevalue valu
 i.0 0
 )
 
+0 :0
 setvunits=: 4 : 0
 
 
@@ -2461,7 +2465,7 @@ inversion=: endstop
 
 endstop=: 4 : 0
 
-ssw '>>> endstop: called with:(LF)   (x) inversion (y)'
+ssw '>>> endstop: called with:(LF)   (x) inversion_cal_ (y)'
 register 'endstop'
 x return.
 )
@@ -2717,11 +2721,22 @@ Expand this script to handle a new conjecture about (fwd X)
 coclass z=.'inverC9'
 clear z
 
-inversion=: assert bind 0
+inversion=: inversionC_cal_ f.
+
+fit=: assert bind 0
+
+0 :0
+ ┌─────────────────────────────────────────────────┐
+ │>>> THIS IS A DUMMY HEURISTIC (RESERVED) <<<     │
+ │Currently it ALWAYS fails with: assertion failure│
+ │thus passing control to the next (inversion)     │
+ │in the daisychain: inversion_cal_                │
+ └─────────────────────────────────────────────────┘
+)
 
 '==================== [cal] inverNRS.ijs ===================='
 0 :0
-Tuesday 23 October 2018  17:12:57
+Wednesday 7 November 2018  00:31:12
 )
 
 coclass z=.'inverNRS'
@@ -2733,10 +2748,9 @@ MAXCOUNTDOWN=: 1000
 
 
 fwd=: empty
-ssw=: empty
+ssw=: smoutput&sw
 register=: register_cal_ f.
-record=: record_cal_
-
+record=: empty
 inversion=: 4 : 0
 me=. 'inversion_',(>coname''),'_'
 
@@ -2745,8 +2759,8 @@ argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
 fwd=: fwd_cal_
 amodel=: amodel_cal_
-ssw=: msg_cal_
-ssw'+++ (me): (LF) argLEFT=(argLEFT) argRIGHT=(argRIGHT) amodel=(amodel)'
+ssw'+++ (me): amodel=(amodel); TEST CALL…'
+ssw'   (argLEFT) (me) (argRIGHT)'
 countdown MAXCOUNTDOWN
 ssw'... (me): COUNTDOWN=(COUNTDOWN_z_) MAXCOUNTDOWN=(MAXCOUNTDOWN)'
 
@@ -2784,6 +2798,196 @@ d_X=. real amodel * d_X * dY0 % d_Y
 ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
   1 record d_X
 d_X return.
+
+)
+
+'==================== [cal] inverNRFCR.ijs ===================='
+0 :0
+Wednesday 7 November 2018  01:06:17
+)
+
+coclass z=.'inverNRFCR'
+clear z
+
+MAXLOOP=: 20
+fwd=: empty
+ssw=: smoutput&sw
+register=: register_cal_ f.
+record=: record_cal_
+
+inversion=: 4 : 0
+me=. 'inversion_',(>coname''),'_'
+
+argLEFT=. x [argRIGHT=. y
+erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
+fwd=: fwd_cal_
+amodel=: amodel_cal_
+ssw'+++ (me): amodel=(amodel); TEST CALL…'
+ssw'   (argLEFT) (me) (argRIGHT)'
+
+X0=: argLEFT
+Y0=: fwdX0=: fwd(X0)
+dY0=: argRIGHT
+Y1=: Y0D=: Y0+dY0
+
+
+scaled=: 1 - dY0 %~ Y0 -~ ]
+fwdSC=: scaled@:fwd
+
+d1X=: ($X0)$1
+
+if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
+  0 record X0
+ssw '... (me): X0=(X0) dY0=(dY0) d1X=(d1X)'
+dX=: g^:MAXLOOP d1X
+
+ssw '--- (me): dX=(dX) d1X=(d1X)'
+  2 record''
+X1=: X0+dX
+register me
+X1 return.
+)
+
+g=: 3 : 0
+
+
+
+d_X=. y
+d_Y=. (fwd X0+d_X) -(fwd X0)
+d_X=. real amodel * d_X * dY0 % d_Y
+ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
+  1 record d_X
+d_X return.
+
+)
+
+'==================== [cal] inverNRFC.ijs ===================='
+0 :0
+Wednesday 7 November 2018  00:59:47
+)
+
+coclass z=.'inverNRFC'
+clear z
+
+MAXLOOP=: 20
+fwd=: empty
+ssw=: smoutput&sw
+register=: register_cal_ f.
+
+inversion=: 4 : 0
+me=. 'inversion_',(>coname''),'_'
+
+argLEFT=. x [argRIGHT=. y
+erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 dX d_X d1X d2X'
+fwd=: fwd_cal_
+amodel=: amodel_cal_
+ssw'+++ (me): amodel=(amodel); TEST CALL…'
+ssw'   (argLEFT) (me) (argRIGHT)'
+
+X0=: argLEFT
+Y0=: fwdX0=: fwd(X0)
+dY0=: argRIGHT
+Y1=: Y0+dY0
+
+
+scaled=: 1 - dY0 %~ Y0 -~ ]
+fwdSC=: scaled@:fwd
+
+d1X=: ($X0)$1
+
+if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
+ssw '... (me): X0=(X0) dY0=(dY0) d1X=(d1X)'
+dX=: g^:MAXLOOP d1X
+
+ssw '--- (me): dX=(dX) d1X=(d1X)'
+fwdX1=: fwd X1=: X0+dX
+assert. Y1 approximates_cal_ fwdX1
+register me
+X1 return.
+)
+
+g=: 3 : 0
+
+
+
+d_X=. y
+d_Y=. (fwd X0+d_X) -(fwd X0)
+d_X=. real amodel * d_X * dY0 % d_Y
+ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
+d_X return.
+
+)
+
+'==================== [cal] inverNR_C.ijs ===================='
+0 :0
+Wednesday 7 November 2018  01:44:16
+)
+
+coclass z=.'inverNRUC'
+clear z
+
+MAXCOUNTDOWN=: 1000
+
+
+
+
+fwd=: empty
+ssw=: smoutput&sw
+register=: register_cal_ f.
+
+inversion=: 4 : 0
+me=. 'inversion_',(>coname''),'_'
+
+argLEFT=. x [argRIGHT=. y
+erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 dX d_X d1X d2X'
+fwd=: fwd_cal_
+amodel=: amodel_cal_
+ssw'+++ (me): amodel=(amodel); TEST CALL…'
+ssw'   (argLEFT) (me) (argRIGHT)'
+COUNT=: 0
+countdown MAXCOUNTDOWN
+ssw'... (me): COUNTDOWN=(COUNTDOWN_z_) MAXCOUNTDOWN=(MAXCOUNTDOWN)'
+
+X0=: argLEFT
+Y0=: fwdX0=: fwd(X0)
+dY0=: argRIGHT
+Y1=: Y0+dY0
+
+
+scaled=: 1 - dY0 %~ Y0 -~ ]
+fwdSC=: scaled@:fwd
+
+d1X=: ($X0)$1
+
+if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
+ssw '... (me): X0=(X0) dY0=(dY0) d1X=(d1X)'
+dX=: (g^:_) :: vD_X d1X
+
+ssw '... (me): dX=(dX) d1X=(d1X)'
+fwdX1=: fwd X1=: X0+dX
+if. Y1 approximates_cal_ fwdX1 do.
+  ssw'--- (me): yes… Y1=(Y1) approximates fwdX1=(fwdX1)'
+else.
+  ssw'--- (me): no… Y1=(Y1) <==> fwdX1=(fwdX1) not close enough.'
+  assert. 0
+end.
+register me
+X1 return.
+)
+
+vD_X=: 3 : 'D_X'
+
+g=: 3 : 0
+
+
+
+COUNT=: COUNT+1
+countdown''
+d_X=. y
+d_Y=. (fwd X0+d_X) -(fwd X0)
+d_X=. real amodel * d_X * dY0 % d_Y
+ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y) COUNT=(COUNT)'
+D_X=: d_X return.
 
 )
 
@@ -3261,7 +3465,7 @@ smoutput >TRACEVERBS
 
 '==================== [cal] recordplot.ijs ===================='
 0 :0
-Monday 22 October 2018  23:39:56
+Monday 5 November 2018  23:23:54
 -
 cx real countdown --are HANDY verbs
 1 record d_X
@@ -3270,14 +3474,14 @@ cx real countdown --are HANDY verbs
 cocurrent 'cal'
 requirePlot=: empty
 
-plot=: 3 : 0
+dummyplot=: 3 : 0
 ssw 'plot: $RECORD=($y)'
 smoutput <y
 )
 TRACEPLOT=: 0
 MAXRECORD=: 200
 
-rplot=: 3 : 'plot real RECORD'
+rplot=: 3 : 'dummyplot real RECORD'
 
 record=: 0 ddefine
 me=. 'record'
@@ -3344,6 +3548,13 @@ if. SL={.y do. x=. }.y end.
 x,SL,y
 )
 
+inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
+inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
+inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
+inversion0=: inverCser ::endstop
+inversion1=: inverNRser ::endstop
+inversion2=: inverNRRser ::endstop
+inversion3=: inverCser ::inverNRser ::endstop
 start=: 3 : 0
 
 
@@ -3354,7 +3565,7 @@ load TPATH_UU sl 'uu.ijs'
 uuconnect''
 make_tabengineCore''
 globmake''
-inversion=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRS_ ::endstop
+inversion=: inversion3
 progress _
 0 enlog 0
 

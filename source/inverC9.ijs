@@ -10,7 +10,15 @@ Expand this script to handle a new conjecture about (fwd X)
 coclass z=.'inverC9'
 clear z
 
-inversion=: assert bind 0
+inversion=: inversionC_cal_ f.
 
-NB. The effect of this is ALWAYS to fail with: assertion failure
-NB. and thus pass control to the next "inversion" in the daisychain.
+fit=: assert bind 0
+
+0 :0
+ ┌─────────────────────────────────────────────────┐
+ │>>> THIS IS A DUMMY HEURISTIC (RESERVED) <<<     │
+ │Currently it ALWAYS fails with: assertion failure│
+ │thus passing control to the next (inversion)     │
+ │in the daisychain: inversion_cal_                │
+ └─────────────────────────────────────────────────┘
+)

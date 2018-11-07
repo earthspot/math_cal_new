@@ -53,7 +53,7 @@ inversion=: endstop  NB. placeholder, overridden by: start
 
 endstop=: 4 : 0
   NB. ALWAYS the final verb in the daisychain - signals an error
-ssw '>>> endstop: called with:(LF)   (x) inversion (y)'
+ssw '>>> endstop: called with:(LF)   (x) inversion_cal_ (y)'
 register 'endstop'
 x return.
 )

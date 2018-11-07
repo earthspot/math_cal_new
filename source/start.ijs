@@ -15,6 +15,13 @@ if. SL={.y do. x=. }.y end.
 x,SL,y
 )
 
+inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
+inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
+inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
+inversion0=: inverCser ::endstop    NB. debug inverCser
+inversion1=: inverNRser ::endstop   NB. debug inverNRser
+inversion2=: inverNRRser ::endstop  NB. debug N-R
+inversion3=: inverCser ::inverNRser ::endstop  NB. operational use
 
 NB. ========================================================
 start=: 3 : 0
@@ -28,9 +35,7 @@ load TPATH_UU sl 'uu.ijs'
 uuconnect''  NB. create and use an instance of class 'uu'
 make_tabengineCore''  NB. the core of: tabengine
 globmake'' NB. make global nouns
-inversion=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRS_ ::endstop
-NB. inversion=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::endstop
-NB. inversion=: inversion_inverNRS_ ::endstop NB. <<<<< TO TEST N-R
+inversion=: inversion3  NB. <<========= CHOOSE DAISYCHAIN: inversion
 progress _ NB. init progressbar to idle state
 0 enlog 0  NB. start a new log file
   NB. ENSURE up-to-date currency conversion table ...
@@ -71,7 +76,7 @@ i.0 0
 )
 
 NB. ======================================================
-NB. DO NOT CALL start_cal_ HERE---CAL MUST NOT SELF-START!
+NB. OPERATIONALLY: CAL MUST NOT SELF-START!
 NB. ======================================================
 
 onload 'start 1'

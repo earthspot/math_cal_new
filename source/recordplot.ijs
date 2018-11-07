@@ -2,7 +2,7 @@
 '==================== [cal] recordplot.ijs ===================='
 NB. TABULA inversion -- recordplot
 0 :0
-Monday 22 October 2018  23:39:56
+Monday 5 November 2018  23:23:54
 -
 cx real countdown --are HANDY verbs
 1 record d_X		NB. for plotting trajectory of d_X
@@ -15,7 +15,7 @@ NB. DISABLE PLOT PACKAGE
 NB. =====================================
 requirePlot=: empty
 
-plot=: 3 : 0
+dummyplot=: 3 : 0
 ssw 'plot: $RECORD=($y)'
 smoutput <y
 )
@@ -24,7 +24,7 @@ NB. =====================================
 TRACEPLOT=: 0
 MAXRECORD=: 200
 
-rplot=: 3 : 'plot real RECORD'  NB. from temp 43 no-changes
+rplot=: 3 : 'dummyplot real RECORD'  NB. from temp 43 no-changes
 
 record=: 0 ddefine
 NB. from temp 43 adapted

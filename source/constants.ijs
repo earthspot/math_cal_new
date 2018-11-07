@@ -37,12 +37,14 @@ ALTERED=: '@'		NB. "altered" symbol displayed by ct
 HOLD=: '='		NB. "hold" symbol displayed by ct
 INVERSION=: ''		NB. Heuristics register
 LOGNAME=: 'cal_log.txt'
+LP=: '(' [ RP=: ')'	NB. used with: sw
 MAXINVERT=: 30		NB. limits backfit cycles
 NB=: 'NB.'
 OVERHELDS=: ''		NB. items recognised by: beval
 PAD=: 10			NB. default pad
 PFMT=: 'line'		NB. default plot format
-PLOTNAME=: '/users/ianclark/myplot.pdf'
+PLOT=: 0			NB. default plot control parameter
+PLOTNAME_z_=: jpath'~tempuu/latestplot.pdf'
 SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'
