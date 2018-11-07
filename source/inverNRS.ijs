@@ -20,7 +20,7 @@ record=: empty  NB. DISABLE convergence recording
 NB. record=: record_cal_  NB. ENABLE convergence recording
 
 inversion=: 4 : 0
-me=. 'inversion_',(>coname''),'_'
+qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 	NB. === NEWTON-RAPHSON (N-R) INVERTER ===
 	NB. (Compare this explicit defn with inversionC_cal_)
 argLEFT=. x [argRIGHT=. y
@@ -41,6 +41,7 @@ Y1=: Y0D=: Y0+dY0     NB. the user-overtyped value (reconstituted)
   NB. …reduces problem to finding the zeros of fwdSC
 scaled=: 1 - dY0 %~ Y0 -~ ]
 fwdSC=: scaled@:fwd
+  NB. >>> fwdSC is NOT ACTUALLY USED IN THIS ALGORITHM!!!
   NB. Initialise progressive estimator d_X (==d1X at this point)
 d1X=: ($X0)$1
   NB. …the 1st guess is uncritical BUT GUESS AGAIN IF WE GET ZERO ΔY
@@ -64,7 +65,7 @@ countdown''
 d_X=. y         NB. =(d_X) return.ed from previous pass
 d_Y=. (fwd X0+d_X) -(fwd X0)
 d_X=. real amodel * d_X * dY0 % d_Y  NB. d_X adjusted from (y)
-ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
+ssw '... g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
   1 record d_X  NB. for plotting trajectory of d_X
 d_X return.     NB. Ret'd number becomes (y) at next pass
   NB. …final pass of g^:_ returns: (dX=:)d_X within the calling verb.

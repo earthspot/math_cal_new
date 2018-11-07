@@ -144,3 +144,13 @@ any=: +./		NB. own copy of tabz verb
 and=: *.		NB. own copy of tabz verb
 or=:  +.		NB. own copy of tabz verb
 not=: -.		NB. own copy of tabz verb
+
+  NB. Heritage to support old t-tables
+  NB. (calls to these verbs embedded in t-table script)
+sig=: 3 : 0
+SIG__uun=: y
+)
+
+uunicode=: 3 : 0
+SIC__uun=: y
+)

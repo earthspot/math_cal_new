@@ -21,6 +21,11 @@ AABUILT=: '2018-11-07  01:46:21'
 AABUILT=: '2018-11-07  01:52:49'
 AABUILT=: '2018-11-07  02:59:03'
 AABUILT=: '2018-11-07  03:07:29'
+AABUILT=: '2018-11-07  16:18:20'
+AABUILT=: '2018-11-07  16:22:51'
+AABUILT=: '2018-11-07  16:56:16'
+AABUILT=: '2018-11-07  17:09:26'
+AABUILT=: '2018-11-07  17:13:56'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -224,6 +229,16 @@ any=: +./
 and=: *.
 or=:  +.
 not=: -.
+
+
+
+sig=: 3 : 0
+SIG__uun=: y
+)
+
+uunicode=: 3 : 0
+SIC__uun=: y
+)
 
 '==================== [cal] main.ijs ===================='
 0 :0
@@ -1972,6 +1987,9 @@ invalinfo''
 TTINFO=:''
 SWAPPED=: 0
 file=: expandedPath y
+	smoutput '──────────────────────────────────────────────'
+	smoutput 'open ',quote file
+	smoutput '──────────────────────────────────────────────'
 if. mt file do. 19 message '' return.
 elseif. -.fexist file do.
   if. 0=#y do. ttload '$$' return.
@@ -2272,6 +2290,7 @@ RETURNED return.
 tabengineError=: 3 : 0
 
 smoutput '>>> tabengineError: bad instruction: ', ; y
+smoutput '... errmsg from tabengineCore: ',LF,13!:12''
 )
 
 assnum=: 3 : 0
@@ -2414,7 +2433,7 @@ ct=: ct2
 
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 0 :0
-Tuesday 23 October 2018  18:23:07
+Wednesday 7 November 2018  16:28:08
 -
 INVERSION TEST: use SAMPLE4
 -
@@ -2463,11 +2482,25 @@ cocurrent 'cal'
 
 inversion=: endstop
 
+beginstop=: 4 : 0
+
+ssw '>>> beginstop: called with:(LF)   (x) inversion_cal_ (y)'
+assert. 0
+)
+
 endstop=: 4 : 0
 
 ssw '>>> endstop: called with:(LF)   (x) inversion_cal_ (y)'
 register 'endstop'
 x return.
+)
+
+qAssertionFailure=: 3 : 0
+
+if. 12= errno=. 13!:11'' do. i.0 0 return. end.
+loc=. >coname''
+smoutput sw '+++ qAssertionFailure_(loc)_: errno=(errno) WAS NOT assertion failure!'
+smoutput <13!:12''
 )
 
 register=: 3 : 0
@@ -2476,7 +2509,7 @@ z [INVERSION_cal_=: INVERSION_cal_ , <z=. y
 )
 
 inversionC=: 4 : 0
-me=. 'inversion_',(>coname''),'_'
+qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 
 
@@ -2752,7 +2785,7 @@ ssw=: smoutput&sw
 register=: register_cal_ f.
 record=: empty
 inversion=: 4 : 0
-me=. 'inversion_',(>coname''),'_'
+qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 
 argLEFT=. x [argRIGHT=. y
@@ -2795,7 +2828,7 @@ countdown''
 d_X=. y
 d_Y=. (fwd X0+d_X) -(fwd X0)
 d_X=. real amodel * d_X * dY0 % d_Y
-ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
+ssw '... g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
   1 record d_X
 d_X return.
 
@@ -2803,7 +2836,7 @@ d_X return.
 
 '==================== [cal] inverNRFCR.ijs ===================='
 0 :0
-Wednesday 7 November 2018  01:06:17
+Wednesday 7 November 2018  04:14:07
 )
 
 coclass z=.'inverNRFCR'
@@ -2816,10 +2849,10 @@ register=: register_cal_ f.
 record=: record_cal_
 
 inversion=: 4 : 0
-me=. 'inversion_',(>coname''),'_'
+qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
-erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
+erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 Y1 dX d_X d1X d2X'
 fwd=: fwd_cal_
 amodel=: amodel_cal_
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
@@ -2828,7 +2861,7 @@ ssw'   (argLEFT) (me) (argRIGHT)'
 X0=: argLEFT
 Y0=: fwdX0=: fwd(X0)
 dY0=: argRIGHT
-Y1=: Y0D=: Y0+dY0
+Y1=: Y0+dY0
 
 
 scaled=: 1 - dY0 %~ Y0 -~ ]
@@ -2843,7 +2876,8 @@ dX=: g^:MAXLOOP d1X
 
 ssw '--- (me): dX=(dX) d1X=(d1X)'
   2 record''
-X1=: X0+dX
+fwdX1=: fwd X1=: X0+dX
+assert. Y1 approximates_cal_ fwdX1
 register me
 X1 return.
 )
@@ -2855,7 +2889,7 @@ g=: 3 : 0
 d_X=. y
 d_Y=. (fwd X0+d_X) -(fwd X0)
 d_X=. real amodel * d_X * dY0 % d_Y
-ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
+ssw '... g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
   1 record d_X
 d_X return.
 
@@ -2863,7 +2897,7 @@ d_X return.
 
 '==================== [cal] inverNRFC.ijs ===================='
 0 :0
-Wednesday 7 November 2018  00:59:47
+Wednesday 7 November 2018  16:24:29
 )
 
 coclass z=.'inverNRFC'
@@ -2875,7 +2909,7 @@ ssw=: smoutput&sw
 register=: register_cal_ f.
 
 inversion=: 4 : 0
-me=. 'inversion_',(>coname''),'_'
+qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 dX d_X d1X d2X'
@@ -2913,30 +2947,33 @@ g=: 3 : 0
 d_X=. y
 d_Y=. (fwd X0+d_X) -(fwd X0)
 d_X=. real amodel * d_X * dY0 % d_Y
-ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
+ssw '... g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
 d_X return.
 
 )
 
 '==================== [cal] inverNR_C.ijs ===================='
 0 :0
-Wednesday 7 November 2018  01:44:16
+Wednesday 7 November 2018  16:36:59
 )
 
 coclass z=.'inverNRUC'
 clear z
 
-MAXCOUNTDOWN=: 1000
+TIMEOUT=: 2
 
+timeout=: 3 : 0
 
-
+if. 0<#y do. TIME=: y+ 6!:1'' return. end.
+assert. TIME > 6!:1''
+)
 
 fwd=: empty
 ssw=: smoutput&sw
 register=: register_cal_ f.
 
 inversion=: 4 : 0
-me=. 'inversion_',(>coname''),'_'
+qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 dX d_X d1X d2X'
@@ -2944,9 +2981,7 @@ fwd=: fwd_cal_
 amodel=: amodel_cal_
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
-COUNT=: 0
-countdown MAXCOUNTDOWN
-ssw'... (me): COUNTDOWN=(COUNTDOWN_z_) MAXCOUNTDOWN=(MAXCOUNTDOWN)'
+timeout TIMEOUT [COUNT=: 0
 
 X0=: argLEFT
 Y0=: fwdX0=: fwd(X0)
@@ -2961,7 +2996,7 @@ d1X=: ($X0)$1
 
 if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
 ssw '... (me): X0=(X0) dY0=(dY0) d1X=(d1X)'
-dX=: (g^:_) :: vD_X d1X
+dX=: (g^:_) :: vd_X d1X
 
 ssw '... (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd X1=: X0+dX
@@ -2975,19 +3010,18 @@ register me
 X1 return.
 )
 
-vD_X=: 3 : 'D_X'
+vd_X=: 3 : 'd_X'
 
 g=: 3 : 0
 
 
 
-COUNT=: COUNT+1
-countdown''
-d_X=. y
+timeout'' [COUNT=: COUNT+1
+d_X=: y
 d_Y=. (fwd X0+d_X) -(fwd X0)
-d_X=. real amodel * d_X * dY0 % d_Y
-ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y) COUNT=(COUNT)'
-D_X=: d_X return.
+d_X=: real amodel * d_X * dY0 % d_Y
+ssw '... g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y) COUNT=(COUNT)'
+d_X return.
 
 )
 
@@ -3551,10 +3585,10 @@ x,SL,y
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
 inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
-inversion0=: inverCser ::endstop
-inversion1=: inverNRser ::endstop
-inversion2=: inverNRRser ::endstop
-inversion3=: inverCser ::inverNRser ::endstop
+inversion0=: beginstop ::inverCser ::endstop
+inversion1=: beginstop ::inverNRser ::endstop
+inversion2=: beginstop ::inverNRRser ::endstop
+inversion3=: beginstop ::inverCser ::inverNRser ::endstop
 start=: 3 : 0
 
 

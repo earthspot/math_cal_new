@@ -2,11 +2,10 @@
 '==================== [cal] inverNRFC.ijs ===================='
 NB. TABULA inversion -- inverNRFC - N-R with fixed cycles: g^:MAXLOOP
 0 :0
-Wednesday 7 November 2018  00:59:47
+Wednesday 7 November 2018  17:18:23
 )
 
 coclass z=.'inverNRFC'
-NB. coinsert 'inverNRS'
 clear z
 
 MAXLOOP=: 20  NB. max number of iterations
@@ -15,7 +14,7 @@ ssw=: smoutput&sw  NB. reassigned below [?] inside: inversion
 register=: register_cal_ f.  NB. fetch once on loading
 
 inversion=: 4 : 0
-me=. 'inversion_',(>coname''),'_'
+qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 	NB. === NEWTON-RAPHSON (N-R) INVERTER ===
 argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 dX d_X d1X d2X'
@@ -33,6 +32,7 @@ Y1=: Y0+dY0     NB. the user-overtyped value (reconstituted)
   NB. …reduces problem to finding the zeros of fwdSC
 scaled=: 1 - dY0 %~ Y0 -~ ]
 fwdSC=: scaled@:fwd
+  NB. >>> fwdSC is NOT ACTUALLY USED IN THIS ALGORITHM!!!
   NB. Initialise progressive estimator d_X (==d1X at this point)
 d1X=: ($X0)$1
   NB. …the 1st guess is uncritical BUT GUESS AGAIN IF WE GET ZERO ΔY
@@ -54,7 +54,7 @@ g=: 3 : 0
 d_X=. y         NB. =(d_X) return.ed from previous pass
 d_Y=. (fwd X0+d_X) -(fwd X0)
 d_X=. real amodel * d_X * dY0 % d_Y  NB. d_X adjusted from (y)
-ssw '+++ g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
+ssw '... g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
 d_X return.     NB. Ret'd number becomes (y) at next pass
   NB. …final pass of g^:MAXLOOP returns: (dX=:)d_X within the calling verb.
 )

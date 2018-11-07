@@ -2,7 +2,7 @@
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 NB. TABULA inversion controller via daisychain technique
 0 :0
-Tuesday 23 October 2018  18:23:07
+Wednesday 7 November 2018  16:28:08
 -
 INVERSION TEST: use SAMPLE4
 -
@@ -24,13 +24,14 @@ NOTATION:
 ?X		notional abscissa in the abstract algorithm
 ?Y		notional ordinate in the abstract algorithm
 !X0		==argLEFT; X initial value, from invocation
-?Y0		Y initial value ==fwd(X0) ==fwdX0
+?Y0		Y initial value = fwdX0=: fwd(X0)
 ]X1		X final value returned by: inversion
-?Y1		Y final value ==fwd(X1)
+?Y1		Y final value = fwdX1=: fwd(X1)
 !dY		(non-iterative) INCREMENT of manual alt'n to Y
 !dY0		==argRIGHT; the INCREMENT of manual alt'n to Y
-		--NOT the overtyped Y itself, == Y0D !!!
+		--(NOT the overtyped Y itself, == Y0D !!!)
 !Y0D		==Y0+argRIGHT ==Y0+dY0
+		--(sometimes counfounded with Y1)
 ]dX		limit of d1X, d2X, …, d_X, …, dX (as retd by: g)
 		--the change to be made to X0 to bring it to X1
 ]d_X		iterated estimate of ΔX (d_X--> dX as n--> _)
@@ -51,11 +52,25 @@ cocurrent 'cal'
 
 inversion=: endstop  NB. placeholder, overridden by: start
 
+beginstop=: 4 : 0
+  NB. ALWAYS the first verb in the daisychain
+ssw '>>> beginstop: called with:(LF)   (x) inversion_cal_ (y)'
+assert. 0  NB. kick-off the daisychain with "bland" error
+)
+
 endstop=: 4 : 0
-  NB. ALWAYS the final verb in the daisychain - signals an error
+  NB. ALWAYS the final verb in the daisychain
 ssw '>>> endstop: called with:(LF)   (x) inversion_cal_ (y)'
-register 'endstop'
-x return.
+register 'endstop'  NB. assumes successful completion
+x return.  NB. forces rejection by caller (usually: beval)
+)
+
+qAssertionFailure=: 3 : 0
+  NB. report if last error WAS NOT assertion failure (errno 12)
+if. 12= errno=. 13!:11'' do. i.0 0 return. end.
+loc=. >coname''
+smoutput sw '+++ qAssertionFailure_(loc)_: errno=(errno) WAS NOT assertion failure!'
+smoutput <13!:12''
 )
 
 register=: 3 : 0
@@ -64,7 +79,7 @@ z [INVERSION_cal_=: INVERSION_cal_ , <z=. y
 )
 
 inversionC=: 4 : 0
-me=. 'inversion_',(>coname''),'_'
+qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
   NB. === CURVE-FITTING INVERTER SADDLE for inverC* ===
   NB. serves locales: 'inverC*' (* = 1..9)
   NB. needs special case of verb: fit

@@ -1826,6 +1826,9 @@ invalinfo''     NB. existing  info display is invalid
 TTINFO=:''      NB. create empty
 SWAPPED=: 0     NB. fmla order (overridden by t-table script)
 file=: expandedPath y    NB. y is generalised file descriptor
+	smoutput '──────────────────────────────────────────────'
+	smoutput 'open ',quote file
+	smoutput '──────────────────────────────────────────────'
 if. mt file do. 19 message '' return.
 elseif. -.fexist file do.
   if. 0=#y do. ttload '$$' return.  NB. load factory SAMPLE
@@ -2143,6 +2146,7 @@ RETURNED return.
 tabengineError=: 3 : 0
   NB. analyse reason for tabengineCore:: error
 smoutput '>>> tabengineError: bad instruction: ', ; y
+smoutput '... errmsg from tabengineCore: ',LF,13!:12''
 )
 
 assnum=: 3 : 0
