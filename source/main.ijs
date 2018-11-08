@@ -1470,7 +1470,7 @@ OVERHELDS=: ''  NB. invalidate the cache
 )
 
 setvunits=: 4 : 0
-  NB. force (string) x as the value[[+units]+name] of item y
+  NB. force (string) x as the value[[+units]+name] of item {y}
   NB. if x contains QT then split at QT: (zz;name)
 if. -.validitem y do. 10 message y return. end.
 name=. dltb QT takeafter x
@@ -1480,33 +1480,12 @@ units=. SP takeafter zz
 nomu=. >y{UNITN  NB. existing nominal units
 sllog 'setvunits y zz valustr valu units name'
 if. (0<#units) and (-.isFreeItem y) and (units incompat nomu) do.
-  2 message z ; units
+  2 message units ; nomu
   return. 
 end.
 if. 0<#units do. y forceunits units end.
 if. 0<#name do. y relabel name end.
 y forcevalue valu
-i.0 0
-)
-
-0 :0
-setvunits=: 4 : 0
-  NB. force (string) x as the value[[+units]+name] of item y
-  NB. if x contains QT then split at QT: (zz;name)
-if. -.validitem y do. 10 message y return. end.
-name=. dltb QT takeafter x
-zz=. dltb QT taketo x
-valu=. ".valustr=. SP taketo zz
-unit=. SP takeafter zz
-nomu=. >y{UNITN  NB. existing nominal units
-sllog 'setvunits y zz valustr valu unit name'
-if. (0<#unit) and (-.isFreeItem y) and (unit incompat nomu) do.
-  2 message z ; unit
-  return. 
-end.
-if. 0<#name do. tabengine 'name' ; y ; name end.
-tabengine 'valu' ; y ; valu
-if. 0<#unit do. tabengine 'unit' ; y ; unit end.
 i.0 0
 )
 
@@ -2123,6 +2102,7 @@ tabengine=: 3 : 0 "1
   NB. wrapper for tabengineCore
   NB. computes RETURNED LASTINSTR INSTR INST
   NB. avoiding damaging drop-thru result from tabengineCore
+MESSAGE=: '' [MESSAGE_ID=: _1
 progress _  NB. init progress-bar used by verb: inversion
 if. isBoxed y do. y=. nb y end.
 NB. verb: tabengineCore is invalid/absent until verb: start is run.

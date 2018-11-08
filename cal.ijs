@@ -26,6 +26,9 @@ AABUILT=: '2018-11-07  16:22:51'
 AABUILT=: '2018-11-07  16:56:16'
 AABUILT=: '2018-11-07  17:09:26'
 AABUILT=: '2018-11-07  17:13:56'
+AABUILT=: '2018-11-07  22:17:11'
+AABUILT=: '2018-11-07  23:59:03'
+AABUILT=: '2018-11-08  00:32:09'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -1647,33 +1650,12 @@ units=. SP takeafter zz
 nomu=. >y{UNITN
 sllog 'setvunits y zz valustr valu units name'
 if. (0<#units) and (-.isFreeItem y) and (units incompat nomu) do.
-  2 message z ; units
+  2 message units ; nomu
   return. 
 end.
 if. 0<#units do. y forceunits units end.
 if. 0<#name do. y relabel name end.
 y forcevalue valu
-i.0 0
-)
-
-0 :0
-setvunits=: 4 : 0
-
-
-if. -.validitem y do. 10 message y return. end.
-name=. dltb QT takeafter x
-zz=. dltb QT taketo x
-valu=. ".valustr=. SP taketo zz
-unit=. SP takeafter zz
-nomu=. >y{UNITN
-sllog 'setvunits y zz valustr valu unit name'
-if. (0<#unit) and (-.isFreeItem y) and (unit incompat nomu) do.
-  2 message z ; unit
-  return. 
-end.
-if. 0<#name do. tabengine 'name' ; y ; name end.
-tabengine 'valu' ; y ; valu
-if. 0<#unit do. tabengine 'unit' ; y ; unit end.
 i.0 0
 )
 
@@ -2271,6 +2253,7 @@ tabengine=: 3 : 0 "1
 
 
 
+MESSAGE=: '' [MESSAGE_ID=: _1
 progress _
 if. isBoxed y do. y=. nb y end.
 select. INST=: 4{. INSTR=: y
@@ -2455,13 +2438,14 @@ NOTATION:
 ?X		notional abscissa in the abstract algorithm
 ?Y		notional ordinate in the abstract algorithm
 !X0		==argLEFT; X initial value, from invocation
-?Y0		Y initial value ==fwd(X0) ==fwdX0
+?Y0		Y initial value = fwdX0=: fwd(X0)
 ]X1		X final value returned by: inversion
-?Y1		Y final value ==fwd(X1)
+?Y1		Y final value = fwdX1=: fwd(X1)
 !dY		(non-iterative) INCREMENT of manual alt'n to Y
 !dY0		==argRIGHT; the INCREMENT of manual alt'n to Y
-		--NOT the overtyped Y itself, == Y0D !!!
+		--(NOT the overtyped Y itself, == Y0D !!!)
 !Y0D		==Y0+argRIGHT ==Y0+dY0
+		--(sometimes counfounded with Y1)
 ]dX		limit of d1X, d2X, …, d_X, …, dX (as retd by: g)
 		--the change to be made to X0 to bring it to X1
 ]d_X		iterated estimate of ΔX (d_X--> dX as n--> _)
@@ -2806,6 +2790,7 @@ Y1=: Y0D=: Y0+dY0
 scaled=: 1 - dY0 %~ Y0 -~ ]
 fwdSC=: scaled@:fwd
 
+
 d1X=: ($X0)$1
 
 if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
@@ -2867,6 +2852,7 @@ Y1=: Y0+dY0
 scaled=: 1 - dY0 %~ Y0 -~ ]
 fwdSC=: scaled@:fwd
 
+
 d1X=: ($X0)$1
 
 if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
@@ -2897,7 +2883,7 @@ d_X return.
 
 '==================== [cal] inverNRFC.ijs ===================='
 0 :0
-Wednesday 7 November 2018  16:24:29
+Wednesday 7 November 2018  17:18:23
 )
 
 coclass z=.'inverNRFC'
@@ -2926,6 +2912,7 @@ Y1=: Y0+dY0
 
 scaled=: 1 - dY0 %~ Y0 -~ ]
 fwdSC=: scaled@:fwd
+
 
 d1X=: ($X0)$1
 
@@ -2991,6 +2978,7 @@ Y1=: Y0+dY0
 
 scaled=: 1 - dY0 %~ Y0 -~ ]
 fwdSC=: scaled@:fwd
+
 
 d1X=: ($X0)$1
 
@@ -3235,6 +3223,7 @@ save void ttsave ''                \save current t-table
 savo yy   ttsavo yy                \save as yy over existing
 savs void ttsavs ''                \save t-table COPY as SAMPLE
 savt void ttsavt ''                \save t-table from caption
+sign r    r setvalue~ *vr          \signum of item
 ssci n    uuengine INSTR           \set scientific notation threshold
 ssic n    uuengine INSTR           \set SI conformance level
 ssig n    uuengine INSTR           \set significant figures

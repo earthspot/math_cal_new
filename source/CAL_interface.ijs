@@ -214,6 +214,7 @@ save void ttsave ''                \save current t-table
 savo yy   ttsavo yy                \save as yy over existing
 savs void ttsavs ''                \save t-table COPY as SAMPLE
 savt void ttsavt ''                \save t-table from caption
+sign r    r setvalue~ *vr          \signum of item
 ssci n    uuengine INSTR           \set scientific notation threshold
 ssic n    uuengine INSTR           \set SI conformance level
 ssig n    uuengine INSTR           \set significant figures
