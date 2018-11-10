@@ -206,8 +206,8 @@ if. (0~:x)*.(hasf y) do.
     NB. >>>>> NEED TO CREATE TEMP FN: fwd (-as seq of exe-fns working on r only)
   r1=. r inversion deltaz    NB. updated values for ancestors
 end.
-  smoutput '--- beval: heuristics used: '
-  smoutput INVERSION  NB. initted to '' in: recal
+  smoutput '--- beval: heuristics used: ',,>INVERSION
+  NB. ...INVERSION initted to '' in: recal
 sllog 'beval a r r1'
 	popme'beval'
 r1 a }vsiqn

@@ -54,6 +54,7 @@ inversion=: endstop  NB. placeholder, overridden by: start
 
 beginstop=: 4 : 0
   NB. ALWAYS the first verb in the daisychain
+ssw date''
 ssw '>>> beginstop: called with:(LF)   (x) inversion_cal_ (y)'
 assert. 0  NB. kick-off the daisychain with "bland" error
 )

@@ -29,6 +29,15 @@ AABUILT=: '2018-11-07  17:13:56'
 AABUILT=: '2018-11-07  22:17:11'
 AABUILT=: '2018-11-07  23:59:03'
 AABUILT=: '2018-11-08  00:32:09'
+AABUILT=: '2018-11-09  17:18:31'
+AABUILT=: '2018-11-09  18:04:22'
+AABUILT=: '2018-11-09  18:05:28'
+AABUILT=: '2018-11-09  18:11:27'
+AABUILT=: '2018-11-09  18:18:20'
+AABUILT=: '2018-11-09  18:39:34'
+AABUILT=: '2018-11-09  19:06:07'
+AABUILT=: '2018-11-09  19:11:31'
+AABUILT=: '2018-11-10  00:06:58'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -136,6 +145,12 @@ sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs
 thRootOf=: ] ^ [: % [
 to=: [ + [: i. [: >: -~
+dyadic=: [: :
+monadic=: : [:
+double=: twice=:	+: monadic
+halve=:		-: monadic
+sq=: square=:	*: monadic
+sqr=: sqrt=:	%: monadic
 
 
 
@@ -446,8 +461,8 @@ if. (0~:x)*.(hasf y) do.
 
   r1=. r inversion deltaz
 end.
-  smoutput '--- beval: heuristics used: '
-  smoutput INVERSION
+  smoutput '--- beval: heuristics used: ',,>INVERSION
+
 sllog 'beval a r r1'
 	popme'beval'
 r1 a }vsiqn
@@ -2468,6 +2483,7 @@ inversion=: endstop
 
 beginstop=: 4 : 0
 
+ssw date''
 ssw '>>> beginstop: called with:(LF)   (x) inversion_cal_ (y)'
 assert. 0
 )
@@ -2941,13 +2957,13 @@ d_X return.
 
 '==================== [cal] inverNR_C.ijs ===================='
 0 :0
-Wednesday 7 November 2018  16:36:59
+Friday 9 November 2018  17:55:42
 )
 
 coclass z=.'inverNRUC'
 clear z
 
-TIMEOUT=: 2
+TIMEOUT=: 5
 
 timeout=: 3 : 0
 
@@ -2963,7 +2979,7 @@ inversion=: 4 : 0
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
-erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 dX d_X d1X d2X'
+erase 'X Y X0 Y0 fwdX0 X1 Y0D dY dY0 dX d_X d1X d2X'
 fwd=: fwd_cal_
 amodel=: amodel_cal_
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
@@ -2973,25 +2989,20 @@ timeout TIMEOUT [COUNT=: 0
 X0=: argLEFT
 Y0=: fwdX0=: fwd(X0)
 dY0=: argRIGHT
-Y1=: Y0+dY0
-
-
-scaled=: 1 - dY0 %~ Y0 -~ ]
-fwdSC=: scaled@:fwd
-
+Y0D=: Y0+dY0
 
 d1X=: ($X0)$1
 
 if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
-ssw '... (me): X0=(X0) dY0=(dY0) d1X=(d1X)'
+ssw '... argLEFT=X0=(X0) argRIGHT=dY0=(dY0) start g with d1X=(d1X)'
 dX=: (g^:_) :: vd_X d1X
 
 ssw '... (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd X1=: X0+dX
-if. Y1 approximates_cal_ fwdX1 do.
-  ssw'--- (me): yes… Y1=(Y1) approximates fwdX1=(fwdX1)'
+if. Y0D approximates_cal_ fwdX1 do.
+  ssw'--- yes… Y0D=(Y0D) approximates fwdX1=(fwdX1)'
 else.
-  ssw'--- (me): no… Y1=(Y1) <==> fwdX1=(fwdX1) not close enough.'
+  ssw'--- no… Y0D=(Y0D) <==> fwdX1=(fwdX1) not close enough.'
   assert. 0
 end.
 register me
@@ -3003,12 +3014,102 @@ vd_X=: 3 : 'd_X'
 g=: 3 : 0
 
 
+timeout'' [COUNT=: COUNT+1
+d_X=: y
+d_Y=. (fwd X0+d_X) - fwdX0
+d_X=: real amodel * d_X * dY0 % d_Y
+ssw '... g: y=(y) d_X=(d_X) d_Y=(d_Y) COUNT=(COUNT)'
+	wd'msgs'
+d_X return.
+
+)
+
+'==================== [cal] inverTAY.ijs ===================='
+0 :0
+Friday 9 November 2018  18:10:17
+-
+based on inverNRUC …
+Friday 9 November 2018  17:55:42
+)
+
+coclass z=.'inverTAY'
+clear z
+
+TIMEOUT=: 5
+
+timeout=: 3 : 0
+
+if. 0<#y do. TIME=: y+ 6!:1'' return. end.
+assert. TIME > 6!:1''
+)
+
+fwd=: empty
+ssw=: smoutput&sw
+register=: register_cal_ f.
+
+inversion=: 4 : 0
+qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
+
+argLEFT=. x [argRIGHT=. y
+erase 'X Y X0 Y0 fwdX0 X1 Y0D dY dY0 dX d_X d1X d2X'
+fwd=: fwd_cal_
+amodel=: amodel_cal_
+ssw'+++ (me): amodel=(amodel); TEST CALL…'
+ssw'   (argLEFT) (me) (argRIGHT)'
+timeout TIMEOUT [COUNT=: 0
+
+X0=: argLEFT
+Y0=: fwdX0=: fwd(X0)
+dY0=: argRIGHT
+Y0D=: Y0+dY0
+
+d1X=: ($X0)$1
+
+if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
+D1fwd=: 0.00000001&(fwd D:1) X0
+G=: % D1fwd X0
+ssw '... argLEFT=X0=(X0) argRIGHT=dY0=(dY0) G=(G); start g with d1X=(d1X)'
+dX=: (g^:_) :: vd_X d1X
+
+ssw '... (me): dX=(dX) d1X=(d1X)'
+fwdX1=: fwd(X1=: X0+dX)
+if. Y0D approximates_cal_ fwdX1 do.
+  ssw'--- yes… Y0D=(Y0D) approximates fwdX1=(fwdX1)'
+else.
+  ssw'--- no… Y0D=(Y0D) <==> fwdX1=(fwdX1) not close enough.'
+  assert. 0
+end.
+register me
+X1 return.
+)
+
+vd_X=: 3 : 'd_X'
+
+g=: 3 : 0
+
+
+timeout'' [COUNT=: COUNT+1
+
+
+d_X=: real amodel * G * dY0
+
+
+
+ssw '... g: y=(y) d_X=(d_X) d_Y=(d_Y) COUNT=(COUNT)'
+	wd'msgs'
+d_X return.
+
+)
+
+0 :0
+g=: 3 : 0
+
 
 timeout'' [COUNT=: COUNT+1
 d_X=: y
-d_Y=. (fwd X0+d_X) -(fwd X0)
+d_Y=. (fwd X0+d_X) - fwdX0
 d_X=: real amodel * d_X * dY0 % d_Y
-ssw '... g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y) COUNT=(COUNT)'
+ssw '... g: y=(y) d_X=(d_X) d_Y=(d_Y) COUNT=(COUNT)'
 d_X return.
 
 )
@@ -3578,6 +3679,12 @@ inversion0=: beginstop ::inverCser ::endstop
 inversion1=: beginstop ::inverNRser ::endstop
 inversion2=: beginstop ::inverNRRser ::endstop
 inversion3=: beginstop ::inverCser ::inverNRser ::endstop
+
+inversionA=: beginstop ::inversion_inverNRUC_ ::endstop
+inversionB=: beginstop ::inversion_inverTAY_ ::endstop
+
+inversion=: inversion3
+
 start=: 3 : 0
 
 
@@ -3588,7 +3695,6 @@ load TPATH_UU sl 'uu.ijs'
 uuconnect''
 make_tabengineCore''
 globmake''
-inversion=: inversion3
 progress _
 0 enlog 0
 

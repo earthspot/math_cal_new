@@ -23,6 +23,12 @@ inversion1=: beginstop ::inverNRser ::endstop   NB. debug inverNRser
 inversion2=: beginstop ::inverNRRser ::endstop  NB. debug N-R
 inversion3=: beginstop ::inverCser ::inverNRser ::endstop  NB. operational use
 
+inversionA=: beginstop ::inversion_inverNRUC_ ::endstop  NB. TAY expt
+inversionB=: beginstop ::inversion_inverTAY_ ::endstop  NB. TAY expt
+
+inversion=: inversion3  NB. the option that works
+	NB. use temp 41 to switch inversion to inversionA/B
+
 NB. ========================================================
 start=: 3 : 0
   NB. start the CAL-engine
@@ -35,7 +41,7 @@ load TPATH_UU sl 'uu.ijs'
 uuconnect''  NB. create and use an instance of class 'uu'
 make_tabengineCore''  NB. the core of: tabengine
 globmake'' NB. make global nouns
-inversion=: inversion3  NB. <<==== CHOOSE DAISYCHAIN: inversion
+NB. inversion=: inversion3  NB. <<==== CHOOSE DAISYCHAIN: inversion
 progress _ NB. init progressbar to idle state
 0 enlog 0  NB. start a new log file
   NB. ENSURE up-to-date currency conversion table ...

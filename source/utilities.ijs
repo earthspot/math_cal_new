@@ -42,6 +42,14 @@ tbx=: ijs	  NB. tbx: ext for t-tables (if it ever changes)
 thRootOf=: ] ^ [: % [  NB. x thRootOf y == y^1%x
 to=: [ + [: i. [: >: -~
 
+NB. the 'op-colon' monadics
+dyadic=: [: :
+monadic=: : [:
+double=: twice=:	+: monadic
+halve=:		-: monadic
+sq=: square=:	*: monadic
+sqr=: sqrt=:	%: monadic
+
 	NB. Generate integer-suffixed id
 	NB. eg pq012 from: 'pq000' aann 12
 	NB. 0 can be replaced by 0-9
@@ -130,7 +138,7 @@ listitems=: SP ddefine
 force0=: 0 , }.  NB. force leading 0 in any v-cache
 
   NB. mjust: "middle-SP justification" (c/f ljust, rjust)
-  NB. NOTE: intermediate verbs are transient (=. not =:)
+  NB. NOTE: intermediate verbs are transient (=.) not (=:)
   NB. …they are only provided for explication and debugging.
 NB. mjustBordered=: (13 : 'dtb (y i."1 SP) |. y,~(SP$~#y)')"1
 mjustBordered=. ([: dtb (' ' i."1~ ]) |. ] ,~ ' ' $~ #)"1
