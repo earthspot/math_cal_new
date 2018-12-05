@@ -38,6 +38,16 @@ AABUILT=: '2018-11-09  18:39:34'
 AABUILT=: '2018-11-09  19:06:07'
 AABUILT=: '2018-11-09  19:11:31'
 AABUILT=: '2018-11-10  00:06:58'
+AABUILT=: '2018-11-19  01:04:14'
+AABUILT=: '2018-11-22  04:18:56'
+AABUILT=: '2018-11-30  08:23:33'
+AABUILT=: '2018-12-05  03:42:19'
+AABUILT=: '2018-12-05  04:14:19'
+AABUILT=: '2018-12-05  04:20:23'
+AABUILT=: '2018-12-05  04:31:03'
+AABUILT=: '2018-12-05  04:47:13'
+AABUILT=: '2018-12-05  05:35:34'
+AABUILT=: '2018-12-05  05:37:26'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -1998,7 +2008,7 @@ load file
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
 
 empty 't' setcols TT
-TTn=: debc TT hcols tn
+TTn=: ucp"1 debc TT hcols tn
 TTu=. debc TT hcols tu
 TTs=. debc TT hcols ts
 TD=: 0,". debc TT cols td
@@ -2105,23 +2115,23 @@ ttsav=: 1&$: : (4 : 0)
 
 
 if. 0<#y do. file=: expandedPath y end.
-
-
 TTs=. ('ts',>}.UNITS)
 TTu=. ('tu',>}.UNITN)
 
 TT=:  TTn sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
 empty 't' setcols TT
-z=. crr'CAPT'
-z=. z,LF2,'TT=: cmx 0 ',CO,' 0',(,LF,.TT),LF,')'
-z=. z,LF2,(cnn'vquan'),LF2,(cnn'vfact'),LF
+SAVED=: date''
+]z=. (crr'SAVED'),LF,crr'CAPT'
+z=. z,LF2,'TTIMAGE=: 0 define',(,LF,.ct''),LF,')'
+z=. z,LF2,'TT=: cmx 0 define',(,LF,.TT),LF,')'
+z=. z,LF2,(crr'vquan'),LF2,(crr'vfact'),LF
 if. any vhidd do.  z=. z,LF,(crr 'vhidd'),LF end.
 if. any vmodl~:1 do.  z=. z,LF,(crr 'vmodl'),LF end.
 for_no. (<'exe') -.~ listnameswithprefix 'exe' do.
 z=. z,LF,(crr >no)
 end.
 if. 0<$TTINFO do.
-  z=. z,LF2,'TTINFO=: 0 ',CO,' 0',LF,TTINFO,LF,')'
+  z=. z,LF2,'TTINFO=: 0 define',LF,(dtlf TTINFO),LF,')'
 end.
 if. file-: UNDEF do. 29 message'' return. end.
 retco=. archive filename file
@@ -2973,7 +2983,9 @@ assert. TIME > 6!:1''
 
 fwd=: empty
 ssw=: smoutput&sw
+
 register=: register_cal_ f.
+approximates=: approximates_cal_
 
 inversion=: 4 : 0
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
@@ -2994,9 +3006,13 @@ Y0D=: Y0+dY0
 d1X=: ($X0)$1
 
 if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
+G=: H=: __
 ssw '... argLEFT=X0=(X0) argRIGHT=dY0=(dY0) start g with d1X=(d1X)'
 dX=: (g^:_) :: vd_X d1X
 
+ssw '=====  ======= ======= =======  ====='
+ssw 'COUNT  y       d_X     d_Y      G  H'
+ssw '=====  ======= ======= =======  ====='
 ssw '... (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd X1=: X0+dX
 if. Y0D approximates_cal_ fwdX1 do.
@@ -3018,24 +3034,26 @@ timeout'' [COUNT=: COUNT+1
 d_X=: y
 d_Y=. (fwd X0+d_X) - fwdX0
 d_X=: real amodel * d_X * dY0 % d_Y
-ssw '... g: y=(y) d_X=(d_X) d_Y=(d_Y) COUNT=(COUNT)'
-	wd'msgs'
+wd'msgs' [ssw 'g[(COUNT)] (y) (d_X) (d_Y) (G)'
 d_X return.
 
 )
 
 '==================== [cal] inverTAY.ijs ===================='
 0 :0
-Friday 9 November 2018  18:10:17
+Wednesday 5 December 2018  02:41:27
 -
 based on inverNRUC …
 Friday 9 November 2018  17:55:42
+-
+temp 41
 )
 
 coclass z=.'inverTAY'
 clear z
 
 TIMEOUT=: 5
+DELTA=: 0.00000001
 
 timeout=: 3 : 0
 
@@ -3066,11 +3084,17 @@ Y0D=: Y0+dY0
 d1X=: ($X0)$1
 
 if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end.
-D1fwd=: 0.00000001&(fwd D:1) X0
+D1fwd=: DELTA&(fwd D:1)
+D2fwd=: DELTA&(fwd D:2)
 G=: % D1fwd X0
+H=: % D2fwd X0
+  smoutput H1 ; H2
 ssw '... argLEFT=X0=(X0) argRIGHT=dY0=(dY0) G=(G); start g with d1X=(d1X)'
 dX=: (g^:_) :: vd_X d1X
 
+ssw '=====  ======= ======= =======  ======= ======='
+ssw 'COUNT  y       d_X     d_Y      G       H'
+ssw '=====  ======= ======= =======  ======= ======='
 ssw '... (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd(X1=: X0+dX)
 if. Y0D approximates_cal_ fwdX1 do.
@@ -3085,6 +3109,26 @@ X1 return.
 
 vd_X=: 3 : 'd_X'
 
+avg=: +/ % #
+
+g=: 3 : 0
+
+
+timeout'' [COUNT=: COUNT+1
+d_X=: y
+d_Y=. (fwd X0+d_X) - fwdX0
+d_Xsemi=. d_X%2
+d_Ysemi=. (fwd X0+d_Xsemi) - fwdX0
+Ga=: d_X % d_Y
+Gsemi=: d_Xsemi % d_Ysemi
+Gadjusted=: Gsemi
+d_X=: real amodel* (Gadjusted * dY0)
+wd'msgs' [ssw 'g[(COUNT)] (y) (d_X) (d_Y); (G) (Ga) (Gsemi)'
+d_X return.
+
+)
+
+0 :0
 g=: 3 : 0
 
 
@@ -3095,8 +3139,7 @@ d_X=: real amodel * G * dY0
 
 
 
-ssw '... g: y=(y) d_X=(d_X) d_Y=(d_Y) COUNT=(COUNT)'
-	wd'msgs'
+wd'msgs' [ssw 'g[(COUNT)] (y) (d_X) (d_Y) (G) (H)'
 d_X return.
 
 )
@@ -3655,6 +3698,134 @@ if. all b do. 1 return. end.
 j=. b i: 0
 j< 0.2 * #b
 )
+
+0 :0
+Wednesday 5 December 2018  02:55:13
+-
+ttb_pane_select -called when a line clicked
+Tool: opent - ⌘click opens ttbrowse
+ttb_bnLoad_button -"illegal" calls into TABBY
+  really needs to send a message which can be ignored.
+  -or maybe a try/catch ??
+-
+onload_z_=: do
+-
+wd 'psel ttb; qform;'
+)
+
+coclass 'ttb'
+clear 'ttb'
+
+UNSET=: '<UNSET>'
+path=: UNSET
+POS=: 322 23 1060 400
+
+'nix shf cmd opt'=: 0 1 2 4
+
+TTBFORM=: 0 : 0
+pc ttb;pn ttbrowse;
+bin v;
+bin h;
+cc textbuf editm;
+cc infobuf editm;
+cc pane listbox;
+bin z;
+bin h;
+bin s;		rem left spacer;
+  cc bnDele button; cn "Delete";
+  cc bnOpen button; cn "Open";
+  cc bnLoad button; cn "Load";
+bin s;		rem right spacer;
+bin z;
+cc sbar static; cn "status";
+bin z;
+set textbuf font fixfont;
+pshow;
+)
+directory=: 3 : 0
+
+
+1!:0 jpath TPATH_TTABLES_cal_,'*.ijs'
+)
+
+content=: 3 : 0
+
+x2f >{."1 directory''
+)
+
+deTAB=: 3 : 0
+
+dtb y charsub~ TAB,SP
+)
+
+window_close=: 3 : 0
+wd :: empty 'psel ttb; pclose;'
+)
+
+refreshPane=: 3 : 0
+wd 'set pane items *',content''
+)
+
+start=: 3 : 0
+window_close''
+wd TTBFORM
+refreshPane''
+wd 'psel ttb; pmove ' , ":POS
+putsb 'started: ',date''
+)
+
+putsb=: 3 : 0
+
+wd 'psel ttb; set sbar text *',":,y
+)
+
+ttb_bnDele_button=: 3 : 0
+
+smoutput 'deletefile_cal_ ',quote path
+)
+
+ttb_bnOpen_button=: 3 : 0
+
+open path
+)
+
+ttb_bnLoad_button=: 3 : 0
+
+try.
+  tabenginex_tabby_ 'load' ; path
+  setFormTitle_tabby_''
+catch. smoutput '>>> ttb_bnLoad_button: illegal call into _tabby_'
+end.
+)
+
+ttb_close=: window_close
+
+ttb_default=: 3 : 0
+
+smoutput '>>> missing handler: ',sysevent
+)
+
+ttb_resize=: empty
+
+ttb_pane_select=: 3 : 0
+
+if. shf= {. ". sysmodifiers do. refreshPane'' end.
+]path=: TPATH_TTABLES_cal_,pane
+text=: info=: UNSET
+text=: read path
+erase 'TT TTIMAGE TTINFO vquan vfact'
+load :: 0: path
+if. -.absent'TTIMAGE' do. text=: TTIMAGE end.
+if. -.absent'TTINFO' do. info=: TTINFO end.
+wd 'psel ttb; set textbuf text *',text
+wd 'psel ttb; set infobuf text *',info
+putsb 'ttb_pane_select: ',date''
+)
+
+numvec=: 3 : '". (LF,SP) sub y'
+sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
+
+onload 'start_ttb_ 0'
 
 '==================== [cal] start.ijs ===================='
 

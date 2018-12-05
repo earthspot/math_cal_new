@@ -18,7 +18,9 @@ assert. TIME > 6!:1''
 
 fwd=: empty  NB. reassigned below inside: inversion
 ssw=: smoutput&sw  NB. reassigned below [?] inside: inversion
-register=: register_cal_ f.  NB. fetch once on loading
+    NB. fetch once on loading...
+register=: register_cal_ f.
+approximates=: approximates_cal_
 
 inversion=: 4 : 0
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
@@ -45,9 +47,13 @@ NB.   NB. >>> fwdSC is NOT ACTUALLY USED IN THIS ALGORITHM!!!
 d1X=: ($X0)$1
   NB. …the 1st guess is uncritical BUT GUESS AGAIN IF WE GET ZERO ΔY
 if. (fwd X0+d1X) = fwdX0 do. d1X=: d1X + 0.111111 end. NB. nudge slightly
+G=: H=: __  NB. placeholders only
 ssw '... argLEFT=X0=(X0) argRIGHT=dY0=(dY0) start g with d1X=(d1X)'
 dX=: (g^:_) :: vd_X d1X
   NB. …dX is the limit of infinite series: d1X--> d2X-->… d_X-->… dX
+ssw '=====  ======= ======= =======  ====='
+ssw 'COUNT  y       d_X     d_Y      G  H'
+ssw '=====  ======= ======= =======  ====='
 ssw '... (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd X1=: X0+dX  NB. X1 such that Y0D approximates fwd(X1)
 NB. assert. Y0D approximates_cal_ fwdX1
@@ -71,8 +77,8 @@ timeout'' [COUNT=: COUNT+1
 d_X=: y  NB. y gets return. from previous pass. NOTE: (=:)
 d_Y=. (fwd X0+d_X) - fwdX0  NB. d_Y used only inside this verb. NOTE: (=.)
 d_X=: real amodel * d_X * dY0 % d_Y  NB. d_X adjusted from (y)
-ssw '... g: y=(y) d_X=(d_X) d_Y=(d_Y) COUNT=(COUNT)'
-	wd'msgs'
+NB. ssw '... g: y=(y) d_X=(d_X) d_Y=(d_Y) COUNT=(COUNT)'
+wd'msgs' [ssw 'g[(COUNT)] (y) (d_X) (d_Y) (G)'
 d_X return.     NB. becomes (y) at next pass of g^:_
   NB. …final pass of g^:_ returns: (dX=:)d_X within the calling verb.
 )

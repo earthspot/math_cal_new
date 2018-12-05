@@ -1819,7 +1819,8 @@ load file
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
 empty 't' setcols TT  NB. to set: tn tu ts td tf
-TTn=: debc TT hcols tn
+NB. TTn=: debc TT hcols tn
+TTn=: ucp"1 debc TT hcols tn
 TTu=. debc TT hcols tu	NB. only needed inside this verb
 TTs=. debc TT hcols ts	NB. only needed inside this verb
 TD=: 0,". debc TT cols td
@@ -1927,25 +1928,24 @@ ttsav=: 1&$: : (4 : 0)
   NB. else accept filename y as the new (file)
 if. 0<#y do. file=: expandedPath y end.
 NB. ...hence if y-:'' then file is left as it stands
-  NB. Restore TTs TTu just for this verb…
-NB. TTs=. ('ts',>}.UNITS) ,. SP
-NB. TTu=. ('tu',>}.UNITN) ,. SP
-	NB. .......why ,. SP ??
 TTs=. ('ts',>}.UNITS)
 TTu=. ('tu',>}.UNITN)
   NB. Rebuild TT from fields…
 TT=:  TTn sP1 TTu sP1 TTs sP1 ('td',":}.TD) sP1 TTf
 empty 't' setcols TT
-z=. crr'CAPT'
-z=. z,LF2,'TT=: cmx 0 ',CO,' 0',(,LF,.TT),LF,')'
-z=. z,LF2,(cnn'vquan'),LF2,(cnn'vfact'),LF
+SAVED=: date''
+]z=. (crr'SAVED'),LF,crr'CAPT'
+z=. z,LF2,'TTIMAGE=: 0 define',(,LF,.ct''),LF,')'
+z=. z,LF2,'TT=: cmx 0 define',(,LF,.TT),LF,')'
+NB. z=. z,LF2,(cnn'vquan'),LF2,(cnn'vfact'),LF
+z=. z,LF2,(crr'vquan'),LF2,(crr'vfact'),LF
 if. any vhidd do.  z=. z,LF,(crr 'vhidd'),LF end.
 if. any vmodl~:1 do.  z=. z,LF,(crr 'vmodl'),LF end.
 for_no. (<'exe') -.~ listnameswithprefix 'exe' do.
 z=. z,LF,(crr >no)
 end.
 if. 0<$TTINFO do.
-  z=. z,LF2,'TTINFO=: 0 ',CO,' 0',LF,TTINFO,LF,')'
+  z=. z,LF2,'TTINFO=: 0 define',LF,(dtlf TTINFO),LF,')'
 end.
 NB. z=. z,LF2,'uunicode ',":uunicode''  NB. restore SI conformance level
 NB. z=. z,LF,'sig ',":sig''  NB. restore significant figures

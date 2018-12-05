@@ -26,8 +26,8 @@ inversion3=: beginstop ::inverCser ::inverNRser ::endstop  NB. operational use
 inversionA=: beginstop ::inversion_inverNRUC_ ::endstop  NB. TAY expt
 inversionB=: beginstop ::inversion_inverTAY_ ::endstop  NB. TAY expt
 
-inversion=: inversion3  NB. the option that works
-	NB. use temp 41 to switch inversion to inversionA/B
+inversion=: inversion3  NB. the best option to-date
+	NB. use temp 41 to switch inversion between inversionA/B
 
 NB. ========================================================
 start=: 3 : 0
