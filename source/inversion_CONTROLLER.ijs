@@ -107,14 +107,6 @@ register me
 X1 return.
 )
 
-progress=: 3 : 0
-NB. wd_tab_ :: 0: 'msgs'
-NB. wd 'msgs'
-PROGRESS_z_=: y
-NB. wd_tab_ :: 0: 'msgs'
-NB. wd 'msgs'
-)
-
 markfirst=: i. = [: i. [: # [
 marklast=:  i: = [: i. [: # [
 fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'  NB. hold all except for one

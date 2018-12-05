@@ -1,11 +1,14 @@
 	NB. cal - constants.ijs
 '==================== [cal] constants.ijs ===================='
-NB. IAC Wednesday 29 August 2018  20:42:51
-
 NB. The global nouns here must not change at runtime
-NB. (See: globvars in: start.ijs for those that do change)
+NB. (See: globmake in: start.ijs for those that do change)
 
 cocurrent 'cal'
+
+ABOUT=: 0 : 0
+CAL: scientific calculator engine
+-serves multiple TABULA implementations.
+)
 
 HELP=: 0 : 0
 ============
@@ -19,12 +22,12 @@ cx''
 
 tt'CTBU'
 …show current t-table
-
-
 )
 
+NB. ----------------------------------------------------------
+
 AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-az=: 'abcdefghijklmnopqrstuvwxyz'
+az=: tolower AZ
 ARROWCH0=: ' ┌│└┌├└├b→'	NB. arrow drawing chars (option)
 ARROWCH1=: ' ┌│└┌├└├b>'	NB. arrow drawing chars (option)
 ARROWCH2=: ' +|+++++b>'	NB. arrow drawing chars (option)
@@ -35,15 +38,9 @@ CO=: ':'
 DT=: '.'
 ALTERED=: '@'		NB. "altered" symbol displayed by ct
 HOLD=: '='		NB. "hold" symbol displayed by ct
-INVERSION=: ''		NB. Heuristics register
 LOGNAME=: 'cal_log.txt'
 LP=: '(' [ RP=: ')'	NB. used with: sw
-MAXINVERT=: 30		NB. limits backfit cycles
-NB=: 'NB.'
-OVERHELDS=: ''		NB. items recognised by: beval
-PAD=: 10			NB. default pad
-PFMT=: 'line'		NB. default plot format
-PLOT=: 0			NB. default plot control parameter
+NB=: 'NB','.'
 PLOTNAME_z_=: jpath'~tempuu/latestplot.pdf'
 SAMPLE=: 'SAMPLE'
 SC=: ';'
@@ -52,10 +49,7 @@ SL=: '/'
 SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTn TTf UNITN UNITS CAPT'
 SP=: ' '
 ST=: '*'
-TIMEOUT=: 5		NB. seconds (see: blazing_saddle)
-TOLERANCE=: 1e_5		NB. default tolerance for comparing physical quantities
 UL=: '_'
 UNDEF=: 'untitled'
 UNDEF_CAPT=: 'untitled'
 UNSET=: '<UNSET>'
-WARNPLEX=: 1		NB. 1==run warnplex after each recalc

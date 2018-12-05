@@ -1,5 +1,5 @@
 0 :0
-Tuesday 6 November 2018  00:13:40
+Wednesday 5 December 2018  11:56:22
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -11,46 +11,28 @@ onload_z_=: empty
 
 load '~tempuu/39.ijs'
 
-AABUILT=: '2018-11-06  00:14:29'
-AABUILT=: '2018-11-06  00:41:56'
-AABUILT=: '2018-11-06  01:02:09'
-AABUILT=: '2018-11-06  01:18:37'
-AABUILT=: '2018-11-06  23:20:31'
-AABUILT=: '2018-11-07  01:41:11'
-AABUILT=: '2018-11-07  01:46:21'
-AABUILT=: '2018-11-07  01:52:49'
-AABUILT=: '2018-11-07  02:59:03'
-AABUILT=: '2018-11-07  03:07:29'
-AABUILT=: '2018-11-07  16:18:20'
-AABUILT=: '2018-11-07  16:22:51'
-AABUILT=: '2018-11-07  16:56:16'
-AABUILT=: '2018-11-07  17:09:26'
-AABUILT=: '2018-11-07  17:13:56'
-AABUILT=: '2018-11-07  22:17:11'
-AABUILT=: '2018-11-07  23:59:03'
-AABUILT=: '2018-11-08  00:32:09'
-AABUILT=: '2018-11-09  17:18:31'
-AABUILT=: '2018-11-09  18:04:22'
-AABUILT=: '2018-11-09  18:05:28'
-AABUILT=: '2018-11-09  18:11:27'
-AABUILT=: '2018-11-09  18:18:20'
-AABUILT=: '2018-11-09  18:39:34'
-AABUILT=: '2018-11-09  19:06:07'
-AABUILT=: '2018-11-09  19:11:31'
-AABUILT=: '2018-11-10  00:06:58'
-AABUILT=: '2018-11-19  01:04:14'
-AABUILT=: '2018-11-22  04:18:56'
-AABUILT=: '2018-11-30  08:23:33'
-AABUILT=: '2018-12-05  03:42:19'
-AABUILT=: '2018-12-05  04:14:19'
-AABUILT=: '2018-12-05  04:20:23'
-AABUILT=: '2018-12-05  04:31:03'
-AABUILT=: '2018-12-05  04:47:13'
-AABUILT=: '2018-12-05  05:35:34'
-AABUILT=: '2018-12-05  05:37:26'
+AABUILT=: '2018-12-05  12:20:29'
+AABUILT=: '2018-12-05  12:28:32'
+AABUILT=: '2018-12-05  12:43:10'
+AABUILT=: '2018-12-05  12:50:26'
+AABUILT=: '2018-12-05  12:52:32'
+AABUILT=: '2018-12-05  12:53:02'
+AABUILT=: '2018-12-05  12:57:10'
+AABUILT=: '2018-12-05  13:00:31'
+AABUILT=: '2018-12-05  13:01:58'
+AABUILT=: '2018-12-05  13:07:25'
+AABUILT=: '2018-12-05  13:08:00'
+AABUILT=: '2018-12-05  13:13:14'
+AABUILT=: '2018-12-05  13:14:48'
+AABUILT=: '2018-12-05  13:21:41'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
+
+ABOUT=: 0 : 0
+CAL: scientific calculator engine
+-serves multiple TABULA implementations.
+)
 
 HELP=: 0 : 0
 ============
@@ -64,12 +46,9 @@ cx''
 
 tt'CTBU'
 …show current t-table
-
-
 )
-
 AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-az=: 'abcdefghijklmnopqrstuvwxyz'
+az=: tolower AZ
 ARROWCH0=: ' ┌│└┌├└├b→'
 ARROWCH1=: ' ┌│└┌├└├b>'
 ARROWCH2=: ' +|+++++b>'
@@ -80,15 +59,9 @@ CO=: ':'
 DT=: '.'
 ALTERED=: '@'
 HOLD=: '='
-INVERSION=: ''
 LOGNAME=: 'cal_log.txt'
 LP=: '(' [ RP=: ')'
-MAXINVERT=: 30
-NB=: 'NB.'
-OVERHELDS=: ''
-PAD=: 10
-PFMT=: 'line'
-PLOT=: 0
+NB=: 'NB','.'
 PLOTNAME_z_=: jpath'~tempuu/latestplot.pdf'
 SAMPLE=: 'SAMPLE'
 SC=: ';'
@@ -97,13 +70,10 @@ SL=: '/'
 SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTn TTf UNITN UNITS CAPT'
 SP=: ' '
 ST=: '*'
-TIMEOUT=: 5
-TOLERANCE=: 1e_5
 UL=: '_'
 UNDEF=: 'untitled'
 UNDEF_CAPT=: 'untitled'
 UNSET=: '<UNSET>'
-WARNPLEX=: 1
 
 '==================== [z] paths.ijs ===================='
 ]TPATH_UU=:  jpath'~Gituu/'
@@ -1506,6 +1476,11 @@ if. SL={:z do. z=. }:z end.
 z=. uuengine 'SELF',z
 )
 
+progress=: 3 : 0
+
+PROGRESS_z_=: y
+)
+
 promo=: 4 : 'x,y-.x'
 querycal=: 3 : 'x2f (>CCc) ,.SP,.SP,. (>CCa) ,.SP,.SP,. (>CCd)'
 quoted=: quoted_exch_
@@ -1988,6 +1963,7 @@ vsiq0=: vsiqn
 
 ttload=: 3 : 0
 
+if. isEmpty y do. 19 message '' return. end.
 snapshot 0
 invalexe''
 invalinfo''
@@ -1995,14 +1971,9 @@ TTINFO=:''
 SWAPPED=: 0
 file=: expandedPath y
 	smoutput '──────────────────────────────────────────────'
-	smoutput 'open ',quote file
+	smoutput 'ttload ',quote file
 	smoutput '──────────────────────────────────────────────'
-if. mt file do. 19 message '' return.
-elseif. -.fexist file do.
-  if. 0=#y do. ttload '$$' return.
-  else. 20 message file return.
-  end.
-end.
+if. -.fexist file do. 20 message file return. end.
 vhidd=: vmodl=: _
 load file
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
@@ -2279,6 +2250,10 @@ tabengine=: 3 : 0 "1
 
 
 MESSAGE=: '' [MESSAGE_ID=: _1
+if. -.(STARTED or y beginsWith 'Ini') do.
+  smoutput < RETURNED=: 3}. dtb 46{MESSAGELIST
+  RETURNED return.
+end.
 progress _
 if. isBoxed y do. y=. nb y end.
 select. INST=: 4{. INSTR=: y
@@ -2543,10 +2518,6 @@ assert. Y0D approximates_cal_ fwd X1
 ssw'--- (me): …yes, close enough. […Exits]'
 register me
 X1 return.
-)
-
-progress=: 3 : 0
-PROGRESS_z_=: y
 )
 
 markfirst=: i. = [: i. [: # [
@@ -3466,6 +3437,7 @@ MESSAGELIST=: cmx 0 : 0
 43 >>> cache file (y0) not found
 44 cache file (y0) yields text: (y1)
 45 line {(y0)} units changed from [(y1)] to INCOMPATIBLE [(y2)]
+46 >>> no action because CAL engine has not been initialized
 )
 
 '==================== [cal] tabmath.ijs ===================='
@@ -3831,6 +3803,7 @@ onload 'start_ttb_ 0'
 
 cocurrent 'cal'
 
+STARTED=: 0
 VERSION=: '2.0.0'
 
 sl_z_=: 4 : 0
@@ -3870,9 +3843,10 @@ progress _
 0 enlog 0
 
 if. y-:0 do. ttnew''
-else. ttload''
+else. ttload'$$'
 end.
-warnplex'' [ WARNPLEX=: 1
+warnplex''
+STARTED=: 1
 )
 
 tt_z_=: tabengine_cal_
@@ -3895,11 +3869,22 @@ i.0 0
 
 globmake=: 3 : 0
 
+
+
 file=: tbx UNDEF
 ARROWCH=: ARROWCH1
 DIRTY=: 0
+INVERSION=: ''
+MAXINVERT=: 30
+OVERHELDS=: ''
+PAD=: 10
+PFMT=: 'line'
+PLOT=: 0
 RETURNED=: ''
+TIMEOUT=: 5
+TOLERANCE=: 1e_5
 TTn=: ,:'tn'
+WARNPLEX=: 1
 i.0 0
 )
-onload 'start 1'
+onload 'start 0'

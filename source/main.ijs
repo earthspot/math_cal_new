@@ -1305,6 +1305,13 @@ if. SL={:z do. z=. }:z end.
 z=. uuengine 'SELF',z
 )
 
+progress=: 3 : 0
+  NB. passive only - lets something else show a progress-bar
+NB. wd 'msgs'
+PROGRESS_z_=: y
+NB. wd 'msgs'
+)
+
 promo=: 4 : 'x,y-.x'
 querycal=: 3 : 'x2f (>CCc) ,.SP,.SP,. (>CCa) ,.SP,.SP,. (>CCd)'
 quoted=: quoted_exch_
@@ -1799,6 +1806,7 @@ vsiq0=: vsiqn
 
 ttload=: 3 : 0
   NB. load the chosen t-table
+if. isEmpty y do. 19 message '' return. end.  NB. IAC 5 DEC 18
 snapshot 0      NB. to recover space (done again later)
 invalexe''      NB. existing 'exe' verbs are invalid
 invalinfo''     NB. existing  info display is invalid
@@ -1806,21 +1814,16 @@ TTINFO=:''      NB. create empty
 SWAPPED=: 0     NB. fmla order (overridden by t-table script)
 file=: expandedPath y    NB. y is generalised file descriptor
 	smoutput '──────────────────────────────────────────────'
-	smoutput 'open ',quote file
+	smoutput 'ttload ',quote file
 	smoutput '──────────────────────────────────────────────'
-if. mt file do. 19 message '' return.
-elseif. -.fexist file do.
-  if. 0=#y do. ttload '$$' return.  NB. load factory SAMPLE
-  else. 20 message file return.
-  end.
-end.
+if. -.fexist file do. 20 message file return. end.  NB. IAC 5 DEC 18
 vhidd=: vmodl=: _
 load file
 if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
 empty 't' setcols TT  NB. to set: tn tu ts td tf
 NB. TTn=: debc TT hcols tn
-TTn=: ucp"1 debc TT hcols tn
+TTn=: ucp"1 debc TT hcols tn  NB. [=:] & accom unicode in item name
 TTu=. debc TT hcols tu	NB. only needed inside this verb
 TTs=. debc TT hcols ts	NB. only needed inside this verb
 TD=: 0,". debc TT cols td
@@ -2086,7 +2089,7 @@ end.
 xseq=: 3 : 'sor clos dpmx TD'
 
 NB. ================================================
-NB. compile CAL
+NB. compile CAL --> tabengine
 
 cocurrent 'cal'
 
@@ -2103,6 +2106,11 @@ tabengine=: 3 : 0 "1
   NB. computes RETURNED LASTINSTR INSTR INST
   NB. avoiding damaging drop-thru result from tabengineCore
 MESSAGE=: '' [MESSAGE_ID=: _1
+if. -.(STARTED or y beginsWith 'Ini') do.
+NB.   smoutput < RETURNED=: '>>> CAL is uninitialized'
+  smoutput < RETURNED=: 3}. dtb 46{MESSAGELIST
+  RETURNED return.
+end.
 progress _  NB. init progress-bar used by verb: inversion
 if. isBoxed y do. y=. nb y end.
 NB. verb: tabengineCore is invalid/absent until verb: start is run.

@@ -3,6 +3,7 @@
 
 cocurrent 'cal'
 
+STARTED=: 0  NB. becomes 1 when start completes successfully
 VERSION=: '2.0.0'
 
 sl_z_=: 4 : 0
@@ -48,9 +49,10 @@ progress _ NB. init progressbar to idle state
 NB. load :: 0: TPATH_CAL, ijs'exch'
 NB. try. start_exch_'' catch. end.
 if. y-:0 do. ttnew''  NB. new empty t-table
-else. ttload''        NB. load the t-table named: SAMPLE
+else. ttload'$$'  NB. load SAMPLE, builtin or saved
 end.
-warnplex'' [ WARNPLEX=: 1
+warnplex''
+STARTED=: 1
 )
 
 tt_z_=: tabengine_cal_
@@ -73,16 +75,26 @@ i.0 0
 
 globmake=: 3 : 0
   NB. Init global nouns
+  NB. These may change in-session
+  NB. If _cal_ used as a class these must be in numbered locale
 file=: tbx UNDEF
 ARROWCH=: ARROWCH1	NB. arrow-drawing chars (see consts.ijs)
 DIRTY=: 0		NB. =1 means t-table needs saving
+INVERSION=: ''	NB. inversion heuristics register
+MAXINVERT=: 30	NB. limits backfit cycles
+OVERHELDS=: ''	NB. items recognised by: beval
+PAD=: 10		NB. used by: pad
+PFMT=: 'line'	NB. plot format
+PLOT=: 0		NB. plot control parameter
 RETURNED=: ''	NB. noun returned by i/f call
-TTn=: ,:'tn'	NB. t-table container (part)
+TIMEOUT=: 5	NB. seconds (used by: timeout)
+TOLERANCE=: 1e_5	NB. default tolerance for comparing physical quantities
+TTn=: ,:'tn'	NB. t-table cache for item names
+WARNPLEX=: 1	NB. 1==run warnplex after each recalc
 i.0 0
 )
 
 NB. ======================================================
 NB. OPERATIONALLY: CAL MUST NOT SELF-START!
 NB. ======================================================
-
-onload 'start 1'
+onload 'start 0'

@@ -1,6 +1,6 @@
 NB. cal - run
 0 :0
-Thursday 30 August 2018  19:26:22
+Wednesday 5 December 2018  13:21:25
 -
 open BUILTFILE
 open '~Gitcal/test/test.ijs'
@@ -32,10 +32,11 @@ smoutput '--- run.ijs: CAL BUILTFILE loaded: ',BUILTFILE
 load TESTFILE
 smoutput '--- run.ijs: CAL TESTFILE completed without discrepancies: ',TESTFILE
 
-smoutput tabengine_cal_ 'Init'
-smoutput tabengine_cal_ 'load 3'  NB. non-trivial asteroid t-table
-smoutput tabengine_cal_ 'ssic 1'  NB. set unicode conformance level
-smoutput tabengine_cal_ 'CTBU'    NB. show loaded t-table
+NB. THIS MINI-TEST IS NOW REDUNDANT…
+NB. smoutput tabengine_cal_ 'Init'
+NB. smoutput tabengine_cal_ 'load 3'  NB. non-trivial asteroid t-table
+NB. smoutput tabengine_cal_ 'ssic 1'  NB. set unicode conformance level
+NB. smoutput tabengine_cal_ 'CTBU'    NB. show loaded t-table
 
 NB. ---------------------------------------------------------
 
