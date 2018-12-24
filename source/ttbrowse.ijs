@@ -1,6 +1,6 @@
 	NB. cal - ttbrowse
 0 :0
-Wednesday 5 December 2018  02:55:13
+Wednesday 5 December 2018  14:30:59
 -
 ttb_pane_select -called when a line clicked
 Tool: opent - ⌘click opens ttbrowse
@@ -10,7 +10,7 @@ ttb_bnLoad_button -"illegal" calls into TABBY
 -
 onload_z_=: do
 -
-wd 'psel ttb; qform;'  NB. for adjusting: POS below
+wd 'psel ttb; qform;'  NB. for adjusting POS below
 )
 
 coclass 'ttb'
@@ -130,4 +130,4 @@ putsb 'ttb_pane_select: ',date''
 numvec=: 3 : '". (LF,SP) sub y'
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 
-onload 'start_ttb_ 0'
+onload 'start 0'

@@ -16,17 +16,19 @@ NB. ========================================================
   NB.  UPPERCASE - returns requested data (=noun)
   NB.  lowercase - does an operation, returns (string) message: error/confirm
   NB.  Mixedcase - returned value is undefined - should be ignored
-  NB. (Instr: "Repe" not implemented below: recognized by: tabengine itself)
+  NB. (Instrs with: dummy'' pre-handled by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '15 Oct 2018  01:00:00'  \CAL last saved
-Inic void start 0                  \=(re-)start with clear tt
-Init void start 1                  \=(re-)start with SAMPLE tt
+QSAV void '2018-12-18 05:04:00'    \noun: CAL last saved
+Inic void dummy''                  \=(re-)start with clear tt
+Inif void dummy''                  \=(re-)start with factory SAMPLE tt
+Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
+Init void dummy''                  \=(re-)start with (saved) SAMPLE tt
 Repe void dummy''                  \=repeat last action
 Redo void undo 0                   \=redo
 Undo void undo 1                   \=undo
+AABT void AABUILT                  \last-updated timestamp
 ABOU void ABOUT                    \About the engine
-ABTI void ABTIME                   \last-updated timestamp
 ANCE r    r{TD                     \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
@@ -36,7 +38,7 @@ DIRT void dirty''                  \flag: unsaved changes
 FMLA r    formula r                \formula of item r
 FMLL r    1 formula r              \braced formula of item r
 INFO void info''                   \info about t-table
-INTD void ":initialized''          \query if start'' was run
+INTD void initialized''            \query if start'' was run
 ITMS void }.items''                \list of non-0 item#s
 JXDO yy   ". yy                    \run J code in this loc
 MSSG void MESSAGE                  \message text from last instruction
@@ -44,8 +46,6 @@ MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
 PLOT rzz  r plotz~ zz              \gen plot data with x-axis
 PTHS void tpaths''                 \all CAL+TABULA paths
-QCMD yy   CCc e.~ <yy              \=query valid command
-QUER void querycal''               \query interface defn
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
@@ -74,9 +74,9 @@ UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 UCOM r    docompatlist r           \item compat units (system)
 UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
 UNIS r    r{UNITS                  \SI units of item (system)
-UNSU r    uniform r{UNITS          \SI units of item (SIC-mode)
+UNSU r    uniform >r{UNITS         \SI units of item (SIC-mode)
 UNIT r    r{UNITN                  \units of item -nominal (system)
-UNTU r    uniform r{UNITN          \units of item -nominal (SIC-mode)
+UNTU r    uniform >r{UNITN         \units of item -nominal (SIC-mode)
 UUUU yy   uuengine INSTR           \call uu converter directly
 VALF r    getformattedvalue r      \value of item -formatted string
 VALU r    getvalue r               \value of item -numeric

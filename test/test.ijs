@@ -1,6 +1,6 @@
 NB. CAL test suite controller - test.ijs
 0 :0
-Wednesday 5 December 2018  11:32:49
+Wednesday 5 December 2018  14:28:35
 )
 
 cocurrent 'base'
@@ -10,7 +10,6 @@ PLS_z_=: LF,~LF,60$'+'
 smoutput PLS,'+++ CAL test.ijs - entered',PLS
 
 test_cal_=: 1 ddefine  NB. to run via fkey 5
-  NB. trace cal
 smoutput 'NOT IMPLEMENTED'
 )
 

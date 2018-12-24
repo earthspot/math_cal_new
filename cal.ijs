@@ -1,5 +1,5 @@
 0 :0
-Wednesday 5 December 2018  11:56:22
+Saturday 22 December 2018  19:28:05
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -9,22 +9,18 @@ clear 'cal'
 coclass 'cal'
 onload_z_=: empty
 
+
 load '~tempuu/39.ijs'
 
-AABUILT=: '2018-12-05  12:20:29'
-AABUILT=: '2018-12-05  12:28:32'
-AABUILT=: '2018-12-05  12:43:10'
-AABUILT=: '2018-12-05  12:50:26'
-AABUILT=: '2018-12-05  12:52:32'
-AABUILT=: '2018-12-05  12:53:02'
-AABUILT=: '2018-12-05  12:57:10'
-AABUILT=: '2018-12-05  13:00:31'
-AABUILT=: '2018-12-05  13:01:58'
-AABUILT=: '2018-12-05  13:07:25'
-AABUILT=: '2018-12-05  13:08:00'
-AABUILT=: '2018-12-05  13:13:14'
-AABUILT=: '2018-12-05  13:14:48'
-AABUILT=: '2018-12-05  13:21:41'
+AABUILT=: '2018-12-22  20:28:52'
+AABUILT=: '2018-12-23  00:59:54'
+AABUILT=: '2018-12-23  01:06:44'
+AABUILT=: '2018-12-23  01:10:43'
+AABUILT=: '2018-12-23  01:13:55'
+AABUILT=: '2018-12-23  01:18:02'
+AABUILT=: '2018-12-23  03:35:54'
+AABUILT=: '2018-12-23  03:56:43'
+AABUILT=: '2018-12-24  03:16:29'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -75,18 +71,19 @@ UNDEF=: 'untitled'
 UNDEF_CAPT=: 'untitled'
 UNSET=: '<UNSET>'
 
-'==================== [z] paths.ijs ===================='
-]TPATH_UU=:  jpath'~Gituu/'
-]TPATH_CAL=: jpath'~Gitcal/'
-]TPATH_CAL_LOG=: jpath '~/'
-]TPATH_SAMPLES=: TPATH_CAL
-]TPATH_TTABLES=: jpath '~/tabula-user/'
-]TPATH_ARCHIVE=: jpath '~/j-temp/ttarchive'
-
 '==================== [cal] utilities.ijs ===================='
 
 cocurrent 'cal'
 
+sl_z_=: 4 : 0
+
+
+
+SL=. '/'
+if. SL={:x do. x=. }:x end.
+if. SL={.y do. x=. }.y end.
+x,SL,y
+)
 
 
 
@@ -237,6 +234,15 @@ SIG__uun=: y
 uunicode=: 3 : 0
 SIC__uun=: y
 )
+
+'==================== [z] paths.ijs ===================='
+cocurrent 'z'
+
+]TPATH_CAL=: jpath'~Gitcal/'
+]TPATH_CAL_LOG=: jpath '~/'
+]TPATH_SAMPLES=: TPATH_CAL
+]TPATH_TTABLES=: jpath '~/tabula-user/'
+]TPATH_ARCHIVE=: jpath '~/j-temp/ttarchive'
 
 '==================== [cal] main.ijs ===================='
 0 :0
@@ -441,7 +447,7 @@ if. (0~:x)*.(hasf y) do.
 
   r1=. r inversion deltaz
 end.
-  smoutput '--- beval: heuristics used: ',,>INVERSION
+  ssw '--- beval: heuristics used: ',,>INVERSION
 
 sllog 'beval a r r1'
 	popme'beval'
@@ -764,6 +770,7 @@ if. 0=#y do. y=. file end.
 if. y-: '$$' do.
   z=. TPATH_TTABLES sl tbx SAMPLE
   if. -.fexist z do. TPATH_SAMPLES sl tbx SAMPLE end.
+elseif. y-: '$'  do. TPATH_SAMPLES sl tbx SAMPLE
 elseif. isnums y do.  TPATH_SAMPLES sl tbx SAMPLE,y
 elseif. isNo {.y do.  TPATH_SAMPLES sl tbx SAMPLE,":y
 elseif. '~'={.y  do.  dtb jpath y
@@ -1088,7 +1095,8 @@ d_X
 genexe=: 3 : 0
 
 nom=. 'exe',":y
-(nom)=: 3 : (fexp y)
+z=. ' [ITEMNO=:',":y
+(nom)=: 3 : (z ,~ fexp y)
 nom
 )
 getvalue=: 3 : 0
@@ -1201,7 +1209,7 @@ empty TTINFO=: y
 
 initialized=: 3 : 0
 
-0=nc<'CCc'
+STARTED
 )
 
 instruction=: 4 : 0
@@ -1353,17 +1361,8 @@ pad=: 3 : 0
 z=. - ($y) max 0,PAD
 z{.y
 )
-plot=: plotstub
 
-plotstub=: UNSET ddefine
-if. PLOT>0 do.
-  sy=. $y
-  if. 1<$$y do. y=. {.y end.
-  ssw 'plot: x=(x) $y=(LP)(sy)(RP) y=[(y)]'
-end.
-PLOT return.
-)
-
+0 :0
 plotv=: 4 : 0
 
 
@@ -1378,6 +1377,7 @@ end.
 y plotxSwift~ steps_jzplot_ n3
 )
 
+0 :0
 plotxSwift=: 4 : 0
 
 
@@ -1395,6 +1395,7 @@ VDATA=: z
 plot2Swift y -.~ }.items''
 )
 
+0 :0
 plot2Swift=: 3 : 0
 
 
@@ -1403,6 +1404,7 @@ e=. y{VDATA
 PFMT plotSwift d;e
 )
 
+0 :0
 replot=: 3 : 0
 
 
@@ -1415,6 +1417,7 @@ catch.
 end.
 )
 
+0 :0
 plotSwift=: 4 : 0
 
 
@@ -1424,6 +1427,8 @@ pd y
 pd 'pdf ',PLOTNAME
 openfile PLOTNAME
 )
+
+0 :0
 plotx=: 4 : 0
 
 
@@ -1440,6 +1445,7 @@ i=. y -.~ }.items''
 PFMT plot DATA=: (y{z) ; (i{z)
 )
 
+0 :0
 remove_infinities=: 3 : 0
 
 f1=. 3 : '(>./y -. _) (I. y=_)}y' "1
@@ -1447,6 +1453,7 @@ f_1=. 3 : '(<./y -. __) (I. y=__)}y' "1
 f_1 f1 y
 )
 
+0 :0
 plotz=: 4 : 0
 
 
@@ -1526,7 +1533,8 @@ ii=. x2b >brace each ":each i.#x
 r $ y rplc , io,.ii
 )
 
-changesTtable=: [: *./ 'abcdefghijklmnopqrstuvwxyz0123456789' e.~ ]
+
+changesTtable=: ] -: tolower
 
 reselect=: empty
 
@@ -1971,6 +1979,7 @@ TTINFO=:''
 SWAPPED=: 0
 file=: expandedPath y
 	smoutput '──────────────────────────────────────────────'
+	smoutput crr,'y'
 	smoutput 'ttload ',quote file
 	smoutput '──────────────────────────────────────────────'
 if. -.fexist file do. 20 message file return. end.
@@ -2256,9 +2265,15 @@ if. -.(STARTED or y beginsWith 'Ini') do.
 end.
 progress _
 if. isBoxed y do. y=. nb y end.
-select. INST=: 4{. INSTR=: y
-case. 'Init' do. start 1
-case. 'Inic' do. start 0
+INST=: 4{. INSTR=: y
+
+
+
+select. INST
+case. 'Inic' do. RETURNED=: start''
+case. 'Inif' do. RETURNED=: start'$'
+case. 'Init' do. RETURNED=: start'$$'
+case. 'Inis' do. RETURNED=: start ".4}.INSTR
 case. 'Repe' do. RETURNED=: tabengineCore :: tabengineError LASTINSTR
 case.        do. RETURNED=: tabengineCore :: tabengineError INSTR
 end.
@@ -2268,6 +2283,13 @@ if. changesTtable INST do.
   warnplex''
 end.
 RETURNED return.
+)
+
+0 :0
+Inic void start''                  \=(re-)start with clear tt
+Inif void start'$'                 \=(re-)start with factory SAMPLE tt
+Inis n    start n                  \=(re-)start with factory SAMPLEn tt
+Init void start'$$'                \=(re-)start with (saved) SAMPLE tt
 )
 
 tabengineError=: 3 : 0
@@ -3143,14 +3165,16 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '15 Oct 2018  01:00:00'  \CAL last saved
-Inic void start 0                  \=(re-)start with clear tt
-Init void start 1                  \=(re-)start with SAMPLE tt
+QSAV void '2018-12-18 05:04:00'    \noun: CAL last saved
+Inic void dummy''                  \=(re-)start with clear tt
+Inif void dummy''                  \=(re-)start with factory SAMPLE tt
+Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
+Init void dummy''                  \=(re-)start with (saved) SAMPLE tt
 Repe void dummy''                  \=repeat last action
 Redo void undo 0                   \=redo
 Undo void undo 1                   \=undo
+AABT void AABUILT                  \last-updated timestamp
 ABOU void ABOUT                    \About the engine
-ABTI void ABTIME                   \last-updated timestamp
 ANCE r    r{TD                     \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
@@ -3160,7 +3184,7 @@ DIRT void dirty''                  \flag: unsaved changes
 FMLA r    formula r                \formula of item r
 FMLL r    1 formula r              \braced formula of item r
 INFO void info''                   \info about t-table
-INTD void ":initialized''          \query if start'' was run
+INTD void initialized''            \query if start'' was run
 ITMS void }.items''                \list of non-0 item#s
 JXDO yy   ". yy                    \run J code in this loc
 MSSG void MESSAGE                  \message text from last instruction
@@ -3168,8 +3192,6 @@ MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
 PLOT rzz  r plotz~ zz              \gen plot data with x-axis
 PTHS void tpaths''                 \all CAL+TABULA paths
-QCMD yy   CCc e.~ <yy              \=query valid command
-QUER void querycal''               \query interface defn
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
@@ -3198,9 +3220,9 @@ UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 UCOM r    docompatlist r           \item compat units (system)
 UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
 UNIS r    r{UNITS                  \SI units of item (system)
-UNSU r    uniform r{UNITS          \SI units of item (SIC-mode)
+UNSU r    uniform >r{UNITS         \SI units of item (SIC-mode)
 UNIT r    r{UNITN                  \units of item -nominal (system)
-UNTU r    uniform r{UNITN          \units of item -nominal (SIC-mode)
+UNTU r    uniform >r{UNITN         \units of item -nominal (SIC-mode)
 UUUU yy   uuengine INSTR           \call uu converter directly
 VALF r    getformattedvalue r      \value of item -formatted string
 VALU r    getvalue r               \value of item -numeric
@@ -3671,8 +3693,108 @@ j=. b i: 0
 j< 0.2 * #b
 )
 
+'==================== [cal] newplot.ijs ===================='
 0 :0
-Wednesday 5 December 2018  02:55:13
+Saturday 22 December 2018  21:09:51
+-
+NEW plot facility: "plot' is ancillary verb in a t-table formula
+verbs: plot, plotstub -moved here from: main.ijs
+––––––––––––––––––––––––––––––––––––––––––––––
+plot test
+┌   ┌ ┌ {1}        2 rad  X: angle
+├ ┌ │ └>{2}    0.909 /    U: sine
+├ ├ └>  {3}   -0.416 /    V: cosine
+├ └>    {4}    0.493 /    W: sin+cos
+└>      {5} @      1 /    plot U,V,W against X
+––––––––––––––––––––––––––––––––––––––––––––––
+Typical UUF.ijs entries:
+––––––––––––––––––––––––
+plotl(X,Y) ; X(*),Y(*)   [/]   plot Y against X
+plotl(X,U,V,W) ; X(*),U(*),V(*),W(*)   [/]   plot U,V,W against X
+––––––––––––––––––––––––
+PLOT is updated by: beval whenever {5} is changed.
+)
+
+cocurrent 'cal'
+
+STEPS=: 50
+
+steps=: {. + (1&{ - {.) * (i.@>: % ])@{:
+
+
+step0=: 3 : 'steps 0,(y{vquan),STEPS'
+step1=: 3 : 'steps 1,(y{vquan),STEPS'
+step2=: 3 : 'steps (-z),(z=.y{vquan),STEPS'
+
+genDATA=: 4 : 0
+
+
+SAV=. vquan ; vsiqn ; PLOT
+PLOT=: 0
+iX  =: {.x
+z=. items''
+]iz=. iX , }.z
+for_v. (".":y) do.
+  v setvalue iX
+  z=. z ,. vquan
+end.
+'vquan vsiqn PLOT'=: SAV
+DATA=: iz{ f_1 f1 z return.
+)
+0 :0
+$ 1 genDATA 'steps 0 2 10'
+] step0 1
+] step1 1
+] step2 1
+$ 1 genDATA step0 1
+$ 1 genDATA step2 1
+] 2 plotl 1 2 3 4
+] 1 plotl 1 2 3 4
+] 0 plotl 1 2 3 4
+] 0 plotl 1 4 3 2
+] 0 plotl 1 2 4
+] 0 plotl 1 2 3
+)
+
+f1=: 3 : '(>./y -. _) (I. y=_)}y' "1
+f_1=: 3 : '(<./y -. __) (I. y=__)}y' "1
+
+plotl=: _ ddefine
+
+
+
+if. PLOT=0 do. 0 return. end.
+z=. ITEMNO{TD
+if. _ -: TYPE=.x do.
+  y=. z
+end.
+iX  =: {.y
+iY  =: }.y
+smoutput sw '+++ plotl: x=(x) iX=(iX) iY=[(iY)] PLOT=(PLOT)'
+Xpre=. getvalue iX
+Yitems=. }.,',',.brace"0  }.y
+pd 'reset'
+pd sw 'title Plot (Yitems) against (brace iX)'
+
+pd 'color red,green,blue,pink,yellow,cyan,black'
+pd 'key ',Yitems
+step=. step0
+select. TYPE
+case. 0 do. step=. step0
+case. 1 do. step=. step1
+case. 2 do. step=. step2
+end.
+DATA=: iX genDATA step iX
+
+X=: }. 0{DATA
+Y=: 0 1 }. iY{DATA
+pd X ; Y
+pd 'show'
+PLOT return.
+)
+
+0 :0
+Wednesday 5 December 2018  14:30:59
 -
 ttb_pane_select -called when a line clicked
 Tool: opent - ⌘click opens ttbrowse
@@ -3797,7 +3919,7 @@ putsb 'ttb_pane_select: ',date''
 numvec=: 3 : '". (LF,SP) sub y'
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 
-onload 'start_ttb_ 0'
+onload 'start 0'
 
 '==================== [cal] start.ijs ===================='
 
@@ -3806,14 +3928,11 @@ cocurrent 'cal'
 STARTED=: 0
 VERSION=: '2.0.0'
 
-sl_z_=: 4 : 0
+discover_UU=: 3 : 0
 
-
-
-SL=. '/'
-if. SL={:x do. x=. }:x end.
-if. SL={.y do. x=. }.y end.
-x,SL,y
+if. absent 'TPATH_UU' do.
+  TPATH_UU_z_=: jpath'~Gituu'
+end.
 )
 
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
@@ -3833,17 +3952,25 @@ start=: 3 : 0
 
 
 
+
+
+
+
 traceverbs 'OFF'
 sess1=: empty
-load TPATH_UU sl 'uu.ijs'
+ load TPATH_UU sl 'uu.ijs' [discover_UU''
 uuconnect''
 make_tabengineCore''
 globmake''
 progress _
 0 enlog 0
 
-if. y-:0 do. ttnew''
-else. ttload'$$'
+select. y
+case. '' do. ttnew''
+case. 0 do. ttload 0
+case. '$' do. ttload'$'
+case. '$$' do. ttload'$$'
+case.   do. ttload y [smoutput '+++ start: loaded by default: ',":y
 end.
 warnplex''
 STARTED=: 1
@@ -3874,6 +4001,7 @@ globmake=: 3 : 0
 file=: tbx UNDEF
 ARROWCH=: ARROWCH1
 DIRTY=: 0
+ITEMNO=: _1
 INVERSION=: ''
 MAXINVERT=: 30
 OVERHELDS=: ''
@@ -3887,4 +4015,4 @@ TTn=: ,:'tn'
 WARNPLEX=: 1
 i.0 0
 )
-onload 'start 0'
+onload 'start '''''

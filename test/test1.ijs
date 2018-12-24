@@ -1,92 +1,157 @@
 NB. CAL test1.ijs - individual instructions basic test
 0 :0
 Wednesday 5 December 2018  11:12:53
+-
+open '~Gitcal/test/test.ijs'
 )
 
 cocurrent 'base'
 
+'PLS' default~ LF,~LF,60$'+'
+
 smoutput PLS,'+++ CAL test1.ijs - entered',PLS
 
-tt'Inic'
+tt'Inis 1'	NB. start with SAMPLE1: Church Clock
 
-assert EXPECTED-: tt'QSAV'	[EXPECTED=:'15 Oct 2018  01:00:00'
+NB. assert EXPECTED-: tt'QSAV'	[EXPECTED=:'2018-12-18 02:56:00'
+assert EXPECTED-: tt'AABT'	[EXPECTED=: AABUILT
+assert EXPECTED-: tt'ABOU'	[EXPECTED=: ABOUT
+assert EXPECTED-: tt'ANCE 4'	[EXPECTED=: 1 2 3
+assert EXPECTED-: tt'CAPT'	[EXPECTED=: 'Church Clock'
+assert EXPECTED-: tt'CAPU'	[EXPECTED=: 'Church_Clock'
 
+z=. }: 0 : 0	NB. omit final LF
+Church Clock
+  ┌ {1}       75 ft    height of tower
+  ├ {2}      800 kg    mass of weight
+  ├ {3}    9.813 m/s²  acceleration; gravity=
+┌ └>{4}   179458 J     energy stored in hanging weight
+│ ┌ {5}    3.100 A h   battery charge=
+│ ├ {6}       17 V     battery potential=
+├ └>{7}   189720 J     energy stored in battery
+└>  {8}    0.946 /     {4}/{7}
+)
 
+assert EXPECTED-: tt'CTBU'	[EXPECTED=: z
+assert EXPECTED-: tt'CTAB'	[EXPECTED=: x4f ucp z
+assert EXPECTED-: tt'FMLA 4'	[EXPECTED=: 'a*b*c: a(ft),b(kg),c(grav)'
+assert EXPECTED-: tt'FMLL 4'	[EXPECTED=: '{1}*{2}*{3}'
+assert EXPECTED-: tt'INTD'	[EXPECTED=: 1
+assert EXPECTED-: tt'ITMS'	[EXPECTED=: 1 2 3 4 5 6 7 8
+assert EXPECTED-: tt'NAME 4'	[EXPECTED=: 'energy stored in hanging weight'
+assert EXPECTED-: tt'QSCI'	[EXPECTED=: 5
+assert EXPECTED-: tt'QSIC'	[EXPECTED=: 1
+assert EXPECTED-: tt'QSIG'	[EXPECTED=: 3
+assert EXPECTED-: tt'QSIZ'	[EXPECTED=: 1e_9
+assert EXPECTED-: tt'TITF'	[EXPECTED=: 'tf'
+assert EXPECTED-: tt'TITL'	[EXPECTED=: 'Church Clock'
+assert EXPECTED-: tt'TITU'	[EXPECTED=: 'untitled'
+assert EXPECTED-: tt'TFIL'	[EXPECTED=: '/users/ianclark/documents/github/math_cal_new/SAMPLE1.ijs'
+assert EXPECTED-: tt'TFIT'	[EXPECTED=: '~/documents/github/math_cal_new/SAMPLE1.ijs'
+assert EXPECTED-: tt'TFLU'	[EXPECTED=: 'untitled'
+assert EXPECTED-: tt'TNAM'	[EXPECTED=: 'SAMPLE1'
+assert EXPECTED-: tt'TNMX'	[EXPECTED=: 'SAMPLE1.ijs'
+assert EXPECTED-: tt'TPAR'	[EXPECTED=: TPATH_ARCHIVE
+assert EXPECTED-: tt'TPCA'	[EXPECTED=: TPATH_CAL
+assert EXPECTED-: tt'TPCL'	[EXPECTED=: logpath LOGNAME
+assert EXPECTED-: tt'TPSA'	[EXPECTED=: TPATH_SAMPLES
+assert EXPECTED-: tt'TPTA'	[EXPECTED=: TPATH_TABULA
+assert EXPECTED-: tt'TPTT'	[EXPECTED=: TPATH_TTABLES
+assert EXPECTED-: tt'TPUU'	[EXPECTED=: TPATH_UU
+assert EXPECTED-: tt'TPUC'	[EXPECTED=: TPATH_UUC
+assert EXPECTED-: tt'TPUF'	[EXPECTED=: TPATH_UUF
+assert EXPECTED-: tt'UCMU 6'	[EXPECTED=: ,<,'V'
+assert EXPECTED-: tt'UCOM 6'	[EXPECTED=: ,<,'V'
+assert EXPECTED-: tt'UNIF Ang'	[EXPECTED=: 'Å'
+assert EXPECTED-: tt'UNIS 3'	[EXPECTED=: <'m/s^2'
+assert EXPECTED-: tt'UNSU 3'	[EXPECTED=: 'm/s²'
+assert EXPECTED-: tt'UNIT 3'	[EXPECTED=: <'m/s^2'
+assert EXPECTED-: tt'UNTU 3'	[EXPECTED=: 'm/s²'
+assert EXPECTED-: tt'UNIS 5'	[EXPECTED=: <'A s'
+assert EXPECTED-: tt'UNSU 5'	[EXPECTED=: 'A s'
+assert EXPECTED-: tt'UNIT 5'	[EXPECTED=: <'A h'
+assert EXPECTED-: tt'UNTU 5'	[EXPECTED=: 'A h'
+assert EXPECTED-: tt'VALF 3'	[EXPECTED=: '9.813'
+assert EXPECTED-: tt'VALU 3'	[EXPECTED=: 9.812865328
+assert EXPECTED-: tt'VERS'	[EXPECTED=: '2.0.0'
 
-
+NB. >>> lowercase instrs not started yet
+NB. suggest use new (small) t-table,
+NB.  maybe start test2.ijs
 
 smoutput PLS,'--- CAL test1.ijs - completed',PLS
 
 NB. ---------------------------------------------------------
 0 :0  NB. TESTED ABOVE.........
-QSAV void '15 Oct 2018  01:00:00'  \CAL last saved
-Inic void start 0                  \=(re-)start with clear tt
-Init void start 1                  \=(re-)start with SAMPLE tt
+	QSAV void '2018-12-18 02:56:00'    \CAL last saved
+Inic void dummy''                  \=(re-)start with clear tt
+Inif void dummy''                  \=(re-)start with factory SAMPLE tt
+	Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
+Init void dummy''                  \=(re-)start with (saved) SAMPLE tt
 Repe void dummy''                  \=repeat last action
 Redo void undo 0                   \=redo
 Undo void undo 1                   \=undo
-ABOU void ABOUT                    \About the engine
-ABTI void ABTIME                   \last-updated timestamp
-ANCE r    r{TD                     \ancestors of item r
-CAPT void CAPT                     \t-table title -cf TITL
-CAPU void CAPT rplc SP;UL          \t-table title soldered
-CTAB void ct''                     \t-table display: wide chars
-CTBU void utf8 x2f ct''            \t-table display: utf-8
+	AABT void AABUILT                  \last-updated timestamp
+	ABOU void ABOUT                    \About the engine
+	ANCE r    r{TD                     \ancestors of item r
+	CAPT void CAPT                     \t-table title -cf TITL
+	CAPU void CAPT rplc SP;UL          \t-table title soldered
+	CTAB void ct''                     \t-table display: wide chars
+	CTBU void utf8 x2f ct''            \t-table display: utf-8
 DIRT void dirty''                  \flag: unsaved changes
-FMLA r    formula r                \formula of item r
-FMLL r    1 formula r              \braced formula of item r
+	FMLA r    formula r                \formula of item r
+	FMLL r    1 formula r              \braced formula of item r
 INFO void info''                   \info about t-table
-INTD void ":initialized''          \query if start'' was run
-ITMS void }.items''                \list of non-0 item#s
+	INTD void ":initialized''          \query if start'' was run
+	ITMS void }.items''                \list of non-0 item#s
 JXDO yy   ". yy                    \run J code in this loc
 MSSG void MESSAGE                  \message text from last instruction
 MSID void MESSAGE_ID               \message-ID of last instruction
-NAME r    dtb r{TTn                \name of item r
+	NAME r    dtb r{TTn                \name of item r
 PLOT rzz  r plotz~ zz              \gen plot data with x-axis
 PTHS void tpaths''                 \all CAL+TABULA paths
-QCMD yy   CCc e.~ <yy              \=query valid command
-QUER void querycal''               \query interface defn
-QSCI void uuengine INSTR           \query scientific notation threshold
-QSIC void uuengine INSTR           \query SI conformance level
-QSIG void uuengine INSTR           \query significant figures
-QSIZ void uuengine INSTR           \query zero attraction
+	QSCI void uuengine INSTR           \query scientific notation threshold
+	QSIC void uuengine INSTR           \query SI conformance level
+	QSIG void uuengine INSTR           \query significant figures
+	QSIZ void uuengine INSTR           \query zero attraction
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
-TITF void dtb 0{TTf                \window title -from TTf
-TITL void CAPT                     \window title -from CAPT
-TITU void UNDEF_CAPT               \window title -undefined
-TFIL void file                     \t-table file pathname
-TFIT void shortpath file           \t-table file short pathname
-TFLU void UNDEF                    \t-table file name -undefined
-TNAM void filename file            \t-table file name-only
+	TITF void dtb 0{TTf                \window title -from TTf
+	TITL void CAPT                     \window title -from CAPT
+	TITU void UNDEF_CAPT               \window title -undefined
+	TFIL void file                     \t-table file pathname
+	TFIT void shortpath file           \t-table file short pathname
+	TFLU void UNDEF                    \t-table file name -undefined
+	TNAM void filename file            \t-table file name-only
 TNMS void ttnames''                \t-table all its names
-TNMX void tbx filename file        \t-table file name.ext
-TPAR void TPATH_ARCHIVE            \reference path to archive
-TPCA void TPATH_CAL                \reference path to CAL addon
-TPCL void logpath LOGNAME          \reference path of callogfile
-TPSA void TPATH_SAMPLES            \reference path to SAMPLES
-TPTA void TPATH_TABULA             \reference path to TABULA
-TPTT void TPATH_TTABLES            \reference path to t-tables
-TPUU void TPATH_UU                 \reference path to UU addon
-TPUC void TPATH_UUC                \reference path to constants
-TPUF void TPATH_UUF                \reference path to functions
-UCMU r    1 docompatlist r         \item compat units (SIC-mode)
-UCOM r    docompatlist r           \item compat units (system)
-UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
-UNIS r    r{UNITS                  \SI units of item (system)
-UNSU r    uniform r{UNITS          \SI units of item (SIC-mode)
-UNIT r    r{UNITN                  \units of item -nominal (system)
-UNTU r    uniform r{UNITN          \units of item -nominal (SIC-mode)
+	TNMX void tbx filename file        \t-table file name.ext
+	TPAR void TPATH_ARCHIVE            \reference path to archive
+	TPCA void TPATH_CAL                \reference path to CAL addon
+	TPCL void logpath LOGNAME          \reference path of callogfile
+	TPSA void TPATH_SAMPLES            \reference path to SAMPLES
+	TPTA void TPATH_TABULA             \reference path to TABULA
+	TPTT void TPATH_TTABLES            \reference path to t-tables
+	TPUU void TPATH_UU                 \reference path to UU addon
+	TPUC void TPATH_UUC                \reference path to constants
+	TPUF void TPATH_UUF                \reference path to functions
+	UCMU r    1 docompatlist r         \item compat units (SIC-mode)
+	UCOM r    docompatlist r           \item compat units (system)
+	UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
+	UNIS r    r{UNITS                  \SI units of item (system)
+	UNSU r    uniform >r{UNITS         \SI units of item (SIC-mode)
+	UNIT r    r{UNITN                  \units of item -nominal (system)
+	UNTU r    uniform >r{UNITN         \units of item -nominal (SIC-mode)
 UUUU yy   uuengine INSTR           \call uu converter directly
-VALF r    getformattedvalue r      \value of item -formatted string
-VALU r    getvalue r               \value of item -numeric
-VERS void VERSION                  \version of engine
+	VALF r    getformattedvalue r      \value of item -formatted string
+	VALU r    getvalue r               \value of item -numeric
+	VERS void VERSION                  \version of engine
 VUUC yy   uuengine INSTR           \UUC (filtered by yy)
 VUUF yy   uuengine INSTR           \UUF (filtered by yy)
 VUUN yy   uuengine INSTR           \UUN (filtered by yy)
 WUUC yy   uuengine INSTR           \UUC (filtered by yy case-insens)
 WUUF yy   uuengine INSTR           \UUF (filtered by yy case-insens)
 WUUN yy   uuengine INSTR           \UUN (filtered by yy case-insens)
+
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%

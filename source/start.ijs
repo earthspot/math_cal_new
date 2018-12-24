@@ -6,14 +6,12 @@ cocurrent 'cal'
 STARTED=: 0  NB. becomes 1 when start completes successfully
 VERSION=: '2.0.0'
 
-sl_z_=: 4 : 0
-  NB. RELIABLE path catenator
-  NB. IAC Monday 8 October 2018  02:42:10
-  NB. IDENTICAL COPY IN ~Gituu/source/paths.ijs (VERIFY!)
-SL=. '/'
-if. SL={:x do. x=. }:x end.
-if. SL={.y do. x=. }.y end.
-x,SL,y
+discover_UU=: 3 : 0
+  NB. establish path: TPATH_UU
+if. absent 'TPATH_UU' do.
+  TPATH_UU_z_=: jpath'~Gituu'  NB. TEMPORARY EXPEDIENT !!!!!!!!!!!!!!!
+NB.   TPATH_UU_z_=: jpath '~addons/math/uu/uu.ijs'
+end.
 )
 
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
@@ -33,12 +31,16 @@ inversion=: inversion3  NB. the best option to-date
 NB. ========================================================
 start=: 3 : 0
   NB. start the CAL-engine
-  NB. start 0 -- serves/implements new instruction: Inic
-  NB. start '' -- serves/implements instruction: Init
+  NB. start 0 -- starts with SAMPLE0
+  NB. start 1 -- starts with SAMPLE1 …etc.
+  NB. start'' -- starts with empty t-table
+  NB. start'$' -- starts with builtin SAMPLE
+  NB. start'$$' -- starts with builtin|saved SAMPLE
+  NB. start path -- starts with t-table: (path)
 traceverbs 'OFF'
 NB. sess1=: smoutput  NB. for inversion.ijs tracing
 sess1=: empty  NB. >>>>> DISABLE inversion.ijs tracing
-load TPATH_UU sl 'uu.ijs'
+ load TPATH_UU sl 'uu.ijs' [discover_UU''
 uuconnect''  NB. create and use an instance of class 'uu'
 make_tabengineCore''  NB. the core of: tabengine
 globmake'' NB. make global nouns
@@ -48,8 +50,22 @@ progress _ NB. init progressbar to idle state
   NB. ENSURE up-to-date currency conversion table ...
 NB. load :: 0: TPATH_CAL, ijs'exch'
 NB. try. start_exch_'' catch. end.
-if. y-:0 do. ttnew''  NB. new empty t-table
-else. ttload'$$'  NB. load SAMPLE, builtin or saved
+select. y
+case. '' do. ttnew''  NB. new empty t-table
+case. 0 do. ttload 0
+NB. similar cases handled by (case. do.) below…
+NB. case. 1 do. ttload 1
+NB. case. 2 do. ttload 2
+NB. case. 3 do. ttload 3
+NB. case. 4 do. ttload 4
+NB. case. 5 do. ttload 5
+NB. case. 6 do. ttload 6
+NB. case. 7 do. ttload 7
+NB. case. 8 do. ttload 8
+NB. case. 9 do. ttload 9
+case. '$' do. ttload'$'  NB. load SAMPLE, builtin only
+case. '$$' do. ttload'$$'  NB. load SAMPLE, builtin or saved
+case.   do. ttload y [smoutput '+++ start: loaded by default: ',":y
 end.
 warnplex''
 STARTED=: 1
@@ -80,6 +96,7 @@ globmake=: 3 : 0
 file=: tbx UNDEF
 ARROWCH=: ARROWCH1	NB. arrow-drawing chars (see consts.ijs)
 DIRTY=: 0		NB. =1 means t-table needs saving
+ITEMNO=: _1	NB. 'exe'# of formula being executed
 INVERSION=: ''	NB. inversion heuristics register
 MAXINVERT=: 30	NB. limits backfit cycles
 OVERHELDS=: ''	NB. items recognised by: beval
@@ -97,4 +114,4 @@ i.0 0
 NB. ======================================================
 NB. OPERATIONALLY: CAL MUST NOT SELF-START!
 NB. ======================================================
-onload 'start 0'
+onload 'start '''''

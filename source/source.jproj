@@ -1,7 +1,7 @@
 header.ijs
 constants.ijs
-paths.ijs
 utilities.ijs
+paths.ijs
 main.ijs
 ct.ijs
 inversion_CONTROLLER.ijs
@@ -25,5 +25,6 @@ message.ijs
 tabmath.ijs
 traceverbs.ijs
 recordplot.ijs
+newplot.ijs
 ttbrowse.ijs
 start.ijs
