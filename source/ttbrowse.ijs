@@ -1,6 +1,6 @@
 	NB. cal - ttbrowse
 0 :0
-Wednesday 5 December 2018  14:30:59
+Saturday 29 December 2018  15:58:51
 -
 ttb_pane_select -called when a line clicked
 Tool: opent - ⌘click opens ttbrowse
@@ -48,7 +48,7 @@ NB. <<< cc sbar static MUST be followed by cn "…"; else no-workee
 directory=: 3 : 0
   NB. 6-col boxed array of "ls -l" info
   NB. 1st col is filenames
-1!:0 jpath TPATH_TTABLES_cal_,'*.ijs'
+1!:0 jpath '~Ttables/*.ijs'
 )
 
 content=: 3 : 0
@@ -115,7 +115,7 @@ ttb_pane_select=: 3 : 0
   NB. examine selected t-table
 if. shf= {. ". sysmodifiers do. refreshPane'' end.
 NB. sllog 'ttb_pane_select sysmodifiers pane_select'
-]path=: TPATH_TTABLES_cal_,pane
+]path=: jpath '~Ttables/',pane
 text=: info=: UNSET
 text=: read path
 erase 'TT TTIMAGE TTINFO vquan vfact'

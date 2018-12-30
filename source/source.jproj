@@ -1,7 +1,6 @@
 header.ijs
 constants.ijs
 utilities.ijs
-paths.ijs
 main.ijs
 ct.ijs
 inversion_CONTROLLER.ijs

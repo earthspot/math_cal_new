@@ -19,7 +19,7 @@ NB. ========================================================
   NB. (Instrs with: dummy'' pre-handled by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '2018-12-18 05:04:00'    \noun: CAL last saved
+QSAV void '2018-12-29 17:28:00'    \noun: CAL last saved
 Inic void dummy''                  \=(re-)start with clear tt
 Inif void dummy''                  \=(re-)start with factory SAMPLE tt
 Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
@@ -45,7 +45,6 @@ MSSG void MESSAGE                  \message text from last instruction
 MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
 PLOT rzz  r plotz~ zz              \gen plot data with x-axis
-PTHS void tpaths''                 \all CAL+TABULA paths
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
@@ -61,15 +60,16 @@ TFLU void UNDEF                    \t-table file name -undefined
 TNAM void filename file            \t-table file name-only
 TNMS void ttnames''                \t-table all its names
 TNMX void tbx filename file        \t-table file name.ext
-TPAR void TPATH_ARCHIVE            \reference path to archive
-TPCA void TPATH_CAL                \reference path to CAL addon
+TPAR void jpath'~Archive'          \reference path to archive
+TPCA void jpath'~CAL'              \reference path to CAL addon
 TPCL void logpath LOGNAME          \reference path of callogfile
-TPSA void TPATH_SAMPLES            \reference path to SAMPLES
-TPTA void TPATH_TABULA             \reference path to TABULA
-TPTT void TPATH_TTABLES            \reference path to t-tables
-TPUU void TPATH_UU                 \reference path to UU addon
-TPUC void TPATH_UUC                \reference path to constants
-TPUF void TPATH_UUF                \reference path to functions
+TPSA void jpath'~Samples'          \reference path to SAMPLES
+TPTA void jpath'~TAB'              \reference path to TABULA
+TPTT void jpath'~Ttables'          \reference path to t-tables
+TPUU void jpath'~UU'               \reference path to UU addon
+TPUC void jpath'~UUC'              \reference path to constants
+TPUF void jpath'~UUF'              \reference path to functions
+TPUM void jpath'~UUM'              \reference path to macros
 UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 UCOM r    docompatlist r           \item compat units (system)
 UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level

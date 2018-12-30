@@ -76,22 +76,6 @@ y,SP,sep,SP,z
 
 ar=: 3 : 'SP ,.~ }.arrowch arrowgen SP'
 
-archive=: 3 : 0
-  NB. archive t-table: y (the unexpanded path name)
-  NB. ---now using: fcopynew instead (no use of toHOST)
-require'files'  NB. for: fcopynew
-  NB. xtx appends correct .ext if none given
-xtx=. tbx  NB. the correct extension for a t-table
-sce=. TPATH_TTABLES sl xtx y
-  NB. Don't archive empty file, return _2 instead
-if. 0=#z=.freads sce do. _2 return. end.
-  NB. Don't archive absent file, return _3 instead
-if. _1=z do. _3 return. end.
-1!:5 <fld=. TPATH_ARCHIVE, 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
-tgt=. fld , SL , xtx y
-tgt fcopynew sce
-)
-
 arrowch=: 3 : 0
 ssw=. empty
   NB. use as follows: arrowch arrowgen''
@@ -416,13 +400,13 @@ dbl=: +:
 dec=: <:
 
 deletefile=: 3 : 0
-  NB. delete t-table (y) in TPATH_TTABLES ONLY
+  NB. delete t-table (y) in Ttables folder ONLY
   NB. but ONLY IF a valid t-table...
 me=. 'deletefile'
 nom=. filename expandedPath y
 if. SL e. y do. pth=. pathof y else. pth=.'' end.
   sllog 'me nom pth y'
-file0=: TPATH_TTABLES sl tbx nom
+file0=: jpath ttlib nom
 if. fexist file0 do.
   empty ferase file0
   38 message file0
@@ -529,21 +513,6 @@ nouncontent=: '…'&$: : (4 : 0)
 YY=: y
 if. 256<*/$y do. x
 else. crex y
-end.
-)
-
-expandedPath=: 3 : 0
-  NB. find full pathname of t-table file (y) in its various forms
-if. 0=#y do. y=. file end.
-if. y-: '$$' do.
-  z=. TPATH_TTABLES sl tbx SAMPLE  NB. look in ttlib first
-  if. -.fexist z do. TPATH_SAMPLES sl tbx SAMPLE end.  NB. then factory
-elseif. y-: '$'  do. TPATH_SAMPLES sl tbx SAMPLE  NB. only factory
-elseif. isnums y do.  TPATH_SAMPLES sl tbx SAMPLE,y
-elseif. isNo {.y do.  TPATH_SAMPLES sl tbx SAMPLE,":y
-elseif. '~'={.y  do.  dtb jpath y
-elseif. '/'={.y  do.  y  NB. assume y is fullpath (MAC/Unix only)
-elseif.          do.  TPATH_TTABLES sl tbx dtb y
 end.
 )
 
@@ -722,7 +691,7 @@ filename=: '.' taketo [: |. '/' taketo |.
 finfo=: 3 : 0
   NB. reads (y=0) or writes (y=1) TTINFO to (infopath)
   NB. NO LONGER CALLED AUTOMATICALLY by: ttload
-]infopath=: TPATH_TTABLES sl 'INFO.txt'
+]infopath=: ttlib 'INFO.txt'
 if. y do.
   assert. 'literal' -: datatype TTINFO
   empty TTINFO fwrite infopath  NB. ignore fwrite error code
@@ -895,7 +864,7 @@ end.
 )
 
 getversion=: 3 : 0
-  NB. get version# from manifest file in TPATH (y)
+  NB. get version# from manifest file (y)
 z=. fread y,'manifest.ijs'
 if. z-:fread'' do. '0.0.0' return. end.
 z=. LF taketo 'VERSION' dropto z
@@ -1090,7 +1059,11 @@ items=: 3 : 'i. #TTn'
 ln=: ^.
 log10=: 10&^.
 log2=: 2&^.
-logpath=: 3 : 'TPATH_CAL_LOG sl y'  NB. pathname of log file: y
+
+logpath=: 3 : 0
+  NB. pathname of log file: y
+ jpath'~home/',y
+)
 
 mandhold=: _1&$: :(4 : 0)
   NB. set (x=1) /reset (x=0) /toggle (x=_1) mandatory hold on item(s) y
@@ -1580,15 +1553,6 @@ title=: 3 : 0
 CAPT
 :
 CAPT=: y      NB. call: 1 title <updated_title>
-)
-
-tpaths=: 3 : 0
-  NB. list of TPATH* nouns in _z_ and their contents
-z=. 'TPATH' nl_z_ 0
-smoutput z ,. ".each z
-for_t. z do.
-  smoutput 'shell' c (quote'open ') c CM c >t
-end.
 )
 
 tranhold=: _1&$: :(4 : 0)
@@ -2192,4 +2156,50 @@ z=. z,'end.',LF
 tabengineCore=: (3 : z)"1
 NB. tv 5!:5<'tabengineCore'  NB. diagnostic display of generated verb
 i.0 0
+)
+
+NB. ================================================
+NB. ELIMINATE TP*TH_
+
+ttlib=: 3 : 0
+jpath tbx '~Ttables/',y
+)
+
+ttsamps=: 3 : 0
+jpath tbx '~Samples/',y
+)
+
+archive=: 3 : 0
+  NB. archive t-table: y (the unexpanded path name)
+  NB. ---now using: fcopynew instead (no use of toHOST)
+require'files'  NB. for: fcopynew
+  NB. xtx appends correct .ext if none given
+xtx=. tbx  NB. the correct extension for a t-table
+sce=. jpath sw'~Ttables/(y).ijs'
+  NB. Don't archive empty file, return _2 instead
+if. 0=#z=.freads sce do. _2 return. end.
+  NB. Don't archive absent file, return _3 instead
+if. _1=z do. _3 return. end.
+1!:5 <fld=. (jpath'~Archive/'), 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
+tgt=. fld , SL , xtx y
+tgt fcopynew sce
+)
+
+expandedPath=: 3 : 0
+  NB. find full pathname of t-table file (y) in its various forms
+if. 0=#y do. y=. file end.
+if. y-: '$$' do.
+  z=. ttlib SAMPLE  NB. look in t-tables library first
+  if. -.fexist z do. ttsamps SAMPLE end.  NB. then factory
+elseif. (y-:'$')or(y-:,'$')  do. ttsamps SAMPLE  NB. only factory
+elseif. isnums y do. ttsamps SAMPLE,y
+elseif. isNo {.y do. ttsamps SAMPLE,":y
+elseif. '~'={.y  do. dtb jpath y
+elseif. '/'={.y  do. y  NB. assume y is fullpath (MAC/Unix only)
+elseif.          do. ttlib dtb y
+end.
+)
+
+onload }: 0 : 0
+smoutput expandedPath '$'
 )

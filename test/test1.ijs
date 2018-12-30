@@ -1,6 +1,6 @@
 NB. CAL test1.ijs - individual instructions basic test
 0 :0
-Wednesday 5 December 2018  11:12:53
+Saturday 29 December 2018  17:31:30
 -
 open '~Gitcal/test/test.ijs'
 )
@@ -51,15 +51,16 @@ assert EXPECTED-: tt'TFIT'	[EXPECTED=: '~/documents/github/math_cal_new/SAMPLE1.
 assert EXPECTED-: tt'TFLU'	[EXPECTED=: 'untitled'
 assert EXPECTED-: tt'TNAM'	[EXPECTED=: 'SAMPLE1'
 assert EXPECTED-: tt'TNMX'	[EXPECTED=: 'SAMPLE1.ijs'
-assert EXPECTED-: tt'TPAR'	[EXPECTED=: TPATH_ARCHIVE
-assert EXPECTED-: tt'TPCA'	[EXPECTED=: TPATH_CAL
+assert EXPECTED-: tt'TPAR'	[EXPECTED=: jpath'~Archive'
+assert EXPECTED-: tt'TPCA'	[EXPECTED=: jpath'~CAL'
 assert EXPECTED-: tt'TPCL'	[EXPECTED=: logpath LOGNAME
-assert EXPECTED-: tt'TPSA'	[EXPECTED=: TPATH_SAMPLES
-assert EXPECTED-: tt'TPTA'	[EXPECTED=: TPATH_TABULA
-assert EXPECTED-: tt'TPTT'	[EXPECTED=: TPATH_TTABLES
-assert EXPECTED-: tt'TPUU'	[EXPECTED=: TPATH_UU
-assert EXPECTED-: tt'TPUC'	[EXPECTED=: TPATH_UUC
-assert EXPECTED-: tt'TPUF'	[EXPECTED=: TPATH_UUF
+assert EXPECTED-: tt'TPSA'	[EXPECTED=: jpath'~Samples'
+assert EXPECTED-: tt'TPTA'	[EXPECTED=: jpath'~TAB'
+assert EXPECTED-: tt'TPTT'	[EXPECTED=: jpath'~Ttables'
+assert EXPECTED-: tt'TPUU'	[EXPECTED=: jpath'~UU'
+assert EXPECTED-: tt'TPUC'	[EXPECTED=: jpath'~UUC'
+assert EXPECTED-: tt'TPUF'	[EXPECTED=: jpath'~UUF'
+assert EXPECTED-: tt'TPUM'	[EXPECTED=: jpath'~UUM'
 assert EXPECTED-: tt'UCMU 6'	[EXPECTED=: ,<,'V'
 assert EXPECTED-: tt'UCOM 6'	[EXPECTED=: ,<,'V'
 assert EXPECTED-: tt'UNIF Ang'	[EXPECTED=: 'Å'
@@ -83,7 +84,7 @@ smoutput PLS,'--- CAL test1.ijs - completed',PLS
 
 NB. ---------------------------------------------------------
 0 :0  NB. TESTED ABOVE.........
-	QSAV void '2018-12-18 02:56:00'    \CAL last saved
+QSAV void '2018-12-29 17:28:00'    \noun: CAL last saved
 Inic void dummy''                  \=(re-)start with clear tt
 Inif void dummy''                  \=(re-)start with factory SAMPLE tt
 	Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
@@ -125,15 +126,16 @@ RETU void RETURNED                 \=+last noun returned
 	TNAM void filename file            \t-table file name-only
 TNMS void ttnames''                \t-table all its names
 	TNMX void tbx filename file        \t-table file name.ext
-	TPAR void TPATH_ARCHIVE            \reference path to archive
-	TPCA void TPATH_CAL                \reference path to CAL addon
+	TPAR void jpath'~Archive'          \reference path to archive
+	TPCA void jpath'~CAL'              \reference path to CAL addon
 	TPCL void logpath LOGNAME          \reference path of callogfile
-	TPSA void TPATH_SAMPLES            \reference path to SAMPLES
-	TPTA void TPATH_TABULA             \reference path to TABULA
-	TPTT void TPATH_TTABLES            \reference path to t-tables
-	TPUU void TPATH_UU                 \reference path to UU addon
-	TPUC void TPATH_UUC                \reference path to constants
-	TPUF void TPATH_UUF                \reference path to functions
+	TPSA void jpath'~Samples'          \reference path to SAMPLES
+	TPTA void jpath'~TAB'              \reference path to TABULA
+	TPTT void jpath'~Ttables'          \reference path to t-tables
+	TPUU void jpath'~UU'               \reference path to UU addon
+	TPUC void jpath'~UUC'              \reference path to constants
+	TPUF void jpath'~UUF'              \reference path to functions
+	TPUM void jpath'~UUM'              \reference path to macros
 	UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 	UCOM r    docompatlist r           \item compat units (system)
 	UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level

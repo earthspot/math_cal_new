@@ -6,14 +6,6 @@ cocurrent 'cal'
 STARTED=: 0  NB. becomes 1 when start completes successfully
 VERSION=: '2.0.0'
 
-discover_UU=: 3 : 0
-  NB. establish path: TPATH_UU
-if. absent 'TPATH_UU' do.
-  TPATH_UU_z_=: jpath'~Gituu'  NB. TEMPORARY EXPEDIENT !!!!!!!!!!!!!!!
-NB.   TPATH_UU_z_=: jpath '~addons/math/uu/uu.ijs'
-end.
-)
-
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
 inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
@@ -40,7 +32,7 @@ start=: 3 : 0
 traceverbs 'OFF'
 NB. sess1=: smoutput  NB. for inversion.ijs tracing
 sess1=: empty  NB. >>>>> DISABLE inversion.ijs tracing
- load TPATH_UU sl 'uu.ijs' [discover_UU''
+load jpath'~UU/uu.ijs'
 uuconnect''  NB. create and use an instance of class 'uu'
 make_tabengineCore''  NB. the core of: tabengine
 globmake'' NB. make global nouns
@@ -48,7 +40,7 @@ NB. inversion=: inversion3  NB. <<==== CHOOSE DAISYCHAIN: inversion
 progress _ NB. init progressbar to idle state
 0 enlog 0  NB. start a new log file
   NB. ENSURE up-to-date currency conversion table ...
-NB. load :: 0: TPATH_CAL, ijs'exch'
+NB. load :: 0: jpath'~CAL/exch.ijs'
 NB. try. start_exch_'' catch. end.
 select. y
 case. '' do. ttnew''  NB. new empty t-table
@@ -111,7 +103,41 @@ WARNPLEX=: 1	NB. 1==run warnplex after each recalc
 i.0 0
 )
 
+plotDisabled=: 3 : 0
+  NB. =1 if NOPLOT exists and NOPLOT~:0
+try. if. NOPLOT=0 do. 0 return. end.
+catch. 0 return. end.
+1 return.
+)
+
+plot=: '' ddefine
+  NB. PATCH: report disabled plot/pd for j807 nonavx
+if. plotDisabled'' do.
+  ssw '>>>{disabled} plot-package called with args:'
+  ssw '   (paren crex x) plot (crex y)'
+  ssw '... To enable plot-package:'
+  ssw '   erase ', quote'NOPLOT_z_'
+else.
+  require 'plot'
+  x plot_z_ y
+end.
+)
+
+pd=: 3 : 0
+  NB. PATCH: report disabled plot/pd for j807 nonavx
+if. plotDisabled'' do.
+  ssw '>>>{disabled} plot-package called with args:'
+  ssw '   pd (crex y)'
+  ssw '... To enable plot-package:'
+  ssw '   erase ', quote'NOPLOT_z_'
+else.
+  require 'plot'
+  pd_z_ y
+end.
+)
+
+
 NB. ======================================================
 NB. OPERATIONALLY: CAL MUST NOT SELF-START!
 NB. ======================================================
-onload 'start '''''
+onload 'pd ''reset'' '

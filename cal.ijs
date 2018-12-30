@@ -1,5 +1,5 @@
 0 :0
-Saturday 22 December 2018  19:28:05
+Sunday 30 December 2018  03:54:39
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -9,18 +9,7 @@ clear 'cal'
 coclass 'cal'
 onload_z_=: empty
 
-
-load '~tempuu/39.ijs'
-
-AABUILT=: '2018-12-22  20:28:52'
-AABUILT=: '2018-12-23  00:59:54'
-AABUILT=: '2018-12-23  01:06:44'
-AABUILT=: '2018-12-23  01:10:43'
-AABUILT=: '2018-12-23  01:13:55'
-AABUILT=: '2018-12-23  01:18:02'
-AABUILT=: '2018-12-23  03:35:54'
-AABUILT=: '2018-12-23  03:56:43'
-AABUILT=: '2018-12-24  03:16:29'
+AABUILT=: '2018-12-30  04:00:26'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -235,15 +224,6 @@ uunicode=: 3 : 0
 SIC__uun=: y
 )
 
-'==================== [z] paths.ijs ===================='
-cocurrent 'z'
-
-]TPATH_CAL=: jpath'~Gitcal/'
-]TPATH_CAL_LOG=: jpath '~/'
-]TPATH_SAMPLES=: TPATH_CAL
-]TPATH_TTABLES=: jpath '~/tabula-user/'
-]TPATH_ARCHIVE=: jpath '~/j-temp/ttarchive'
-
 '==================== [cal] main.ijs ===================='
 0 :0
 Monday 29 October 2018  13:53:46
@@ -317,22 +297,6 @@ y,SP,sep,SP,z
 )
 
 ar=: 3 : 'SP ,.~ }.arrowch arrowgen SP'
-
-archive=: 3 : 0
-
-
-require'files'
-
-xtx=. tbx
-sce=. TPATH_TTABLES sl xtx y
-
-if. 0=#z=.freads sce do. _2 return. end.
-
-if. _1=z do. _3 return. end.
-1!:5 <fld=. TPATH_ARCHIVE, 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
-tgt=. fld , SL , xtx y
-tgt fcopynew sce
-)
 
 arrowch=: 3 : 0
 ssw=. empty
@@ -656,7 +620,7 @@ me=. 'deletefile'
 nom=. filename expandedPath y
 if. SL e. y do. pth=. pathof y else. pth=.'' end.
   sllog 'me nom pth y'
-file0=: TPATH_TTABLES sl tbx nom
+file0=: jpath ttlib nom
 if. fexist file0 do.
   empty ferase file0
   38 message file0
@@ -761,21 +725,6 @@ nouncontent=: '…'&$: : (4 : 0)
 YY=: y
 if. 256<*/$y do. x
 else. crex y
-end.
-)
-
-expandedPath=: 3 : 0
-
-if. 0=#y do. y=. file end.
-if. y-: '$$' do.
-  z=. TPATH_TTABLES sl tbx SAMPLE
-  if. -.fexist z do. TPATH_SAMPLES sl tbx SAMPLE end.
-elseif. y-: '$'  do. TPATH_SAMPLES sl tbx SAMPLE
-elseif. isnums y do.  TPATH_SAMPLES sl tbx SAMPLE,y
-elseif. isNo {.y do.  TPATH_SAMPLES sl tbx SAMPLE,":y
-elseif. '~'={.y  do.  dtb jpath y
-elseif. '/'={.y  do.  y
-elseif.          do.  TPATH_TTABLES sl tbx dtb y
 end.
 )
 
@@ -953,7 +902,7 @@ filename=: '.' taketo [: |. '/' taketo |.
 finfo=: 3 : 0
 
 
-]infopath=: TPATH_TTABLES sl 'INFO.txt'
+]infopath=: ttlib 'INFO.txt'
 if. y do.
   assert. 'literal' -: datatype TTINFO
   empty TTINFO fwrite infopath
@@ -1276,7 +1225,11 @@ items=: 3 : 'i. #TTn'
 ln=: ^.
 log10=: 10&^.
 log2=: 2&^.
-logpath=: 3 : 'TPATH_CAL_LOG sl y'
+
+logpath=: 3 : 0
+
+ jpath'~home/',y
+)
 
 mandhold=: _1&$: :(4 : 0)
 
@@ -1753,15 +1706,6 @@ title=: 3 : 0
 CAPT
 :
 CAPT=: y
-)
-
-tpaths=: 3 : 0
-
-z=. 'TPATH' nl_z_ 0
-smoutput z ,. ".each z
-for_t. z do.
-  smoutput 'shell' c (quote'open ') c CM c >t
-end.
 )
 
 tranhold=: _1&$: :(4 : 0)
@@ -2343,6 +2287,48 @@ z=. z,'end.',LF
 
 tabengineCore=: (3 : z)"1
 i.0 0
+)
+ttlib=: 3 : 0
+jpath tbx '~Ttables/',y
+)
+
+ttsamps=: 3 : 0
+jpath tbx '~Samples/',y
+)
+
+archive=: 3 : 0
+
+
+require'files'
+
+xtx=. tbx
+sce=. jpath sw'~Ttables/(y).ijs'
+
+if. 0=#z=.freads sce do. _2 return. end.
+
+if. _1=z do. _3 return. end.
+1!:5 <fld=. (jpath'~Archive/'), 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
+tgt=. fld , SL , xtx y
+tgt fcopynew sce
+)
+
+expandedPath=: 3 : 0
+
+if. 0=#y do. y=. file end.
+if. y-: '$$' do.
+  z=. ttlib SAMPLE
+  if. -.fexist z do. ttsamps SAMPLE end.
+elseif. (y-:'$')or(y-:,'$')  do. ttsamps SAMPLE
+elseif. isnums y do. ttsamps SAMPLE,y
+elseif. isNo {.y do. ttsamps SAMPLE,":y
+elseif. '~'={.y  do. dtb jpath y
+elseif. '/'={.y  do. y
+elseif.          do. ttlib dtb y
+end.
+)
+
+onload }: 0 : 0
+smoutput expandedPath '$'
 )
 
 '==================== [cal] ct.ijs ===================='
@@ -3165,7 +3151,7 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '2018-12-18 05:04:00'    \noun: CAL last saved
+QSAV void '2018-12-29 17:28:00'    \noun: CAL last saved
 Inic void dummy''                  \=(re-)start with clear tt
 Inif void dummy''                  \=(re-)start with factory SAMPLE tt
 Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
@@ -3191,7 +3177,6 @@ MSSG void MESSAGE                  \message text from last instruction
 MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
 PLOT rzz  r plotz~ zz              \gen plot data with x-axis
-PTHS void tpaths''                 \all CAL+TABULA paths
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
@@ -3207,15 +3192,16 @@ TFLU void UNDEF                    \t-table file name -undefined
 TNAM void filename file            \t-table file name-only
 TNMS void ttnames''                \t-table all its names
 TNMX void tbx filename file        \t-table file name.ext
-TPAR void TPATH_ARCHIVE            \reference path to archive
-TPCA void TPATH_CAL                \reference path to CAL addon
+TPAR void jpath'~Archive'          \reference path to archive
+TPCA void jpath'~CAL'              \reference path to CAL addon
 TPCL void logpath LOGNAME          \reference path of callogfile
-TPSA void TPATH_SAMPLES            \reference path to SAMPLES
-TPTA void TPATH_TABULA             \reference path to TABULA
-TPTT void TPATH_TTABLES            \reference path to t-tables
-TPUU void TPATH_UU                 \reference path to UU addon
-TPUC void TPATH_UUC                \reference path to constants
-TPUF void TPATH_UUF                \reference path to functions
+TPSA void jpath'~Samples'          \reference path to SAMPLES
+TPTA void jpath'~TAB'              \reference path to TABULA
+TPTT void jpath'~Ttables'          \reference path to t-tables
+TPUU void jpath'~UU'               \reference path to UU addon
+TPUC void jpath'~UUC'              \reference path to constants
+TPUF void jpath'~UUF'              \reference path to functions
+TPUM void jpath'~UUM'              \reference path to macros
 UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 UCOM r    docompatlist r           \item compat units (system)
 UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
@@ -3794,7 +3780,7 @@ PLOT return.
 )
 
 0 :0
-Wednesday 5 December 2018  14:30:59
+Saturday 29 December 2018  15:58:51
 -
 ttb_pane_select -called when a line clicked
 Tool: opent - ⌘click opens ttbrowse
@@ -3839,7 +3825,7 @@ pshow;
 directory=: 3 : 0
 
 
-1!:0 jpath TPATH_TTABLES_cal_,'*.ijs'
+1!:0 jpath '~Ttables/*.ijs'
 )
 
 content=: 3 : 0
@@ -3904,7 +3890,7 @@ ttb_resize=: empty
 ttb_pane_select=: 3 : 0
 
 if. shf= {. ". sysmodifiers do. refreshPane'' end.
-]path=: TPATH_TTABLES_cal_,pane
+]path=: jpath '~Ttables/',pane
 text=: info=: UNSET
 text=: read path
 erase 'TT TTIMAGE TTINFO vquan vfact'
@@ -3927,13 +3913,6 @@ cocurrent 'cal'
 
 STARTED=: 0
 VERSION=: '2.0.0'
-
-discover_UU=: 3 : 0
-
-if. absent 'TPATH_UU' do.
-  TPATH_UU_z_=: jpath'~Gituu'
-end.
-)
 
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
@@ -3958,7 +3937,7 @@ start=: 3 : 0
 
 traceverbs 'OFF'
 sess1=: empty
- load TPATH_UU sl 'uu.ijs' [discover_UU''
+load jpath'~UU/uu.ijs'
 uuconnect''
 make_tabengineCore''
 globmake''
@@ -4015,4 +3994,38 @@ TTn=: ,:'tn'
 WARNPLEX=: 1
 i.0 0
 )
-onload 'start '''''
+
+plotDisabled=: 3 : 0
+
+try. if. NOPLOT=0 do. 0 return. end.
+catch. 0 return. end.
+1 return.
+)
+
+plot=: '' ddefine
+
+if. plotDisabled'' do.
+  ssw '>>>{disabled} plot-package called with args:'
+  ssw '   (paren crex x) plot (crex y)'
+  ssw '... To enable plot-package:'
+  ssw '   erase ', quote'NOPLOT_z_'
+else.
+  require 'plot'
+  x plot_z_ y
+end.
+)
+
+pd=: 3 : 0
+
+if. plotDisabled'' do.
+  ssw '>>>{disabled} plot-package called with args:'
+  ssw '   pd (crex y)'
+  ssw '... To enable plot-package:'
+  ssw '   erase ', quote'NOPLOT_z_'
+else.
+  require 'plot'
+  pd_z_ y
+end.
+)
+
+onload 'pd ''reset'' '

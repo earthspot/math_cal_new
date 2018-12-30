@@ -1,6 +1,6 @@
 NB. cal - run
 0 :0
-Wednesday 5 December 2018  13:21:25
+Sunday 30 December 2018  03:59:52
 -
 open BUILTFILE
 open '~Gitcal/test/test.ijs'
@@ -32,25 +32,12 @@ smoutput '--- run.ijs: CAL BUILTFILE loaded: ',BUILTFILE
 load TESTFILE
 smoutput '--- run.ijs: CAL TESTFILE completed without discrepancies: ',TESTFILE
 
-NB. THIS MINI-TEST IS NOW REDUNDANT…
-NB. smoutput tabengine_cal_ 'Init'
-NB. smoutput tabengine_cal_ 'load 3'  NB. non-trivial asteroid t-table
-NB. smoutput tabengine_cal_ 'ssic 1'  NB. set unicode conformance level
-NB. smoutput tabengine_cal_ 'CTBU'    NB. show loaded t-table
-
-NB. ---------------------------------------------------------
-
-NB. smoutput 0 : 0
-NB. >>> To view existing TPATH_* settings:
-NB.   tpath''
-NB.
-NB. >>> To force good working TPATH_* settings:
-NB.   load temp ??
-NB. )
+NOPLOT_z_=: 1  NB. disable plot package for j807 builds
 
 smoutput '+++ Gitcal run: load latest TABBY build...'
 load '~Gittab/tabula.ijs'
 
+  NB. devt facility for reloading source files…
 onload_z_=: do
 
 0 :0
