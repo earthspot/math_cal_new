@@ -1,6 +1,6 @@
 NB. cal - run
 0 :0
-Sunday 30 December 2018  03:59:52
+Monday 31 December 2018  03:30:16
 -
 open BUILTFILE
 open '~Gitcal/test/test.ijs'
@@ -39,16 +39,3 @@ load '~Gittab/tabula.ijs'
 
   NB. devt facility for reloading source files…
 onload_z_=: do
-
-0 :0
-smoutput 'CAL: Init ',tabengine_cal_ 'Init'
-smoutput 'CAL: VERS ',tabengine_cal_ 'VERS'  NB. VERSION number
-smoutput 'CAL: CTBU ',tabengine_cal_ 'CTBU'
-smoutput 'CAL: {1} 100 ',tabengine_cal_ 'valu 1 100'
--
-smoutput OUT_z_=: tabengine_cal_ IN_z_=: >cutopen 0 :0
-VERS
-CTBU
-addp 1 1
-CTBU
-)

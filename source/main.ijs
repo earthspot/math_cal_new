@@ -2180,6 +2180,7 @@ sce=. jpath sw'~Ttables/(y).ijs'
 if. 0=#z=.freads sce do. _2 return. end.
   NB. Don't archive absent file, return _3 instead
 if. _1=z do. _3 return. end.
+1!:5 :: 0: <jpath '~Archive'  NB. ensure it is there
 1!:5 <fld=. (jpath'~Archive/'), 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
 tgt=. fld , SL , xtx y
 tgt fcopynew sce
