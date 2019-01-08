@@ -89,18 +89,11 @@ COBZ=: ;:'base cal uu z zulu top'	NB. used by test utility: co
 
 	NB. "Missing / corrupt values"
 UNDEFINED=: _.	NB. should propagate in a formula
-INVALID=: _.j_.	NB. should differ from UNDEFINED but propagate also
 
 undefined=: (3 : 0)"0
 	NB. test for presence of UNDEFINED
 if. -. 128!:5 y do. 0 return. end.
 '_.' -: 5!:6 <'y'
-)
-
-invalid=: (3 : 0)"0
-	NB. test for presence of INVALID
-if. -. 128!:5 y do. 0 return. end.
-'_.j_.' -: 5!:6 <'y'
 )
 
 	NB. THE FOLLOWING IS CURRENTLY UNUSED

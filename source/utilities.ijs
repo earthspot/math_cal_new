@@ -19,7 +19,6 @@ x,SL,y
   NB. |syntax error: script
   NB. wherever "items" appears in a tacit defn
 items=: 3 : 'i. #TTn'	NB. fwd-ref fixup
-absent_z_=: [: +./ 0 > [: nc ;:	NB. true if ANY names in y absent
 begins_z_=: ] -: [ {.~ [: # ]	NB. eg: z begins NB
 bh=:    ] }.~ [: >: ' ' i.~ ]	NB. behead y up to 1st SP
 boxvec=: [: dltb&.> <"1		NB. convert cmx-->boxed list
@@ -125,7 +124,7 @@ case. _ do.		NB. set infinite timeout
 case. 0 do.		NB. destroy globals
   empty erase 'NOW THEN TIMEOUT'
 case. '' do.		NB. Bool: time is up?
-  if. any absent"1 >;:'NOW THEN TIMEOUT' do. 1 return.
+  if. any NaNoun'NOW THEN TIMEOUT' do. 1 return.
   elseif. TIMEOUT=_ do. 0 return.
   end.
   NOW=: 6!:1''

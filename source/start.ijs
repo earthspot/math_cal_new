@@ -1,6 +1,10 @@
 	NB. cal - start.ijs
 '==================== [cal] start.ijs ===================='
 
+0 :0
+WARNING: MSLOG can build up indefinitely.
+)
+
 cocurrent 'cal'
 
 STARTED=: 0  NB. becomes 1 when start completes successfully
@@ -91,6 +95,7 @@ DIRTY=: 0		NB. =1 means t-table needs saving
 ITEMNO=: _1	NB. 'exe'# of formula being executed
 INVERSION=: ''	NB. inversion heuristics register
 MAXINVERT=: 30	NB. limits backfit cycles
+MSLOG=: 0 0$''	NB. accumulates MESSAGE
 OVERHELDS=: ''	NB. items recognised by: beval
 PAD=: 10		NB. used by: pad
 PFMT=: 'line'	NB. plot format
@@ -103,12 +108,14 @@ WARNPLEX=: 1	NB. 1==run warnplex after each recalc
 i.0 0
 )
 
-plotDisabled=: 3 : 0
-  NB. =1 if NOPLOT exists and NOPLOT~:0
-try. if. NOPLOT=0 do. 0 return. end.
-catch. 0 return. end.
-1 return.
-)
+NB. plotDisabled=: 3 : 0
+NB.   NB. =1 if NOPLOT exists and NOPLOT~:0
+NB. try. if. NOPLOT=0 do. 0 return. end.
+NB. catch. 0 return. end.
+NB. 1 return.
+NB. )
+
+plotDisabled=: default bind 'NOPLOT'
 
 plot=: '' ddefine
   NB. PATCH: report disabled plot/pd for j807 nonavx

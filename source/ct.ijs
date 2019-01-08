@@ -13,7 +13,7 @@ NB. EXISTING ct as distributed (VERSION=: '1.1.00') pre: September 2018
   NB. 4 e. y -include "line 0" col-headers
 if. 0=#y do. y=. ,3 end.  NB. the default display
   NB. returns "no t-table" message if none has been loaded
-if. absent'CAPT' do. ,:40 message'' return. end.
+if. NaNoun'CAPT' do. ,:40 message'' return. end.
 if. 1=#items'' do. ,:CAPT return. end.   NB. trivial display if no items
 d=. ] ; $ ; datatype
 uc=. uucp"1
@@ -67,7 +67,7 @@ NB. ------------------------------------------------------------------
 ct2=: 3 : 0
   NB. y is diagnostic mode: y=='' for operational use
   NB. returns "no t-table" message if no t-table loaded…
-if. absent'CAPT' do. ,:40 message'' return. end.
+if. NaNoun'CAPT' do. ,:40 message'' return. end.
   NB. If no items return trivial display of just CAPT
 if. 2>nn=. #ii=. items'' do. ,:CAPT return. end.
 wc=. uucp"1                       NB. (string) y as wc chars

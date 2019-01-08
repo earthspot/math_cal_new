@@ -19,7 +19,7 @@ NB. ========================================================
   NB. (Instrs with: dummy'' pre-handled by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '2018-12-29 17:28:00'    \noun: CAL last saved
+QSAV void '2019-01-04 01:06:20'    \noun: CAL last saved
 Inic void dummy''                  \=(re-)start with clear tt
 Inif void dummy''                  \=(re-)start with factory SAMPLE tt
 Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
@@ -44,7 +44,6 @@ JXDO yy   ". yy                    \run J code in this loc
 MSSG void MESSAGE                  \message text from last instruction
 MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
-PLOT rzz  r plotz~ zz              \gen plot data with x-axis
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
@@ -192,10 +191,15 @@ pidl r    r fnline~ 'PI%~'         \copy item by PI
 pidv r    r setvalue~ vr%PI        \item by PI
 piml r    r fnline~ 'PI*'          \copy item times PI
 pimv r    r setvalue~ vr*PI        \item times PI
-plot rzz  r plotx~ zz              \setup plot with x-axis
-pl0v r    r plotv~ 0               \setup plot 0 to v
-pl1v r    r plotv~ 1               \setup plot 1 to v
-plvv r    r plotv~ _               \setup plot -v to v
+plob rrr  plotBarChart rrr         \plot Bar Chart
+plol rrr  plotLineChart rrr        \plot Line Chart
+plop rrr  plotPieChart rrr         \plot Pie Chart
+plos rrr  plotSurfaceChart rrr     \plot Surface Chart
+plot rrr  r plotItems zz           \plot given item#s rrr
+plot rzz  r plotXvals zz           \plot given x-vals zz
+pl0v rrr  plotRange0 rrr           \plot 0 to v
+pl1v rrr  plotRange1 rrr           \plot 1 to v
+plvv rrr  plotRange2 rrr           \plot -v to v
 plus rrr  '+'combine rrr           \new sum of items
 powe rr   '^'combine rr            \new power of 2 items
 ptdl r    r fnline~ 'PI2%~'        \copy item by 2*PI
@@ -204,7 +208,7 @@ ptml r    r fnline~ 'PI2*'         \copy item times 2*PI
 ptmv r    r setvalue~ vr*PI2       \item times 2*PI
 reca void empty CH=: recal 0       \recalculate
 relo void ttload file              \reload current t-table
-rplt rrr  replot rrr               \re-plot with items
+rplt rrr  replot rrr               \re-plot with item#s rrr
 rtol rv   r fnline~ '^~',~":v      \copy item ^v
 rtov rv   r setvalue~ vr^v         \item ^v
 samp void ttload '$$'              \load correct SAMPLE
@@ -220,8 +224,8 @@ ssic n    uuengine INSTR           \set SI conformance level
 ssig n    uuengine INSTR           \set significant figures
 ssiz n    uuengine INSTR           \set zero attraction threshold
 sort rrr  1 ttsort rrr             \sort by perm
-sqrl r    r fnline~ 'sqr'          \copy item squared
-sqrv r    r setvalue~ sqr vr       \squared value of r
+sqrl r    r fnline~ 'sq'           \copy item squared
+sqrv r    r setvalue~ sq vr        \squared value of r
 sqtl r    r fnline~ 'sqrt'         \copy item square-rooted
 sqtv r    r setvalue~ sqrt vr      \square-root of r
 stpd r    _1 scaleunits r          \step down scaled units

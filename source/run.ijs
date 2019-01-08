@@ -1,6 +1,6 @@
 NB. cal - run
 0 :0
-Monday 31 December 2018  03:30:16
+Tuesday 1 January 2019  20:29:44
 -
 open BUILTFILE
 open '~Gitcal/test/test.ijs'
@@ -18,7 +18,7 @@ NB. uloc_z_=: <,'0'  NB. >>>>>>>>>>>>>>>>> FUDGE
 load UUFILE  NB. >>> RELOADS _uu_ FROM ITS LAST BUILTFILE
 
 NB. 3 : 0''
-NB. if. absent 'uloc_z_' do.
+NB. if. NaNoun 'uloc_z_' do.
 NB.   uuinitTest_uu_''
 NB.   smoutput '>>> CAL run: created locator for locale: ',": >uloc_z_
 NB. end.
@@ -32,7 +32,7 @@ smoutput '--- run.ijs: CAL BUILTFILE loaded: ',BUILTFILE
 load TESTFILE
 smoutput '--- run.ijs: CAL TESTFILE completed without discrepancies: ',TESTFILE
 
-NOPLOT_z_=: 1  NB. disable plot package for j807 builds
+NOPLOT_z_=: if807''  NB. disable plot package for j807 builds
 
 smoutput '+++ Gitcal run: load latest TABBY build...'
 load '~Gittab/tabula.ijs'

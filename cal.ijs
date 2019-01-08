@@ -11,6 +11,23 @@ onload_z_=: empty
 
 AABUILT=: '2018-12-30  04:00:26'
 AABUILT=: '2018-12-31  03:37:47'
+AABUILT=: '2019-01-01  20:35:13'
+AABUILT=: '2019-01-03  05:55:35'
+AABUILT=: '2019-01-03  18:25:13'
+AABUILT=: '2019-01-04  01:06:46'
+AABUILT=: '2019-01-06  06:44:03'
+AABUILT=: '2019-01-06  09:17:31'
+AABUILT=: '2019-01-06  10:15:06'
+AABUILT=: '2019-01-06  10:53:42'
+AABUILT=: '2019-01-06  22:10:55'
+AABUILT=: '2019-01-06  22:30:32'
+AABUILT=: '2019-01-06  22:42:38'
+AABUILT=: '2019-01-08  04:39:18'
+AABUILT=: '2019-01-08  05:03:20'
+AABUILT=: '2019-01-08  05:18:03'
+AABUILT=: '2019-01-08  05:28:26'
+AABUILT=: '2019-01-08  05:48:11'
+AABUILT=: '2019-01-08  05:51:08'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -81,7 +98,6 @@ x,SL,y
 
 
 items=: 3 : 'i. #TTn'
-absent_z_=: [: +./ 0 > [: nc ;:
 begins_z_=: ] -: [ {.~ [: # ]
 bh=:    ] }.~ [: >: ' ' i.~ ]
 boxvec=: [: dltb&.> <"1
@@ -181,7 +197,7 @@ case. _ do.
 case. 0 do.
   empty erase 'NOW THEN TIMEOUT'
 case. '' do.
-  if. any absent"1 >;:'NOW THEN TIMEOUT' do. 1 return.
+  if. any NaNoun'NOW THEN TIMEOUT' do. 1 return.
   elseif. TIMEOUT=_ do. 0 return.
   end.
   NOW=: 6!:1''
@@ -1257,7 +1273,9 @@ message=: 4 : 0
 MESSAGE_ID=: x
 mm=. 3}.dtb x{MESSAGELIST
 'y0 y1 y2 y3'=. 4{.boxopen y
-empty MESSAGE=: sw '[cal#(x)] ',mm
+MESSAGE=: sw '[cal#(x)] ',mm
+MSLOG=: MSLOG,MESSAGE
+MESSAGE return.
 )
 
 nochange=: empty
@@ -1316,110 +1334,11 @@ z=. - ($y) max 0,PAD
 z{.y
 )
 
-0 :0
-plotv=: 4 : 0
-
-
-val=. getvalue y
-smoutput nb 'plotv:' ; 'x=' ; x ; 'y=' ; y ; 'val=' ; val
-select. x
-case. 0 do. n3=. 0,val,100
-case. 1 do. n3=. 1,val,100
-case. _ do. n3=. (-val),val,100
-case.   do. @@
-end.
-y plotxSwift~ steps_jzplot_ n3
-)
-
-0 :0
-plotxSwift=: 4 : 0
-
-
-
-
-snapshot''
-IX=: {.y
-z=. vquan
-for_v. x do.
-  v setvalue IX
-  z=. z ,. vquan
-end.
-z=. }."1 remove_infinities z
-VDATA=: z
-plot2Swift y -.~ }.items''
-)
-
-0 :0
-plot2Swift=: 3 : 0
-
-
-d=. IX{VDATA
-e=. y{VDATA
-PFMT plotSwift d;e
-)
-
-0 :0
-replot=: 3 : 0
-
-
-
-try.
-rrr=. y
-plot2Swift rrr -. IX
-catch.
-    'plot2Swift failed (caches absent?)'
-end.
-)
-
-0 :0
-plotSwift=: 4 : 0
-
-
-DATA=: y
-pd'reset'
-pd y
-pd 'pdf ',PLOTNAME
-openfile PLOTNAME
-)
-
-0 :0
-plotx=: 4 : 0
-
-
-
-vals=. ".x
-snapshot''
-for_v. vals do.
-  v setvalue y
-  if. 0=v_index do. z=. vquan
-  else. z=. z ,. vquan
-  end.
-end.
-i=. y -.~ }.items''
-PFMT plot DATA=: (y{z) ; (i{z)
-)
-
-0 :0
 remove_infinities=: 3 : 0
 
 f1=. 3 : '(>./y -. _) (I. y=_)}y' "1
 f_1=. 3 : '(<./y -. __) (I. y=__)}y' "1
 f_1 f1 y
-)
-
-0 :0
-plotz=: 4 : 0
-
-
-vals=. ".x
-snapshot''
-for_v. vals do.
-  v setvalue y
-  if. 0=v_index do. z=. vquan
-  else. z=. z ,. vquan
-  end.
-end.
-remove_infinities z
 )
 
 pretty=: 3 : 0
@@ -1917,6 +1836,7 @@ vsiq0=: vsiqn
 ttload=: 3 : 0
 
 if. isEmpty y do. 19 message '' return. end.
+MSLOG=: 0 0$''
 snapshot 0
 invalexe''
 invalinfo''
@@ -1997,6 +1917,7 @@ end.
 
 ttnew=: 3 : 0
 
+MSLOG=: 0 0$''
 snapshot 0
 invalexe''
 invalinfo''
@@ -2062,7 +1983,7 @@ if. file-: UNDEF do. 29 message'' return. end.
 retco=. archive filename file
 data=: z
 empty erase 'TT'
-mfile=. filename file
+mfile=: filename file
 
 if. x and fexist file do.
 
@@ -2078,11 +1999,12 @@ end.
 bytes=. z fwrite file
 	msg 28 message bytes; mfile
 if. bytes>0 do.
-  mmm=. 30 message mfile; bytes
+  ]mmm=. 30 message mfile; bytes
   dirty 0
 else.
-  msg mmm=. 31 message mfile
+  ]mmm=. 31 message mfile
 end.
+smoutput sw'>>> ttsav returns message:(LF)(mmm)'
 mmm return.
 )
 
@@ -2203,7 +2125,6 @@ tabengine=: 3 : 0 "1
 
 
 
-MESSAGE=: '' [MESSAGE_ID=: _1
 if. -.(STARTED or y beginsWith 'Ini') do.
   smoutput < RETURNED=: 3}. dtb 46{MESSAGELIST
   RETURNED return.
@@ -2342,7 +2263,7 @@ ct1=: 3 : 0
 
 if. 0=#y do. y=. ,3 end.
 
-if. absent'CAPT' do. ,:40 message'' return. end.
+if. NaNoun'CAPT' do. ,:40 message'' return. end.
 if. 1=#items'' do. ,:CAPT return. end.
 d=. ] ; $ ; datatype
 uc=. uucp"1
@@ -2380,7 +2301,7 @@ z=. (-.vhidd) # z
 ct2=: 3 : 0
 
 
-if. absent'CAPT' do. ,:40 message'' return. end.
+if. NaNoun'CAPT' do. ,:40 message'' return. end.
 
 if. 2>nn=. #ii=. items'' do. ,:CAPT return. end.
 wc=. uucp"1
@@ -3153,7 +3074,7 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '2018-12-29 17:28:00'    \noun: CAL last saved
+QSAV void '2019-01-04 01:06:20'    \noun: CAL last saved
 Inic void dummy''                  \=(re-)start with clear tt
 Inif void dummy''                  \=(re-)start with factory SAMPLE tt
 Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
@@ -3178,7 +3099,6 @@ JXDO yy   ". yy                    \run J code in this loc
 MSSG void MESSAGE                  \message text from last instruction
 MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
-PLOT rzz  r plotz~ zz              \gen plot data with x-axis
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
@@ -3326,10 +3246,15 @@ pidl r    r fnline~ 'PI%~'         \copy item by PI
 pidv r    r setvalue~ vr%PI        \item by PI
 piml r    r fnline~ 'PI*'          \copy item times PI
 pimv r    r setvalue~ vr*PI        \item times PI
-plot rzz  r plotx~ zz              \setup plot with x-axis
-pl0v r    r plotv~ 0               \setup plot 0 to v
-pl1v r    r plotv~ 1               \setup plot 1 to v
-plvv r    r plotv~ _               \setup plot -v to v
+plob rrr  plotBarChart rrr         \plot Bar Chart
+plol rrr  plotLineChart rrr        \plot Line Chart
+plop rrr  plotPieChart rrr         \plot Pie Chart
+plos rrr  plotSurfaceChart rrr     \plot Surface Chart
+plot rrr  r plotItems zz           \plot given item#s rrr
+plot rzz  r plotXvals zz           \plot given x-vals zz
+pl0v rrr  plotRange0 rrr           \plot 0 to v
+pl1v rrr  plotRange1 rrr           \plot 1 to v
+plvv rrr  plotRange2 rrr           \plot -v to v
 plus rrr  '+'combine rrr           \new sum of items
 powe rr   '^'combine rr            \new power of 2 items
 ptdl r    r fnline~ 'PI2%~'        \copy item by 2*PI
@@ -3338,7 +3263,7 @@ ptml r    r fnline~ 'PI2*'         \copy item times 2*PI
 ptmv r    r setvalue~ vr*PI2       \item times 2*PI
 reca void empty CH=: recal 0       \recalculate
 relo void ttload file              \reload current t-table
-rplt rrr  replot rrr               \re-plot with items
+rplt rrr  replot rrr               \re-plot with item#s rrr
 rtol rv   r fnline~ '^~',~":v      \copy item ^v
 rtov rv   r setvalue~ vr^v         \item ^v
 samp void ttload '$$'              \load correct SAMPLE
@@ -3354,8 +3279,8 @@ ssic n    uuengine INSTR           \set SI conformance level
 ssig n    uuengine INSTR           \set significant figures
 ssiz n    uuengine INSTR           \set zero attraction threshold
 sort rrr  1 ttsort rrr             \sort by perm
-sqrl r    r fnline~ 'sqr'          \copy item squared
-sqrv r    r setvalue~ sqr vr       \squared value of r
+sqrl r    r fnline~ 'sq'           \copy item squared
+sqrv r    r setvalue~ sq vr        \squared value of r
 sqtl r    r fnline~ 'sqrt'         \copy item square-rooted
 sqtv r    r setvalue~ sqrt vr      \square-root of r
 stpd r    _1 scaleunits r          \step down scaled units
@@ -3683,7 +3608,7 @@ j< 0.2 * #b
 
 '==================== [cal] newplot.ijs ===================='
 0 :0
-Saturday 22 December 2018  21:09:51
+Thursday 3 January 2019  05:31:37
 -
 NEW plot facility: "plot' is ancillary verb in a t-table formula
 verbs: plot, plotstub -moved here from: main.ijs
@@ -3705,10 +3630,27 @@ PLOT is updated by: beval whenever {5} is changed.
 
 cocurrent 'cal'
 
-STEPS=: 50
+CHART_TYPE=: 'line'
+STEPS=: 100
+XRANGE=: 0
+
+changes=: (4 : 0) :: 1:
+
+
+if. (x -: y~)and(({:{.DATA) = getvalue {.{.DATA) do. 0 return. end.
+". y,'=:x'
+1 return.
+)
+
+invalplot=: 3 : 0
+
+
+if. -.y do. return. end.
+smoutput '+++ invalplot: called'
+erase 'DATA iX iY'
+)
 
 steps=: {. + (1&{ - {.) * (i.@>: % ])@{:
-
 
 step0=: 3 : 'steps 0,(y{vquan),STEPS'
 step1=: 3 : 'steps 1,(y{vquan),STEPS'
@@ -3718,8 +3660,7 @@ genDATA=: 4 : 0
 
 
 SAV=. vquan ; vsiqn ; PLOT
-PLOT=: 0
-iX  =: {.x
+iX=. {.x
 z=. items''
 ]iz=. iX , }.z
 for_v. (".":y) do.
@@ -3727,7 +3668,7 @@ for_v. (".":y) do.
   z=. z ,. vquan
 end.
 'vquan vsiqn PLOT'=: SAV
-DATA=: iz{ f_1 f1 z return.
+iz{ f_1 f1 z return.
 )
 0 :0
 $ 1 genDATA 'steps 0 2 10'
@@ -3747,48 +3688,129 @@ $ 1 genDATA step2 1
 f1=: 3 : '(>./y -. _) (I. y=_)}y' "1
 f_1=: 3 : '(<./y -. __) (I. y=__)}y' "1
 
-plotl=: _ ddefine
+setup_plot=: 4 : 0
+
+
+ssw'+++ setup_plot x=[(crex x)] XRANGE=(y)'
+iX=: x
+select. y
+case. 0 do. step=. step0
+case. 1 do. step=. step1
+case. 2 do. step=. step2
+case.   do. step=. step0
+end.
+
+iX genDATA step iX
+)
+
+dataX=: (3 : '{.{.DATA') :: 1:
+
+
+replot=: 3 : 0
+
+
+iX=. dataX''
+iX do_plot (y-.iX)
+)
+
+do_plot=: 4 : 0
+
+
+
+
+
+iY=. y=. y -. iX=.x
+smoutput sw '+++ do_plot: iX=(iX) iY=[(iY)] DATA absent:(NaNoun''DATA'')'
+Yitems=. }.,',',.brace"0  y
+pd 'reset'
+pd sw 'title Plot (Yitems) against (brace x)'
+pd 'key ',Yitems
+if. NaNoun'DATA' do. DATA=: iX setup_plot XRANGE end.
+data0=. }. 0{DATA
+datay=. 0 1 }. y{DATA
+pd data0 ; datay
+pd 'show'
+)
+
+plotBarChart=: 3 : 0
+
+invalplot 'bar' changes 'CHART_TYPE'
+ssw '>>> (CHART_TYPE): y=[(y)] not implemented yet'
+)
+
+plotLineChart=: 3 : 0
+
+
+
+
+invalplot 'line' changes 'CHART_TYPE'
+ssw '>>> (CHART_TYPE): y=[(crex y)]'
+X=: {.y [ Y=: }.y
+if. 0=#Y do. Y=: I. X e."1 TD end.
+X do_plot Y
+)
+
+plotRange0=: 3 : 0
+
+invalplot 0 changes 'XRANGE'
+plotLineChart y
+)
+
+plotRange1=: 3 : 0
+
+invalplot 1 changes 'XRANGE'
+plotLineChart y
+)
+
+plotRange2=: 3 : 0
+
+invalplot 2 changes 'XRANGE'
+plotLineChart y
+)
+
+plotPieChart=: 3 : 0
+
+invalplot 'pie' changes 'CHART_TYPE'
+ssw '>>> (CHART_TYPE): y=[(y)] not implemented yet'
+)
+
+plotSurfaceChart=: 3 : 0
+
+invalplot 'surface' changes 'CHART_TYPE'
+ssw '>>> (CHART_TYPE): y=[(y)] not implemented yet'
+)
+
+plotline=: 3 : 0
 
 
 
 if. PLOT=0 do. 0 return. end.
-z=. ITEMNO{TD
-if. _ -: TYPE=.x do.
-  y=. z
-end.
-iX  =: {.y
-iY  =: }.y
-smoutput sw '+++ plotl: x=(x) iX=(iX) iY=[(iY)] PLOT=(PLOT)'
-Xpre=. getvalue iX
-Yitems=. }.,',',.brace"0  }.y
-pd 'reset'
-pd sw 'title Plot (Yitems) against (brace iX)'
 
-pd 'color red,green,blue,pink,yellow,cyan,black'
-pd 'key ',Yitems
-step=. step0
-select. TYPE
-case. 0 do. step=. step0
-case. 1 do. step=. step1
-case. 2 do. step=. step2
-end.
-DATA=: iX genDATA step iX
-
-X=: }. 0{DATA
-Y=: 0 1 }. iY{DATA
-pd X ; Y
-pd 'show'
+ITEMNO do_plot ITEMNO{TD
 PLOT return.
+)
+onload 'plotLineChart 1 2 3 4'
+
+0 :0
+plotLineChart 1
+replot 2 3
+replot 3 2
+replot 4 2
+replot 4 3 2
+replot 2 3 4
 )
 
 0 :0
-Saturday 29 December 2018  15:58:51
+Wednesday 2 January 2019  00:58:55
 -
 ttb_pane_select -called when a line clicked
 Tool: opent - ⌘click opens ttbrowse
 ttb_bnLoad_button -"illegal" calls into TABBY
-  really needs to send a message which can be ignored.
+  instead really needs to send a message which can be ignored.
   -or maybe a try/catch ??
+-
+expand pfx to use the current tag of (path) y
+Omit the '.ijs' from displayed (content'')
 -
 onload_z_=: do
 -
@@ -3815,6 +3837,9 @@ bin z;
 bin h;
 bin s;		rem left spacer;
   cc bnDele button; cn "Delete";
+  cc bnTag0 button; cn "No Tags";
+  cc bnTag1 button; cn "Tag[1]";
+  cc bnTag2 button; cn "Tag[2]";
   cc bnOpen button; cn "Open";
   cc bnLoad button; cn "Load";
 bin s;		rem right spacer;
@@ -3824,15 +3849,62 @@ bin z;
 set textbuf font fixfont;
 pshow;
 )
+TAG1=: 0 : 0
+62 70 6C 69 73 74 30 30 A1 01 55 52 65 64 0A 36
+08 0A 00 00 00 00 00 00 01 01 00 00 00 00 00 00
+00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 10
+)
+
+TAG2=: 0 : 0
+62 70 6C 69 73 74 30 30 A1 01 57 47 72 65 65 6E
+0A 32 08 0A 00 00 00 00 00 00 01 01 00 00 00 00
+00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 12
+)
+
+tagpath=: (''ddefine) :: 0:
+
+if. 0=#y do. y=. path end.
+f0=. 2!:0
+f1=. 2!:1
+hx=. deb (LF;SP)stringreplace ". 'TAG',":x
+p=. jpath y
+com=. 'com.apple.metadata:_kMDItemUserTags'
+if. p-:UNSET do. return. end.
+select. x
+case. 0 do. f0 sw'xattr -d (com) (p)'
+case. 1 do. f0 sw'xattr -wx (com) "(hx)" (p)'
+case. 2 do. f0 sw'xattr -wx (com) "(hx)" (p)'
+end.
+
+
+select. f0 sw'xattr -px (com) (p)'
+case. TAG1 do. 1 return.
+case. TAG2 do. 2 return.
+case.      do. 0
+end.
+)
+
+pfx=: 3 : 0"1
+	y return.
+t=. {. ": tagpath '~Ttables/',deb y
+t,UL,y
+)
+  
 directory=: 3 : 0
 
 
-1!:0 jpath '~Ttables/*.ijs'
+DIR=: 1!:0 jpath '~Ttables/*.ijs'
 )
 
+pathtable=: 3 : 0
+
+pfx >{."1 directory''
+)
 content=: 3 : 0
 
-x2f >{."1 directory''
+x2f pathtable''
 )
 
 deTAB=: 3 : 0
@@ -3892,24 +3964,34 @@ ttb_resize=: empty
 ttb_pane_select=: 3 : 0
 
 if. shf= {. ". sysmodifiers do. refreshPane'' end.
-]path=: jpath '~Ttables/',pane
+fname=: pane
+path=: jpath '~Ttables/',fname
+tagid=. tagpath path
+tag=. > tagid { ;:'notag red green'
 text=: info=: UNSET
 text=: read path
 erase 'TT TTIMAGE TTINFO vquan vfact'
 load :: 0: path
-if. -.absent'TTIMAGE' do. text=: TTIMAGE end.
-if. -.absent'TTINFO' do. info=: TTINFO end.
+if. -.NaNoun'TTIMAGE' do. text=: TTIMAGE end.
+if. -.NaNoun'TTINFO' do. info=: TTINFO end.
 wd 'psel ttb; set textbuf text *',text
 wd 'psel ttb; set infobuf text *',info
-putsb 'ttb_pane_select: ',date''
+putsb tag,' / ttb_pane_select: ',date''
 )
 
 numvec=: 3 : '". (LF,SP) sub y'
 sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 
+ttb_bnTag0_button=: 0&tagpath
+ttb_bnTag1_button=: 1&tagpath
+ttb_bnTag2_button=: 2&tagpath
 onload 'start 0'
 
 '==================== [cal] start.ijs ===================='
+
+0 :0
+WARNING: MSLOG can build up indefinitely.
+)
 
 cocurrent 'cal'
 
@@ -3985,6 +4067,7 @@ DIRTY=: 0
 ITEMNO=: _1
 INVERSION=: ''
 MAXINVERT=: 30
+MSLOG=: 0 0$''
 OVERHELDS=: ''
 PAD=: 10
 PFMT=: 'line'
@@ -3996,13 +4079,7 @@ TTn=: ,:'tn'
 WARNPLEX=: 1
 i.0 0
 )
-
-plotDisabled=: 3 : 0
-
-try. if. NOPLOT=0 do. 0 return. end.
-catch. 0 return. end.
-1 return.
-)
+plotDisabled=: default bind 'NOPLOT'
 
 plot=: '' ddefine
 
