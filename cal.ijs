@@ -28,6 +28,14 @@ AABUILT=: '2019-01-08  05:18:03'
 AABUILT=: '2019-01-08  05:28:26'
 AABUILT=: '2019-01-08  05:48:11'
 AABUILT=: '2019-01-08  05:51:08'
+AABUILT=: '2019-01-09  10:50:33'
+AABUILT=: '2019-01-09  11:05:40'
+AABUILT=: '2019-01-09  11:21:57'
+AABUILT=: '2019-01-09  11:35:21'
+AABUILT=: '2019-01-09  12:01:00'
+AABUILT=: '2019-01-09  12:14:30'
+AABUILT=: '2019-01-09  12:15:52'
+AABUILT=: '2019-01-09  12:32:09'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -526,6 +534,7 @@ cols=: [: }. [ {"1~ [: to/ ]
 combine=: 4 : 0
 
 
+invalplot''
 y=. ,y
 fmla=. fixfmla ,|: x, ,:(#y){.az
 vn=. ''
@@ -610,6 +619,7 @@ uuengine'CONV',y
 copyline=: 3 : 0
 
 
+invalplot''
 label=. '=',(brace y)
 unitn=. >y{UNITN
 units=. >y{UNITS
@@ -978,6 +988,7 @@ if. ';' e. z do. 2 return. end.
 fnline=: 4 : 0
 
 
+invalplot''
 label=. x,(brace y)
 unitn=. >y{UNITN
 units=. >y{UNITS
@@ -1334,6 +1345,13 @@ z=. - ($y) max 0,PAD
 z{.y
 )
 
+parents=: 3 : 0
+
+
+
+0 -.~ y{TD
+)
+
 remove_infinities=: 3 : 0
 
 f1=. 3 : '(>./y -. _) (I. y=_)}y' "1
@@ -1510,6 +1528,7 @@ setvalue=: 4 : 0
 
 if. -.validitem y do. 10 message y return. end.
 if. x= y{vquan do. 13 message y; x return. end.
+invalplot''
 vqua0=: vquan
 vquan=: x y}vquan
 CH=: recal y
@@ -1648,6 +1667,7 @@ empty''
 ttadl=: 3 : 0
 
 
+invalplot''
 'ytn ytu yvalu'=. y
 'yts cyc fac'=. convert ytu
 
@@ -1668,6 +1688,7 @@ ttfix''
 ttafl=: 3 : 0
 
 
+invalplot''
 'ytn ytu ytd ytf'=. y
 'yts cyc fac'=. convert ytu=. pretty ytu
 
@@ -1765,6 +1786,7 @@ ttadl udumb__uun USAV=: 0 udat__uun y
 
 ttauf=: 3 : 0
 
+invalplot''
 'label unitf fext'=. 1 udat__uun y
 select. sep=. 1 goodfmla fext
 case. '*' do. fext=. '*' appextn fext
@@ -1786,25 +1808,26 @@ ttafl label; unitf; deps; fext
 
 ttdelete=: 3 : 0
 
-  nd=. i.0
-  for_i. |.y=.,y do.
-    if. hasdep i do.
-      nd=. nd,i
-    else.
-      reselect i
-      ttdelete_one i
-    end.
+invalplot''
+nd=. i.0
+for_i. |.y=.,y do.
+  if. hasdep i do.
+    nd=. nd,i
+  else.
+    reselect i
+    ttdelete_one i
   end.
-  yd=. y -. nd
-  if. mt nd do.
-    'ttdelete' dirty 1
-    reselect 0
-    21 message yd
-  elseif. mt yd do.
-    22 message nd
-  elseif. do.
-    23 message yd; nd
-  end.
+end.
+yd=. y -. nd
+if. mt nd do.
+  'ttdelete' dirty 1
+  reselect 0
+  21 message yd
+elseif. mt yd do.
+  22 message nd
+elseif. do.
+  23 message yd; nd
+end.
 )
 
 ttdelete_one=: 3 : 0
@@ -1816,6 +1839,7 @@ ttfix=: 3 : 0
 
 
 
+invalplot''
 t=. #TTn
 
 vquan=: t{.vquan
@@ -1836,8 +1860,10 @@ vsiq0=: vsiqn
 ttload=: 3 : 0
 
 if. isEmpty y do. 19 message '' return. end.
+plotclose''
 MSLOG=: 0 0$''
 snapshot 0
+invalplot''
 invalexe''
 invalinfo''
 TTINFO=:''
@@ -1888,6 +1914,7 @@ warnplex''
 
 ttmerge=: 4 : 0
 
+invalplot''
 if. y incompat_i x do. 24 message x; y return. end.
 select. z=.hasf x,y
 case. 0 0 do.
@@ -1917,8 +1944,10 @@ end.
 
 ttnew=: 3 : 0
 
+plotclose''
 MSLOG=: 0 0$''
 snapshot 0
+invalplot''
 invalexe''
 invalinfo''
 TTINFO=:''
@@ -2011,6 +2040,7 @@ mmm return.
 ttsort=: 4 : 0
 
 
+invalplot''
 t=. items''
 if. 1=$y=.,y do. t=. t-.y
 elseif. 0=$y do. 33 message'' return.
@@ -3252,6 +3282,7 @@ plop rrr  plotPieChart rrr         \plot Pie Chart
 plos rrr  plotSurfaceChart rrr     \plot Surface Chart
 plot rrr  r plotItems zz           \plot given item#s rrr
 plot rzz  r plotXvals zz           \plot given x-vals zz
+plox void plotclose''              \close plot window
 pl0v rrr  plotRange0 rrr           \plot 0 to v
 pl1v rrr  plotRange1 rrr           \plot 1 to v
 plvv rrr  plotRange2 rrr           \plot -v to v
@@ -3373,6 +3404,8 @@ MESSAGELIST=: cmx 0 : 0
 44 cache file (y0) yields text: (y1)
 45 line {(y0)} units changed from [(y1)] to INCOMPATIBLE [(y2)]
 46 >>> no action because CAL engine has not been initialized
+47 >>> no action because no valid lines selected
+48 line(s) replotted: {(y)}
 )
 
 '==================== [cal] tabmath.ijs ===================='
@@ -3645,9 +3678,13 @@ if. (x -: y~)and(({:{.DATA) = getvalue {.{.DATA) do. 0 return. end.
 invalplot=: 3 : 0
 
 
-if. -.y do. return. end.
-smoutput '+++ invalplot: called'
+if. 0={.y do. return. end.
 erase 'DATA iX iY'
+)
+
+plotclose=: 3 : 0
+
+wd :: 0: 'psel plot; pclose'
 )
 
 steps=: {. + (1&{ - {.) * (i.@>: % ])@{:
@@ -3660,6 +3697,7 @@ genDATA=: 4 : 0
 
 
 SAV=. vquan ; vsiqn ; PLOT
+PLOT=: 0
 iX=. {.x
 z=. items''
 ]iz=. iX , }.z
@@ -3709,8 +3747,17 @@ dataX=: (3 : '{.{.DATA') :: 1:
 replot=: 3 : 0
 
 
+
 iX=. dataX''
-iX do_plot (y-.iX)
+if. y-:_ do. iY=. descendants iX
+else.        iY=. y -. iX
+end.
+if. 0<#iY do.
+  iX do_plot iY
+  48 message iY
+else.
+  47 message ''
+end.
 )
 
 do_plot=: 4 : 0
@@ -3720,7 +3767,8 @@ do_plot=: 4 : 0
 
 
 iY=. y=. y -. iX=.x
-smoutput sw '+++ do_plot: iX=(iX) iY=[(iY)] DATA absent:(NaNoun''DATA'')'
+]suffix=. '…regen DATA' #~ {.NaNoun'DATA'
+smoutput sw '+++ do_plot: iX=(iX) iY=[(iY)]',suffix
 Yitems=. }.,',',.brace"0  y
 pd 'reset'
 pd sw 'title Plot (Yitems) against (brace x)'
@@ -3786,11 +3834,13 @@ plotline=: 3 : 0
 
 if. PLOT=0 do. 0 return. end.
 
-ITEMNO do_plot ITEMNO{TD
+i=. ITEMNO
+iX=. {. i{TD
+iY=. iX -.~ i{TD
+ssw '... plotline: iX=(iX) iY=(iY)'
+iX do_plot iY
 PLOT return.
 )
-onload 'plotLineChart 1 2 3 4'
-
 0 :0
 plotLineChart 1
 replot 2 3

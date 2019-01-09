@@ -197,6 +197,7 @@ plop rrr  plotPieChart rrr         \plot Pie Chart
 plos rrr  plotSurfaceChart rrr     \plot Surface Chart
 plot rrr  r plotItems zz           \plot given item#s rrr
 plot rzz  r plotXvals zz           \plot given x-vals zz
+plox void plotclose''              \close plot window
 pl0v rrr  plotRange0 rrr           \plot 0 to v
 pl1v rrr  plotRange1 rrr           \plot 1 to v
 plvv rrr  plotRange2 rrr           \plot -v to v

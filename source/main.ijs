@@ -294,6 +294,7 @@ cols=: [: }. [ {"1~ [: to/ ]
 combine=: 4 : 0
   NB. combine items: y under arithmetic symbol: x
   NB. Allocate lines: y the varname (=vn): a b c... in turn
+invalplot''
 y=. ,y      NB. in case there's only 1 item
 fmla=. fixfmla ,|: x, ,:(#y){.az
 vn=. ''  NB. the fmla "ext", describing the participating vars
@@ -379,6 +380,7 @@ uuengine'CONV',y
 copyline=: 3 : 0
   NB. copy line: y
   NB. a very simple version of: combine
+invalplot''
 label=. '=',(brace y)      NB. e.g. '={2}'
 unitn=. >y{UNITN
 units=. >y{UNITS
@@ -752,6 +754,7 @@ if. ';' e. z do. 2 return. end.
 fnline=: 4 : 0
   NB. fn: x of item: y
   NB. c/f copyline
+invalplot''
 label=. x,(brace y)  NB. e.g. 'f{2}'
 unitn=. >y{UNITN  NB. nominal units of item: y
 units=. >y{UNITS  NB. SI units of item: y
@@ -1154,6 +1157,13 @@ z=. - ($y) max 0,PAD
 z{.y
 )
 
+parents=: 3 : 0
+  NB. immediate parents of dependent item# (y)
+  NB. c/f ancestors
+  NB. WARNING: the returned item#s may themselves have formulas
+0 -.~ y{TD
+)
+
 remove_infinities=: 3 : 0
   NB. used originally by: plotz, plotxSwift
 f1=. 3 : '(>./y -. _) (I. y=_)}y' "1
@@ -1338,6 +1348,7 @@ setvalue=: 4 : 0
   NB. set x as the value of item y
 if. -.validitem y do. 10 message y return. end.
 if. x= y{vquan do. 13 message y; x return. end.
+invalplot''
 vqua0=: vquan
 vquan=: x y}vquan
 CH=: recal y
@@ -1477,6 +1488,7 @@ empty''
 ttadl=: 3 : 0
   NB. add a new "dumb" line to TT
   NB. eg: ttadl 'a:Distance to fall' ; 'km' ; 1
+invalplot''
 'ytn ytu yvalu'=. y
 'yts cyc fac'=. convert ytu
   NB. (check cyc~:0 at this point?)
@@ -1497,6 +1509,7 @@ ttfix''
 ttafl=: 3 : 0
   NB. add a new fmla line to t-table
   NB. eg: ttafl 'label'; 'cm'; '1 2'; 'a+b: a(m),b(cm)'
+invalplot''
 'ytn ytu ytd ytf'=. y
 'yts cyc fac'=. convert ytu=. pretty ytu
   NB. check cyc~:0 at this point? <<<<<<<<<<<
@@ -1599,6 +1612,7 @@ ttadl udumb__uun USAV=: 0 udat__uun y  NB. y is seltext''
 
 ttauf=: 3 : 0
   NB. add line from functs table to t-table
+invalplot''
 'label unitf fext'=. 1 udat__uun y  NB. y is text selected
 select. sep=. 1 goodfmla fext
 case. '*' do. fext=. '*' appextn fext
@@ -1620,25 +1634,26 @@ ttafl label; unitf; deps; fext  NB. now append the fmla line
 
 ttdelete=: 3 : 0
   NB. delete 1 or more items: y
-  nd=. i.0    NB. init items not deleted
-  for_i. |.y=.,y do.  NB. delete highest row#s first
-    if. hasdep i do.
-      nd=. nd,i
-    else.
-      reselect i
-      ttdelete_one i
-    end.
+invalplot''
+nd=. i.0    NB. init items not deleted
+for_i. |.y=.,y do.  NB. delete highest row#s first
+  if. hasdep i do.
+    nd=. nd,i
+  else.
+    reselect i
+    ttdelete_one i
   end.
-  yd=. y -. nd    NB. items deleted
-  if. mt nd do.
-    'ttdelete' dirty 1
-    reselect 0
-    21 message yd
-  elseif. mt yd do.
-    22 message nd
-  elseif. do.
-    23 message yd; nd
-  end.
+end.
+yd=. y -. nd    NB. items deleted
+if. mt nd do.
+  'ttdelete' dirty 1
+  reselect 0
+  21 message yd
+elseif. mt yd do.
+  22 message nd
+elseif. do.
+  23 message yd; nd
+end.
 )
 
 ttdelete_one=: 3 : 0
@@ -1650,6 +1665,7 @@ ttfix=: 3 : 0
   NB. fixup the tt-vars after adding new line(s)
   NB. called by: ttadl, ttafl
   NB. assume TTn is up-to-date…
+invalplot''
 t=. #TTn    NB. id of new last item of t-table
   NB. extend by "overtake" ({.) all TT-compatible lists…
 vquan=: t{.vquan
@@ -1670,8 +1686,10 @@ vsiq0=: vsiqn
 ttload=: 3 : 0
   NB. load the chosen t-table
 if. isEmpty y do. 19 message '' return. end.  NB. IAC 5 DEC 18
+plotclose''
 MSLOG=: 0 0$''  NB. stop it getting too big
 snapshot 0      NB. to recover space (done again later)
+invalplot''     NB. replot caches are invalid
 invalexe''      NB. existing 'exe' verbs are invalid
 invalinfo''     NB. existing  info display is invalid
 TTINFO=:''      NB. create empty
@@ -1724,6 +1742,7 @@ warnplex''
 
 ttmerge=: 4 : 0
   NB. delete target item y after pointing its descendants to item x
+invalplot''
 if. y incompat_i x do. 24 message x; y return. end.
 select. z=.hasf x,y
 case. 0 0 do.
@@ -1753,10 +1772,12 @@ end.
 
 ttnew=: 3 : 0
   NB. empty the t-table
+plotclose''
 MSLOG=: 0 0$''  NB. stop it getting too big
 snapshot 0      NB. to recover space (done again later)
+invalplot''     NB. replot caches are invalid
 invalexe''      NB. existing 'exe' verbs are invalid
-invalinfo''     NB. existing  info display is invalid
+invalinfo''     NB. existing info display is invalid
 TTINFO=:''      NB. create empty
 TTn=: ,:'tn'
 TD=: 1 1$0
@@ -1851,6 +1872,7 @@ mmm return.  NB. return resulting message for top-end
 ttsort=: 4 : 0
   NB. sort the lines of t-table by selection: y
   NB. (Bool)x: 1=adjust dependencies, 0=blind-sort (used by: duplicate)
+invalplot''
 t=. items''  NB. commence with all available items
 if. 1=$y=.,y do. t=. t-.y    NB. 1-element y: treat as deletion
 elseif. 0=$y do. 33 message'' return.  NB. don't delete last remaining row

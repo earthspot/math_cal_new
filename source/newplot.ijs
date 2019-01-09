@@ -38,9 +38,14 @@ if. (x -: y~)and(({:{.DATA) = getvalue {.{.DATA) do. 0 return. end.
 invalplot=: 3 : 0
   NB. invalidate caches used by plotting
   NB. no-op if y=0
-if. -.y do. return. end.
-smoutput '+++ invalplot: called'
+if. 0={.y do. return. end.
+NB. smoutput '+++ invalplot: called'
 erase 'DATA iX iY'
+)
+
+plotclose=: 3 : 0
+  NB. close plot window
+wd :: 0: 'psel plot; pclose'
 )
 
 steps=: {. + (1&{ - {.) * (i.@>: % ])@{:
@@ -55,6 +60,7 @@ genDATA=: 4 : 0
 NB. 	x_cal_  =: x
 NB. 	y_cal_  =: y
 SAV=. vquan ; vsiqn ; PLOT
+PLOT=: 0  NB. to suppress: plotline
 iX=. {.x    NB. (scalar) pivot item# used as the X-axis
 z=. items''  NB. leading col identifies item#
 ]iz=. iX , }.z  NB. replace row: 0{z with iX{z
@@ -103,9 +109,18 @@ dataX=: (3 : '{.{.DATA') :: 1:  NB. cached X-axis from DATA
 
 replot=: 3 : 0
   NB. plot again, with OLD X and NEW item#s (y)
+  NB. y== (_) - replot all plottable lines
   NB. Omit item# (X) if it accidentally gets included in (y)…
 iX=. dataX''
-iX do_plot (y-.iX)
+if. y-:_ do. iY=. descendants iX
+else.        iY=. y -. iX
+end.
+if. 0<#iY do.
+  iX do_plot iY
+  48 message iY
+else.
+  47 message ''
+end.
 )
 
 do_plot=: 4 : 0
@@ -115,7 +130,8 @@ do_plot=: 4 : 0
   NB. Need versions of this verb for each chart-type
   NB. Omit item# (x) if it accidentally gets included in (y)…
 iY=. y=. y -. iX=.x
-smoutput sw '+++ do_plot: iX=(iX) iY=[(iY)] DATA absent:(NaNoun''DATA'')'
+]suffix=. '…regen DATA' #~ {.NaNoun'DATA'
+smoutput sw '+++ do_plot: iX=(iX) iY=[(iY)]',suffix
 NB. Xpre=. getvalue x  NB. save existing value of item# of X-axis
 Yitems=. }.,',',.brace"0  y  NB. e.g. '{2},{3},{4}'
 pd 'reset'
@@ -188,12 +204,16 @@ plotline=: 3 : 0
   NB. -and fetches the item#s to plot from within recal
 if. PLOT=0 do. 0 return. end.  NB. the safety-catch
   NB. ITEMNO is set by exe* for the last item recalculated
-ITEMNO do_plot ITEMNO{TD
+i=. ITEMNO  NB. the item with the "plotline" formula
+iX=. {. i{TD
+iY=. iX -.~ i{TD
+ssw '... plotline: iX=(iX) iY=(iY)'
+iX do_plot iY
 PLOT return.
 )
 
 NB. onload '1 do_plot 2 3 4'
-onload 'plotLineChart 1 2 3 4'
+NB. onload 'plotLineChart 1 2 3 4'
 
 0 :0
 plotLineChart 1

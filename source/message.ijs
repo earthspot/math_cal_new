@@ -54,4 +54,6 @@ MESSAGELIST=: cmx 0 : 0
 44 cache file (y0) yields text: (y1)
 45 line {(y0)} units changed from [(y1)] to INCOMPATIBLE [(y2)]
 46 >>> no action because CAL engine has not been initialized
+47 >>> no action because no valid lines selected
+48 line(s) replotted: {(y)}
 )
