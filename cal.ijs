@@ -36,6 +36,11 @@ AABUILT=: '2019-01-09  12:01:00'
 AABUILT=: '2019-01-09  12:14:30'
 AABUILT=: '2019-01-09  12:15:52'
 AABUILT=: '2019-01-09  12:32:09'
+AABUILT=: '2019-01-10  07:34:51'
+AABUILT=: '2019-01-10  08:11:06'
+AABUILT=: '2019-01-12  13:19:01'
+AABUILT=: '2019-01-12  16:00:54'
+AABUILT=: '2019-01-13  23:42:07'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -414,6 +419,9 @@ beval=: 4 : 0
 
 if. (formula y) begins 'plot' do.
   PLOT=: getvalue y
+  vsiqn return.
+elseif. (formula y) begins 'tran' do.
+  TRAN=: getvalue y
   vsiqn return.
 end.
 a=. ancestors y
@@ -2008,7 +2016,7 @@ end.
 if. 0<$TTINFO do.
   z=. z,LF2,'TTINFO=: 0 define',LF,(dtlf TTINFO),LF,')'
 end.
-if. file-: UNDEF do. 29 message'' return. end.
+if. UNDEF -: fname file do. 29 message'' return. end.
 retco=. archive filename file
 data=: z
 empty erase 'TT'
@@ -3325,6 +3333,7 @@ sb1p r    r setvalue~ vr*0.99      \dec item by 1%
 tera r    'T' scaleunits r         \tera- item
 titl yy   settitle yy              \set t-table caption
 tnam yy   file=: yy                \set t-table file name
+tran void transfer''               \transfer SOURCE-->TARGET
 t1dl r    r fnline~ '10%~'         \copy item by 10
 t1ml r    r fnline~ '10*'          \copy item times 10
 t2dl r    r fnline~ '100%~'        \copy item by 100
@@ -3386,7 +3395,7 @@ MESSAGELIST=: cmx 0 : 0
 26 old line {(y0)} merged with line {(y1)}
 27 (y0)loaded: (y1)
 28 written (y0) bytes to file (y1)
-29 >>> not saved because t-table has no name
+29 >>> not saved: this t-table is untitled
 30 saved t-table: (y0) [(y1) bytes]
 31 >>> t-table (y0) not saved
 32 sorted by permutation (y0)
@@ -3850,6 +3859,71 @@ replot 4 3 2
 replot 2 3 4
 )
 
+'==================== [cal] animate.ijs ===================='
+
+0 :0
+Thursday 10 January 2019  07:01:53
+-
+Animates a simulation
+Test with t-table: frog_crosses_road
+-
+Altering EPOCH should trigger: recal 0
+-
+Re-code flipshow_tabby_ (UndoRedo) using this script.
+-
+-The signal to advance the epoch
+	tabenginex_tabby_ 'tran 3 2'
+ should NOT come from the recalc of a formula line
+ but from an external source
+ e.g. a "stepper" tool; or from systimer.
+-
+Needs new CAL instr: tran
+)
+
+cocurrent 'cal'
+
+CYCLESTATE=: _1
+CYCLETIMER=: 1000
+
+TRAN=: 0
+
+transfer=: 3 : 0
+
+
+
+if. 2>#y do. y=. SOURCE,TARGET end.
+'sce tgt'=. split y
+v=. getvalue sce
+v setvalue tgt
+ssw '... transfer: value [(v)] copied from {(sce)} into {(tgt)}'
+)
+
+tran=: 3 : 0
+
+
+
+
+
+i=. ITEMNO
+'SOURCE TARGET'=: split parents i
+ssw '... tran: SOURCE={(SOURCE)} TARGET={(TARGET)}'
+TRAN=: TRAN+1 return.
+)
+sys_timer_z_=: empty
+
+cycleshow=: 3 : 0
+
+wd'timer 0'
+if. 1={.y do. CYCLESTATE=: 1 end.
+if. isBool CYCLESTATE do.
+
+  tabenginex CYCLESTATE pick ;:'Redo Undo' <<<<<<<<<<<<<<<<<
+  CYCLESTATE=: -.CYCLESTATE
+  sys_timer_z_=: cycleshow_cal_
+  wd'timer ',":CYCLETIMER
+end.
+)
+
 0 :0
 Wednesday 2 January 2019  00:58:55
 -
@@ -4120,8 +4194,9 @@ MAXINVERT=: 30
 MSLOG=: 0 0$''
 OVERHELDS=: ''
 PAD=: 10
-PFMT=: 'line'
 PLOT=: 0
+TRAN=: 0
+SOURCE=:TARGET=:0
 RETURNED=: ''
 TIMEOUT=: 5
 TOLERANCE=: 1e_5

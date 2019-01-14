@@ -163,11 +163,14 @@ beval=: 4 : 0
   NB. saddle to call: inversion
   NB. y==pivot node
   NB. x==CHANGE in value of pivot node
-  NB. >>>RETURNS<<< [updated] vsiqn
-  NB. DOES NOT ALTER vsiqn
-  NB. DOES get initial values from vsiqn
+  NB. >>>RETURNS<<< candidate vsiqn [updated]
+  NB. ...DOES NOT ALTER vsiqn in-place
+  NB. ...DOES get ancestors' initial values from vsiqn
 if. (formula y) begins 'plot' do.  NB. DO NOT INVERT, but…
-  PLOT=: getvalue y  NB. updated value has already been registered
+  PLOT=: getvalue y  NB. updated value already in vquan/vsiqn
+  vsiqn return.
+elseif. (formula y) begins 'tran' do.  NB. DO NOT INVERT, but…
+  TRAN=: getvalue y  NB. updated value already in vquan/vsiqn
   vsiqn return.
 end.
 a=. ancestors y
@@ -454,7 +457,7 @@ dp2=: ] +. +./ .*.~
 
 dpmx=: 3 : 0
   NB. the dependency mx from y==TD
-  NB. used: clos dmpx TD
+  NB. used: clos dpmx TD
 z=. ,: 0*0,i=. }.i.#y  NB. vec of 0s for row 0
 for_n. i do.      NB. list: i is 1 2 3 ...
   z=. z, 0, i e. n{y  NB. build z row-by-row
@@ -1840,7 +1843,7 @@ if. 0<$TTINFO do.
 end.
 NB. z=. z,LF2,'uunicode ',":uunicode''  NB. restore SI conformance level
 NB. z=. z,LF,'sig ',":sig''  NB. restore significant figures
-if. file-: UNDEF do. 29 message'' return. end.
+if. UNDEF -: fname file do. 29 message'' return. end.
 retco=. archive filename file
 data=: z   NB. DIAGNOSTIC TO ACCOMPANY: file
 empty erase 'TT' NB. TT is nowadays a redundant cache!

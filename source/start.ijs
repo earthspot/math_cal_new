@@ -98,8 +98,9 @@ MAXINVERT=: 30	NB. limits backfit cycles
 MSLOG=: 0 0$''	NB. accumulates MESSAGE
 OVERHELDS=: ''	NB. items recognised by: beval
 PAD=: 10		NB. used by: pad
-PFMT=: 'line'	NB. plot format
 PLOT=: 0		NB. plot control parameter
+TRAN=: 0		NB. tran control parameter
+SOURCE=:TARGET=:0  NB. tran transfer caches
 RETURNED=: ''	NB. noun returned by i/f call
 TIMEOUT=: 5	NB. seconds (used by: timeout)
 TOLERANCE=: 1e_5	NB. default tolerance for comparing physical quantities

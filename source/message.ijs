@@ -36,7 +36,7 @@ MESSAGELIST=: cmx 0 : 0
 26 old line {(y0)} merged with line {(y1)}
 27 (y0)loaded: (y1)
 28 written (y0) bytes to file (y1)
-29 >>> not saved because t-table has no name
+29 >>> not saved: this t-table is untitled
 30 saved t-table: (y0) [(y1) bytes]
 31 >>> t-table (y0) not saved
 32 sorted by permutation (y0)
