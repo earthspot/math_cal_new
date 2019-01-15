@@ -41,6 +41,7 @@ AABUILT=: '2019-01-10  08:11:06'
 AABUILT=: '2019-01-12  13:19:01'
 AABUILT=: '2019-01-12  16:00:54'
 AABUILT=: '2019-01-13  23:42:07'
+AABUILT=: '2019-01-15  02:31:14'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -417,11 +418,10 @@ beval=: 4 : 0
 
 
 
-if. (formula y) begins 'plot' do.
+if. (formula y) beginsWith 'plot' do.
   PLOT=: getvalue y
   vsiqn return.
-elseif. (formula y) begins 'tran' do.
-  TRAN=: getvalue y
+elseif. (formula y) beginsWith 'tran' do.
   vsiqn return.
 end.
 a=. ancestors y
@@ -3333,7 +3333,7 @@ sb1p r    r setvalue~ vr*0.99      \dec item by 1%
 tera r    'T' scaleunits r         \tera- item
 titl yy   settitle yy              \set t-table caption
 tnam yy   file=: yy                \set t-table file name
-tran void transfer''               \transfer SOURCE-->TARGET
+tran void transfer''               \transfer values between items
 t1dl r    r fnline~ '10%~'         \copy item by 10
 t1ml r    r fnline~ '10*'          \copy item times 10
 t2dl r    r fnline~ '100%~'        \copy item by 100
@@ -3887,28 +3887,24 @@ CYCLETIMER=: 1000
 
 TRAN=: 0
 
+tranfmla=: ((3 : 0) :: 0:) "0
+
+f=. y{TTf
+f beginsWith 'tran'
+)
+
 transfer=: 3 : 0
 
 
-
-if. 2>#y do. y=. SOURCE,TARGET end.
-'sce tgt'=. split y
-v=. getvalue sce
-v setvalue tgt
-ssw '... transfer: value [(v)] copied from {(sce)} into {(tgt)}'
+for_i. I. tranfmla items'' do.
+ 'sce tgt'=. 2{. i{TD
+ v=. getvalue sce
+ v setvalue tgt
+ ssw '... transfer[(i)]: value [(v)] {(sce)}-->{(tgt)}'
+end.
 )
 
-tran=: 3 : 0
-
-
-
-
-
-i=. ITEMNO
-'SOURCE TARGET'=: split parents i
-ssw '... tran: SOURCE={(SOURCE)} TARGET={(TARGET)}'
-TRAN=: TRAN+1 return.
-)
+tran=: {.
 sys_timer_z_=: empty
 
 cycleshow=: 3 : 0
@@ -3922,6 +3918,10 @@ if. isBool CYCLESTATE do.
   sys_timer_z_=: cycleshow_cal_
   wd'timer ',":CYCLETIMER
 end.
+)
+
+onload 0 :0
+ttt 'tran'
 )
 
 0 :0
@@ -4195,8 +4195,6 @@ MSLOG=: 0 0$''
 OVERHELDS=: ''
 PAD=: 10
 PLOT=: 0
-TRAN=: 0
-SOURCE=:TARGET=:0
 RETURNED=: ''
 TIMEOUT=: 5
 TOLERANCE=: 1e_5

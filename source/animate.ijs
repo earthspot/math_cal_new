@@ -2,22 +2,16 @@
 '==================== [cal] animate.ijs ===================='
 
 0 :0
-Thursday 10 January 2019  07:01:53
+Tuesday 15 January 2019  04:18:11
 -
 Animates a simulation
-Test with t-table: frog_crosses_road
+Test with t-table: frog_crosses_road (also: falling_object)
 -
 Altering EPOCH should trigger: recal 0
 -
 Re-code flipshow_tabby_ (UndoRedo) using this script.
 -
--The signal to advance the epoch
-	tabenginex_tabby_ 'tran 3 2'
- should NOT come from the recalc of a formula line
- but from an external source
- e.g. a "stepper" tool; or from systimer.
--
-Needs new CAL instr: tran
+Use: fargs to extend ttafl to instantiate labels with {X} {Y} …
 )
 
 cocurrent 'cal'
@@ -25,33 +19,34 @@ cocurrent 'cal'
 CYCLESTATE=: _1
 CYCLETIMER=: 1000 NB. (millisecs) delay before sys_timer_z_''
 
-TRAN=: 0  NB. value returned by function: trans
-	NB. setup in: globmake, called by: start.
-NB. Each click of tool: green steps TRAN
-NB. -which serves to count the epoch.
+fargs=: 3 : 0
+  NB. table of args named in formula(y)
+'fmla extn'=. fmla_extn formula y
+dep=. 0-.~y{TD    NB. dependencies
+z=. empty''
+for_v. ','cut extn do. NB. scan arg specs in: extn
+  z=. z , v_index ; (v_index{dep) ; '('cut }: >v
+end.
+)
+
+tranfmla=: ((3 : 0) :: 0:) "0
+  NB. Boolean verb: item# (y) has a formula beginning: 'tran'
+f=. y{TTf
+f beginsWith 'tran'
+)
 
 transfer=: 3 : 0
-  NB. transfer value of 1st item# into 2nd==last item#
-  NB. called by: transfer'' --to use SOURCE TARGET
+  NB. transfer values defined by formulas beginning: 'tran'
   NB. serves: tabengine 'tran'  --no arguments
-if. 2>#y do. y=. SOURCE,TARGET end.
-'sce tgt'=. split y
-v=. getvalue sce
-v setvalue tgt
-ssw '... transfer: value [(v)] copied from {(sce)} into {(tgt)}'
+for_i. I. tranfmla items'' do.
+ 'sce tgt'=. 2{. i{TD
+ v=. getvalue sce
+ v setvalue tgt
+ ssw '... transfer[(i)]: value [(v)] {(sce)}-->{(tgt)}'
+end.
 )
 
-tran=: 3 : 0
-  NB. Builtin function for use in formulas ONLY
-  NB. c/f plotline
-  NB. Ignores its argument (which are values, not item#s)
-  NB. -and fetches the sce+tgt item#s using: parents
-  NB. ITEMNO is set by exe* for the last item recalculated
-i=. ITEMNO  NB. the item with the "trans" formula
-'SOURCE TARGET'=: split parents i
-ssw '... tran: SOURCE={(SOURCE)} TARGET={(TARGET)}'
-TRAN=: TRAN+1 return.
-)
+tran=: {.  NB. just returns value of first argument (sce)
 
 NB. test=: 3 : 'CYCLESTATE=:_1'
 sys_timer_z_=: empty
@@ -68,4 +63,8 @@ NB. >>>>>>>> replace with gerund operating on pseudo-handlers
   sys_timer_z_=: cycleshow_cal_
   wd'timer ',":CYCLETIMER
 end.
+)
+
+onload }: 0 :0
+smoutput fargs 3
 )

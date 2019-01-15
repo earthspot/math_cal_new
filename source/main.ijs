@@ -166,11 +166,10 @@ beval=: 4 : 0
   NB. >>>RETURNS<<< candidate vsiqn [updated]
   NB. ...DOES NOT ALTER vsiqn in-place
   NB. ...DOES get ancestors' initial values from vsiqn
-if. (formula y) begins 'plot' do.  NB. DO NOT INVERT, but…
+if. (formula y) beginsWith 'plot' do.  NB. DO NOT INVERT, but…
   PLOT=: getvalue y  NB. updated value already in vquan/vsiqn
   vsiqn return.
-elseif. (formula y) begins 'tran' do.  NB. DO NOT INVERT, but…
-  TRAN=: getvalue y  NB. updated value already in vquan/vsiqn
+elseif. (formula y) beginsWith 'tran' do.  NB. DO NOT INVERT, but…
   vsiqn return.
 end.
 a=. ancestors y
