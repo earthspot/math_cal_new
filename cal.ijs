@@ -42,6 +42,9 @@ AABUILT=: '2019-01-12  13:19:01'
 AABUILT=: '2019-01-12  16:00:54'
 AABUILT=: '2019-01-13  23:42:07'
 AABUILT=: '2019-01-15  02:31:14'
+AABUILT=: '2019-01-15  18:22:07'
+AABUILT=: '2019-01-15  18:54:23'
+AABUILT=: '2019-01-16  00:34:58'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -1692,18 +1695,12 @@ ttfix''
 
 'ttadl' dirty 1
 )
-
 ttafl=: 3 : 0
 
 
 invalplot''
 'ytn ytu ytd ytf'=. y
 'yts cyc fac'=. convert ytu=. pretty ytu
-
-
-
-TTn=: TTn,,ytn
-TD=: TD,,".ytd
 
 
 if. 2=fmlatyp ytf do.
@@ -1714,6 +1711,9 @@ UNITN=: UNITN,<,ytu
 UNITS=: UNITS,<,yts
 vquan=: vquan,0
 vfact=: vfact , fac
+TD=: TD,,".ytd
+TTn=: TTn,,ytn
+TTn=: (}:TTn) , fitemsub <:#TTn
 ttfix''
 invalexe''
 CH=: recal 0
@@ -1923,6 +1923,8 @@ warnplex''
 ttmerge=: 4 : 0
 
 invalplot''
+]t=. x y}items''
+]TTn=: t relabelitems TTn
 if. y incompat_i x do. 24 message x; y return. end.
 select. z=.hasf x,y
 case. 0 0 do.
@@ -3862,22 +3864,16 @@ replot 2 3 4
 '==================== [cal] animate.ijs ===================='
 
 0 :0
-Thursday 10 January 2019  07:01:53
+Tuesday 15 January 2019  04:18:11
 -
 Animates a simulation
-Test with t-table: frog_crosses_road
+Test with t-table: frog_crosses_road (also: falling_object)
 -
 Altering EPOCH should trigger: recal 0
 -
 Re-code flipshow_tabby_ (UndoRedo) using this script.
 -
--The signal to advance the epoch
-	tabenginex_tabby_ 'tran 3 2'
- should NOT come from the recalc of a formula line
- but from an external source
- e.g. a "stepper" tool; or from systimer.
--
-Needs new CAL instr: tran
+Use: fargs to extend ttafl to instantiate labels with {X} {Y} …
 )
 
 cocurrent 'cal'
@@ -3885,7 +3881,24 @@ cocurrent 'cal'
 CYCLESTATE=: _1
 CYCLETIMER=: 1000
 
-TRAN=: 0
+fargs=: 3 : 0
+
+'fmla extn'=. fmla_extn formula y
+dep=. 0-.~y{TD
+z=. empty''
+for_v. ','cut extn do.
+  z=. z , v_index ; (v_index{dep) ; '('cut }: >v
+end.
+)
+
+fitemsub=: 3 : 0
+
+z=. y{TTn
+for_entry. fargs y do.
+  'n i var unit'=. entry
+  z=. z rplc (brace var) ; (brace i)
+end.
+)
 
 tranfmla=: ((3 : 0) :: 0:) "0
 
@@ -3920,8 +3933,8 @@ if. isBool CYCLESTATE do.
 end.
 )
 
-onload 0 :0
-ttt 'tran'
+onload }: 0 :0
+smoutput fitemsub 6
 )
 
 0 :0

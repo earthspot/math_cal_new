@@ -29,6 +29,15 @@ for_v. ','cut extn do. NB. scan arg specs in: extn
 end.
 )
 
+fitemsub=: 3 : 0
+  NB. substitute braced args named in formula(y)
+z=. y{TTn
+for_entry. fargs y do.
+  'n i var unit'=. entry
+  z=. z rplc (brace var) ; (brace i)
+end.
+)
+
 tranfmla=: ((3 : 0) :: 0:) "0
   NB. Boolean verb: item# (y) has a formula beginning: 'tran'
 f=. y{TTf
@@ -66,5 +75,5 @@ end.
 )
 
 onload }: 0 :0
-smoutput fargs 3
+smoutput fitemsub 6
 )

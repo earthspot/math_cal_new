@@ -1508,17 +1508,39 @@ ttfix''
 'ttadl' dirty 1
 )
 
+NB. ttafl=: 3 : 0
+NB.   NB. add a new fmla line to t-table
+NB.   NB. eg: ttafl 'label'; 'cm'; '1 2'; 'a+b: a(m),b(cm)'
+NB. invalplot''
+NB. 'ytn ytu ytd ytf'=. y
+NB. 'yts cyc fac'=. convert ytu=. pretty ytu
+NB.   NB. check cyc~:0 at this point? <<<<<<<<<<<
+NB.   NB. See: TTlist for vars comprising the t-table
+NB.   NB. to be adjusted
+NB. TTn=: TTn,,ytn
+NB. TD=: TD,,".ytd
+NB.   NB. Type 2 needs results units from orig formula
+NB.   NB. to correctly specify back-conversion
+NB. if. 2=fmlatyp ytf do.
+NB.   ytf=. ytf,SP,brack ytu  NB. suffix result units
+NB. end.
+NB. TTf=: TTf,,ytf
+NB. UNITN=: UNITN,<,ytu
+NB. UNITS=: UNITS,<,yts
+NB. vquan=: vquan,0    NB. placeholder, recomputed by: recal
+NB. vfact=: vfact , fac
+NB. ttfix''
+NB. invalexe''
+NB. CH=: recal 0
+NB. 'ttafl' dirty 1
+NB. )
+
 ttafl=: 3 : 0
   NB. add a new fmla line to t-table
   NB. eg: ttafl 'label'; 'cm'; '1 2'; 'a+b: a(m),b(cm)'
 invalplot''
 'ytn ytu ytd ytf'=. y
 'yts cyc fac'=. convert ytu=. pretty ytu
-  NB. check cyc~:0 at this point? <<<<<<<<<<<
-  NB. See: TTlist for vars comprising the t-table
-  NB. to be adjusted
-TTn=: TTn,,ytn
-TD=: TD,,".ytd
   NB. Type 2 needs results units from orig formula
   NB. to correctly specify back-conversion
 if. 2=fmlatyp ytf do.
@@ -1529,6 +1551,9 @@ UNITN=: UNITN,<,ytu
 UNITS=: UNITS,<,yts
 vquan=: vquan,0    NB. placeholder, recomputed by: recal
 vfact=: vfact , fac
+TD=: TD,,".ytd
+TTn=: TTn,,ytn
+TTn=: (}:TTn) , fitemsub <:#TTn
 ttfix''
 invalexe''
 CH=: recal 0
@@ -1745,6 +1770,8 @@ warnplex''
 ttmerge=: 4 : 0
   NB. delete target item y after pointing its descendants to item x
 invalplot''
+]t=. x y}items''
+]TTn=: t relabelitems TTn
 if. y incompat_i x do. 24 message x; y return. end.
 select. z=.hasf x,y
 case. 0 0 do.
@@ -1755,7 +1782,7 @@ case. 1 0 do.
 case. 1 1 do. 25 message x; y return. end.
 invalexe''    NB. existing 'exe' verbs are invalid
 TD=: TD rpln (y,x)  NB. subst x for y in TD
-ttdelete_one y    NB. lastly, delete y
+ttdelete_one y    NB. lastly, delete {y}
 CH=: recal 0
 'ttmerge' dirty 1
 26 message y; x
