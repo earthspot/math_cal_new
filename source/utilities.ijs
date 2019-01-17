@@ -50,13 +50,19 @@ tbx=: ijs	  NB. tbx: ext for t-tables (if it ever changes)
 thRootOf=: ] ^ [: % [  NB. x thRootOf y == y^1%x
 to=: [ + [: i. [: >: -~
 
-NB. the 'op-colon' monadics
 dyadic=: [: :
 monadic=: : [:
-double=: twice=:	+: monadic
-halve=:		-: monadic
-sq=: square=:	*: monadic
-sqr=: sqrt=:	%: monadic
+
+  NB. the 'op-colon' monadics
+  NB. >>> consider moving into: tabmath.ijs
+double=:	+: monadic
+twice=:	+: monadic
+halve=:	-: monadic
+square=:	*: monadic
+sq=:	*: monadic
+sqrt=:	%: monadic
+  NB. …more are needed, e.g. abs int roundup …
+  NB. sqr -has been supressed (in tabmath.ijs)
 
 	NB. Generate integer-suffixed id
 	NB. eg pq012 from: 'pq000' aann 12

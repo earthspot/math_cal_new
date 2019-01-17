@@ -7,7 +7,7 @@ NB. This script should be loaded by CAL: start
 NB. -to overwrite all z-definitions lurking elsewhere
 
 NB. PUT THESE IN THE DEFN OF: EXCLUDE IN: cal etc
-NB. sqr sqrt cube
+NB. sq sqrt cube
 NB. PI PI2 PI4 PIb3 PI4b3 RT2 RT3
 NB. sin cos tan sinh cosh tanh
 NB. arcsin arccos arctan arcsinh arccosh arctanh
@@ -16,7 +16,7 @@ NB. abs exp div int mod times choice
 
 cocurrent 'z'
 
-sqr=: *:
+sqr=: SUPPRESSED
 sqrt=: %:
 cube=: 3 ^~ ]
 

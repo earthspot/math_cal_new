@@ -19,7 +19,7 @@ NB. ========================================================
   NB. (Instrs with: dummy'' pre-handled by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '2019-01-04 01:06:20'    \noun: CAL last saved
+QSAV void '2019-01-16 20:40:00'    \noun: CAL last saved
 Inic void dummy''                  \=(re-)start with clear tt
 Inif void dummy''                  \=(re-)start with factory SAMPLE tt
 Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
@@ -191,11 +191,12 @@ pidl r    r fnline~ 'PI%~'         \copy item by PI
 pidv r    r setvalue~ vr%PI        \item by PI
 piml r    r fnline~ 'PI*'          \copy item times PI
 pimv r    r setvalue~ vr*PI        \item times PI
-plob rrr  plotBarChart rrr         \plot Bar Chart
+plob rrr  plotBarChart rrr         \plot (Stacked) Bar Chart
+plof rrr  plotFloatingBarChart rrr \plot Floating Bar Chart
 plol rrr  plotLineChart rrr        \plot Line Chart
 plop rrr  plotPieChart rrr         \plot Pie Chart
 plos rrr  plotSurfaceChart rrr     \plot Surface Chart
-plot rrr  r plotItems zz           \plot given item#s rrr
+ploi rrr  r plotItems zz           \plot given item#s rrr
 plot rzz  r plotXvals zz           \plot given x-vals zz
 plox void plotclose''              \close plot window
 pl0v rrr  plotRange0 rrr           \plot 0 to v

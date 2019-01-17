@@ -2,41 +2,19 @@
 '==================== [cal] animate.ijs ===================='
 
 0 :0
-Tuesday 15 January 2019  04:18:11
+Wednesday 16 January 2019  13:24:34
 -
 Animates a simulation
-Test with t-table: frog_crosses_road (also: falling_object)
--
-Altering EPOCH should trigger: recal 0
+Test with t-table: frog_crosses_road
+We also need: falling_object
 -
 Re-code flipshow_tabby_ (UndoRedo) using this script.
--
-Use: fargs to extend ttafl to instantiate labels with {X} {Y} …
 )
 
 cocurrent 'cal'
 
 CYCLESTATE=: _1
 CYCLETIMER=: 1000 NB. (millisecs) delay before sys_timer_z_''
-
-fargs=: 3 : 0
-  NB. table of args named in formula(y)
-'fmla extn'=. fmla_extn formula y
-dep=. 0-.~y{TD    NB. dependencies
-z=. empty''
-for_v. ','cut extn do. NB. scan arg specs in: extn
-  z=. z , v_index ; (v_index{dep) ; '('cut }: >v
-end.
-)
-
-fitemsub=: 3 : 0
-  NB. substitute braced args named in formula(y)
-z=. y{TTn
-for_entry. fargs y do.
-  'n i var unit'=. entry
-  z=. z rplc (brace var) ; (brace i)
-end.
-)
 
 tranfmla=: ((3 : 0) :: 0:) "0
   NB. Boolean verb: item# (y) has a formula beginning: 'tran'

@@ -21,10 +21,10 @@ inverNR_C.ijs
 inverTAY.ijs
 CAL_interface.ijs
 message.ijs
-tabmath.ijs
 traceverbs.ijs
 recordplot.ijs
 newplot.ijs
 animate.ijs
 ttbrowse.ijs
+tabmath.ijs
 start.ijs

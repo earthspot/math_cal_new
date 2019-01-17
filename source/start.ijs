@@ -98,6 +98,7 @@ MAXINVERT=: 30	NB. limits backfit cycles
 MSLOG=: 0 0$''	NB. accumulates MESSAGE
 OVERHELDS=: ''	NB. items recognised by: beval
 PAD=: 10		NB. used by: pad
+PROTECT=: 1	NB. 1==don't overwrite t-table of same name
 PLOT=: 0		NB. plot control parameter
 RETURNED=: ''	NB. noun returned by i/f call
 TIMEOUT=: 5	NB. seconds (used by: timeout)

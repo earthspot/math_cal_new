@@ -400,9 +400,6 @@ z=. y>0
 y+z*x
 )
 
-dbl=: +:
-dec=: <:
-
 deletefile=: 3 : 0
   NB. delete t-table (y) in Ttables folder ONLY
   NB. but ONLY IF a valid t-table...
@@ -532,6 +529,25 @@ for_i. i.$vc do.    NB. for each varspec in turn
   v=. >i{vc      NB. the i-th varspec
   'n unit'=. '('cut detb v-.')'  NB. (n;unit) from: 'n(unit)'
   z=. z,<unit
+end.
+)
+
+fargs=: 3 : 0
+  NB. table of args named in formula(y)
+'fmla extn'=. fmla_extn formula y
+dep=. 0-.~y{TD    NB. dependencies
+z=. empty''
+for_v. ','cut extn do. NB. scan arg specs in: extn
+  z=. z , v_index ; (v_index{dep) ; '('cut }: >v
+end.
+)
+
+fitemsub=: 3 : 0
+  NB. substitute braced args named in formula(y)
+z=. y{TTn
+for_entry. fargs y do.
+  'n i var unit'=. entry
+  z=. z rplc (brace var) ; (brace i)
 end.
 )
 
@@ -774,9 +790,9 @@ elseif. (,x)-:,'%' do.  NB. item inverted
   label=. SL,brace y  NB. e.g. '/{2}'
   fmla=. '%a: a',(paren unitn),SP,(brack unitu)
   NB. e.g. '% a: a(h) [/h]'
-elseif. x-:'sqr ' do.  NB. item squared
+elseif. x-:'sq ' do.  NB. item squared
   unitu=. unitn,SP,unitn
-  label=. x,(brace y)  NB. e.g. 'sqr {2}'
+  label=. x,(brace y)  NB. e.g. 'sq {2}'
   fmla=. x,'a: a',(paren unitn),SP,(brack unitu)
   NB. e.g. 'a^2: a(h) [h h]'
 elseif. x-:'cube ' do.  NB. item cubed
@@ -1734,10 +1750,10 @@ if. TAB e. TT do. smoutput '>>> WARNING: TT CONTAINS TABCHAR' end.
   NB. Separate out TT fields...
 empty 't' setcols TT  NB. to set: tn tu ts td tf
 NB. TTn=: debc TT hcols tn
-TTn=: ucp"1 debc TT hcols tn  NB. [=:] & accom unicode in item name
+TTn=: ucp"1 debc TT hcols tn	NB. [=:] & accom unicode in item name
 TTu=. debc TT hcols tu	NB. only needed inside this verb
 TTs=. debc TT hcols ts	NB. only needed inside this verb
-TD=: 0,". debc TT cols td
+TD=: 0,". debc TT cols td	NB. debc==delete-extra-blank-cols
 if. 1=$$TD do. TD=:|:,:TD end.  NB. >>>>>>>>> fix for munged 1-col TD
 TTf=: fixttf TT hcols tf
 empty erase 'TT'      NB. delete TT as a redundant cache
@@ -1875,7 +1891,8 @@ data=: z   NB. DIAGNOSTIC TO ACCOMPANY: file
 empty erase 'TT' NB. TT is nowadays a redundant cache!
 mfile=: filename file  NB. t-table name for message
   NB. x=1 authorizes fexist trap...
-if. x and fexist file do.
+if. x and PROTECT and fexist file do.
+  PROTECT=: 0  NB. allow it to work a second time
   NB. DO NOT save file...
   NB. (Leave as a job for the topend to optionally call ttsavo)
   42 message mfile return.
@@ -1885,6 +1902,7 @@ if.-. 'literal' -: datatype z do.
   smoutput sw'>>> ttsav: z to be saved is:  (datatype z) shape=($z)'
   z=. utf8 x2f z
   smoutput sw'>>> ttsav: z now: (datatype z) shape=($z)'
+  PROTECT=: 1  NB. re-establish protection
 end.
 bytes=. z fwrite file
 	msg 28 message bytes; mfile

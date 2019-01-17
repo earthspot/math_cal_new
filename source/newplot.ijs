@@ -54,6 +54,17 @@ step0=: 3 : 'steps 0,(y{vquan),STEPS'
 step1=: 3 : 'steps 1,(y{vquan),STEPS'
 step2=: 3 : 'steps (-z),(z=.y{vquan),STEPS'
 
+NB. isteps=: 3 : 0
+NB.   NB. integers between {.y and {:y
+NB. (>.{.y) to (<.{:y)
+NB. )
+
+isteps=: ([: >. {.) to [: <. {:  NB. ints between {.y and {:y
+	NB. ----move to utilities.ijs ??
+istep0=: 3 : 'isteps 0,(y{vquan)'
+istep1=: 3 : 'isteps 1,(y{vquan)'
+istep2=: 3 : 'isteps (-z),(z=.y{vquan)'
+
 genDATA=: 4 : 0
   NB. x== (iX) abscissa item#
   NB. y== (Xstep) abscissa steps (numeric or J-phrase)
@@ -104,6 +115,21 @@ end.
 iX genDATA step iX
 )
 
+setup_plot_integers=: 4 : 0
+  NB. setup DATA table according to XRANGE (y)
+  NB. code taken from proto- plotl
+ssw'+++ setup_plot_integers x=[(crex x)] XRANGE=(y)'
+iX=: x
+select. y
+case. 0 do. istep=. istep0
+case. 1 do. istep=. istep1
+case. 2 do. istep=. istep2
+case.   do. istep=. istep0
+end.
+  NB. return data table for ALL item#s
+iX genDATA istep iX
+)
+
 dataX=: (3 : '{.{.DATA') :: 1:  NB. cached X-axis from DATA
 	NB. why not 0: ? --avoids making assumptions.
 
@@ -123,11 +149,67 @@ else.
 end.
 )
 
+numx=: [: ". [: > cutopen
+
+barDATA=: numx 0 : 0
+1 1 2  3 4 5
+1 1 2  3 4 5
+2 1 1  3 3 2
+3 4 1  6 4 4
+4 6 6 11 8 5
+)
+
+0 :0
+barDATA, c/f DATA regenned by do_plot…
+  has leading col: the item#s
+  (dummy) row 0 replaced by copy of the X-axis item vec
+)
+
+plotStackedBarChartSample=: 3 : 0
+  NB. to help develop: plotStackedBarChart
+DATA=: barDATA
+'sbar' plotChart 1 2 3 4
+)
+
+plotLineChartSample=: 3 : 0
+  NB. to help develop: plotPieChart
+DATA=: barDATA
+'line' plotChart 1 2 3 4
+)
+
+plotSurfaceChartSample=: 3 : 0
+  NB. to help develop: plotSurfaceChart
+DATA=: barDATA
+CHART_TYPE=: 'surface'
+'surface' plotChart 1 2 3 4
+)
+
+plotPieChartSample=: 3 : 0
+  NB. to help develop: plotPieChart
+DATA=: barDATA
+'pie' plotChart 1 2 3 4
+)
+
+plotFloatingBarChartSample=: 3 : 0
+  NB. to help develop: plotFloatingBarChart
+DATA=: barDATA
+'fbar' plotChart 1 2 3 4
+)
+
+plotChart=: 'line' ddefine
+  NB. plot Chart of type: x
+CHART_TYPE=: x
+ssw '... plotChart: CHART_TYPE=(CHART_TYPE): y=[(crex y)]'
+X=: {.y [ Y=: }.y
+if. 0=#Y do. Y=: I. X e."1 TD end.  NB. all dependents of X
+X do_plot Y
+)
+
 do_plot=: 4 : 0
   NB. x== x-axis item# (scalar only)
   NB. y== y-axis item#s (scalar/vector)
   NB. e.g. 1 do_plot (2 3 4)
-  NB. Need versions of this verb for each chart-type
+  NB. Version for stacked bar chart [sbar]
   NB. Omit item# (x) if it accidentally gets included in (y)…
 iY=. y=. y -. iX=.x
 ]suffix=. '…regen DATA' #~ {.NaNoun'DATA'
@@ -135,6 +217,14 @@ smoutput sw '+++ do_plot: iX=(iX) iY=[(iY)]',suffix
 NB. Xpre=. getvalue x  NB. save existing value of item# of X-axis
 Yitems=. }.,',',.brace"0  y  NB. e.g. '{2},{3},{4}'
 pd 'reset'
+select. CHART_TYPE
+fcase. 'fbar' do.
+fcase. 'pie' do.
+case. 'sbar' do.
+	setup_plot=. setup_plot_integers
+case.        do.  NB. assume: line or surface
+end.
+pd 'type ',CHART_TYPE
 pd sw 'title Plot (Yitems) against (brace x)'
 NB. pd 'color red,green,blue,pink,yellow,cyan,black'
 NB. …NO--use default color sequence
@@ -147,55 +237,29 @@ pd data0 ; datay
 pd 'show'
 )
 
-plotBarChart=: 3 : 0
-  NB. plot Bar Chart: item#s y against item# x
-invalplot 'bar' changes 'CHART_TYPE'
-ssw '>>> (CHART_TYPE): y=[(y)] not implemented yet'
-NB. x do_plot y
-)
-
 plotLineChart=: 3 : 0
-  NB. plot Line Chart: item#s y against item# x
-  NB. ({.y)== x-axis item# (one only)
-  NB. (}.y)== y-axis item#s (one or more)
-  NB. e.g. plotLineChart 1 2 3 4
 invalplot 'line' changes 'CHART_TYPE'
-ssw '>>> (CHART_TYPE): y=[(crex y)]'
-X=: {.y [ Y=: }.y
-if. 0=#Y do. Y=: I. X e."1 TD end.  NB. all dependents of X
-X do_plot Y
+CHART_TYPE plotChart y
 )
 
-plotRange0=: 3 : 0
-  NB. plot Line Chart: item#s y against item# x
-invalplot 0 changes 'XRANGE'
-plotLineChart y
+plotBarChart=: 3 : 0
+invalplot 'sbar' changes 'CHART_TYPE'
+CHART_TYPE plotChart y
 )
 
-plotRange1=: 3 : 0
-  NB. plot Line Chart: item#s y against item# x
-invalplot 1 changes 'XRANGE'
-plotLineChart y
-)
-
-plotRange2=: 3 : 0
-  NB. plot Line Chart: item#s y against item# x
-invalplot 2 changes 'XRANGE'
-plotLineChart y
+plotFloatingBarChart=: 3 : 0
+invalplot 'fbar' changes 'CHART_TYPE'
+CHART_TYPE plotChart y
 )
 
 plotPieChart=: 3 : 0
-  NB. plot Pie Chart: item#s y against item# x
 invalplot 'pie' changes 'CHART_TYPE'
-ssw '>>> (CHART_TYPE): y=[(y)] not implemented yet'
-NB. x do_plot y
+CHART_TYPE plotChart y
 )
 
 plotSurfaceChart=: 3 : 0
-  NB. plot Surface Chart: item#s y against item# x
 invalplot 'surface' changes 'CHART_TYPE'
-ssw '>>> (CHART_TYPE): y=[(y)] not implemented yet'
-NB. x do_plot y
+CHART_TYPE plotChart y
 )
 
 plotline=: 3 : 0
@@ -208,12 +272,38 @@ i=. ITEMNO  NB. the item with the "plotline" formula
 iX=. {. i{TD
 iY=. iX -.~ i{TD
 ssw '... plotline: iX=(iX) iY=(iY)'
-iX do_plot iY
+iX do_plot iY [CHART_TYPE=:'line'
 PLOT return.
 )
 
-NB. onload '1 do_plot 2 3 4'
-NB. onload 'plotLineChart 1 2 3 4'
+NB. plotRange0=: 3 : 0
+NB.   NB. plot Line Chart: item#s y against item# x
+NB. invalplot 0 changes 'XRANGE' NB. onlyif XRANGE actually changed
+NB. plotLineChart y
+NB. )
+NB.
+NB. plotRange1=: 3 : 0
+NB.   NB. plot Line Chart: item#s y against item# x
+NB. invalplot 1 changes 'XRANGE' NB. onlyif XRANGE actually changed
+NB. plotLineChart y
+NB. )
+NB.
+NB. plotRange2=: 3 : 0
+NB.   NB. plot Line Chart: item#s y against item# x
+NB. invalplot 2 changes 'XRANGE' NB. onlyif XRANGE actually changed
+NB. plotLineChart y
+NB. )
+
+plotRange=: 0 ddefine
+  NB. plot Chart: item#s y against item# x
+invalplot x changes 'XRANGE'
+  NB. …runs invalplot onlyif XRANGE actually changed
+CHART_TYPE plotChart y
+)
+
+plotRange0=: 0&plotRange
+plotRange1=: 1&plotRange
+plotRange2=: 2&plotRange
 
 0 :0
 plotLineChart 1
@@ -223,3 +313,10 @@ replot 4 2
 replot 4 3 2
 replot 2 3 4
 )
+
+NB. onload '1 do_plot 2 3 4'
+NB. onload 'plotLineChart 1 2 3 4'
+NB. onload 'plotFloatingBarChartSample 0'
+onload 'plotStackedBarChartSample 0'
+NB. onload 'plotPieChartSample 0'
+NB. onload 'plotSurfaceChartSample 0'

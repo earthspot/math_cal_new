@@ -45,6 +45,14 @@ AABUILT=: '2019-01-15  02:31:14'
 AABUILT=: '2019-01-15  18:22:07'
 AABUILT=: '2019-01-15  18:54:23'
 AABUILT=: '2019-01-16  00:34:58'
+AABUILT=: '2019-01-16  13:19:40'
+AABUILT=: '2019-01-16  13:26:51'
+AABUILT=: '2019-01-16  13:42:01'
+AABUILT=: '2019-01-16  13:59:20'
+AABUILT=: '2019-01-16  20:48:11'
+AABUILT=: '2019-01-16  21:21:18'
+AABUILT=: '2019-01-16  23:00:11'
+AABUILT=: '2019-01-16  23:12:06'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -66,6 +74,10 @@ cx''
 
 tt'CTBU'
 …show current t-table
+
+=======================================================================
+CAL instruction set…
+=======================================================================
 )
 AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 az=: tolower AZ
@@ -145,12 +157,20 @@ sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs
 thRootOf=: ] ^ [: % [
 to=: [ + [: i. [: >: -~
+
 dyadic=: [: :
 monadic=: : [:
-double=: twice=:	+: monadic
-halve=:		-: monadic
-sq=: square=:	*: monadic
-sqr=: sqrt=:	%: monadic
+
+
+
+double=:	+: monadic
+twice=:	+: monadic
+halve=:	-: monadic
+square=:	*: monadic
+sq=:	*: monadic
+sqrt=:	%: monadic
+
+
 
 
 
@@ -648,9 +668,6 @@ z=. y>0
 y+z*x
 )
 
-dbl=: +:
-dec=: <:
-
 deletefile=: 3 : 0
 
 
@@ -778,6 +795,25 @@ for_i. i.$vc do.
   v=. >i{vc
   'n unit'=. '('cut detb v-.')'
   z=. z,<unit
+end.
+)
+
+fargs=: 3 : 0
+
+'fmla extn'=. fmla_extn formula y
+dep=. 0-.~y{TD
+z=. empty''
+for_v. ','cut extn do.
+  z=. z , v_index ; (v_index{dep) ; '('cut }: >v
+end.
+)
+
+fitemsub=: 3 : 0
+
+z=. y{TTn
+for_entry. fargs y do.
+  'n i var unit'=. entry
+  z=. z rplc (brace var) ; (brace i)
 end.
 )
 
@@ -1017,7 +1053,7 @@ elseif. (,x)-:,'%' do.
   label=. SL,brace y
   fmla=. '%a: a',(paren unitn),SP,(brack unitu)
 
-elseif. x-:'sqr ' do.
+elseif. x-:'sq ' do.
   unitu=. unitn,SP,unitn
   label=. x,(brace y)
   fmla=. x,'a: a',(paren unitn),SP,(brack unitu)
@@ -2024,7 +2060,8 @@ data=: z
 empty erase 'TT'
 mfile=: filename file
 
-if. x and fexist file do.
+if. x and PROTECT and fexist file do.
+  PROTECT=: 0
 
 
   42 message mfile return.
@@ -2034,6 +2071,7 @@ if.-. 'literal' -: datatype z do.
   smoutput sw'>>> ttsav: z to be saved is:  (datatype z) shape=($z)'
   z=. utf8 x2f z
   smoutput sw'>>> ttsav: z now: (datatype z) shape=($z)'
+  PROTECT=: 1
 end.
 bytes=. z fwrite file
 	msg 28 message bytes; mfile
@@ -3114,7 +3152,7 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '2019-01-04 01:06:20'    \noun: CAL last saved
+QSAV void '2019-01-16 20:40:00'    \noun: CAL last saved
 Inic void dummy''                  \=(re-)start with clear tt
 Inif void dummy''                  \=(re-)start with factory SAMPLE tt
 Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
@@ -3286,11 +3324,12 @@ pidl r    r fnline~ 'PI%~'         \copy item by PI
 pidv r    r setvalue~ vr%PI        \item by PI
 piml r    r fnline~ 'PI*'          \copy item times PI
 pimv r    r setvalue~ vr*PI        \item times PI
-plob rrr  plotBarChart rrr         \plot Bar Chart
+plob rrr  plotBarChart rrr         \plot (Stacked) Bar Chart
+plof rrr  plotFloatingBarChart rrr \plot Floating Bar Chart
 plol rrr  plotLineChart rrr        \plot Line Chart
 plop rrr  plotPieChart rrr         \plot Pie Chart
 plos rrr  plotSurfaceChart rrr     \plot Surface Chart
-plot rrr  r plotItems zz           \plot given item#s rrr
+ploi rrr  r plotItems zz           \plot given item#s rrr
 plot rzz  r plotXvals zz           \plot given x-vals zz
 plox void plotclose''              \close plot window
 pl0v rrr  plotRange0 rrr           \plot 0 to v
@@ -3418,53 +3457,6 @@ MESSAGELIST=: cmx 0 : 0
 47 >>> no action because no valid lines selected
 48 line(s) replotted: {(y)}
 )
-
-'==================== [cal] tabmath.ijs ===================='
-cocurrent 'z'
-
-sqr=: *:
-sqrt=: %:
-cube=: 3 ^~ ]
-
-
-PI=:	o.1
-PI2=:	o.2
-PI4=:	o.4
-PIb3=:	o.1r3
-PI4b3=:	o.4r3
-RT2=:	2^0.5
-RT3=:	3^0.5
-abs=: |
-avg=: +/ % #
-exp=: ^
-div=: %
-int=: [: <. ] + 0 > ]
-mod=: |~
-times=: *
-
-choice=: 4 : '((0>.1<.x)){y'
-sin=: 1&o."0
-cos=: 2&o."0
-tan=: 3&o."0
-
-sinh=: 5&o."0
-cosh=: 6&o."0
-tanh=: 7&o."0
-
-arcsin=: _1&o."0
-arccos=: _2&o."0
-arctan=: _3&o."0
-
-arcsinh=: _5&o."0
-arccosh=: _6&o."0
-arctanh=: _7&o."0
-
-pi=: 1p1
-
-dfr=: *&(180%pi)
-rfd=: *&(pi%180)
-BP=: 373.15
-FP=: 273.15
 '==================== [cal] traceverbs ===================='
 
 cocurrent 'cal'
@@ -3703,6 +3695,11 @@ steps=: {. + (1&{ - {.) * (i.@>: % ])@{:
 step0=: 3 : 'steps 0,(y{vquan),STEPS'
 step1=: 3 : 'steps 1,(y{vquan),STEPS'
 step2=: 3 : 'steps (-z),(z=.y{vquan),STEPS'
+isteps=: ([: >. {.) to [: <. {:
+
+istep0=: 3 : 'isteps 0,(y{vquan)'
+istep1=: 3 : 'isteps 1,(y{vquan)'
+istep2=: 3 : 'isteps (-z),(z=.y{vquan)'
 
 genDATA=: 4 : 0
 
@@ -3752,6 +3749,21 @@ end.
 iX genDATA step iX
 )
 
+setup_plot_integers=: 4 : 0
+
+
+ssw'+++ setup_plot_integers x=[(crex x)] XRANGE=(y)'
+iX=: x
+select. y
+case. 0 do. istep=. istep0
+case. 1 do. istep=. istep1
+case. 2 do. istep=. istep2
+case.   do. istep=. istep0
+end.
+
+iX genDATA istep iX
+)
+
 dataX=: (3 : '{.{.DATA') :: 1:
 
 
@@ -3771,6 +3783,62 @@ else.
 end.
 )
 
+numx=: [: ". [: > cutopen
+
+barDATA=: numx 0 : 0
+1 1 2  3 4 5
+1 1 2  3 4 5
+2 1 1  3 3 2
+3 4 1  6 4 4
+4 6 6 11 8 5
+)
+
+0 :0
+barDATA, c/f DATA regenned by do_plot…
+  has leading col: the item#s
+  (dummy) row 0 replaced by copy of the X-axis item vec
+)
+
+plotStackedBarChartSample=: 3 : 0
+
+DATA=: barDATA
+'sbar' plotChart 1 2 3 4
+)
+
+plotLineChartSample=: 3 : 0
+
+DATA=: barDATA
+'line' plotChart 1 2 3 4
+)
+
+plotSurfaceChartSample=: 3 : 0
+
+DATA=: barDATA
+CHART_TYPE=: 'surface'
+'surface' plotChart 1 2 3 4
+)
+
+plotPieChartSample=: 3 : 0
+
+DATA=: barDATA
+'pie' plotChart 1 2 3 4
+)
+
+plotFloatingBarChartSample=: 3 : 0
+
+DATA=: barDATA
+'fbar' plotChart 1 2 3 4
+)
+
+plotChart=: 'line' ddefine
+
+CHART_TYPE=: x
+ssw '... plotChart: CHART_TYPE=(CHART_TYPE): y=[(crex y)]'
+X=: {.y [ Y=: }.y
+if. 0=#Y do. Y=: I. X e."1 TD end.
+X do_plot Y
+)
+
 do_plot=: 4 : 0
 
 
@@ -3782,6 +3850,14 @@ iY=. y=. y -. iX=.x
 smoutput sw '+++ do_plot: iX=(iX) iY=[(iY)]',suffix
 Yitems=. }.,',',.brace"0  y
 pd 'reset'
+select. CHART_TYPE
+fcase. 'fbar' do.
+fcase. 'pie' do.
+case. 'sbar' do.
+	setup_plot=. setup_plot_integers
+case.        do.
+end.
+pd 'type ',CHART_TYPE
 pd sw 'title Plot (Yitems) against (brace x)'
 pd 'key ',Yitems
 if. NaNoun'DATA' do. DATA=: iX setup_plot XRANGE end.
@@ -3791,52 +3867,29 @@ pd data0 ; datay
 pd 'show'
 )
 
-plotBarChart=: 3 : 0
-
-invalplot 'bar' changes 'CHART_TYPE'
-ssw '>>> (CHART_TYPE): y=[(y)] not implemented yet'
-)
-
 plotLineChart=: 3 : 0
-
-
-
-
 invalplot 'line' changes 'CHART_TYPE'
-ssw '>>> (CHART_TYPE): y=[(crex y)]'
-X=: {.y [ Y=: }.y
-if. 0=#Y do. Y=: I. X e."1 TD end.
-X do_plot Y
+CHART_TYPE plotChart y
 )
 
-plotRange0=: 3 : 0
-
-invalplot 0 changes 'XRANGE'
-plotLineChart y
+plotBarChart=: 3 : 0
+invalplot 'sbar' changes 'CHART_TYPE'
+CHART_TYPE plotChart y
 )
 
-plotRange1=: 3 : 0
-
-invalplot 1 changes 'XRANGE'
-plotLineChart y
-)
-
-plotRange2=: 3 : 0
-
-invalplot 2 changes 'XRANGE'
-plotLineChart y
+plotFloatingBarChart=: 3 : 0
+invalplot 'fbar' changes 'CHART_TYPE'
+CHART_TYPE plotChart y
 )
 
 plotPieChart=: 3 : 0
-
 invalplot 'pie' changes 'CHART_TYPE'
-ssw '>>> (CHART_TYPE): y=[(y)] not implemented yet'
+CHART_TYPE plotChart y
 )
 
 plotSurfaceChart=: 3 : 0
-
 invalplot 'surface' changes 'CHART_TYPE'
-ssw '>>> (CHART_TYPE): y=[(y)] not implemented yet'
+CHART_TYPE plotChart y
 )
 
 plotline=: 3 : 0
@@ -3849,9 +3902,20 @@ i=. ITEMNO
 iX=. {. i{TD
 iY=. iX -.~ i{TD
 ssw '... plotline: iX=(iX) iY=(iY)'
-iX do_plot iY
+iX do_plot iY [CHART_TYPE=:'line'
 PLOT return.
 )
+plotRange=: 0 ddefine
+
+invalplot x changes 'XRANGE'
+
+CHART_TYPE plotChart y
+)
+
+plotRange0=: 0&plotRange
+plotRange1=: 1&plotRange
+plotRange2=: 2&plotRange
+
 0 :0
 plotLineChart 1
 replot 2 3
@@ -3860,45 +3924,24 @@ replot 4 2
 replot 4 3 2
 replot 2 3 4
 )
+onload 'plotStackedBarChartSample 0'
 
 '==================== [cal] animate.ijs ===================='
 
 0 :0
-Tuesday 15 January 2019  04:18:11
+Wednesday 16 January 2019  13:24:34
 -
 Animates a simulation
-Test with t-table: frog_crosses_road (also: falling_object)
--
-Altering EPOCH should trigger: recal 0
+Test with t-table: frog_crosses_road
+We also need: falling_object
 -
 Re-code flipshow_tabby_ (UndoRedo) using this script.
--
-Use: fargs to extend ttafl to instantiate labels with {X} {Y} …
 )
 
 cocurrent 'cal'
 
 CYCLESTATE=: _1
 CYCLETIMER=: 1000
-
-fargs=: 3 : 0
-
-'fmla extn'=. fmla_extn formula y
-dep=. 0-.~y{TD
-z=. empty''
-for_v. ','cut extn do.
-  z=. z , v_index ; (v_index{dep) ; '('cut }: >v
-end.
-)
-
-fitemsub=: 3 : 0
-
-z=. y{TTn
-for_entry. fargs y do.
-  'n i var unit'=. entry
-  z=. z rplc (brace var) ; (brace i)
-end.
-)
 
 tranfmla=: ((3 : 0) :: 0:) "0
 
@@ -4124,6 +4167,53 @@ ttb_bnTag1_button=: 1&tagpath
 ttb_bnTag2_button=: 2&tagpath
 onload 'start 0'
 
+'==================== [cal] tabmath.ijs ===================='
+cocurrent 'z'
+
+sqr=: SUPPRESSED
+sqrt=: %:
+cube=: 3 ^~ ]
+
+
+PI=:	o.1
+PI2=:	o.2
+PI4=:	o.4
+PIb3=:	o.1r3
+PI4b3=:	o.4r3
+RT2=:	2^0.5
+RT3=:	3^0.5
+abs=: |
+avg=: +/ % #
+exp=: ^
+div=: %
+int=: [: <. ] + 0 > ]
+mod=: |~
+times=: *
+
+choice=: 4 : '((0>.1<.x)){y'
+sin=: 1&o."0
+cos=: 2&o."0
+tan=: 3&o."0
+
+sinh=: 5&o."0
+cosh=: 6&o."0
+tanh=: 7&o."0
+
+arcsin=: _1&o."0
+arccos=: _2&o."0
+arctan=: _3&o."0
+
+arcsinh=: _5&o."0
+arccosh=: _6&o."0
+arctanh=: _7&o."0
+
+pi=: 1p1
+
+dfr=: *&(180%pi)
+rfd=: *&(pi%180)
+BP=: 373.15
+FP=: 273.15
+
 '==================== [cal] start.ijs ===================='
 
 0 :0
@@ -4207,6 +4297,7 @@ MAXINVERT=: 30
 MSLOG=: 0 0$''
 OVERHELDS=: ''
 PAD=: 10
+PROTECT=: 1
 PLOT=: 0
 RETURNED=: ''
 TIMEOUT=: 5
