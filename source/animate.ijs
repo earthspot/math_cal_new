@@ -33,11 +33,27 @@ for_i. I. tranfmla items'' do.
 end.
 )
 
+trans=: '=' ddefine
+  NB. transfer value of item# ({.y) into ({:y) [under op]
+op=. {.x
+'sce tgt'=. 2{. y
+'vsce vtgt'=. getvalue"0 y
+select. op
+case. '+' do. tgt setvalue~ v=. vsce+vtgt
+case. '-' do. tgt setvalue~ v=. vsce-vtgt
+case. '*' do. tgt setvalue~ v=. vsce*vtgt
+case. '%' do. tgt setvalue~ v=. vsce%vtgt
+case.     do. tgt setvalue~ v=. vsce
+end.
+ssw '... trans[(INST)]: value [(v)] {(sce)}-->{(tgt)}'
+)
+
 tran=: {.  NB. just returns value of first argument (sce)
 
 NB. test=: 3 : 'CYCLESTATE=:_1'
 sys_timer_z_=: empty
 
+0 :0  NB. UNTESTED
 cycleshow=: 3 : 0
   NB. show the (next) cycling state
 wd'timer 0'
@@ -52,6 +68,8 @@ NB. >>>>>>>> replace with gerund operating on pseudo-handlers
 end.
 )
 
-onload }: 0 :0
-smoutput fitemsub 6
-)
+
+
+NB. onload }: 0 :0
+NB. tx'tra- 3 1'
+NB. )

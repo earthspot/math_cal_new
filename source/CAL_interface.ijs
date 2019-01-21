@@ -241,6 +241,11 @@ sb1p r    r setvalue~ vr*0.99      \dec item by 1%
 tera r    'T' scaleunits r         \tera- item
 titl yy   settitle yy              \set t-table caption
 tnam yy   file=: yy                \set t-table file name
+tra= rr   '='trans rr              \transfer {.rr-->{:rr
+tra+ rr   '+'trans rr              \transfer {.rr-->{:rr under +
+tra- rr   '-'trans rr              \transfer {.rr-->{:rr under -
+tra* rr   '*'trans rr              \transfer {.rr-->{:rr under *
+tra% rr   '%'trans rr              \transfer {.rr-->{:rr under %
 tran void transfer''               \transfer values between items
 t1dl r    r fnline~ '10%~'         \copy item by 10
 t1ml r    r fnline~ '10*'          \copy item times 10

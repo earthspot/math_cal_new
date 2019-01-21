@@ -53,6 +53,7 @@ AABUILT=: '2019-01-16  20:48:11'
 AABUILT=: '2019-01-16  21:21:18'
 AABUILT=: '2019-01-16  23:00:11'
 AABUILT=: '2019-01-16  23:12:06'
+AABUILT=: '2019-01-18  01:43:13'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -3374,6 +3375,11 @@ sb1p r    r setvalue~ vr*0.99      \dec item by 1%
 tera r    'T' scaleunits r         \tera- item
 titl yy   settitle yy              \set t-table caption
 tnam yy   file=: yy                \set t-table file name
+tra= rr   '='trans rr              \transfer {.rr-->{:rr
+tra+ rr   '+'trans rr              \transfer {.rr-->{:rr under +
+tra- rr   '-'trans rr              \transfer {.rr-->{:rr under -
+tra* rr   '*'trans rr              \transfer {.rr-->{:rr under *
+tra% rr   '%'trans rr              \transfer {.rr-->{:rr under %
 tran void transfer''               \transfer values between items
 t1dl r    r fnline~ '10%~'         \copy item by 10
 t1ml r    r fnline~ '10*'          \copy item times 10
@@ -3958,6 +3964,21 @@ for_i. I. tranfmla items'' do.
  v setvalue tgt
  ssw '... transfer[(i)]: value [(v)] {(sce)}-->{(tgt)}'
 end.
+)
+
+trans=: '=' ddefine
+
+op=. {.x
+'sce tgt'=. 2{. y
+'vsce vtgt'=. getvalue"0 y
+select. op
+case. '+' do. tgt setvalue~ vsce+vtgt
+case. '-' do. tgt setvalue~ vsce-vtgt
+case. '*' do. tgt setvalue~ vsce*vtgt
+case. '%' do. tgt setvalue~ vsce%vtgt
+case.     do. tgt setvalue~ vsce
+end.
+ssw '... trans[(INST)]: value [(v)] {(sce)}-->{(tgt)}'
 )
 
 tran=: {.

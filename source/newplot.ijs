@@ -235,6 +235,7 @@ data0=. }. 0{DATA  NB. 1st row of DATA always x-coords
 datay=. 0 1 }. y{DATA  NB. 1st col of DATA always item#
 pd data0 ; datay
 pd 'show'
+NB. pd 'pdf ',jpath '~/plot.pdf'
 )
 
 plotLineChart=: 3 : 0
@@ -317,6 +318,6 @@ replot 2 3 4
 NB. onload '1 do_plot 2 3 4'
 NB. onload 'plotLineChart 1 2 3 4'
 NB. onload 'plotFloatingBarChartSample 0'
-onload 'plotStackedBarChartSample 0'
+NB. onload 'plotStackedBarChartSample 0'
 NB. onload 'plotPieChartSample 0'
 NB. onload 'plotSurfaceChartSample 0'
