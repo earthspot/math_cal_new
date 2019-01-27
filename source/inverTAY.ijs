@@ -23,7 +23,7 @@ assert. TIME > 6!:1''
 )
 
 fwd=: empty  NB. reassigned below inside: inversion
-ssw=: smoutput&sw  NB. reassigned below [?] inside: inversion
+NB. ssw=: smoutput&sw  NB. reassigned below [?] inside: inversion
 register=: register_cal_ f.  NB. fetch once on loading
 
 inversion=: 4 : 0
@@ -33,7 +33,7 @@ argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 fwdX0 X1 Y0D dY dY0 dX d_X d1X d2X'
 fwd=: fwd_cal_        NB. CAL forward-calculn currently in-effect
 amodel=: amodel_cal_  NB. CAL constraint-model currently in-effect
-NB. ssw=: msg_cal_        NB. CAL trace-outputting currently in-effect
+ssw=: sswInversion_cal_ f.
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
 timeout TIMEOUT [COUNT=: 0  NB. init count of g-cycles performed

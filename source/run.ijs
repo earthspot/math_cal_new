@@ -32,7 +32,7 @@ smoutput '--- run.ijs: CAL BUILTFILE loaded: ',BUILTFILE
 load TESTFILE
 smoutput '--- run.ijs: CAL TESTFILE completed without discrepancies: ',TESTFILE
 
-NOPLOT_z_=: if807''  NB. disable plot package for j807 builds
+NB. NOPLOT_z_=: if807''  NB. disable plot package for j807 builds
 
 smoutput '+++ Gitcal run: load latest TABBY build...'
 load '~Gittab/tabula.ijs'

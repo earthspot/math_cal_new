@@ -34,8 +34,9 @@ start=: 3 : 0
   NB. start'$$' -- starts with builtin|saved SAMPLE
   NB. start path -- starts with t-table: (path)
 traceverbs 'OFF'
-NB. sess1=: smoutput  NB. for inversion.ijs tracing
-sess1=: empty  NB. >>>>> DISABLE inversion.ijs tracing
+sswInversion=: empty  NB. >>>>> DISABLE inversion heuristics tracing
+  NB. switches ALL calls to ssw within the set of _inver*_ locales
+  NB. ---needs to be independently switched vis-a-vis traceverbs
 load jpath'~UU/uu.ijs'
 uuconnect''  NB. create and use an instance of class 'uu'
 make_tabengineCore''  NB. the core of: tabengine
@@ -107,13 +108,6 @@ TTn=: ,:'tn'	NB. t-table cache for item names
 WARNPLEX=: 1	NB. 1==run warnplex after each recalc
 i.0 0
 )
-
-NB. plotDisabled=: 3 : 0
-NB.   NB. =1 if NOPLOT exists and NOPLOT~:0
-NB. try. if. NOPLOT=0 do. 0 return. end.
-NB. catch. 0 return. end.
-NB. 1 return.
-NB. )
 
 plotDisabled=: default bind 'NOPLOT'
 

@@ -54,6 +54,16 @@ AABUILT=: '2019-01-16  21:21:18'
 AABUILT=: '2019-01-16  23:00:11'
 AABUILT=: '2019-01-16  23:12:06'
 AABUILT=: '2019-01-18  01:43:13'
+AABUILT=: '2019-01-26  22:47:38'
+AABUILT=: '2019-01-26  22:52:31'
+AABUILT=: '2019-01-27  00:24:53'
+AABUILT=: '2019-01-27  00:27:32'
+AABUILT=: '2019-01-27  00:48:21'
+AABUILT=: '2019-01-27  00:56:04'
+AABUILT=: '2019-01-27  01:03:45'
+AABUILT=: '2019-01-27  01:43:13'
+AABUILT=: '2019-01-27  02:07:14'
+AABUILT=: '2019-01-27  02:11:49'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -354,7 +364,6 @@ y,SP,sep,SP,z
 ar=: 3 : 'SP ,.~ }.arrowch arrowgen SP'
 
 arrowch=: 3 : 0
-ssw=. empty
 
 
 zz=. i.0 0
@@ -379,7 +388,6 @@ ZZ=: zz
 
 zz2=. |: |. aheads pack acomb zz
 zz3=. zz2 <. #uarr=. uucp ARROWCH
-ssw 'arrowch: codes used: (~.,zz2)'
 zz3 { uarr,'?'
 )
 
@@ -1260,6 +1268,7 @@ z=. 1e_10
 
 invalexe=: 3 : 'erase listnameswithprefix ''exe'''
 invalinfo=: empty
+
 invert=: 3 : 0
 
 if. -.hasf y do. 41 message y return. end.
@@ -2510,6 +2519,7 @@ qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 
 
+ssw=: sswInversion_cal_ f.
 argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
 fwd=: fwd_cal_
@@ -2534,7 +2544,7 @@ markfirst=: i. = [: i. [: # [
 marklast=:  i: = [: i. [: # [
 fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'
 tolerant=: 4 : '(mdiff=:|x-y) <: TOLERANCE * (>./|x,y)'
-approximates=: 4 : '(|x-y) <: TOLERANCE'
+approximates=: 4 : '(x=y) +. (TOLERANCE >: |x-y)'
 
 '==================== [cal] inverC0.ijs ===================='
 0 :0
@@ -2772,7 +2782,6 @@ MAXCOUNTDOWN=: 1000
 
 
 fwd=: empty
-ssw=: smoutput&sw
 register=: register_cal_ f.
 record=: empty
 inversion=: 4 : 0
@@ -2783,6 +2792,7 @@ argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
 fwd=: fwd_cal_
 amodel=: amodel_cal_
+ssw=: sswInversion_cal_ f.
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
 countdown MAXCOUNTDOWN
@@ -2836,7 +2846,6 @@ clear z
 
 MAXLOOP=: 20
 fwd=: empty
-ssw=: smoutput&sw
 register=: register_cal_ f.
 record=: record_cal_
 
@@ -2847,6 +2856,7 @@ argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 Y1 dX d_X d1X d2X'
 fwd=: fwd_cal_
 amodel=: amodel_cal_
+ssw=: sswInversion_cal_ f.
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
 
@@ -2898,7 +2908,6 @@ clear z
 
 MAXLOOP=: 20
 fwd=: empty
-ssw=: smoutput&sw
 register=: register_cal_ f.
 
 inversion=: 4 : 0
@@ -2908,6 +2917,7 @@ argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 fwdX0 X1 Y1 dY dY0 dX d_X d1X d2X'
 fwd=: fwd_cal_
 amodel=: amodel_cal_
+ssw=: sswInversion_cal_ f.
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
 
@@ -2963,7 +2973,6 @@ assert. TIME > 6!:1''
 )
 
 fwd=: empty
-ssw=: smoutput&sw
 
 register=: register_cal_ f.
 approximates=: approximates_cal_
@@ -2975,6 +2984,7 @@ argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 fwdX0 X1 Y0D dY dY0 dX d_X d1X d2X'
 fwd=: fwd_cal_
 amodel=: amodel_cal_
+ssw=: sswInversion_cal_ f.
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
 timeout TIMEOUT [COUNT=: 0
@@ -3043,7 +3053,6 @@ assert. TIME > 6!:1''
 )
 
 fwd=: empty
-ssw=: smoutput&sw
 register=: register_cal_ f.
 
 inversion=: 4 : 0
@@ -3053,6 +3062,7 @@ argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 fwdX0 X1 Y0D dY dY0 dX d_X d1X d2X'
 fwd=: fwd_cal_
 amodel=: amodel_cal_
+ssw=: sswInversion_cal_ f.
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
 timeout TIMEOUT [COUNT=: 0
@@ -3930,7 +3940,6 @@ replot 4 2
 replot 4 3 2
 replot 2 3 4
 )
-onload 'plotStackedBarChartSample 0'
 
 '==================== [cal] animate.ijs ===================='
 
@@ -3972,11 +3981,11 @@ op=. {.x
 'sce tgt'=. 2{. y
 'vsce vtgt'=. getvalue"0 y
 select. op
-case. '+' do. tgt setvalue~ vsce+vtgt
-case. '-' do. tgt setvalue~ vsce-vtgt
-case. '*' do. tgt setvalue~ vsce*vtgt
-case. '%' do. tgt setvalue~ vsce%vtgt
-case.     do. tgt setvalue~ vsce
+case. '+' do. tgt setvalue~ v=. vsce+vtgt
+case. '-' do. tgt setvalue~ v=. vsce-vtgt
+case. '*' do. tgt setvalue~ v=. vsce*vtgt
+case. '%' do. tgt setvalue~ v=. vsce%vtgt
+case.     do. tgt setvalue~ v=. vsce
 end.
 ssw '... trans[(INST)]: value [(v)] {(sce)}-->{(tgt)}'
 )
@@ -3984,6 +3993,7 @@ ssw '... trans[(INST)]: value [(v)] {(sce)}-->{(tgt)}'
 tran=: {.
 sys_timer_z_=: empty
 
+0 :0
 cycleshow=: 3 : 0
 
 wd'timer 0'
@@ -3997,24 +4007,14 @@ if. isBool CYCLESTATE do.
 end.
 )
 
-onload }: 0 :0
-smoutput fitemsub 6
-)
+
 
 0 :0
-Wednesday 2 January 2019  00:58:55
+Saturday 26 January 2019  22:44:28
 -
-ttb_pane_select -called when a line clicked
-Tool: opent - ⌘click opens ttbrowse
-ttb_bnLoad_button -"illegal" calls into TABBY
-  instead really needs to send a message which can be ignored.
-  -or maybe a try/catch ??
--
-expand pfx to use the current tag of (path) y
-Omit the '.ijs' from displayed (content'')
+old version cloned: tempuu 71
 -
 onload_z_=: do
--
 wd 'psel ttb; qform;'
 )
 
@@ -4023,9 +4023,14 @@ clear 'ttb'
 
 UNSET=: '<UNSET>'
 path=: UNSET
-POS=: 322 23 1060 400
+TAG0=: <,''
+POS=: 322 23 830 400
 
-'nix shf cmd opt'=: 0 1 2 4
+0 :0
+ttb_default=: 3 : 0
+
+smoutput '>>> missing handler: ',sysevent
+)
 
 TTBFORM=: 0 : 0
 pc ttb;pn ttbrowse;
@@ -4033,23 +4038,29 @@ bin v;
 bin h;
 cc textbuf editm;
 cc infobuf editm;
-cc pane listbox;
+cc g table;
 bin z;
-bin h;
-bin s;		rem left spacer;
-  cc bnDele button; cn "Delete";
+bin hs;
+  cc bnDele button; cn "Delete T-table";
   cc bnTag0 button; cn "No Tags";
-  cc bnTag1 button; cn "Tag[1]";
-  cc bnTag2 button; cn "Tag[2]";
+  cc bnTag1 button; cn "Red";
+  cc bnTag2 button; cn "Green";
   cc bnOpen button; cn "Open";
   cc bnLoad button; cn "Load";
-bin s;		rem right spacer;
-bin z;
+bin sz;
 cc sbar static; cn "status";
 bin z;
 set textbuf font fixfont;
 pshow;
 )
+0 :0
+bin s;		rem left spacer;
+bin s;		rem right spacer;
+  cc bnSorn button; cn "Sort/filename";
+  cc bnSord button; cn "Sort/date";
+  cc bnSort button; cn "Sort/tag";
+)
+
 TAG1=: 0 : 0
 62 70 6C 69 73 74 30 30 A1 01 55 52 65 64 0A 36
 08 0A 00 00 00 00 00 00 01 01 00 00 00 00 00 00
@@ -4087,44 +4098,29 @@ case.      do. 0
 end.
 )
 
-pfx=: 3 : 0"1
-	y return.
-t=. {. ": tagpath '~Ttables/',deb y
-t,UL,y
-)
-  
 directory=: 3 : 0
 
 
 DIR=: 1!:0 jpath '~Ttables/*.ijs'
 )
 
-pathtable=: 3 : 0
-
-pfx >{."1 directory''
-)
-content=: 3 : 0
-
-x2f pathtable''
-)
-
-deTAB=: 3 : 0
-
-dtb y charsub~ TAB,SP
-)
-
 window_close=: 3 : 0
 wd :: empty 'psel ttb; pclose;'
 )
 
-refreshPane=: 3 : 0
-wd 'set pane items *',content''
+gRefresh=: 4 : 0
+
+wd 'set g shape ',":shape=: $y
+wd 'set g protect ',": , shape$0 1 1
+wd 'set g hdr *', x
+wd 'set g data *', ; SP ,each dquote&": each y
+wd 'set g resizecol'
 )
 
 start=: 3 : 0
 window_close''
 wd TTBFORM
-refreshPane''
+'TAG FILENAME DATE' gRefresh TAG0 ,"1 (2&{."1) directory''
 wd 'psel ttb; pmove ' , ":POS
 putsb 'started: ',date''
 )
@@ -4136,7 +4132,9 @@ wd 'psel ttb; set sbar text *',":,y
 
 ttb_bnDele_button=: 3 : 0
 
-smoutput 'deletefile_cal_ ',quote path
+
+ssw 'deletefile_cal_ (quote path) --not yet implemented'
+
 )
 
 ttb_bnOpen_button=: 3 : 0
@@ -4153,19 +4151,22 @@ catch. smoutput '>>> ttb_bnLoad_button: illegal call into _tabby_'
 end.
 )
 
+ttb_g_mbldbl=: ttb_bnLoad_button
+
+ttb_bnTag0_button=: 0&tagpath
+ttb_bnTag1_button=: 1&tagpath
+ttb_bnTag2_button=: 2&tagpath
 ttb_close=: window_close
 
-ttb_default=: 3 : 0
+ttb_g_mark=: 3 : 0
 
-smoutput '>>> missing handler: ',sysevent
-)
-
-ttb_resize=: empty
-
-ttb_pane_select=: 3 : 0
-
-if. shf= {. ". sysmodifiers do. refreshPane'' end.
-fname=: pane
+select. g
+case. '0 0' do. sortByTag'' return.
+case. '0 1' do. sortByName'' return.
+case. '0 2' do. sortByDate'' return.
+end.
+fno=: {.".g
+fname=: 0 pick fno{DIR
 path=: jpath '~Ttables/',fname
 tagid=. tagpath path
 tag=. > tagid { ;:'notag red green'
@@ -4177,15 +4178,31 @@ if. -.NaNoun'TTIMAGE' do. text=: TTIMAGE end.
 if. -.NaNoun'TTINFO' do. info=: TTINFO end.
 wd 'psel ttb; set textbuf text *',text
 wd 'psel ttb; set infobuf text *',info
-putsb tag,' / ttb_pane_select: ',date''
+putsb tag,' / ttb_g_mark: ',date''
 )
 
-numvec=: 3 : '". (LF,SP) sub y'
-sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
+heldshift=: 3 : '1=".sysmodifiers'
 
-ttb_bnTag0_button=: 0&tagpath
-ttb_bnTag1_button=: 1&tagpath
-ttb_bnTag2_button=: 2&tagpath
+direction=: 3 : 0
+
+if. y=heldshift'' do. 'descending' else. 'ascending' end.
+)
+
+sortByDate=: 3 : 0
+
+wd 'psel ttb; set g sort 2 ',direction 0
+)
+
+sortByName=: 3 : 0
+
+wd 'psel ttb; set g sort 1 ',direction 1
+)
+
+sortByTag=: 3 : 0
+
+wd 'psel ttb; set g sort 0 ',direction 0
+)
+
 onload 'start 0'
 
 '==================== [cal] tabmath.ijs ===================='
@@ -4268,7 +4285,9 @@ start=: 3 : 0
 
 
 traceverbs 'OFF'
-sess1=: empty
+sswInversion=: empty
+
+
 load jpath'~UU/uu.ijs'
 uuconnect''
 make_tabengineCore''
@@ -4327,6 +4346,7 @@ TTn=: ,:'tn'
 WARNPLEX=: 1
 i.0 0
 )
+
 plotDisabled=: default bind 'NOPLOT'
 
 plot=: '' ddefine

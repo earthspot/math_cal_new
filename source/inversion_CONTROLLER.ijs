@@ -86,7 +86,7 @@ qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
   NB. needs special case of verb: fit
   NB. in order to generate: bwd: Y0D --> X1
   NB. >>> WARNING: executes in the caller's locale! <<<
-NB. ssw=. msg_cal_  NB. fetch CURRENT SETTING of the CAL trace verb
+ssw=: sswInversion_cal_ f.
 argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
 fwd=: fwd_cal_
@@ -117,4 +117,5 @@ NB. But we prefer to use: approximates
 NB. in conjunction with N-R when the target value (Y0+dY) is zero
 
 tolerant=: 4 : '(mdiff=:|x-y) <: TOLERANCE * (>./|x,y)'
-approximates=: 4 : '(|x-y) <: TOLERANCE'
+NB. approximates=: 4 : '(|x-y) <: TOLERANCE'
+approximates=: 4 : '(x=y) +. (TOLERANCE >: |x-y)'

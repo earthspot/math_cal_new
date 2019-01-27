@@ -1,18 +1,10 @@
 	NB. cal - ttbrowse
 0 :0
-Wednesday 2 January 2019  00:58:55
+Saturday 26 January 2019  22:44:28
 -
-ttb_pane_select -called when a line clicked
-Tool: opent - ⌘click opens ttbrowse
-ttb_bnLoad_button -"illegal" calls into TABBY
-  instead really needs to send a message which can be ignored.
-  -or maybe a try/catch ??
--
-expand pfx to use the current tag of (path) y
-Omit the '.ijs' from displayed (content'')
+old version cloned: tempuu 71
 -
 onload_z_=: do
--
 wd 'psel ttb; qform;'  NB. for adjusting POS below
 )
 
@@ -21,10 +13,14 @@ clear 'ttb'
 
 UNSET=: '<UNSET>'
 path=: UNSET
-NB. POS=: 480 23 800 400
-POS=: 322 23 1060 400
+TAG0=: <,''
+POS=: 322 23 830 400
 
-'nix shf cmd opt'=: 0 1 2 4  NB. used by: ttb_pane_button
+0 :0
+ttb_default=: 3 : 0
+  NB. warns of a missing handler
+smoutput '>>> missing handler: ',sysevent
+)
 
 TTBFORM=: 0 : 0
 pc ttb;pn ttbrowse;
@@ -32,24 +28,29 @@ bin v;
 bin h;
 cc textbuf editm;
 cc infobuf editm;
-cc pane listbox;
+cc g table;
 bin z;
-bin h;
-bin s;		rem left spacer;
-  cc bnDele button; cn "Delete";
+bin hs;
+  cc bnDele button; cn "Delete T-table";
   cc bnTag0 button; cn "No Tags";
-  cc bnTag1 button; cn "Tag[1]";
-  cc bnTag2 button; cn "Tag[2]";
+  cc bnTag1 button; cn "Red";
+  cc bnTag2 button; cn "Green";
   cc bnOpen button; cn "Open";
   cc bnLoad button; cn "Load";
-bin s;		rem right spacer;
-bin z;
+bin sz;
 cc sbar static; cn "status";
 bin z;
 set textbuf font fixfont;
 pshow;
 )
 NB. <<< cc sbar static MUST be followed by cn "…"; else no-workee
+0 :0 NB. removed from above…
+bin s;		rem left spacer;
+bin s;		rem right spacer;
+  cc bnSorn button; cn "Sort/filename";
+  cc bnSord button; cn "Sort/date";
+  cc bnSort button; cn "Sort/tag";
+)
 
 TAG1=: 0 : 0	NB. red
 62 70 6C 69 73 74 30 30 A1 01 55 52 65 64 0A 36
@@ -90,52 +91,32 @@ case.      do. 0
 end.
 )
 
-pfx=: 3 : 0"1
-	y return.
-t=. {. ": tagpath '~Ttables/',deb y
-NB. ssw '+++ pfx: t=(t) y=(y)'
-NB. wd'msgs'
-t,UL,y
-)
-  
 directory=: 3 : 0
   NB. 6-col boxed array of "ls -l" info
   NB. 1st col is filenames
 DIR=: 1!:0 jpath '~Ttables/*.ijs'
 )
 
-pathtable=: 3 : 0
-  NB. mx of PREFIXED filenames in directory''
-pfx >{."1 directory''
-)
-
-NB. content=: 3 : 0
-NB.   NB. LF-sep list of filenames in directory''
-NB. x2f >{."1 directory''
-NB. )
-
-content=: 3 : 0
-  NB. LF-sep list of filenames in directory''
-x2f pathtable''
-)
-
-deTAB=: 3 : 0
-  NB. replace TAB by SP
-dtb y charsub~ TAB,SP
-)
-
 window_close=: 3 : 0
 wd :: empty 'psel ttb; pclose;'
 )
 
-refreshPane=: 3 : 0
-wd 'set pane items *',content''
+gRefresh=: 4 : 0
+  NB. make table control: g accept boxed table: y
+wd 'set g shape ',":shape=: $y
+wd 'set g protect ',": , shape$0 1 1  NB. protect all but 1st col
+wd 'set g hdr *', x
+NB. wd 'set g lab ',o4b labels
+wd 'set g data *', ; SP ,each dquote&": each y
+NB. wd 'set g background ', o4b (,Tab < 100) { '#ffffff';'#ff8888'
+NB. wd 'set g background ', o4b , COLORTABLE {~ y -:"0 <'temp'
+wd 'set g resizecol'
 )
 
 start=: 3 : 0
 window_close''
 wd TTBFORM
-refreshPane''
+'TAG FILENAME DATE' gRefresh TAG0 ,"1 (2&{."1) directory''
 wd 'psel ttb; pmove ' , ":POS
 putsb 'started: ',date''
 )
@@ -147,7 +128,9 @@ wd 'psel ttb; set sbar text *',":,y
 
 ttb_bnDele_button=: 3 : 0
   NB. Delete t-table
-smoutput 'deletefile_cal_ ',quote path
+  NB. INSERT CAUTIONS HERE
+ssw 'deletefile_cal_ (quote path) --not yet implemented'
+  NB. REFRESH DIR HERE
 )
 
 ttb_bnOpen_button=: 3 : 0
@@ -156,7 +139,7 @@ open path
 )
 
 ttb_bnLoad_button=: 3 : 0
-  NB. Load
+  NB. Load the selected t-table into _tabby_
 try.
   tabenginex_tabby_ 'load' ; path
   setFormTitle_tabby_''
@@ -164,22 +147,27 @@ catch. smoutput '>>> ttb_bnLoad_button: illegal call into _tabby_'
 end.
 )
 
+ttb_g_mbldbl=: ttb_bnLoad_button  NB. double-click==Load
+
+ttb_bnTag0_button=: 0&tagpath
+ttb_bnTag1_button=: 1&tagpath
+ttb_bnTag2_button=: 2&tagpath
+NB. ttb_bnSord_button=: sortByDate
+NB. ttb_bnSorn_button=: sortByName
+NB. ttb_bnSort_button=: sortByTag
+
 ttb_close=: window_close
 
-ttb_default=: 3 : 0
-  NB. warns of a missing handler
-smoutput '>>> missing handler: ',sysevent
-NB. sllog 'ttb_default sysevent syschild pane_select'
-)
-
-ttb_resize=: empty
-
-ttb_pane_select=: 3 : 0
+ttb_g_mark=: 3 : 0
   NB. examine selected t-table
-if. shf= {. ". sysmodifiers do. refreshPane'' end.
-NB. sllog 'ttb_pane_select sysmodifiers pane_select'
-NB. fname=: 2}.pane
-fname=: pane	NB. WITH TRIVIAL pfx <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+select. g  NB. detect click on header row
+case. '0 0' do. sortByTag'' return.
+case. '0 1' do. sortByName'' return.
+case. '0 2' do. sortByDate'' return.
+end.
+fno=: {.".g
+fname=: 0 pick fno{DIR
+NB. ssw 'ttb_g_mark: g_select=(g_select) g=(g) fno=(fno) fname=(fname)'
 path=: jpath '~Ttables/',fname
 tagid=. tagpath path
 tag=. > tagid { ;:'notag red green'
@@ -191,25 +179,29 @@ if. -.NaNoun'TTIMAGE' do. text=: TTIMAGE end.
 if. -.NaNoun'TTINFO' do. info=: TTINFO end.
 wd 'psel ttb; set textbuf text *',text
 wd 'psel ttb; set infobuf text *',info
-putsb tag,' / ttb_pane_select: ',date''
+putsb tag,' / ttb_g_mark: ',date''
 )
 
-numvec=: 3 : '". (LF,SP) sub y'
-sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
+heldshift=: 3 : '1=".sysmodifiers'
 
-ttb_bnTag0_button=: 0&tagpath
-ttb_bnTag1_button=: 1&tagpath
-ttb_bnTag2_button=: 2&tagpath
+direction=: 3 : 0
+  NB. wd command: sort direction
+if. y=heldshift'' do. 'descending' else. 'ascending' end.
+)
 
-NB. tagpath=: 3 : 0
-NB.   NB. tag the current t-table
-NB. ssw '+++ tagpath[(y)]: t-table=(path)'
-NB. if. path-:UNSET do. return. end.
-NB. select. y
-NB. case. 0 do. ssw'... delete all tags'
-NB. case. 1 do. ssw'... tag red'
-NB. case. 2 do. ssw'... tag green'
-NB. end.
-NB. )
+sortByDate=: 3 : 0
+  NB. sort directory (g) by date
+wd 'psel ttb; set g sort 2 ',direction 0
+)
+
+sortByName=: 3 : 0
+  NB. sort directory (g) by name
+wd 'psel ttb; set g sort 1 ',direction 1
+)
+
+sortByTag=: 3 : 0
+  NB. sort directory (g) by tag
+wd 'psel ttb; set g sort 0 ',direction 0
+)
 
 onload 'start 0'

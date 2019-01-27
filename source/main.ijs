@@ -77,7 +77,6 @@ y,SP,sep,SP,z
 ar=: 3 : 'SP ,.~ }.arrowch arrowgen SP'
 
 arrowch=: 3 : 0
-ssw=. empty
   NB. use as follows: arrowch arrowgen''
   NB. y is arrowgen'' output (an integer table)
 zz=. i.0 0
@@ -103,7 +102,7 @@ ZZ=: zz
   NB. To debug, globalize (=:) these work-vars...
 zz2=. |: |. aheads pack acomb zz
 zz3=. zz2 <. #uarr=. uucp ARROWCH  NB. limit to #uarr
-ssw 'arrowch: codes used: (~.,zz2)'
+NB. smoutput&sw 'arrowch: codes used: (~.,zz2)'
 zz3 { uarr,'?'
 )
 
@@ -1008,36 +1007,6 @@ z=. 1e_10  NB. low but not low enough to cause underflow
 
 invalexe=: 3 : 'erase listnameswithprefix ''exe'''
 invalinfo=: empty
-
-NB. NB. ----------------------------------------------------------------
-NB. NB. THIS DEFINITION IS OVERRIDDEN IN inversion.ijs <<<<<<<<<<<<<<<<<
-NB. NB. with: inversion=: inversionC
-NB. NB. ----------------------------------------------------------------
-NB.   NB. saddle for calling inversionX (vectored)
-NB.   NB. r1=. r inversion deltaz --the way it's called
-NB.   NB.  where: deltaz (=y here) is dY in inversionB
-NB.   NB.  and r is values of ancestors of pivot item# (fwd acts on this vec)
-NB.
-NB. inversion=: 4 : 0
-NB. X=. x inversionX y
-NB. sess1 11 message y  NB. makes no sense here, unless crudely display: y
-NB. sess1 (>'amodel:' ; 'x:' ; 'X:') ,. ":(amodel,:x),X
-NB. X
-NB. )
-NB.
-NB. inversionB=: 4 : 0
-NB.   NB. === NEWTON-RAPHSON INVERTER ===
-NB. X0=: x  NB. the values of the pivot node ancestors
-NB. dY=: y  NB. the increment to the pivot node value
-NB.   NB. Initialise work-var d_Y for: g, the guessing fn
-NB.   NB. d1Y = Y1-Y0
-NB.   NB.  = (fwd X1)  -(fwd X0)
-NB.   NB.  = (fwd X0+d1X)  -(fwd X0)
-NB. d1X=: 1      NB. arbitrary value for the first guess
-NB. d_Y=: (fwd X0+d1X) -(fwd X0)
-NB. dX=: g^:(_) d1X    NB. the limiting case of d_X
-NB. X=: X0+dX    NB. the target X such that Y = fwd X
-NB. )
 
 invert=: 3 : 0
   NB. invert the formula of item y
