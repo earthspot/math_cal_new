@@ -19,7 +19,7 @@ Lab Section INTRO2
 CAL needs initializing before it responds to instructions...
 )
 
-tabengine 'Init'
+start_cal_ ''
 tabengine 'VERSION'
 
 NB. =========================================================

@@ -1,5 +1,5 @@
 0 :0
-Sunday 30 December 2018  03:54:39
+Sunday 27 January 2019  18:03:54
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -9,61 +9,13 @@ clear 'cal'
 coclass 'cal'
 onload_z_=: empty
 
-AABUILT=: '2018-12-30  04:00:26'
-AABUILT=: '2018-12-31  03:37:47'
-AABUILT=: '2019-01-01  20:35:13'
-AABUILT=: '2019-01-03  05:55:35'
-AABUILT=: '2019-01-03  18:25:13'
-AABUILT=: '2019-01-04  01:06:46'
-AABUILT=: '2019-01-06  06:44:03'
-AABUILT=: '2019-01-06  09:17:31'
-AABUILT=: '2019-01-06  10:15:06'
-AABUILT=: '2019-01-06  10:53:42'
-AABUILT=: '2019-01-06  22:10:55'
-AABUILT=: '2019-01-06  22:30:32'
-AABUILT=: '2019-01-06  22:42:38'
-AABUILT=: '2019-01-08  04:39:18'
-AABUILT=: '2019-01-08  05:03:20'
-AABUILT=: '2019-01-08  05:18:03'
-AABUILT=: '2019-01-08  05:28:26'
-AABUILT=: '2019-01-08  05:48:11'
-AABUILT=: '2019-01-08  05:51:08'
-AABUILT=: '2019-01-09  10:50:33'
-AABUILT=: '2019-01-09  11:05:40'
-AABUILT=: '2019-01-09  11:21:57'
-AABUILT=: '2019-01-09  11:35:21'
-AABUILT=: '2019-01-09  12:01:00'
-AABUILT=: '2019-01-09  12:14:30'
-AABUILT=: '2019-01-09  12:15:52'
-AABUILT=: '2019-01-09  12:32:09'
-AABUILT=: '2019-01-10  07:34:51'
-AABUILT=: '2019-01-10  08:11:06'
-AABUILT=: '2019-01-12  13:19:01'
-AABUILT=: '2019-01-12  16:00:54'
-AABUILT=: '2019-01-13  23:42:07'
-AABUILT=: '2019-01-15  02:31:14'
-AABUILT=: '2019-01-15  18:22:07'
-AABUILT=: '2019-01-15  18:54:23'
-AABUILT=: '2019-01-16  00:34:58'
-AABUILT=: '2019-01-16  13:19:40'
-AABUILT=: '2019-01-16  13:26:51'
-AABUILT=: '2019-01-16  13:42:01'
-AABUILT=: '2019-01-16  13:59:20'
-AABUILT=: '2019-01-16  20:48:11'
-AABUILT=: '2019-01-16  21:21:18'
-AABUILT=: '2019-01-16  23:00:11'
-AABUILT=: '2019-01-16  23:12:06'
-AABUILT=: '2019-01-18  01:43:13'
-AABUILT=: '2019-01-26  22:47:38'
-AABUILT=: '2019-01-26  22:52:31'
-AABUILT=: '2019-01-27  00:24:53'
-AABUILT=: '2019-01-27  00:27:32'
-AABUILT=: '2019-01-27  00:48:21'
-AABUILT=: '2019-01-27  00:56:04'
-AABUILT=: '2019-01-27  01:03:45'
-AABUILT=: '2019-01-27  01:43:13'
-AABUILT=: '2019-01-27  02:07:14'
-AABUILT=: '2019-01-27  02:11:49'
+AABUILT=: '2019-01-27  18:04:01'
+AABUILT=: '2019-01-28  03:24:56'
+AABUILT=: '2019-01-28  03:43:59'
+AABUILT=: '2019-01-28  03:54:43'
+AABUILT=: '2019-01-28  04:10:35'
+AABUILT=: '2019-01-28  04:54:34'
+AABUILT=: '2019-01-28  05:01:40'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -110,7 +62,7 @@ SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'
 SL=: '/'
-SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTn TTf UNITN UNITS CAPT'
+SNAPSP=: 'file vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTn TTf UNITN UNITS CAPT'
 SP=: ' '
 ST=: '*'
 UL=: '_'
@@ -2201,7 +2153,58 @@ end.
 )
 
 xseq=: 3 : 'sor clos dpmx TD'
+
+make_CAL=: 3 : 0
+
+CALX=. SP,. x4f }: CAL
+ic=. (i.{:$CALX) e. 0 5 10 36
+CALb=: ic (<;._1)"_ _ 1 CALX
+for_i. CALb do.
+  'inst args func desc'=. i
+  args=. dtb args
+  func=. dtb func
+  vr=. '[vr=. r{vquan ' #~ (<'vr') e. ;:func
+  vy=: '(".y)'
+  select. deb args
+  case. ,'n'  do. body=. func rplc ' n' ; vy
+  case. ,'r'  do. body=. func,vr, '[r=. ".y'
+  case. 'rr'  do. body=. func rplc 'rr' ; vy
+  case. 'rrr' do. body=. func rplc 'rrr' ; vy
+  case. 'rv'  do. body=. func,vr, '[r=. ".firstwords y [v=. {:".y'
+  case. 'rzz' do. body=. func,    '[r=. ".firstwords y [zz=. SP takeafter y'
+  case. 'yy'  do. body=. func rplc 'yy' ; 'y'
+  case.       do. body=. func
+  end.
+  ('CAL_',inst)=: 3 : (body , ' [sst _' #~ changesTtable inst)
+end.
+i.0 0
+)
+sst=: 3 : 0
+
+snapshot''
+LASTINSTR=: INSTR
+warnplex''
+)
+
+unbox=: nb^:(L. > 0:)
+
+LOGINSTR=: ''
+
+tabengine1=: 3 : 0 "1
+'INST YY'=: 4 split INSTR=: unbox y
+LOGINSTR=: LOGINSTR,INSTR,LF
+RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError1) dltb YY
+)
+
+tabengineError1=: 3 : 0
+
+smoutput 'tabengineError1: bad instruction' ; INSTR
+smoutput ('errmsg from CAL_',INST) ; 13!:12''
+)
+
 cocurrent 'cal'
+
+
 
 COMPILE_HEAD=: 0 : 0
 yy=. 5}.y
@@ -2209,7 +2212,7 @@ yy=. 5}.y
 select. inst
 )
 
-tabengine=: 3 : 0 "1
+tabengine0=: 3 : 0 "1
 
 
 
@@ -2237,13 +2240,6 @@ if. changesTtable INST do.
   warnplex''
 end.
 RETURNED return.
-)
-
-0 :0
-Inic void start''                  \=(re-)start with clear tt
-Inif void start'$'                 \=(re-)start with factory SAMPLE tt
-Inis n    start n                  \=(re-)start with factory SAMPLEn tt
-Init void start'$$'                \=(re-)start with (saved) SAMPLE tt
 )
 
 tabengineError=: 3 : 0
@@ -2543,8 +2539,8 @@ X1 return.
 markfirst=: i. = [: i. [: # [
 marklast=:  i: = [: i. [: # [
 fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'
-tolerant=: 4 : '(mdiff=:|x-y) <: TOLERANCE * (>./|x,y)'
-approximates=: 4 : '(x=y) +. (TOLERANCE >: |x-y)'
+tolerant=: 4 : '(|x-y) <: TOLERANCE * (>./|x,y)'
+approximates=: 4 : '(x=y) or (TOLERANCE >: |x-y)'
 
 '==================== [cal] inverC0.ijs ===================='
 0 :0
@@ -3149,6 +3145,13 @@ d_X return.
 )
 
 '==================== [cal] CAL_interface.ijs ===================='
+0 :0
+Inic void start''                  \=(re-)start with clear tt
+Inif void start'$'                 \=(re-)start with factory SAMPLE tt
+Inis n    start n                  \=(re-)start with factory SAMPLEn tt
+Init void start'$$'                \=(re-)start with (saved) SAMPLE tt
+)
+
 cocurrent 'cal'
 
 
@@ -3163,17 +3166,13 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '2019-01-16 20:40:00'    \noun: CAL last saved
-Inic void dummy''                  \=(re-)start with clear tt
-Inif void dummy''                  \=(re-)start with factory SAMPLE tt
-Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
-Init void dummy''                  \=(re-)start with (saved) SAMPLE tt
-Repe void dummy''                  \=repeat last action
+QSAV void '2019-01-28  03:12:30'   \noun: CAL last saved
+Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
 Undo void undo 1                   \=undo
 AABT void AABUILT                  \last-updated timestamp
 ABOU void ABOUT                    \About the engine
-ANCE r    r{TD                     \ancestors of item r
+ANCS r    ancestors r              \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
@@ -3188,6 +3187,7 @@ JXDO yy   ". yy                    \run J code in this loc
 MSSG void MESSAGE                  \message text from last instruction
 MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
+PARS r    parents r                \parents of item r
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
@@ -3340,12 +3340,11 @@ plof rrr  plotFloatingBarChart rrr \plot Floating Bar Chart
 plol rrr  plotLineChart rrr        \plot Line Chart
 plop rrr  plotPieChart rrr         \plot Pie Chart
 plos rrr  plotSurfaceChart rrr     \plot Surface Chart
-ploi rrr  r plotItems zz           \plot given item#s rrr
-plot rzz  r plotXvals zz           \plot given x-vals zz
+ploi rzz  r plotItems zz           \plot given item#s
 plox void plotclose''              \close plot window
-pl0v rrr  plotRange0 rrr           \plot 0 to v
-pl1v rrr  plotRange1 rrr           \plot 1 to v
-plvv rrr  plotRange2 rrr           \plot -v to v
+pl0v rrr  plotRange0 rrr           \plot 0 to value of 1st r
+pl1v rrr  plotRange1 rrr           \plot 1 to value of 1st r
+plvv rrr  plotRange2 rrr           \plot -v to v=value of 1st r
 plus rrr  '+'combine rrr           \new sum of items
 powe rr   '^'combine rr            \new power of 2 items
 ptdl r    r fnline~ 'PI2%~'        \copy item by 2*PI
@@ -3385,12 +3384,12 @@ sb1p r    r setvalue~ vr*0.99      \dec item by 1%
 tera r    'T' scaleunits r         \tera- item
 titl yy   settitle yy              \set t-table caption
 tnam yy   file=: yy                \set t-table file name
-tra= rr   '='trans rr              \transfer {.rr-->{:rr
-tra+ rr   '+'trans rr              \transfer {.rr-->{:rr under +
-tra- rr   '-'trans rr              \transfer {.rr-->{:rr under -
-tra* rr   '*'trans rr              \transfer {.rr-->{:rr under *
-tra% rr   '%'trans rr              \transfer {.rr-->{:rr under %
-tran void transfer''               \transfer values between items
+trae rr   '='trans rr              \transfer {.rr-->{:rr
+trap rr   '+'trans rr              \transfer {.rr-->{:rr under +
+tram rr   '-'trans rr              \transfer {.rr-->{:rr under -
+trat rr   '*'trans rr              \transfer {.rr-->{:rr under *
+trad rr   '%'trans rr              \transfer {.rr-->{:rr under %
+trav void transfer''               \transfer values between items
 t1dl r    r fnline~ '10%~'         \copy item by 10
 t1ml r    r fnline~ '10*'          \copy item times 10
 t2dl r    r fnline~ '100%~'        \copy item by 100
@@ -4263,6 +4262,9 @@ cocurrent 'cal'
 STARTED=: 0
 VERSION=: '2.0.0'
 
+tabengine=: tabengine1
+
+
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
 inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
@@ -4291,6 +4293,7 @@ sswInversion=: empty
 load jpath'~UU/uu.ijs'
 uuconnect''
 make_tabengineCore''
+make_CAL''
 globmake''
 progress _
 0 enlog 0

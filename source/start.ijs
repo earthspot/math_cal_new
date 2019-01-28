@@ -10,6 +10,9 @@ cocurrent 'cal'
 STARTED=: 0  NB. becomes 1 when start completes successfully
 VERSION=: '2.0.0'
 
+tabengine=: tabengine1	NB. set NEW tabengine
+
+
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
 inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
@@ -39,7 +42,8 @@ sswInversion=: empty  NB. >>>>> DISABLE inversion heuristics tracing
   NB. ---needs to be independently switched vis-a-vis traceverbs
 load jpath'~UU/uu.ijs'
 uuconnect''  NB. create and use an instance of class 'uu'
-make_tabengineCore''  NB. the core of: tabengine
+make_tabengineCore''  NB. the core of: tabengine0 [OBSOLETE]
+make_CAL''  NB. create semantic fns for tabengine1
 globmake'' NB. make global nouns
 NB. inversion=: inversion3  NB. <<==== CHOOSE DAISYCHAIN: inversion
 progress _ NB. init progressbar to idle state
@@ -95,6 +99,7 @@ ARROWCH=: ARROWCH1	NB. arrow-drawing chars (see consts.ijs)
 DIRTY=: 0		NB. =1 means t-table needs saving
 ITEMNO=: _1	NB. 'exe'# of formula being executed
 INVERSION=: ''	NB. inversion heuristics register
+LOGINSTR=: ''	NB. internal log of CAL instructions performed
 MAXINVERT=: 30	NB. limits backfit cycles
 MSLOG=: 0 0$''	NB. accumulates MESSAGE
 OVERHELDS=: ''	NB. items recognised by: beval

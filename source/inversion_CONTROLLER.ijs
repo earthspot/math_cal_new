@@ -112,10 +112,14 @@ marklast=:  i: = [: i. [: # [
 fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'  NB. hold all except for one
 
 NB. ========================================================
-NB. tolerant - implements the "official" J definition of tolerant equality
-NB. But we prefer to use: approximates
-NB. in conjunction with N-R when the target value (Y0+dY) is zero
+NB. (tolerant) implements "official" J defn of tolerant equality
+NB. But I prefer to use (approximates) with N-R
+NB. -because I want the "slack" (±TOLERANCE) to be the
+NB.  same in the neighbourhood of 0 as in the neighbourhood of 1
+NB.  whereas (tolerant) has less and less slack as Y0D --> 0
+NB. HOWEVER I want (approximates) to stay slacker than J itself
+NB. -hence the overriding condition: '(x=y) or …'
 
-tolerant=: 4 : '(mdiff=:|x-y) <: TOLERANCE * (>./|x,y)'
-NB. approximates=: 4 : '(|x-y) <: TOLERANCE'
-approximates=: 4 : '(x=y) +. (TOLERANCE >: |x-y)'
+tolerant=: 4 : '(|x-y) <: TOLERANCE * (>./|x,y)'
+NB. approximates=: 4 : 'TOLERANCE >: |x-y'
+approximates=: 4 : '(x=y) or (TOLERANCE >: |x-y)'

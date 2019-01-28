@@ -1,6 +1,6 @@
 NB. CAL test1.ijs - individual instructions basic test
 0 :0
-Saturday 29 December 2018  17:31:30
+Sunday 27 January 2019  13:14:25
 -
 open '~Gitcal/test/test.ijs'
 )
@@ -11,12 +11,13 @@ cocurrent 'base'
 
 smoutput PLS,'+++ CAL test1.ijs - entered',PLS
 
-tt'Inis 1'	NB. start with SAMPLE1: Church Clock
+start_cal_ 1	NB. start with SAMPLE1: Church Clock
 
 NB. assert EXPECTED-: tt'QSAV'	[EXPECTED=:'2018-12-18 02:56:00'
 assert EXPECTED-: tt'AABT'	[EXPECTED=: AABUILT
 assert EXPECTED-: tt'ABOU'	[EXPECTED=: ABOUT
-assert EXPECTED-: tt'ANCE 4'	[EXPECTED=: 1 2 3
+assert EXPECTED-: tt'ANCS 8'	[EXPECTED=: 1 2 3 5 6
+assert EXPECTED-: tt'PARS 8'	[EXPECTED=: 4 7
 assert EXPECTED-: tt'CAPT'	[EXPECTED=: 'Church Clock'
 assert EXPECTED-: tt'CAPU'	[EXPECTED=: 'Church_Clock'
 

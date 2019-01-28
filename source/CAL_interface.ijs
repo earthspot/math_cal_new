@@ -3,6 +3,13 @@
 NB. The CAL interface / instruction set
 NB. UPDATED from Xcode: cal-instruction-set
 
+0 :0  NB. REMOVED…
+Inic void start''                  \=(re-)start with clear tt
+Inif void start'$'                 \=(re-)start with factory SAMPLE tt
+Inis n    start n                  \=(re-)start with factory SAMPLEn tt
+Init void start'$$'                \=(re-)start with (saved) SAMPLE tt
+)
+
 cocurrent 'cal'
 
 NB. ========================================================
@@ -19,17 +26,13 @@ NB. ========================================================
   NB. (Instrs with: dummy'' pre-handled by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '2019-01-16 20:40:00'    \noun: CAL last saved
-Inic void dummy''                  \=(re-)start with clear tt
-Inif void dummy''                  \=(re-)start with factory SAMPLE tt
-Inis n    dummy''                  \=(re-)start with factory SAMPLEn tt
-Init void dummy''                  \=(re-)start with (saved) SAMPLE tt
-Repe void dummy''                  \=repeat last action
+QSAV void '2019-01-28  03:12:30'   \noun: CAL last saved
+Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
 Undo void undo 1                   \=undo
 AABT void AABUILT                  \last-updated timestamp
 ABOU void ABOUT                    \About the engine
-ANCE r    r{TD                     \ancestors of item r
+ANCS r    ancestors r              \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
@@ -44,6 +47,7 @@ JXDO yy   ". yy                    \run J code in this loc
 MSSG void MESSAGE                  \message text from last instruction
 MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
+PARS r    parents r                \parents of item r
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
@@ -196,12 +200,11 @@ plof rrr  plotFloatingBarChart rrr \plot Floating Bar Chart
 plol rrr  plotLineChart rrr        \plot Line Chart
 plop rrr  plotPieChart rrr         \plot Pie Chart
 plos rrr  plotSurfaceChart rrr     \plot Surface Chart
-ploi rrr  r plotItems zz           \plot given item#s rrr
-plot rzz  r plotXvals zz           \plot given x-vals zz
+ploi rzz  r plotItems zz           \plot given item#s
 plox void plotclose''              \close plot window
-pl0v rrr  plotRange0 rrr           \plot 0 to v
-pl1v rrr  plotRange1 rrr           \plot 1 to v
-plvv rrr  plotRange2 rrr           \plot -v to v
+pl0v rrr  plotRange0 rrr           \plot 0 to value of 1st r
+pl1v rrr  plotRange1 rrr           \plot 1 to value of 1st r
+plvv rrr  plotRange2 rrr           \plot -v to v=value of 1st r
 plus rrr  '+'combine rrr           \new sum of items
 powe rr   '^'combine rr            \new power of 2 items
 ptdl r    r fnline~ 'PI2%~'        \copy item by 2*PI
@@ -241,12 +244,12 @@ sb1p r    r setvalue~ vr*0.99      \dec item by 1%
 tera r    'T' scaleunits r         \tera- item
 titl yy   settitle yy              \set t-table caption
 tnam yy   file=: yy                \set t-table file name
-tra= rr   '='trans rr              \transfer {.rr-->{:rr
-tra+ rr   '+'trans rr              \transfer {.rr-->{:rr under +
-tra- rr   '-'trans rr              \transfer {.rr-->{:rr under -
-tra* rr   '*'trans rr              \transfer {.rr-->{:rr under *
-tra% rr   '%'trans rr              \transfer {.rr-->{:rr under %
-tran void transfer''               \transfer values between items
+trae rr   '='trans rr              \transfer {.rr-->{:rr
+trap rr   '+'trans rr              \transfer {.rr-->{:rr under +
+tram rr   '-'trans rr              \transfer {.rr-->{:rr under -
+trat rr   '*'trans rr              \transfer {.rr-->{:rr under *
+trad rr   '%'trans rr              \transfer {.rr-->{:rr under %
+trav void transfer''               \transfer values between items
 t1dl r    r fnline~ '10%~'         \copy item by 10
 t1ml r    r fnline~ '10*'          \copy item times 10
 t2dl r    r fnline~ '100%~'        \copy item by 100

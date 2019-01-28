@@ -1994,10 +1994,67 @@ end.
 
 xseq=: 3 : 'sor clos dpmx TD'
 
+
+NB. ================================================
+NB. make_CAL --> NEW tabengine
+
+make_CAL=: 3 : 0
+  NB. create CALb (boxed) from CAL - the instruction set
+CALX=. SP,. x4f }: CAL
+ic=. (i.{:$CALX) e. 0 5 10 36
+CALb=: ic (<;._1)"_ _ 1 CALX
+for_i. CALb do.
+  'inst args func desc'=. i
+  args=. dtb args
+  func=. dtb func
+  vr=. '[vr=. r{vquan ' #~ (<'vr') e. ;:func
+  vy=: '(".y)'
+  select. deb args
+NB.   case. ,'n'  do. body=. func,    '[n=. ".y'
+  case. ,'n'  do. body=. func rplc ' n' ; vy
+  case. ,'r'  do. body=. func,vr, '[r=. ".y' NB. r needed to eval: vr
+  case. 'rr'  do. body=. func rplc 'rr' ; vy
+  case. 'rrr' do. body=. func rplc 'rrr' ; vy
+  case. 'rv'  do. body=. func,vr, '[r=. ".firstwords y [v=. {:".y'
+  case. 'rzz' do. body=. func,    '[r=. ".firstwords y [zz=. SP takeafter y'
+  case. 'yy'  do. body=. func rplc 'yy' ; 'y'
+  case.       do. body=. func
+  end.
+  ('CAL_',inst)=: 3 : (body , ' [sst _' #~ changesTtable inst)
+end.
+i.0 0
+)
+NB. CHECK CAL_* for "rv" instrs:
+NB.  addc/l/v/p divc/l/v/p mulc/l/v/p rtol/v subc/l/v/p valu
+
+sst=: 3 : 0
+  NB. ancillary fn for tabengine
+snapshot''
+LASTINSTR=: INSTR
+warnplex''
+)
+
+unbox=: nb^:(L. > 0:)
+
+tabengine1=: 3 : 0 "1
+'INST YY'=: 4 split INSTR=: unbox y
+LOGINSTR=: LOGINSTR,INSTR,LF
+RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError1) dltb YY
+)
+
+tabengineError1=: 3 : 0
+  NB. analyse reason for tabengineCore:: error
+smoutput 'tabengineError1: bad instruction' ; INSTR
+smoutput ('errmsg from CAL_',INST) ; 13!:12''
+)
+
+
 NB. ================================================
 NB. compile CAL --> tabengine
 
 cocurrent 'cal'
+
+
 
 COMPILE_HEAD=: 0 : 0
 NB. CAL instruction set --> explicit verb: tabengineCore
@@ -2007,7 +2064,7 @@ yy=. 5}.y
 select. inst
 )
 
-tabengine=: 3 : 0 "1
+tabengine0=: 3 : 0 "1
   NB. wrapper for tabengineCore
   NB. computes RETURNED LASTINSTR INSTR INST
   NB. avoiding damaging drop-thru result from tabengineCore
@@ -2038,13 +2095,6 @@ if. changesTtable INST do.
   warnplex''
 end.
 RETURNED return.
-)
-
-0 :0
-Inic void start''                  \=(re-)start with clear tt
-Inif void start'$'                 \=(re-)start with factory SAMPLE tt
-Inis n    start n                  \=(re-)start with factory SAMPLEn tt
-Init void start'$$'                \=(re-)start with (saved) SAMPLE tt
 )
 
 tabengineError=: 3 : 0
@@ -2102,7 +2152,7 @@ i.0 0
 )
 
 NB. ================================================
-NB. ELIMINATE TP*TH_
+NB. ELIMINATE TPATH_*
 
 ttlib=: 3 : 0
 jpath tbx '~Ttables/',y
