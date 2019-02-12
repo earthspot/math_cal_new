@@ -31,7 +31,10 @@ cc infobuf editm;
 cc g table;
 bin z;
 bin hs;
-  cc bnDele button; cn "Delete T-table";
+  cc bnSorn button; cn "Sort/name";
+  cc bnSord button; cn "Sort/date";
+  cc bnSort button; cn "Sort/tag";
+  cc bnDele button; cn "Delete";
   cc bnTag0 button; cn "No Tags";
   cc bnTag1 button; cn "Red";
   cc bnTag2 button; cn "Green";
@@ -103,6 +106,7 @@ wd :: empty 'psel ttb; pclose;'
 
 gRefresh=: 4 : 0
   NB. make table control: g accept boxed table: y
+wd 'psel ttb'
 wd 'set g shape ',":shape=: $y
 wd 'set g protect ',": , shape$0 1 1  NB. protect all but 1st col
 wd 'set g hdr *', x
@@ -113,10 +117,15 @@ NB. wd 'set g background ', o4b , COLORTABLE {~ y -:"0 <'temp'
 wd 'set g resizecol'
 )
 
+refresh=: 3 : 0
+'TAG FILENAME DATE' gRefresh TAG0 ,"1 (2&{."1) directory''
+)
+
 start=: 3 : 0
 window_close''
 wd TTBFORM
-'TAG FILENAME DATE' gRefresh TAG0 ,"1 (2&{."1) directory''
+refresh''
+NB. 'TAG FILENAME DATE' gRefresh TAG0 ,"1 (2&{."1) directory''
 wd 'psel ttb; pmove ' , ":POS
 putsb 'started: ',date''
 )
@@ -129,8 +138,10 @@ wd 'psel ttb; set sbar text *',":,y
 ttb_bnDele_button=: 3 : 0
   NB. Delete t-table
   NB. INSERT CAUTIONS HERE
-ssw 'deletefile_cal_ (quote path) --not yet implemented'
-  NB. REFRESH DIR HERE
+putsb z=. sw'deletefile_cal_ (quote path) (NB) -executed'
+smoutput z
+deletefile_cal_ path
+refresh''
 )
 
 ttb_bnOpen_button=: 3 : 0
@@ -152,22 +163,23 @@ ttb_g_mbldbl=: ttb_bnLoad_button  NB. double-click==Load
 ttb_bnTag0_button=: 0&tagpath
 ttb_bnTag1_button=: 1&tagpath
 ttb_bnTag2_button=: 2&tagpath
-NB. ttb_bnSord_button=: sortByDate
-NB. ttb_bnSorn_button=: sortByName
-NB. ttb_bnSort_button=: sortByTag
+ttb_bnSord_button=: sortByDate
+ttb_bnSorn_button=: sortByName
+ttb_bnSort_button=: sortByTag
 
 ttb_close=: window_close
 
 ttb_g_mark=: 3 : 0
   NB. examine selected t-table
-select. g  NB. detect click on header row
-case. '0 0' do. sortByTag'' return.
-case. '0 1' do. sortByName'' return.
-case. '0 2' do. sortByDate'' return.
-end.
+NB. select. g  NB. detect click on header row
+NB. case. '0 0' do. sortByTag'' return.
+NB. case. '0 1' do. sortByName'' return.
+NB. case. '0 2' do. sortByDate'' return.
+NB. end.
 fno=: {.".g
 fname=: 0 pick fno{DIR
-NB. ssw 'ttb_g_mark: g_select=(g_select) g=(g) fno=(fno) fname=(fname)'
+NB. ssw 'ttb_g_mark: g_select=(g_select) g=(g) fno=(fno)'
+smoutput fname
 path=: jpath '~Ttables/',fname
 tagid=. tagpath path
 tag=. > tagid { ;:'notag red green'

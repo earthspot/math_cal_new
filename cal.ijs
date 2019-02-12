@@ -16,6 +16,7 @@ AABUILT=: '2019-01-28  03:54:43'
 AABUILT=: '2019-01-28  04:10:35'
 AABUILT=: '2019-01-28  04:54:34'
 AABUILT=: '2019-01-28  05:01:40'
+AABUILT=: '2019-02-11  17:47:34'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -2188,8 +2189,6 @@ warnplex''
 
 unbox=: nb^:(L. > 0:)
 
-LOGINSTR=: ''
-
 tabengine1=: 3 : 0 "1
 'INST YY'=: 4 split INSTR=: unbox y
 LOGINSTR=: LOGINSTR,INSTR,LF
@@ -4040,7 +4039,10 @@ cc infobuf editm;
 cc g table;
 bin z;
 bin hs;
-  cc bnDele button; cn "Delete T-table";
+  cc bnSorn button; cn "Sort/name";
+  cc bnSord button; cn "Sort/date";
+  cc bnSort button; cn "Sort/tag";
+  cc bnDele button; cn "Delete";
   cc bnTag0 button; cn "No Tags";
   cc bnTag1 button; cn "Red";
   cc bnTag2 button; cn "Green";
@@ -4109,6 +4111,7 @@ wd :: empty 'psel ttb; pclose;'
 
 gRefresh=: 4 : 0
 
+wd 'psel ttb'
 wd 'set g shape ',":shape=: $y
 wd 'set g protect ',": , shape$0 1 1
 wd 'set g hdr *', x
@@ -4116,10 +4119,14 @@ wd 'set g data *', ; SP ,each dquote&": each y
 wd 'set g resizecol'
 )
 
+refresh=: 3 : 0
+'TAG FILENAME DATE' gRefresh TAG0 ,"1 (2&{."1) directory''
+)
+
 start=: 3 : 0
 window_close''
 wd TTBFORM
-'TAG FILENAME DATE' gRefresh TAG0 ,"1 (2&{."1) directory''
+refresh''
 wd 'psel ttb; pmove ' , ":POS
 putsb 'started: ',date''
 )
@@ -4132,8 +4139,10 @@ wd 'psel ttb; set sbar text *',":,y
 ttb_bnDele_button=: 3 : 0
 
 
-ssw 'deletefile_cal_ (quote path) --not yet implemented'
-
+putsb z=. sw'deletefile_cal_ (quote path) (NB) -executed'
+smoutput z
+deletefile_cal_ path
+refresh''
 )
 
 ttb_bnOpen_button=: 3 : 0
@@ -4155,17 +4164,17 @@ ttb_g_mbldbl=: ttb_bnLoad_button
 ttb_bnTag0_button=: 0&tagpath
 ttb_bnTag1_button=: 1&tagpath
 ttb_bnTag2_button=: 2&tagpath
+ttb_bnSord_button=: sortByDate
+ttb_bnSorn_button=: sortByName
+ttb_bnSort_button=: sortByTag
+
 ttb_close=: window_close
 
 ttb_g_mark=: 3 : 0
 
-select. g
-case. '0 0' do. sortByTag'' return.
-case. '0 1' do. sortByName'' return.
-case. '0 2' do. sortByDate'' return.
-end.
 fno=: {.".g
 fname=: 0 pick fno{DIR
+smoutput fname
 path=: jpath '~Ttables/',fname
 tagid=. tagpath path
 tag=. > tagid { ;:'notag red green'
@@ -4336,6 +4345,7 @@ ARROWCH=: ARROWCH1
 DIRTY=: 0
 ITEMNO=: _1
 INVERSION=: ''
+LOGINSTR=: ''
 MAXINVERT=: 30
 MSLOG=: 0 0$''
 OVERHELDS=: ''
