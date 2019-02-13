@@ -79,19 +79,11 @@ sl_z_=: 4 : 0
 
 
 
-SL=. '/'
-if. SL={:x do. x=. }:x end.
-if. SL={.y do. x=. }.y end.
-x,SL,y
-)
-
-
 
 
 
 
 items=: 3 : 'i. #TTn'
-begins_z_=: ] -: [ {.~ [: # ]
 bh=:    ] }.~ [: >: ' ' i.~ ]
 boxvec=: [: dltb&.> <"1
 brace=: 1 |. '}{' , ":

@@ -3,23 +3,12 @@
 
 cocurrent 'cal'
 
-sl_z_=: 4 : 0
-  NB. RELIABLE path catenator: should reside in _z_
-  NB. made available in utilities.ijs of both CAL and UU
-  NB. IAC Saturday 22 December 2018  19:25:56
-SL=. '/'
-if. SL={:x do. x=. }:x end.
-if. SL={.y do. x=. }.y end.
-x,SL,y
-)
-
   NB. WARNING: CAL overrides stdlib defn of verb: items
   NB. This changes the valency of: items.
   NB. This needs a forward-definition of (items) to prevent
   NB. |syntax error: script
   NB. wherever "items" appears in a tacit defn
 items=: 3 : 'i. #TTn'	NB. fwd-ref fixup
-begins_z_=: ] -: [ {.~ [: # ]	NB. eg: z begins NB
 bh=:    ] }.~ [: >: ' ' i.~ ]	NB. behead y up to 1st SP
 boxvec=: [: dltb&.> <"1		NB. convert cmx-->boxed list
 brace=: 1 |. '}{' , ":
