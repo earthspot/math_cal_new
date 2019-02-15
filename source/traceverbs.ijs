@@ -114,3 +114,10 @@ end.
 smoutput '+++ traceverbs: #traced=',":#z
 smoutput >TRACEVERBS
 )
+
+trace=: 3 : 0
+  NB. rough trace, y== boolean
+if. y do. make_msg 2
+else. make_msg 0
+end.
+)

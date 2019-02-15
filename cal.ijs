@@ -17,6 +17,8 @@ AABUILT=: '2019-01-28  04:10:35'
 AABUILT=: '2019-01-28  04:54:34'
 AABUILT=: '2019-01-28  05:01:40'
 AABUILT=: '2019-02-11  17:47:34'
+AABUILT=: '2019-02-15  05:29:42'
+AABUILT=: '2019-02-15  05:51:43'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -74,9 +76,6 @@ UNSET=: '<UNSET>'
 '==================== [cal] utilities.ijs ===================='
 
 cocurrent 'cal'
-
-sl_z_=: 4 : 0
-
 
 
 
@@ -3577,6 +3576,13 @@ case.     do. mm1 z=. TRACEVERBS=: ~. ;: y
 end.
 smoutput '+++ traceverbs: #traced=',":#z
 smoutput >TRACEVERBS
+)
+
+trace=: 3 : 0
+
+if. y do. make_msg 2
+else. make_msg 0
+end.
 )
 
 '==================== [cal] recordplot.ijs ===================='
