@@ -19,6 +19,9 @@ AABUILT=: '2019-01-28  05:01:40'
 AABUILT=: '2019-02-11  17:47:34'
 AABUILT=: '2019-02-15  05:29:42'
 AABUILT=: '2019-02-15  05:51:43'
+AABUILT=: '2019-02-17  04:36:08'
+AABUILT=: '2019-02-17  04:55:46'
+AABUILT=: '2019-02-19  02:21:32'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -47,6 +50,8 @@ CAL instruction set…
 )
 AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 az=: tolower AZ
+n9=: '0123456789'
+SAFECHARS=: AZ,az,n9
 ARROWCH0=: ' ┌│└┌├└├b→'
 ARROWCH1=: ' ┌│└┌├└├b>'
 ARROWCH2=: ' +|+++++b>'
@@ -455,8 +460,8 @@ forceunits=: 4 : 0
 
 
 'targ junk coeft'=. convert y
-UNITN=: (<y) x}UNITN
-UNITS=: (<targ) x}UNITS
+UNITN=: (<,kosher y) x}UNITN
+UNITS=: (<,kosher targ) x}UNITS
 vfact=: coeft x}vfact
 vsiqn=: (vdisp'') + vquan*vfact
 )
@@ -494,7 +499,7 @@ elseif. do.
 
   vsiq0=: vsiqn
   vqua0=: vquan
-  UNITN=: (<x) y}UNITN
+  UNITN=: (<,kosher x) y}UNITN
   vfact=: coeft y}vfact
   v=. (y{vquan) scale_displace__uun~ coeft,coefu,dispt,dispu
   vquan=: v y}vquan
@@ -1040,13 +1045,13 @@ if. -.validitem y do. '' return. end.
 if. 0=#f=.dtb y{TTf do. '' return. end.
 if. -.x do. f return. end.
 
-az=. 'abcdefghijklmnopqrstuvwxyz'
 d=. 0 -.~ y{TD
 f=. ':' taketo ';' taketo f
 f=. f rplc '%';'/'
+vaz=. az
 for_line. d do.
-  'a az'=. ({. ; }.) az
-  f=. f rplc a;brace line
+  'ch vaz'=. ({. ; }.) vaz
+  f=. f rplc ch;brace line
 end.
 )
 
@@ -1576,14 +1581,14 @@ showing=: empty
 
 siunits=: 3 : 0
 
-si=. y{UNITS
-UNITN=: si y}UNITN
+si=. kosher > y{UNITS
+UNITN=: (<si) y}UNITN
 vquan=: (y{vsiqn) y}vquan
 vqua0=: (y{vsiq0) y}vqua0
 vfact=: 1 y}vfact
 CH=: recal y
 'siunits' dirty 1
-18 message y; >si
+18 message y; si
 )
 
 
@@ -1676,8 +1681,8 @@ invalplot''
 TTn=: TTn,ytn
 TD=: TD,0
 TTf=: TTf,SP
-UNITN=: UNITN,<ytu
-UNITS=: UNITS,<yts
+UNITN=: UNITN,<,kosher ytu
+UNITS=: UNITS,<,kosher yts
 vquan=: vquan , yvalu
 vfact=: vfact , fac
 vsiqn=: (vdisp'') + vquan*vfact
@@ -1685,6 +1690,7 @@ ttfix''
 
 'ttadl' dirty 1
 )
+
 ttafl=: 3 : 0
 
 
@@ -1697,8 +1703,8 @@ if. 2=fmlatyp ytf do.
   ytf=. ytf,SP,brack ytu
 end.
 TTf=: TTf,,ytf
-UNITN=: UNITN,<,ytu
-UNITS=: UNITS,<,yts
+UNITN=: UNITN,<,kosher ytu
+UNITS=: UNITS,<,kosher yts
 vquan=: vquan,0
 vfact=: vfact , fac
 TD=: TD,,".ytd
@@ -1742,8 +1748,8 @@ TD=: TD , (<:nt0) dadd z
 TTf=: TTf, fixttf TT cols tf
 
 z=. convert each UNITN2=: boxvec debc TT cols tu
-UNITN=: UNITNsav,UNITN2
-UNITS=: UNITSsav,(>&{.) each z
+UNITN=: kosher each UNITNsav,UNITN2
+UNITS=: kosher each UNITSsav,(>&{.) each z
 vfact=: vfactS, >(>&{:) each z
 
 CH=:    flags 0
@@ -1885,8 +1891,8 @@ if. 1=$$TD do. TD=:|:,:TD end.
 TTf=: fixttf TT hcols tf
 empty erase 'TT'
 
-z=. convert each UNITN=: boxvec TTu
-UNITS=: (>&{.) each z
+z=. convert each UNITN=: kosher each boxvec TTu
+UNITS=: kosher each (>&{.) each z
 vfact=: 0,>(>&{:) each }.z
 
 CH=: flags 0
@@ -1964,7 +1970,8 @@ dirty 0
 0 message ''
 )
 
-ttsaveCopyAs=: 1&$: : (4 : 0)
+ttsaveCopyAs=: 4 : 0
+
 
 SAVEDfile=. file
 SAVEDdirty=. dirty''
@@ -1975,14 +1982,20 @@ dirty SAVEDdirty
 mmm
 )
 
-ttsava=: ttsav
-ttsavc=: ttsaveCopyAs
+safefname=: 3 : 0 "0
+
+
+if. y e. SAFECHARS do. y else. UL end.
+)
+
+ttsava=: 1&ttsav
+ttsavc=: 1&ttsaveCopyAs
 ttsave=: 3 : '0 ttsav filename file'
 ttsavo=: 3 : '0 ttsav y'
 ttsavs=: 3 : '0 ttsaveCopyAs SAMPLE'
-ttsavt=: 3 : 'ttsav CAPT rplc SP;UL'
+ttsavt=: 3 : '1 ttsav safefname CAPT'
 
-ttsav=: 1&$: : (4 : 0)
+ttsav=: 4 : 0
 
 
 
@@ -2150,7 +2163,7 @@ make_CAL=: 3 : 0
 
 CALX=. SP,. x4f }: CAL
 ic=. (i.{:$CALX) e. 0 5 10 36
-CALb=: ic (<;._1)"_ _ 1 CALX
+CALb=. ic (<;._1)"_ _ 1 CALX
 for_i. CALb do.
   'inst args func desc'=. i
   args=. dtb args
@@ -4299,7 +4312,6 @@ sswInversion=: empty
 
 load jpath'~UU/uu.ijs'
 uuconnect''
-make_tabengineCore''
 make_CAL''
 globmake''
 progress _
@@ -4331,6 +4343,7 @@ uuconnect=: 3 : 0
 uun=: '' conew 'uu'
 uuengine		=: uuengine__uun
 uniform		=: uniform__uun
+kosher		=: (0&uniform)"1
 i.0 0
 )
 

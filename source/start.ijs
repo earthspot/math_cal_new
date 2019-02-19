@@ -42,7 +42,7 @@ sswInversion=: empty  NB. >>>>> DISABLE inversion heuristics tracing
   NB. ---needs to be independently switched vis-a-vis traceverbs
 load jpath'~UU/uu.ijs'
 uuconnect''  NB. create and use an instance of class 'uu'
-make_tabengineCore''  NB. the core of: tabengine0 [OBSOLETE]
+NB. make_tabengineCore''  NB. the core of: tabengine0 [OBSOLETE]
 make_CAL''  NB. create semantic fns for tabengine1
 globmake'' NB. make global nouns
 NB. inversion=: inversion3  NB. <<==== CHOOSE DAISYCHAIN: inversion
@@ -87,6 +87,7 @@ uuconnect=: 3 : 0
 uun=: '' conew 'uu'
 uuengine		=: uuengine__uun
 uniform		=: uniform__uun
+kosher		=: (0&uniform)"1	NB. to convert units to ASCII
 i.0 0
 )
 

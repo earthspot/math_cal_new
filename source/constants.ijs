@@ -32,6 +32,8 @@ NB. ----------------------------------------------------------
 
 AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 az=: tolower AZ
+n9=: '0123456789'
+SAFECHARS=: AZ,az,n9	NB. safe bytes to use in filename
 ARROWCH0=: ' ┌│└┌├└├b→'	NB. arrow drawing chars (option)
 ARROWCH1=: ' ┌│└┌├└├b>'	NB. arrow drawing chars (option)
 ARROWCH2=: ' +|+++++b>'	NB. arrow drawing chars (option)

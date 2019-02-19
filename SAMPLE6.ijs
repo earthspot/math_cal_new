@@ -1,81 +1,51 @@
+SAVED=: '2019-02-19  03:08:16'
 CAPT=: 'temperature scales'
 
-TT=: cmx 0 : 0
-tn                              tu     ts   td  tf                
-angle=                          rad    rad  0 0                   
-={1}                            deg    rad  1 0 a                 
-={2}                            dms    rad  2 0 a                 
-sine                            /      /    1 0 sin a ; a(rad) [/]
-Boiling point of water; Kelvin= f.p    K    0 0                   
-={5}                            K      K    5 0 a                 
-={5}                            degC   K    5 0 a                 
-={5}                            degF   K    5 0 a                 
-={5}                            degRo  K    5 0 a                 
-={5}                            degDe  K    5 0 a                 
-={5}                            degRa  K    5 0 a                 
-={5}                            degRe  K    5 0 a                 
-={5}                            °Ne    K    5 0 a                 
+TTIMAGE=: 0 define
+temperature scales                                           
+┌ ┌ ┌ ┌ ┌ ┌ ┌ ┌ ┌ {1}  @       1 f.p  Freezing pt units      
+│ │ │ │ │ │ │ │ └>{2}  @   0.732 b.p  Boiling pt units       
+│ │ │ │ │ │ │ └>  {3}  @ 273.150 K    ={1}                   
+│ │ │ │ │ │ └>    {4}  @       0 °C   ={1}                   
+│ │ │ │ │ └>      {5}  @  32.000 °F   ={1}                   
+│ │ │ │ └>        {6}  @   7.500 °Ro  ={1}                   
+│ │ │ └>          {7}  @     150 °De  ={1}                   
+│ │ └>            {8}  @ 491.670 °Ra  ={1}                   
+│ └>              {9}  @       0 °Re  ={1}                   
+└>                {10} @       0 °Ne  ={1}                   
 )
 
-vquan=: numvec 0 : 0
-0
-1
-57.2957795130823229
-57.2957795130823229
-0.841470984807896505
-1
-273.149999999999977
-273.149999999999977
-491.669999999999902
-143.403893403893392
-_409.724999999999966
-491.588199723565936
-218.519999999999982
-90.1395901395901404
+TT=: cmx 0 define
+tn                      tu    ts td  tf                 
+Freezing pt units       f.p   K  0 0                    
+Boiling pt units        b.p   K  1 0 a                  
+={1}                    K     K  1 0 a                  
+={1}                    degC  K  1 0 a                  
+={1}                    degF  K  1 0 a                  
+={1}                    degRo K  1 0 a                  
+={1}                    degDe K  1 0 a                  
+={1}                    degRa K  1 0 a                  
+={1}                    degRe K  1 0 a                  
+={1}                    degNe K  1 0 a                  
 )
 
-vfact=: numvec 0 : 0
-0
-1
-0.0174532925199432955
-0.0174532925199432955
-1
-273.149999999999977
-1
-1
-0.55555555555555558
-1.90476000000000001
-_0.66666666666666663
-0.555648000000000031
-1.25
-3.03029999999999999
-)
+vquan=: 0 1 0.732011255527267868 273.149999999999977 0 32.0003999999999351 7.49994749994749377 150 491.670086097673277 0 0
 
-exe10=: 3 : 'a [a=. 5{y'
-exe11=: 3 : 'a [a=. 5{y'
-exe12=: 3 : 'a [a=. 5{y'
-exe13=: 3 : 'a [a=. 5{y'
-exe2=: 3 : 'a [a=. 1{y'
-exe3=: 3 : 'a [a=. 2{y'
-exe4=: 3 : '1 * (sin a) [a=. 1 * 1{y'
-exe6=: 3 : 'a [a=. 5{y'
-exe7=: 3 : 'a [a=. 5{y'
-exe8=: 3 : 'a [a=. 5{y'
-exe9=: 3 : 'a [a=. 5{y'
+vfact=: 0 273.149999999999977 373.149999999999977 1 1 0.55555555555555558 1.90476000000000001 _0.66666666666666663 0.555648000000000031 1.25 3.03029999999999999
 
-TTINFO=: 0 : 0
+exe10=: 3 : 'a [a=. 1{y [ITEMNO=:10'
+exe2=: 3 : 'a [a=. 1{y [ITEMNO=:2'
+exe3=: 3 : 'a [a=. 1{y [ITEMNO=:3'
+exe4=: 3 : 'a [a=. 1{y [ITEMNO=:4'
+exe5=: 3 : 'a [a=. 1{y [ITEMNO=:5'
+exe6=: 3 : 'a [a=. 1{y [ITEMNO=:6'
+exe7=: 3 : 'a [a=. 1{y [ITEMNO=:7'
+exe8=: 3 : 'a [a=. 1{y [ITEMNO=:8'
+exe9=: 3 : 'a [a=. 1{y [ITEMNO=:9'
+
+TTINFO=: 0 define
 This is a test ttable.
 Purpose:
-1. To show something meaningful in a new installation.
-2. To provide a docile demonstration of plotting data.
-
-To plot something, insert a max value in item 1
-Then pick menu: File > Plot 0 to (value)
-
-
-
-
-
-
-
+1. To show the various temperature scales TABULA can handle
+2. To demonstrate backfitting.
 )

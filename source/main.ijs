@@ -226,8 +226,8 @@ forceunits=: 4 : 0
   NB. change the units of item {x} to units: (str)y
   NB. WITHOUT altering the item value
 'targ junk coeft'=. convert y  NB. target SI-units
-UNITN=: (<y) x}UNITN
-UNITS=: (<targ) x}UNITS
+UNITN=: (<,kosher y) x}UNITN
+UNITS=: (<,kosher targ) x}UNITS
 vfact=: coeft x}vfact
 vsiqn=: (vdisp'') + vquan*vfact
 )
@@ -265,10 +265,8 @@ elseif. do.  NB. compatible (x)
   NB. change to compatible units & recalculate vquan
   vsiq0=: vsiqn  NB. save prev value (for signalling where changed)
   vqua0=: vquan  NB. save prev value (for signalling where changed)
-  UNITN=: (<x) y}UNITN  NB. new nominal units are (x) as given
-NB.   UNITS=: (<targ) y}UNITS  NB. BUT… won't these be unchanged??
-NB.   assert. targ -: y pick UNITS
-NB.   smoutput 'targ' ; targ ; y pick UNITS
+  UNITN=: (<,kosher x) y}UNITN  NB. new nominal units are (x) as given
+NB.   UNITS=: (<,kosher targ) y}UNITS  NB. BUT… won't these be unchanged??
   vfact=: coeft y}vfact
   v=. (y{vquan) scale_displace__uun~ coeft,coefu,dispt,dispu
   vquan=: v y}vquan
@@ -824,13 +822,13 @@ if. -.validitem y do. '' return. end.
 if. 0=#f=.dtb y{TTf do. '' return. end.
 if. -.x do. f return. end.
   NB. Convert f to braced form
-az=. 'abcdefghijklmnopqrstuvwxyz'
 d=. 0 -.~ y{TD
 f=. ':' taketo ';' taketo f  NB. strip off units spec
 f=. f rplc '%';'/'
+vaz=. az  NB. dont reassign constant: az itself !!
 for_line. d do.
-  'a az'=. ({. ; }.) az
-  f=. f rplc a;brace line
+  'ch vaz'=. ({. ; }.) vaz  NB. shortens vaz !!
+  f=. f rplc ch;brace line
 end.
 )
 
@@ -1382,14 +1380,14 @@ showing=: empty
 
 siunits=: 3 : 0
   NB. convert item {y} to SI units
-si=. y{UNITS  NB. the SI units
-UNITN=: si y}UNITN
+si=. kosher > y{UNITS  NB. the SI units (unboxed)
+UNITN=: (<si) y}UNITN
 vquan=: (y{vsiqn) y}vquan  NB. SI-units: move vsiqn entry into vquan
 vqua0=: (y{vsiq0) y}vqua0  NB. SI-units: move vsiq0 entry into vqua0
 vfact=: 1 y}vfact  NB. SI-units: factor is always 1
 CH=: recal y
 'siunits' dirty 1
-18 message y; >si
+18 message y; si
 )
 
   NB. snapshot/restore the values of SNAPSP vars
@@ -1483,8 +1481,8 @@ invalplot''
 TTn=: TTn,ytn
 TD=: TD,0  NB. dumb line
 TTf=: TTf,SP  NB. dumb line
-UNITN=: UNITN,<ytu
-UNITS=: UNITS,<yts
+UNITN=: UNITN,<,kosher ytu
+UNITS=: UNITS,<,kosher yts
 vquan=: vquan , yvalu
 vfact=: vfact , fac
 vsiqn=: (vdisp'') + vquan*vfact
@@ -1492,33 +1490,6 @@ ttfix''
   NB. (c/f ttafl, no need to recal here)
 'ttadl' dirty 1
 )
-
-NB. ttafl=: 3 : 0
-NB.   NB. add a new fmla line to t-table
-NB.   NB. eg: ttafl 'label'; 'cm'; '1 2'; 'a+b: a(m),b(cm)'
-NB. invalplot''
-NB. 'ytn ytu ytd ytf'=. y
-NB. 'yts cyc fac'=. convert ytu=. pretty ytu
-NB.   NB. check cyc~:0 at this point? <<<<<<<<<<<
-NB.   NB. See: TTlist for vars comprising the t-table
-NB.   NB. to be adjusted
-NB. TTn=: TTn,,ytn
-NB. TD=: TD,,".ytd
-NB.   NB. Type 2 needs results units from orig formula
-NB.   NB. to correctly specify back-conversion
-NB. if. 2=fmlatyp ytf do.
-NB.   ytf=. ytf,SP,brack ytu  NB. suffix result units
-NB. end.
-NB. TTf=: TTf,,ytf
-NB. UNITN=: UNITN,<,ytu
-NB. UNITS=: UNITS,<,yts
-NB. vquan=: vquan,0    NB. placeholder, recomputed by: recal
-NB. vfact=: vfact , fac
-NB. ttfix''
-NB. invalexe''
-NB. CH=: recal 0
-NB. 'ttafl' dirty 1
-NB. )
 
 ttafl=: 3 : 0
   NB. add a new fmla line to t-table
@@ -1532,8 +1503,8 @@ if. 2=fmlatyp ytf do.
   ytf=. ytf,SP,brack ytu  NB. suffix result units
 end.
 TTf=: TTf,,ytf
-UNITN=: UNITN,<,ytu
-UNITS=: UNITS,<,yts
+UNITN=: UNITN,<,kosher ytu
+UNITS=: UNITS,<,kosher yts
 vquan=: vquan,0    NB. placeholder, recomputed by: recal
 vfact=: vfact , fac
 TD=: TD,,".ytd
@@ -1577,8 +1548,8 @@ TD=: TD , (<:nt0) dadd z
 TTf=: TTf, fixttf TT cols tf
   NB. re-create vfact and the units cols
 z=. convert each UNITN2=: boxvec debc TT cols tu
-UNITN=: UNITNsav,UNITN2    NB. nominal units
-UNITS=: UNITSsav,(>&{.) each z  NB. SI-units
+UNITN=: kosher each UNITNsav,UNITN2    NB. nominal units
+UNITS=: kosher each UNITSsav,(>&{.) each z  NB. SI-units
 vfact=: vfactS, >(>&{:) each z
   NB. REsetup work flags
 CH=:    flags 0    NB. "Changed" flags
@@ -1727,8 +1698,8 @@ if. 1=$$TD do. TD=:|:,:TD end.  NB. >>>>>>>>> fix for munged 1-col TD
 TTf=: fixttf TT hcols tf
 empty erase 'TT'      NB. delete TT as a redundant cache
   NB. re-create vfact and the units cols
-z=. convert each UNITN=: boxvec TTu  NB. nominal units
-UNITS=: (>&{.) each z    NB. SI-units
+z=. convert each UNITN=: kosher each boxvec TTu  NB. nominal units
+UNITS=: kosher each (>&{.) each z    NB. SI-units
 vfact=: 0,>(>&{:) each }.z
   NB. Now setup work flags
 CH=: flags 0       NB. "Changed" flags
@@ -1806,28 +1777,35 @@ dirty 0  NB. resets the dirty-bit
 0 message ''
 )
 
-ttsaveCopyAs=: 1&$: : (4 : 0)
+ttsaveCopyAs=: 4 : 0
   NB. save a COPY of the current t-table as: y
+  NB. Bool x=1 detects any name clash, returns error messsage
 SAVEDfile=. file
 SAVEDdirty=. dirty''
-mmm=. x ttsav y   NB. x=1 detects any name clash, returns error messsage
+mmm=. x ttsav y
   NB. Restore (changed): file, dirty''
 file=: SAVEDfile
 dirty SAVEDdirty
 mmm  NB. return any messages from ttsav
 )
 
-ttsava=: ttsav                          NB. save t-table as y
-ttsavc=: ttsaveCopyAs                   NB. save a COPY of the current t-table as: y
+safefname=: 3 : 0 "0
+  NB. make a safe filename from (caption) y
+  NB. viz no embedded unicode or any non-alpha char
+if. y e. SAFECHARS do. y else. UL end.
+)
+
+ttsava=: 1&ttsav                        NB. save t-table as y
+ttsavc=: 1&ttsaveCopyAs                 NB. save a COPY of the current t-table as: y
 ttsave=: 3 : '0 ttsav filename file'    NB. save current t-table
 ttsavo=: 3 : '0 ttsav y'                NB. save as y over an existing file
 ttsavs=: 3 : '0 ttsaveCopyAs SAMPLE'    NB. save a COPY of the current t-table as: SAMPLE
-ttsavt=: 3 : 'ttsav CAPT rplc SP;UL'    NB. save t-table from caption
+ttsavt=: 3 : '1 ttsav safefname CAPT'   NB. save t-table from caption
 
-ttsav=: 1&$: : (4 : 0)
+ttsav=: 4 : 0
   NB. save the t-table as: y
-  NB. x=1 -- DENY overwrite of existing file y
-  NB. x=0 -- ALLOW overwrite of existing file y
+  NB. Bool x=1 -- DENY overwrite of existing file y
+  NB. Bool x=0 -- ALLOW overwrite of existing file y
 	msg '+++ ttsav (y)'  NB. the unexpanded name: y
   NB. if empty y use existing (file) as last set by: ttload
   NB. else accept filename y as the new (file)
@@ -1999,10 +1977,10 @@ NB. ================================================
 NB. make_CAL --> NEW tabengine
 
 make_CAL=: 3 : 0
-  NB. create CALb (boxed) from CAL - the instruction set
+  NB. create semantic fns from CAL - the instruction set
 CALX=. SP,. x4f }: CAL
 ic=. (i.{:$CALX) e. 0 5 10 36
-CALb=: ic (<;._1)"_ _ 1 CALX
+CALb=. ic (<;._1)"_ _ 1 CALX
 for_i. CALb do.
   'inst args func desc'=. i
   args=. dtb args
