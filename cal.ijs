@@ -22,6 +22,8 @@ AABUILT=: '2019-02-15  05:51:43'
 AABUILT=: '2019-02-17  04:36:08'
 AABUILT=: '2019-02-17  04:55:46'
 AABUILT=: '2019-02-19  02:21:32'
+AABUILT=: '2019-02-25  02:52:24'
+AABUILT=: '2019-02-25  05:29:23'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -482,7 +484,6 @@ isFreeItem=: 3 : 0
 
 changeunits=: 4 : 0
 
-ssw '+++ changeunits entered: x=(x) y=(y)'
 if. -.validitem y do. 1 message y return. end.
 'targ dispt coeft'=. convert x
 'noml dispu coefu'=. convert z=. >y{UNITN
@@ -4310,7 +4311,7 @@ traceverbs 'OFF'
 sswInversion=: empty
 
 
-load jpath'~UU/uu.ijs'
+load 'math/uu'
 uuconnect''
 make_CAL''
 globmake''
@@ -4399,4 +4400,3 @@ else.
 end.
 )
 
-onload 'pd ''reset'' '

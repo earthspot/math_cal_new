@@ -248,7 +248,7 @@ isFreeItem=: 3 : 0
 
 changeunits=: 4 : 0
   NB. change the units of item {y} to units: (str)x
-ssw '+++ changeunits entered: x=(x) y=(y)'
+NB. ssw '+++ changeunits entered: x=(x) y=(y)'
 if. -.validitem y do. 1 message y return. end.
 'targ dispt coeft'=. convert x             NB. target SI-units
 'noml dispu coefu'=. convert z=. >y{UNITN  NB. nominal SI-units

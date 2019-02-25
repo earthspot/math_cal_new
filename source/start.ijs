@@ -40,7 +40,7 @@ traceverbs 'OFF'
 sswInversion=: empty  NB. >>>>> DISABLE inversion heuristics tracing
   NB. switches ALL calls to ssw within the set of _inver*_ locales
   NB. ---needs to be independently switched vis-a-vis traceverbs
-load jpath'~UU/uu.ijs'
+load 'math/uu'
 uuconnect''  NB. create and use an instance of class 'uu'
 NB. make_tabengineCore''  NB. the core of: tabengine0 [OBSOLETE]
 make_CAL''  NB. create semantic fns for tabengine1
@@ -49,7 +49,7 @@ NB. inversion=: inversion3  NB. <<==== CHOOSE DAISYCHAIN: inversion
 progress _ NB. init progressbar to idle state
 0 enlog 0  NB. start a new log file
   NB. ENSURE up-to-date currency conversion table ...
-NB. load :: 0: jpath'~CAL/exch.ijs'
+NB. load :: 0: jpath'~CAL/exch.ijs' --no such file anymore
 NB. try. start_exch_'' catch. end.
 select. y
 case. '' do. ttnew''  NB. new empty t-table
@@ -147,4 +147,3 @@ end.
 NB. ======================================================
 NB. OPERATIONALLY: CAL MUST NOT SELF-START!
 NB. ======================================================
-onload 'pd ''reset'' '
