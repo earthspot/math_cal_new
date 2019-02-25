@@ -26,7 +26,7 @@ NB. ========================================================
   NB. (Instrs with: dummy'' pre-handled by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '2019-01-28  03:12:30'   \noun: CAL last saved
+QSAV void '2019-02-25  12:14:00'   \noun: CAL last saved
 Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
 Undo void undo 1                   \=undo
@@ -52,6 +52,7 @@ QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
 QSIZ void uuengine INSTR           \query zero attraction
+QZER yy   uuengine INSTR           \query Boolean ZERO word
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
@@ -228,6 +229,7 @@ ssci n    uuengine INSTR           \set scientific notation threshold
 ssic n    uuengine INSTR           \set SI conformance level
 ssig n    uuengine INSTR           \set significant figures
 ssiz n    uuengine INSTR           \set zero attraction threshold
+szer n    uuengine INSTR           \set Boolean ZERO word
 sort rrr  1 ttsort rrr             \sort by perm
 sqrl r    r fnline~ 'sq'           \copy item squared
 sqrv r    r setvalue~ sq vr        \squared value of r

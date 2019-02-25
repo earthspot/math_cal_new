@@ -1,9 +1,6 @@
 	NB. cal - main.ijs
 '==================== [cal] main.ijs ===================='
 NB. CAL scientific calculator engine
-0 :0
-Monday 29 October 2018  13:53:46
-)
 
 cocurrent 'cal'
 
