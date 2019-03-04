@@ -16,7 +16,10 @@ path=: UNSET
 TAG0=: <,''
 POS=: 322 23 830 400
 
-0 :0
+loadit=: 3 : 0
+1 return.
+)
+
 ttb_default=: 3 : 0
   NB. warns of a missing handler
 smoutput '>>> missing handler: ',sysevent
@@ -189,9 +192,12 @@ erase 'TT TTIMAGE TTINFO vquan vfact'
 load :: 0: path  NB. creates: TT, TTIMAGE (vquan, vfact
 if. -.NaNoun'TTIMAGE' do. text=: TTIMAGE end.
 if. -.NaNoun'TTINFO' do. info=: TTINFO end.
-wd 'psel ttb; set textbuf text *',text
-wd 'psel ttb; set infobuf text *',info
-putsb tag,' / ttb_g_mark: ',date''
+if. loadit'' do. ttb_bnLoad_button''
+else.
+  wd 'psel ttb; set textbuf text *',text
+  wd 'psel ttb; set infobuf text *',info
+  putsb tag,' / ttb_g_mark: ',date''
+end.
 )
 
 heldshift=: 3 : '1=".sysmodifiers'

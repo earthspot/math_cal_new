@@ -1,66 +1,37 @@
-CAPT=: 'inversion test'
+SAVED=: '2019-02-27  07:13:46'
+CAPT=: 'plot test using Function plotline'
 
-TT=: cmx 0 : 0
-tn              tu  ts  td    tf                   
-X[1]            m   m   0 0 0                      
-X[2]            m   m   0 0 0                      
-X[3]            m   m   0 0 0                      
-PI * X[1]       m   m   1 0 0 PI* a                
-X[1]+X[2]       m   m   1 2 0 a+b: a(m),b(m)       
-X[1]+X[2]+X[3]  m   m   1 2 3 a+b+c: a(m),b(m),c(m)
-X[1]*X[2]       m^2 m^2 1 2 0 a*b: a(m),b(m)       
-X[1]*X[2]*X[3]  m^3 m^3 1 2 3 a*b*c: a(m),b(m),c(m)
-X[1]^2          m^2 m^2 1 0 0 a^2: a(m)            
-1/X[1]          /m  /m  1 0 0 %a: a(m) [/m]        
-X[1] / X[2]     /   /   1 2 0 a%b: a(m),b(m)       
-X[2] / X[1]     /   /   2 1 0 a%b: a(m),b(m)       
-X[2] / (X[1]^2) /m  /m  2 9 0 a%b: a(m),b(m)       
-(X[1]^2) / X[2] m   m   9 2 0 a%b: a(m),b(m)       
+TTIMAGE=: 0 define
+plot test using Function plotline             
+┌   ┌ ┌ {1}       6 rad  angle                
+├ ┌ │ └>{2}   -0.28 /    sine                 
+├ ├ └>  {3}    0.96 /    cosine               
+├ └>    {4}    0.68 /    sin+cos              
+└>      {5}       0 /    plot {2}{3}{4} vs {1}
 )
 
-vquan=: numvec 0 : 0
-0
-3
-5
-2
-9.42477796076937935
-8
-10
-15
-30
-9
-0.333333333333333315
-0.599999999999999978
-1.66666666666666674
-0.55555555555555558
-1.80000000000000004
+TT=: cmx 0 define
+tn                    tu  ts  td      tf                                         
+angle                 rad rad 0 0 0 0                                            
+sine                  /   /   1 0 0 0 sin a ; a(rad) [/]                         
+cosine                /   /   1 0 0 0 cos a ; a(rad) [/]                         
+sin+cos               /   /   3 2 0 0 a+b: a(/),b(/)                             
+plot {2}{3}{4} vs {1} /   /   1 2 3 4 plotline(X,U,V,W) ; X(*),U(*),V(*),W(*) [/]
 )
 
-vfact=: numvec 0 : 0
-0
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-)
+vquan=: 0 6 _0.27941549819892586 0.960170286650366078 0.680754788451440218 0
 
+vfact=: 0 1 1 1 1 1
 
-TTINFO=: 0 : 0
-This is a test ttable,
-to test inversion algorithms
-and compare results.
+vmodl=: 0 1 1 1 1 1
 
+exe2=: 3 : '1 * (sin a) [a=. 1 * 1{y [ITEMNO=:2'
+exe3=: 3 : '1 * (cos a) [a=. 1 * 1{y [ITEMNO=:3'
+exe4=: 3 : 'a+b [a=. 3{y [b=. 2{y [ITEMNO=:4'
+exe5=: 3 : '1 * (plotline(X,U,V,W)) [X=. 1 * 1{y [U=. 1 * 2{y [V=. 1 * 3{y [W=. 1 * 4{y [ITEMNO=:5'
 
+TTINFO=: 0 define
+uses function: plotline to specify the items to be plotted.
 
-
+Can override the plotted items using tool: replot
 )

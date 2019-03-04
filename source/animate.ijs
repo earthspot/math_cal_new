@@ -23,8 +23,8 @@ f beginsWith 'tran'
 )
 
 transfer=: 3 : 0
-  NB. transfer values defined by formulas beginning: 'tran'
-  NB. serves: tabengine 'tran'  --no arguments
+  NB. transfer values defined by ALL formulas beginning: 'tran'
+  NB. implements: tabengine 'trav'  --no arguments
 for_i. I. tranfmla items'' do.
  'sce tgt'=. 2{. i{TD
  v=. getvalue sce

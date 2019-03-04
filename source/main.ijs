@@ -1394,6 +1394,7 @@ CH=: recal y
   NB. y-:'' takes next snapshot
 snapshot=: 3 : 0
 ZNN=: 1 + 1 default 'ZNN'
+	ssw '+++ snapshot ZNN'
 if. y-:0 do.        NB. restart ZZN series
   empty erase listnameswithprefix '0'-.~nxt 0  NB. destroy snapshots
   ZNN=: 1
@@ -2003,7 +2004,7 @@ NB. CHECK CAL_* for "rv" instrs:
 NB.  addc/l/v/p divc/l/v/p mulc/l/v/p rtol/v subc/l/v/p valu
 
 sst=: 3 : 0
-  NB. ancillary fn for tabengine
+  NB. ancillary fn for tabengine employed by: make_CAL
 snapshot''
 LASTINSTR=: INSTR
 warnplex''
