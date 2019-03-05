@@ -1393,13 +1393,13 @@ CH=: recal y
   NB. y-:0 resets the record
   NB. y-:'' takes next snapshot
 snapshot=: 3 : 0
-ZNN=: 1 + 1 default 'ZNN'
-	ssw '+++ snapshot ZNN'
+ZNO=: ZNN=: 1 + 1 default 'ZNN'
+	ssw '+++ snapshot ZNN=(ZNN)'
 if. y-:0 do.        NB. restart ZZN series
   empty erase listnameswithprefix '0'-.~nxt 0  NB. destroy snapshots
-  ZNN=: 1
+  ZNO=: ZNN=: 1
 end.
-nom=. nxt ZNO=: ZNN
+nom=. nxt ZNN
 (nom)=: ". SNAPSP rplc SP ; SC
 'snapped: ',nom
 :
@@ -1899,6 +1899,7 @@ txt=: ext&'txt'"_
 
 undo=: 3 : 0
   NB. y=1(undo) y=0(redo)
+	ssw '+++ undo y=(y) ZNO=(ZNO) ZNN=(ZNN)'
 invalexe''
 if. y do.
   tag=. 'undo'

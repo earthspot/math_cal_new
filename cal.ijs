@@ -25,6 +25,11 @@ AABUILT=: '2019-02-19  02:21:32'
 AABUILT=: '2019-02-25  02:52:24'
 AABUILT=: '2019-02-25  05:29:23'
 AABUILT=: '2019-02-25  12:34:00'
+AABUILT=: '2019-03-05  03:22:52'
+AABUILT=: '2019-03-05  04:28:21'
+AABUILT=: '2019-03-05  04:43:55'
+AABUILT=: '2019-03-05  05:02:04'
+AABUILT=: '2019-03-05  05:04:04'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -1595,12 +1600,13 @@ CH=: recal y
 
 
 snapshot=: 3 : 0
-ZNN=: 1 + 1 default 'ZNN'
+ZNO=: ZNN=: 1 + 1 default 'ZNN'
+	ssw '+++ snapshot ZNN=(ZNN)'
 if. y-:0 do.
   empty erase listnameswithprefix '0'-.~nxt 0
-  ZNN=: 1
+  ZNO=: ZNN=: 1
 end.
-nom=. nxt ZNO=: ZNN
+nom=. nxt ZNN
 (nom)=: ". SNAPSP rplc SP ; SC
 'snapped: ',nom
 :
@@ -2087,6 +2093,7 @@ txt=: ext&'txt'"_
 
 undo=: 3 : 0
 
+	ssw '+++ undo y=(y) ZNO=(ZNO) ZNN=(ZNN)'
 invalexe''
 if. y do.
   tag=. 'undo'
@@ -3393,6 +3400,7 @@ tram rr   '-'trans rr              \transfer {.rr-->{:rr under -
 trat rr   '*'trans rr              \transfer {.rr-->{:rr under *
 trad rr   '%'trans rr              \transfer {.rr-->{:rr under %
 trav void transfer''               \transfer values between items
+tra0 void transfer 0               \zero all transfer items
 t1dl r    r fnline~ '10%~'         \copy item by 10
 t1ml r    r fnline~ '10*'          \copy item times 10
 t2dl r    r fnline~ '100%~'        \copy item by 100
@@ -3967,20 +3975,32 @@ cocurrent 'cal'
 CYCLESTATE=: _1
 CYCLETIMER=: 1000
 
-tranfmla=: ((3 : 0) :: 0:) "0
+trafmla=: ((3 : 0) :: 0:) "0
 
 f=. y{TTf
-f beginsWith 'tran'
+f beginsWith 'tra'
 )
 
 transfer=: 3 : 0
 
 
-for_i. I. tranfmla items'' do.
+if. y-:0 do.
+  ssw '>>> transfer 0: init transfer items -not implemented yet'
+  return.
+end.
+for_i. I. trafmla items'' do.
  'sce tgt'=. 2{. i{TD
- v=. getvalue sce
- v setvalue tgt
- ssw '... transfer[(i)]: value [(v)] {(sce)}-->{(tgt)}'
+ func=. 4{. i{TTf
+ vs=. getvalue sce
+ vt=. getvalue tgt
+ select. func
+ case. 'tran' do. tgt setvalue~ vs
+ case. 'trag' do. tgt setvalue~ vs+vt
+ case. 'trad' do. tgt setvalue~ vt-vs
+ case. 'tram' do. tgt setvalue~ vs*vt
+ case.        do. continue.
+ end.
+ ssw '... transfer {(i)}: func=(func) vs=(vs) vt=(vt) {(sce)}-->{(tgt)}'
 end.
 )
 
@@ -3998,8 +4018,7 @@ case.     do. tgt setvalue~ v=. vsce
 end.
 ssw '... trans[(INST)]: value [(v)] {(sce)}-->{(tgt)}'
 )
-
-tran=: {.
+tran=:trag=:trad=:tram=: 1:
 sys_timer_z_=: empty
 
 0 :0
@@ -4035,7 +4054,8 @@ path=: UNSET
 TAG0=: <,''
 POS=: 322 23 830 400
 
-0 :0
+loadit=: 0:
+
 ttb_default=: 3 : 0
 
 smoutput '>>> missing handler: ',sysevent
@@ -4181,6 +4201,8 @@ ttb_bnSort_button=: sortByTag
 
 ttb_close=: window_close
 
+ttb_g_mbldown=: empty
+
 ttb_g_mark=: 3 : 0
 
 fno=: {.".g
@@ -4195,9 +4217,12 @@ erase 'TT TTIMAGE TTINFO vquan vfact'
 load :: 0: path
 if. -.NaNoun'TTIMAGE' do. text=: TTIMAGE end.
 if. -.NaNoun'TTINFO' do. info=: TTINFO end.
-wd 'psel ttb; set textbuf text *',text
-wd 'psel ttb; set infobuf text *',info
-putsb tag,' / ttb_g_mark: ',date''
+if. loadit'' do. ttb_bnLoad_button''
+else.
+  wd 'psel ttb; set textbuf text *',text
+  wd 'psel ttb; set infobuf text *',info
+  putsb tag,' / ttb_g_mark: ',date''
+end.
 )
 
 heldshift=: 3 : '1=".sysmodifiers'

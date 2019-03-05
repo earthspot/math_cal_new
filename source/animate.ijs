@@ -16,20 +16,32 @@ cocurrent 'cal'
 CYCLESTATE=: _1
 CYCLETIMER=: 1000 NB. (millisecs) delay before sys_timer_z_''
 
-tranfmla=: ((3 : 0) :: 0:) "0
-  NB. Boolean verb: item# (y) has a formula beginning: 'tran'
+trafmla=: ((3 : 0) :: 0:) "0
+  NB. Boolean verb: item# (y) has a formula beginning: 'tra'
 f=. y{TTf
-f beginsWith 'tran'
+f beginsWith 'tra'
 )
 
 transfer=: 3 : 0
-  NB. transfer values defined by ALL formulas beginning: 'tran'
-  NB. implements: tabengine 'trav'  --no arguments
-for_i. I. tranfmla items'' do.
+  NB. transfer values defined by ALL formulas beginning: 'tra*'
+  NB. implements: tabengine 'trav' 'tra0'  --which take void arg
+if. y-:0 do.
+  ssw '>>> transfer 0: init transfer items -not implemented yet'
+  return.
+end.
+for_i. I. trafmla items'' do.
  'sce tgt'=. 2{. i{TD
- v=. getvalue sce
- v setvalue tgt
- ssw '... transfer[(i)]: value [(v)] {(sce)}-->{(tgt)}'
+ func=. 4{. i{TTf
+ vs=. getvalue sce
+ vt=. getvalue tgt
+ select. func
+ case. 'tran' do. tgt setvalue~ vs     NB. simple transfer
+ case. 'trag' do. tgt setvalue~ vs+vt  NB. aggregate
+ case. 'trad' do. tgt setvalue~ vt-vs  NB. deduct
+ case. 'tram' do. tgt setvalue~ vs*vt  NB. factor-in
+ case.        do. continue.            NB. ignore func
+ end.
+ ssw '... transfer {(i)}: func=(func) vs=(vs) vt=(vt) {(sce)}-->{(tgt)}'
 end.
 )
 
@@ -48,7 +60,11 @@ end.
 ssw '... trans[(INST)]: value [(v)] {(sce)}-->{(tgt)}'
 )
 
-tran=: {.  NB. just returns value of first argument (sce)
+NB. tran=: {.       NB. shows value of (sce) item unaltered
+NB. trag=: {. + {:  NB. shows value of (sce) + (tgt) items
+NB. trad=: {: - {.  NB. shows value of (tgt) - (sce) items
+NB. tram=: {. * {:  NB. shows value of (sce) * (tgt) items
+tran=:trag=:trad=:tram=: 1:  NB. shows: ON
 
 NB. test=: 3 : 'CYCLESTATE=:_1'
 sys_timer_z_=: empty

@@ -16,9 +16,7 @@ path=: UNSET
 TAG0=: <,''
 POS=: 322 23 830 400
 
-loadit=: 3 : 0
-1 return.
-)
+loadit=: 0:
 
 ttb_default=: 3 : 0
   NB. warns of a missing handler
@@ -171,6 +169,8 @@ ttb_bnSorn_button=: sortByName
 ttb_bnSort_button=: sortByTag
 
 ttb_close=: window_close
+
+ttb_g_mbldown=: empty
 
 ttb_g_mark=: 3 : 0
   NB. examine selected t-table

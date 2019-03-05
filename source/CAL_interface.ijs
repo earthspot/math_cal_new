@@ -252,6 +252,7 @@ tram rr   '-'trans rr              \transfer {.rr-->{:rr under -
 trat rr   '*'trans rr              \transfer {.rr-->{:rr under *
 trad rr   '%'trans rr              \transfer {.rr-->{:rr under %
 trav void transfer''               \transfer values between items
+tra0 void transfer 0               \zero all transfer items
 t1dl r    r fnline~ '10%~'         \copy item by 10
 t1ml r    r fnline~ '10*'          \copy item times 10
 t2dl r    r fnline~ '100%~'        \copy item by 100
