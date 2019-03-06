@@ -44,6 +44,15 @@ AABUILT=: '2019-03-06  05:33:35'
 AABUILT=: '2019-03-06  06:28:36'
 AABUILT=: '2019-03-06  06:35:17'
 AABUILT=: '2019-03-06  07:06:51'
+AABUILT=: '2019-03-06  08:08:10'
+AABUILT=: '2019-03-06  08:28:35'
+AABUILT=: '2019-03-06  08:29:03'
+AABUILT=: '2019-03-06  08:45:21'
+AABUILT=: '2019-03-06  08:52:40'
+AABUILT=: '2019-03-06  09:00:18'
+AABUILT=: '2019-03-06  09:48:44'
+AABUILT=: '2019-03-06  09:54:14'
+AABUILT=: '2019-03-06  10:04:21'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -1304,6 +1313,7 @@ merge=: 3 : 0
 message=: 4 : 0
 
 
+if. 0=#x do. MESSAGE_ID=: _1 [MESSAGE=: '' return. end.
 MESSAGE_ID=: x
 mm=. 3}.dtb x{MESSAGELIST
 'y0 y1 y2 y3'=. 4{.boxopen y
@@ -1948,7 +1958,6 @@ tag=. SWAPPED#'\'
 settitle CAPT
 reselect 0
 CH=: recal 0
-snapshot 1
 dirty 0
 warnplex''
 27 message tag; filename file
@@ -2003,7 +2012,6 @@ vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: CH=: vhold=: vmodl=: vhidd=: ,0
 file=:  tbx UNDEF
 settitle CAPT=: UNDEF_CAPT
 reselect 0
-snapshot 1
 dirty 0
 0 message ''
 )
@@ -2125,34 +2133,43 @@ CH=: flags 0
 
 txt=: ext&'txt'"_
 
+revert=: 3 : 0
+
+
+''snapshot~ nZN=: 1
+cutbackZN nxt nZN
+49 message shortpath file
+)
+0 :0
+nomZN _
+tallyZN _
+)
+
 undo=: 3 : 0
 
 
 
 
 nlatest=. nlatestZN''
-u2r=. y < 1 default 'LASTUNDOy'
-r2u=. y > LASTUNDOy
 invalexe''
 if. y do.
   tag=. 'undo'
-  nrestore=. nZN - r2u
-  if. (nZN=1) and (rZN=nZN) do. 34 message tag return. end.
-  nZN=: 1&>. nZN-1
+  nrestore=. nZN=: 0&>. nZN-1
+  if. nZN=0 do.
+    nZN=: 1
+    34 message tag return.
+  end.
 else.
   tag=. 'redo'
-  nrestore=. nZN + u2r
-  if. (nZN=nlatest) and (rZN=nZN) do. 34 message tag return. end.
-  nZN=: nlatest&<. nZN+1
+  nrestore=. nZN=: (>:nlatest)&<. nZN+1
+  if. nZN = >:nlatest do.
+    nZN=: nlatest
+    34 message tag return.
+  end.
 end.
-  ssw '(LF)+++ (tag): r2u=(r2u) u2r=(u2r) nZN=(nZN) rZN=(rZN) nrestore=(nrestore)'
+  ssw '(LF)+++ (tag): nZN=(nZN) nrestore=(nrestore)'
 nrestore snapshot''
-rZN=: nrestore
-LASTUNDOy=: y
 33 message tag; nrestore
-)
-0 :0
-nomZN''
 )
 
 uprates=: 3 : 0
@@ -2232,15 +2249,17 @@ for_i. CALb do.
   case. 'yy'  do. body=. func rplc 'yy' ; 'y'
   case.       do. body=. func
   end.
-  ('CAL_',inst)=: 3 : (body , ' [sst _' #~ changesTtable inst)
+  if. changesTtable inst do. body=. 'snap ',body end.
+  ('CAL_',inst)=: 3 : body
 end.
 i.0 0
 )
-sst=: 3 : 0
+snap=: 3 : 0
 
 snapshot''
 LASTINSTR=: INSTR
 warnplex''
+y return.
 )
 
 unbox=: nb^:(L. > 0:)
@@ -2249,6 +2268,7 @@ tabengine1=: 3 : 0 "1
 
 'INST YY'=: 4 split INSTR=: unbox y
 LOGINSTR=: LOGINSTR,INSTR,LF
+if. -. INST-:'MSSG' do. ''message'' end.
 RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError1) dltb YY
 )
 
@@ -3225,9 +3245,10 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '2019-02-25  12:14:00'   \noun: CAL last saved
+QSAV void '2019-03-06  08:36:59'   \noun: CAL last saved
 Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
+Revt void revert''                 \=revert all changes
 Undo void undo 1                   \=undo
 AABT void AABUILT                  \last-updated timestamp
 ABOU void ABOUT                    \About the engine
@@ -3256,7 +3277,7 @@ RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
 TITL void CAPT                     \window title -from CAPT
-TITU void UNDEF_CAPT               \window title -undefined
+TITU void UNDEF_CAPT               \window title -untitled
 TFIL void file                     \t-table file pathname
 TFIT void shortpath file           \t-table file short pathname
 TFLU void UNDEF                    \t-table file name -undefined
@@ -3532,7 +3553,8 @@ MESSAGELIST=: cmx 0 : 0
 45 line {(y0)} units changed from [(y1)] to INCOMPATIBLE [(y2)]
 46 >>> no action because CAL engine has not been initialized
 47 >>> no action because no valid lines selected
-48 line(s) replotted: {(y)}
+48 lines replotted: {(y)}
+49 t-table reverted: (y0)
 )
 '==================== [cal] traceverbs ===================='
 

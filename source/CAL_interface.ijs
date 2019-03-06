@@ -26,9 +26,10 @@ NB. ========================================================
   NB. (Instrs with: dummy'' pre-handled by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '2019-02-25  12:14:00'   \noun: CAL last saved
+QSAV void '2019-03-06  08:36:59'   \noun: CAL last saved
 Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
+Revt void revert''                 \=revert all changes
 Undo void undo 1                   \=undo
 AABT void AABUILT                  \last-updated timestamp
 ABOU void ABOUT                    \About the engine
@@ -57,7 +58,7 @@ RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
 TITL void CAPT                     \window title -from CAPT
-TITU void UNDEF_CAPT               \window title -undefined
+TITU void UNDEF_CAPT               \window title -untitled
 TFIL void file                     \t-table file pathname
 TFIT void shortpath file           \t-table file short pathname
 TFLU void UNDEF                    \t-table file name -undefined

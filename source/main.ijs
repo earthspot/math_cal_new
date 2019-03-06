@@ -1072,6 +1072,7 @@ merge=: 3 : 0
 message=: 4 : 0
   NB. report x{MESSAGELIST substituting (boxed atoms of) (y)
   NB. creates caches: MESSAGE, MESSAGE_ID
+if. 0=#x do. MESSAGE_ID=: _1 [MESSAGE=: '' return. end.
 MESSAGE_ID=: x
 mm=. 3}.dtb x{MESSAGELIST  NB. drop prefixed message-ID (3 bytes)
 'y0 y1 y2 y3'=. 4{.boxopen y
@@ -1735,7 +1736,7 @@ tag=. SWAPPED#'\'  NB. indicator: needs saving in cleaned-up form
 settitle CAPT
 reselect 0
 CH=: recal 0
-snapshot 1
+NB. snapshot 1
 dirty 0  NB. resets the dirty-bit
 warnplex''
 27 message tag; filename file
@@ -1790,7 +1791,7 @@ vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: CH=: vhold=: vmodl=: vhidd=: ,0
 file=:  tbx UNDEF
 settitle CAPT=: UNDEF_CAPT
 reselect 0
-snapshot 1
+NB. snapshot 1
 dirty 0  NB. resets the dirty-bit
 0 message ''
 )
@@ -1917,34 +1918,43 @@ CH=: flags 0
 
 txt=: ext&'txt'"_
 
+revert=: 3 : 0
+  NB. revert all changes
+  NB. assume that ZN-cache (nxt 1) records the t-table as-loaded
+''snapshot~ nZN=: 1
+cutbackZN nxt nZN
+49 message shortpath file
+)
+0 :0
+nomZN _
+tallyZN _
+)
+
 undo=: 3 : 0
   NB. y=1(undo) y=0(redo)
   NB. nZN -> ZN* last created
   NB. rZN -> ZN* last restored
   NB. rZN=:0 whenever a new ZN* is created
 nlatest=. nlatestZN''
-u2r=. y < 1 default 'LASTUNDOy'
-r2u=. y > LASTUNDOy
 invalexe''
 if. y do.
   tag=. 'undo'
-  nrestore=. nZN - r2u
-  if. (nZN=1) and (rZN=nZN) do. 34 message tag return. end.
-  nZN=: 1&>. nZN-1
+  nrestore=. nZN=: 0&>. nZN-1
+  if. nZN=0 do.
+    nZN=: 1
+    34 message tag return.
+  end.
 else.
   tag=. 'redo'
-  nrestore=. nZN + u2r
-  if. (nZN=nlatest) and (rZN=nZN) do. 34 message tag return. end.
-  nZN=: nlatest&<. nZN+1
+  nrestore=. nZN=: (>:nlatest)&<. nZN+1
+  if. nZN = >:nlatest do.
+    nZN=: nlatest
+    34 message tag return.
+  end.
 end.
-  ssw '(LF)+++ (tag): r2u=(r2u) u2r=(u2r) nZN=(nZN) rZN=(rZN) nrestore=(nrestore)'
+  ssw '(LF)+++ (tag): nZN=(nZN) nrestore=(nrestore)'
 nrestore snapshot''
-rZN=: nrestore
-LASTUNDOy=: y
 33 message tag; nrestore
-)
-0 :0
-nomZN''
 )
 
 uprates=: 3 : 0
@@ -2030,18 +2040,21 @@ NB.   case. ,'n'  do. body=. func,    '[n=. ".y'
   case. 'yy'  do. body=. func rplc 'yy' ; 'y'
   case.       do. body=. func
   end.
-  ('CAL_',inst)=: 3 : (body , ' [sst _' #~ changesTtable inst)
+NB.   ('CAL_',inst)=: 3 : (body , ' [sst _' #~ changesTtable inst)
+  if. changesTtable inst do. body=. 'snap ',body end.
+  ('CAL_',inst)=: 3 : body
 end.
 i.0 0
 )
 NB. CHECK CAL_* for "rv" instrs:
 NB.  addc/l/v/p divc/l/v/p mulc/l/v/p rtol/v subc/l/v/p valu
 
-sst=: 3 : 0
+snap=: 3 : 0
   NB. ancillary fn for tabengine employed by: make_CAL
 snapshot''
 LASTINSTR=: INSTR
 warnplex''
+y return.  NB. pass-thru for assignment to RETURNED
 )
 
 unbox=: nb^:(L. > 0:)
@@ -2050,6 +2063,7 @@ tabengine1=: 3 : 0 "1
   NB. assumes make_CAL has been run by: start
 'INST YY'=: 4 split INSTR=: unbox y
 LOGINSTR=: LOGINSTR,INSTR,LF
+if. -. INST-:'MSSG' do. ''message'' end.
 RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError1) dltb YY
 )
 
