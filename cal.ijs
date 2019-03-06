@@ -30,6 +30,20 @@ AABUILT=: '2019-03-05  04:28:21'
 AABUILT=: '2019-03-05  04:43:55'
 AABUILT=: '2019-03-05  05:02:04'
 AABUILT=: '2019-03-05  05:04:04'
+AABUILT=: '2019-03-06  01:36:28'
+AABUILT=: '2019-03-06  02:33:33'
+AABUILT=: '2019-03-06  02:33:45'
+AABUILT=: '2019-03-06  02:37:41'
+AABUILT=: '2019-03-06  02:56:43'
+AABUILT=: '2019-03-06  02:56:52'
+AABUILT=: '2019-03-06  03:13:39'
+AABUILT=: '2019-03-06  03:22:25'
+AABUILT=: '2019-03-06  03:41:08'
+AABUILT=: '2019-03-06  04:41:13'
+AABUILT=: '2019-03-06  05:33:35'
+AABUILT=: '2019-03-06  06:28:36'
+AABUILT=: '2019-03-06  06:35:17'
+AABUILT=: '2019-03-06  07:06:51'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -78,7 +92,7 @@ SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'
 SL=: '/'
-SNAPSP=: 'file vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTn TTf UNITN UNITS CAPT'
+SNAPSP=: 'vquan vsiqn vqua0 vsiq0 vfact vhidd vhold vmodl CH TD TTn TTf file UNITS UNITN CAPT'
 SP=: ' '
 ST=: '*'
 UL=: '_'
@@ -1302,7 +1316,6 @@ nochange=: empty
 noop=: empty
 notitem=: ([: -. ] e. [: }. items) ::1:
 numvec=: 3 : '". (LF,SP) sub y'
-nxt=: 'ZN0000'&aann
 
 nxx=: 4 : 0
 
@@ -1594,24 +1607,45 @@ CH=: recal y
 18 message y; si
 )
 
+nxt=: 'ZN0000'&aann
+nomZN=: 3 : '>''ZN'' nl 0'
+tallyZN=: [: # nomZN
+latestZN=: [: {: - }. nomZN
+nlatestZN=: [: ". 2 }. latestZN
 
+cutbackZN=: 3 : 0
 
-
-
+z=. nomZN''
+i=. >: z i. y
+erase i}.z
+)
+0 :0
+nomZN _
+tallyZN _
+)
 
 snapshot=: 3 : 0
-ZNO=: ZNN=: 1 + 1 default 'ZNN'
-	ssw '+++ snapshot ZNN=(ZNN)'
-if. y-:0 do.
-  empty erase listnameswithprefix '0'-.~nxt 0
-  ZNO=: ZNN=: 1
+
+
+
+
+
+
+if. (y-:0) or (y-:1) do.
+  empty erase listnameswithprefix 'ZN'
+  nZN=: 0
+  if. y-:0 do. return. end.
 end.
-nom=. nxt ZNN
+rZN=: 0
+nom=. nxt nZN=: 1 + 0 default 'nZN'
 (nom)=: ". SNAPSP rplc SP ; SC
+cutbackZN nom
+ ssw '... snapshot snapped: (nom) [(tallyZN _)] vquan=[(vquan)]'
 'snapped: ',nom
 :
-nom=. nxt x
+nom=. nxt rZN=:x
 (SNAPSP)=: ".nom
+ ssw '+++ snapshot restored: (nom) vquan=[(vquan)]'
 'restored: ',nom
 )
 
@@ -1914,7 +1948,7 @@ tag=. SWAPPED#'\'
 settitle CAPT
 reselect 0
 CH=: recal 0
-snapshot 0
+snapshot 1
 dirty 0
 warnplex''
 27 message tag; filename file
@@ -1969,7 +2003,7 @@ vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: CH=: vhold=: vmodl=: vhidd=: ,0
 file=:  tbx UNDEF
 settitle CAPT=: UNDEF_CAPT
 reselect 0
-snapshot 0
+snapshot 1
 dirty 0
 0 message ''
 )
@@ -2062,7 +2096,7 @@ ttsort=: 4 : 0
 invalplot''
 t=. items''
 if. 1=$y=.,y do. t=. t-.y
-elseif. 0=$y do. 33 message'' return.
+elseif. 0=$y do. 34 message'delete' return.
 elseif. do. t=. y
 end.
 t=. 0 promo t
@@ -2093,19 +2127,32 @@ txt=: ext&'txt'"_
 
 undo=: 3 : 0
 
-	ssw '+++ undo y=(y) ZNO=(ZNO) ZNN=(ZNN)'
+
+
+
+nlatest=. nlatestZN''
+u2r=. y < 1 default 'LASTUNDOy'
+r2u=. y > LASTUNDOy
 invalexe''
 if. y do.
   tag=. 'undo'
-  if. 1=ZNN do. 34 message tag return. end.
-  ZNN=: 1>.ZNN-1
+  nrestore=. nZN - r2u
+  if. (nZN=1) and (rZN=nZN) do. 34 message tag return. end.
+  nZN=: 1&>. nZN-1
 else.
   tag=. 'redo'
-  if. ZNO=ZNN do. 34 message tag return. end.
-  ZNN=: ZNO<.ZNN+1
+  nrestore=. nZN + u2r
+  if. (nZN=nlatest) and (rZN=nZN) do. 34 message tag return. end.
+  nZN=: nlatest&<. nZN+1
 end.
-msg 33 message tag; ZNN; ZNO
-ZNN snapshot''
+  ssw '(LF)+++ (tag): r2u=(r2u) u2r=(u2r) nZN=(nZN) rZN=(rZN) nrestore=(nrestore)'
+nrestore snapshot''
+rZN=: nrestore
+LASTUNDOy=: y
+33 message tag; nrestore
+)
+0 :0
+nomZN''
 )
 
 uprates=: 3 : 0
@@ -2199,6 +2246,7 @@ warnplex''
 unbox=: nb^:(L. > 0:)
 
 tabengine1=: 3 : 0 "1
+
 'INST YY'=: 4 split INSTR=: unbox y
 LOGINSTR=: LOGINSTR,INSTR,LF
 RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError1) dltb YY
@@ -2220,6 +2268,7 @@ yy=. 5}.y
 select. inst
 )
 
+0 :0
 tabengine0=: 3 : 0 "1
 
 
@@ -2250,6 +2299,7 @@ end.
 RETURNED return.
 )
 
+0 :0
 tabengineError=: 3 : 0
 
 smoutput '>>> tabengineError: bad instruction: ', ; y
@@ -2264,6 +2314,7 @@ assert. -. any isNaN y
 y return.
 )
 
+0 :0
 make_tabengineCore=: 3 : 0
 
 z=. COMPILE_HEAD
@@ -3466,7 +3517,7 @@ MESSAGELIST=: cmx 0 : 0
 30 saved t-table: (y0) [(y1) bytes]
 31 >>> t-table (y0) not saved
 32 sorted by permutation (y0)
-33 (y0) ZNN: (y1)  ZNO: (y2)
+33 (y0) restored: (y1)
 34 >>> cannot (y) any more
 35 >>> no action because too many items have Holds: (y0)
 36 >>> no lines are hidden

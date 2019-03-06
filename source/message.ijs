@@ -40,7 +40,7 @@ MESSAGELIST=: cmx 0 : 0
 30 saved t-table: (y0) [(y1) bytes]
 31 >>> t-table (y0) not saved
 32 sorted by permutation (y0)
-33 (y0) ZNN: (y1)  ZNO: (y2)
+33 (y0) restored: (y1)
 34 >>> cannot (y) any more
 35 >>> no action because too many items have Holds: (y0)
 36 >>> no lines are hidden

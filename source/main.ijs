@@ -1085,7 +1085,6 @@ nochange=: empty
 noop=: empty
 notitem=: ([: -. ] e. [: }. items) ::1:
 numvec=: 3 : '". (LF,SP) sub y'
-nxt=: 'ZN0000'&aann
 
 nxx=: 4 : 0
   NB. step exponent: y by: x -within acceptable range
@@ -1387,24 +1386,45 @@ CH=: recal y
 18 message y; si
 )
 
-  NB. snapshot/restore the values of SNAPSP vars
-  NB. x (given) is snapshot# to be restored
-  NB. x (absent) means new snapshot
-  NB. y-:0 resets the record
-  NB. y-:'' takes next snapshot
+nxt=: 'ZN0000'&aann
+nomZN=: 3 : '>''ZN'' nl 0'  NB. list of names of ZN-caches
+tallyZN=: [: # nomZN  NB. count of ZN-caches
+latestZN=: [: {: - }. nomZN  NB. name of y'th latest ZN-cache
+nlatestZN=: [: ". 2 }. latestZN  NB. number suffix of y'th latest ZN-cache
+
+cutbackZN=: 3 : 0
+  NB. cutback ZN-caches to make nom: (y) the latest
+z=. nomZN''
+i=. >: z i. y
+erase i}.z
+)
+0 :0
+nomZN _
+tallyZN _
+)
+
 snapshot=: 3 : 0
-ZNO=: ZNN=: 1 + 1 default 'ZNN'
-	ssw '+++ snapshot ZNN=(ZNN)'
-if. y-:0 do.        NB. restart ZZN series
-  empty erase listnameswithprefix '0'-.~nxt 0  NB. destroy snapshots
-  ZNO=: ZNN=: 1
+  NB. snapshot/restore the values of SNAPSP vars
+  NB. x (…present) is snapshot# to be restored
+  NB. x (…absent) means take new snapshot
+  NB. y-:1 erases all ZN-caches then takes 1st snapshot
+  NB. y-:0 erases all ZN-caches, does NOT take 1st snapshot
+  NB. otherwise (e.g. y-:'') takes next snapshot
+if. (y-:0) or (y-:1) do.        NB. invalidate all ZN-caches
+  empty erase listnameswithprefix 'ZN'
+  nZN=: 0
+  if. y-:0 do. return. end.
 end.
-nom=. nxt ZNN
+rZN=: 0
+nom=. nxt nZN=: 1 + 0 default 'nZN'
 (nom)=: ". SNAPSP rplc SP ; SC
+cutbackZN nom
+ ssw '... snapshot snapped: (nom) [(tallyZN _)] vquan=[(vquan)]'
 'snapped: ',nom
 :
-nom=. nxt x
+nom=. nxt rZN=:x
 (SNAPSP)=: ".nom
+ ssw '+++ snapshot restored: (nom) vquan=[(vquan)]'
 'restored: ',nom
 )
 
@@ -1669,7 +1689,7 @@ ttload=: 3 : 0
 if. isEmpty y do. 19 message '' return. end.  NB. IAC 5 DEC 18
 plotclose''
 MSLOG=: 0 0$''  NB. stop it getting too big
-snapshot 0      NB. to recover space (done again later)
+snapshot 0      NB. to recover space
 invalplot''     NB. replot caches are invalid
 invalexe''      NB. existing 'exe' verbs are invalid
 invalinfo''     NB. existing  info display is invalid
@@ -1715,7 +1735,7 @@ tag=. SWAPPED#'\'  NB. indicator: needs saving in cleaned-up form
 settitle CAPT
 reselect 0
 CH=: recal 0
-snapshot 0
+snapshot 1
 dirty 0  NB. resets the dirty-bit
 warnplex''
 27 message tag; filename file
@@ -1757,7 +1777,7 @@ ttnew=: 3 : 0
   NB. empty the t-table
 plotclose''
 MSLOG=: 0 0$''  NB. stop it getting too big
-snapshot 0      NB. to recover space (done again later)
+snapshot 0      NB. to recover space
 invalplot''     NB. replot caches are invalid
 invalexe''      NB. existing 'exe' verbs are invalid
 invalinfo''     NB. existing info display is invalid
@@ -1770,7 +1790,7 @@ vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: CH=: vhold=: vmodl=: vhidd=: ,0
 file=:  tbx UNDEF
 settitle CAPT=: UNDEF_CAPT
 reselect 0
-snapshot 0
+snapshot 1
 dirty 0  NB. resets the dirty-bit
 0 message ''
 )
@@ -1867,7 +1887,7 @@ ttsort=: 4 : 0
 invalplot''
 t=. items''  NB. commence with all available items
 if. 1=$y=.,y do. t=. t-.y    NB. 1-element y: treat as deletion
-elseif. 0=$y do. 33 message'' return.  NB. don't delete last remaining row
+elseif. 0=$y do. 34 message'delete' return.  NB. don't delete last remaining row
 elseif. do. t=. y
 end.
 t=. 0 promo t    NB. ensure t doesn't move (hdr) item 0
@@ -1899,19 +1919,32 @@ txt=: ext&'txt'"_
 
 undo=: 3 : 0
   NB. y=1(undo) y=0(redo)
-	ssw '+++ undo y=(y) ZNO=(ZNO) ZNN=(ZNN)'
+  NB. nZN -> ZN* last created
+  NB. rZN -> ZN* last restored
+  NB. rZN=:0 whenever a new ZN* is created
+nlatest=. nlatestZN''
+u2r=. y < 1 default 'LASTUNDOy'
+r2u=. y > LASTUNDOy
 invalexe''
 if. y do.
   tag=. 'undo'
-  if. 1=ZNN do. 34 message tag return. end.
-  ZNN=: 1>.ZNN-1
+  nrestore=. nZN - r2u
+  if. (nZN=1) and (rZN=nZN) do. 34 message tag return. end.
+  nZN=: 1&>. nZN-1
 else.
   tag=. 'redo'
-  if. ZNO=ZNN do. 34 message tag return. end.
-  ZNN=: ZNO<.ZNN+1
+  nrestore=. nZN + u2r
+  if. (nZN=nlatest) and (rZN=nZN) do. 34 message tag return. end.
+  nZN=: nlatest&<. nZN+1
 end.
-msg 33 message tag; ZNN; ZNO
-ZNN snapshot''
+  ssw '(LF)+++ (tag): r2u=(r2u) u2r=(u2r) nZN=(nZN) rZN=(rZN) nrestore=(nrestore)'
+nrestore snapshot''
+rZN=: nrestore
+LASTUNDOy=: y
+33 message tag; nrestore
+)
+0 :0
+nomZN''
 )
 
 uprates=: 3 : 0
@@ -2014,6 +2047,7 @@ warnplex''
 unbox=: nb^:(L. > 0:)
 
 tabengine1=: 3 : 0 "1
+  NB. assumes make_CAL has been run by: start
 'INST YY'=: 4 split INSTR=: unbox y
 LOGINSTR=: LOGINSTR,INSTR,LF
 RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError1) dltb YY
@@ -2041,6 +2075,7 @@ yy=. 5}.y
 select. inst
 )
 
+0 :0
 tabengine0=: 3 : 0 "1
   NB. wrapper for tabengineCore
   NB. computes RETURNED LASTINSTR INSTR INST
@@ -2074,6 +2109,7 @@ end.
 RETURNED return.
 )
 
+0 :0
 tabengineError=: 3 : 0
   NB. analyse reason for tabengineCore:: error
 smoutput '>>> tabengineError: bad instruction: ', ; y
@@ -2088,6 +2124,7 @@ assert. -. any isNaN y
 y return.
 )
 
+0 :0
 make_tabengineCore=: 3 : 0
   NB. compile (CAL-interface) CAL-->tabengineCore
 z=. COMPILE_HEAD
