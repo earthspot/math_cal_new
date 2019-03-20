@@ -53,6 +53,7 @@ AABUILT=: '2019-03-06  09:00:18'
 AABUILT=: '2019-03-06  09:48:44'
 AABUILT=: '2019-03-06  09:54:14'
 AABUILT=: '2019-03-06  10:04:21'
+AABUILT=: '2019-03-09  13:51:35'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -1650,12 +1651,10 @@ rZN=: 0
 nom=. nxt nZN=: 1 + 0 default 'nZN'
 (nom)=: ". SNAPSP rplc SP ; SC
 cutbackZN nom
- ssw '... snapshot snapped: (nom) [(tallyZN _)] vquan=[(vquan)]'
 'snapped: ',nom
 :
 nom=. nxt rZN=:x
 (SNAPSP)=: ".nom
- ssw '+++ snapshot restored: (nom) vquan=[(vquan)]'
 'restored: ',nom
 )
 
@@ -1921,10 +1920,6 @@ invalinfo''
 TTINFO=:''
 SWAPPED=: 0
 file=: expandedPath y
-	smoutput '──────────────────────────────────────────────'
-	smoutput crr,'y'
-	smoutput 'ttload ',quote file
-	smoutput '──────────────────────────────────────────────'
 if. -.fexist file do. 20 message file return. end.
 vhidd=: vmodl=: _
 load file
@@ -3750,7 +3745,7 @@ j< 0.2 * #b
 
 '==================== [cal] newplot.ijs ===================='
 0 :0
-Thursday 3 January 2019  05:31:37
+Friday 8 March 2019  03:36:52
 -
 NEW plot facility: "plot' is ancillary verb in a t-table formula
 verbs: plot, plotstub -moved here from: main.ijs
@@ -4011,6 +4006,7 @@ ssw '... plotline: iX=(iX) iY=(iY)'
 iX do_plot iY [CHART_TYPE=:'line'
 PLOT return.
 )
+
 plotRange=: 0 ddefine
 
 invalplot x changes 'XRANGE'

@@ -1,9 +1,8 @@
 	NB. cal - CAL_interface.ijs
 '==================== [cal] CAL_interface.ijs ===================='
 NB. The CAL interface / instruction set
-NB. UPDATED from Xcode: cal-instruction-set
 
-0 :0  NB. REMOVED…
+0 :0  NB. REMOVED from instruction set…
 Inic void start''                  \=(re-)start with clear tt
 Inif void start'$'                 \=(re-)start with factory SAMPLE tt
 Inis n    start n                  \=(re-)start with factory SAMPLEn tt

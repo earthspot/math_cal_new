@@ -1,7 +1,7 @@
 	NB. cal - newplot.ijs
 '==================== [cal] newplot.ijs ===================='
 0 :0
-Thursday 3 January 2019  05:31:37
+Friday 8 March 2019  03:36:52
 -
 NEW plot facility: "plot' is ancillary verb in a t-table formula
 verbs: plot, plotstub -moved here from: main.ijs
@@ -276,24 +276,6 @@ ssw '... plotline: iX=(iX) iY=(iY)'
 iX do_plot iY [CHART_TYPE=:'line'
 PLOT return.
 )
-
-NB. plotRange0=: 3 : 0
-NB.   NB. plot Line Chart: item#s y against item# x
-NB. invalplot 0 changes 'XRANGE' NB. onlyif XRANGE actually changed
-NB. plotLineChart y
-NB. )
-NB.
-NB. plotRange1=: 3 : 0
-NB.   NB. plot Line Chart: item#s y against item# x
-NB. invalplot 1 changes 'XRANGE' NB. onlyif XRANGE actually changed
-NB. plotLineChart y
-NB. )
-NB.
-NB. plotRange2=: 3 : 0
-NB.   NB. plot Line Chart: item#s y against item# x
-NB. invalplot 2 changes 'XRANGE' NB. onlyif XRANGE actually changed
-NB. plotLineChart y
-NB. )
 
 plotRange=: 0 ddefine
   NB. plot Chart: item#s y against item# x

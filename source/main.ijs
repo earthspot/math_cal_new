@@ -1420,12 +1420,12 @@ rZN=: 0
 nom=. nxt nZN=: 1 + 0 default 'nZN'
 (nom)=: ". SNAPSP rplc SP ; SC
 cutbackZN nom
- ssw '... snapshot snapped: (nom) [(tallyZN _)] vquan=[(vquan)]'
+NB.  ssw '... snapshot snapped: (nom) [(tallyZN _)] vquan=[(vquan)]'
 'snapped: ',nom
 :
 nom=. nxt rZN=:x
 (SNAPSP)=: ".nom
- ssw '+++ snapshot restored: (nom) vquan=[(vquan)]'
+NB.  ssw '+++ snapshot restored: (nom) vquan=[(vquan)]'
 'restored: ',nom
 )
 
@@ -1697,11 +1697,11 @@ invalinfo''     NB. existing  info display is invalid
 TTINFO=:''      NB. create empty
 SWAPPED=: 0     NB. fmla order (overridden by t-table script)
 file=: expandedPath y    NB. y is generalised file descriptor
-	smoutput '──────────────────────────────────────────────'
-	smoutput crr,'y'
+NB. 	smoutput '──────────────────────────────────────────────'
+NB. 	smoutput crr,'y'
 NB. 	smoutput 'expandedPath(y) ',quote expandedPath(y)
-	smoutput 'ttload ',quote file
-	smoutput '──────────────────────────────────────────────'
+NB. 	smoutput 'ttload ',quote file
+NB. 	smoutput '──────────────────────────────────────────────'
 if. -.fexist file do. 20 message file return. end.  NB. IAC 5 DEC 18
 vhidd=: vmodl=: _
 load file
