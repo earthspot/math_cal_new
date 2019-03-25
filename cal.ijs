@@ -54,6 +54,23 @@ AABUILT=: '2019-03-06  09:48:44'
 AABUILT=: '2019-03-06  09:54:14'
 AABUILT=: '2019-03-06  10:04:21'
 AABUILT=: '2019-03-09  13:51:35'
+AABUILT=: '2019-03-24  23:29:03'
+AABUILT=: '2019-03-24  23:33:41'
+AABUILT=: '2019-03-24  23:35:37'
+AABUILT=: '2019-03-24  23:43:35'
+AABUILT=: '2019-03-25  01:28:43'
+AABUILT=: '2019-03-25  01:45:02'
+AABUILT=: '2019-03-25  02:02:21'
+AABUILT=: '2019-03-25  02:18:23'
+AABUILT=: '2019-03-25  02:40:01'
+AABUILT=: '2019-03-25  02:50:31'
+AABUILT=: '2019-03-25  02:57:18'
+AABUILT=: '2019-03-25  03:10:43'
+AABUILT=: '2019-03-25  03:16:39'
+AABUILT=: '2019-03-25  03:28:58'
+AABUILT=: '2019-03-25  03:29:47'
+AABUILT=: '2019-03-25  03:46:16'
+AABUILT=: '2019-03-25  03:47:22'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -369,7 +386,6 @@ zz3 { uarr,'?'
 )
 
 arrowgen=: 3 : 0
-	pushme 'arrowgen'
 
 a=. empty''
 c=. 0
@@ -382,7 +398,6 @@ for_i. }.items'' do.
     c=. c+1
   end.
 end.
-	popme 'arrowgen'
 a return.
 )
 
@@ -420,7 +435,6 @@ deltaz beval y
 )
 
 beval=: 4 : 0
-	pushme'beval'
 
 
 
@@ -456,7 +470,6 @@ end.
   ssw '--- beval: heuristics used: ',,>INVERSION
 
 sllog 'beval a r r1'
-	popme'beval'
 r1 a }vsiqn
 
 
@@ -674,13 +687,13 @@ descendants=: 3 : '(>:I.}.y{|:(clos dpmx TD))'
 dirty=: ''&$: : (4 : 0)
 
 
-if. 0<#x do.
-  msg '+++ dirty (y) --called by: (x)'
-end.
 select. y
 case. '' do.  DIRTY return.
 case. 0 do.  DIRTY=: 0
 case. 1 do.  DIRTY=: 1
+end.
+if. #x do.
+  msg '+++ dirty (y) --called by: (x); DIRTY=(DIRTY)'
 end.
 i.0 0
 )
@@ -816,7 +829,6 @@ end.
 )
 
 feval=: 4 : 0
-	pushme'feval'
 
 
  z=. y{x
@@ -833,7 +845,6 @@ feval=: 4 : 0
  else.
 	msg '[(y)] (z) unchanged'
  end.
-	popme'feval'
  z return.
 )
 
@@ -850,16 +861,13 @@ end.
 )
 
 fexp1=: 3 : 0
-	pushme'fexp1'
 
 
 
 select. fmlatyp y
 case. 0 do.
-	popme'fexp1'
   fexp_virtual y return.
 case. 2 do.
-	popme'fexp1'
   fexp_nominal y return.
 end.
 
@@ -876,12 +884,10 @@ for_i. i.$dep do.
   sllog 'fexp1 fac unit'
   fmla=. fmla , tmp rplc '<n>';n; '<idp>';idp; '<fac>';":fac
 end.
-	popme'fexp1'
 fmla return.
 )
 
 fexp_nominal=: 3 : 0
-	pushme'fexp_nominal'
 
 
 
@@ -903,7 +909,6 @@ for_i. i.$dep do.
 	sllog 'fexp_nominal fac unit'
   z=. z , tmp rplc '<n>';n; '<idp>';idp; '<fac>';":fac
 end.
-	popme'fexp_nominal'
 z return.
 )
 
@@ -1212,7 +1217,7 @@ TTINFO return.
 :
 
 
-dirty x
+'info' dirty x
 empty TTINFO=: y
 )
 
@@ -1953,7 +1958,7 @@ tag=. SWAPPED#'\'
 settitle CAPT
 reselect 0
 CH=: recal 0
-dirty 0
+'ttload' dirty 0
 warnplex''
 27 message tag; filename file
 )
@@ -2007,7 +2012,7 @@ vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: CH=: vhold=: vmodl=: vhidd=: ,0
 file=:  tbx UNDEF
 settitle CAPT=: UNDEF_CAPT
 reselect 0
-dirty 0
+'ttnew' dirty 0
 0 message ''
 )
 
@@ -2019,7 +2024,10 @@ SAVEDdirty=. dirty''
 mmm=. x ttsav y
 
 file=: SAVEDfile
-dirty SAVEDdirty
+
+if. -. (filename y)-:filename file do.
+  'ttsaveCopyAs'dirty SAVEDdirty
+end.
 mmm
 )
 
@@ -2085,7 +2093,7 @@ bytes=. z fwrite file
 	msg 28 message bytes; mfile
 if. bytes>0 do.
   ]mmm=. 30 message mfile; bytes
-  dirty 0
+  'ttsav' dirty 0
 else.
   ]mmm=. 31 message mfile
 end.
@@ -2204,6 +2212,7 @@ validrv=: isLen2 *. ([: validitem {.) *. [: isFNo {:
 
 warnplex=: 0 ddefine
 
+dash''
 if. 0=WARNPLEX do. i.0 0 return. end.
 z=. ;:'vfact vhidd vhold vmodl vqua0 vquan vsiq0 vsiqn'
 cplx=. 0
@@ -3551,128 +3560,6 @@ MESSAGELIST=: cmx 0 : 0
 48 lines replotted: {(y)}
 49 t-table reverted: (y0)
 )
-'==================== [cal] traceverbs ===================='
-
-cocurrent 'cal'
-
-0 :0
-Monday 15 October 2018  23:51:04
--
-Discretionary silencing of unwanted msg and sllog calls.
-Small footprint when facility switched off.
--
-THIS SOURCE FILE IS COMMON TO ALL TABULA ADDONS.
-Check the dates for most recent version.
--
-Traceable verbs must…
- -use msg and/or sllog to output trace messages
- -call pushme on entry
- -call popme on exit (and before all return.s)
-Verb pushme pushes name of running verb onto the ME-list.
-Verb popme (called on exit) pops it.
-LATEST_ONLY silences all except the top of the ME-list
-Correct use of pushme/popme suppresses surplus msg calls.
-(See verb: uniform for example of correct usage.)
-)
-
-TRACEVERBS=: 0$a:
-LATEST_ONLY=: 1
-ME=: ''
-
-msg=: empty
-sesstrace=: empty
-sllog=: empty
-
-pushme=: 1 ddefine
-
-ME=: ~. ME ,~ ;:y
-if. x do. msg '+++ (y): ENTERED' end.
-i.0 0
-)
-
-popme=: 1 ddefine
-
-if. x do. msg '--- (y): EXITS' end.
-ME=: ME -. ;:y
-i.0 0
-)
-
-make_msg=: 1 ddefine
-
-
-
-
-ME=: ''
-talks=. x
-select. y
-case. 0 do.
-  sesstrace=: empty
-  msg=: empty
-  sllog=: empty
-  if. talks do. smoutput '--- make_msg: msg is OFF',LF end.
-case. 1 do.
-  sesstrace=: sesstrace1
-  msg=: sesstrace&sw
-  sllog=: sesstrace&llog
-  if. talks do. smoutput '+++ make_msg: msg is via TRACEVERBS',LF end.
-case. 2 do.
-  sesstrace=: smoutput
-  msg=: sesstrace&sw
-  sllog=: sesstrace&llog
-  if. talks do. smoutput '+++ make_msg: msg is ON',LF end.
-end.
-i.0 0
-)
-
-sesstrace1=: 3 : 'if. traced ME do. smoutput y else. i.0 0 end.'
-
-traced=: 3 : 0
-
-
-
-
-
-
-z=. boxopen y
-if. LATEST_ONLY do. z=. {. z end.
-any z e. a: default 'TRACEVERBS'
-)
-
-traceverbs=: 3 : 0
-
-
-
-
-
-
-
-
-
-
-z=.''
-mm1=. make_msg bind 1
-select. {.y
-case. 'O' do. make_msg (y-:'ON')
-case. 'A' do. make_msg 2
-case. ' ' do. z=. TRACEVERBS  
-case. 0   do. z=. TRACEVERBS=: 0$a:
-case. 1   do. mm1 z=. TRACEVERBS=: ;: 'xx'
-case. 2   do. mm1 z=. TRACEVERBS=: ;: 'xx xxx'
-case. 3   do. mm1 z=. TRACEVERBS=: ;: 'xx xxx xxxx'
-case. '+' do. mm1 z=. TRACEVERBS=: ~. TRACEVERBS ,~ ;: y-.'+'
-case. '-' do. mm1 z=. TRACEVERBS=: TRACEVERBS -. ;: y-.'-'
-case.     do. mm1 z=. TRACEVERBS=: ~. ;: y
-end.
-smoutput '+++ traceverbs: #traced=',":#z
-smoutput >TRACEVERBS
-)
-
-trace=: 3 : 0
-
-if. y do. make_msg 2
-else. make_msg 0
-end.
-)
 
 '==================== [cal] recordplot.ijs ===================='
 0 :0
@@ -4365,6 +4252,110 @@ rfd=: *&(pi%180)
 BP=: 373.15
 FP=: 273.15
 
+'==================== [cal] dashboard.ijs ===================='
+
+0 :0
+Monday 25 March 2019  02:45:35
+-
+sswInversion (set to empty by: start)
+ …controls tracing in inversion* locales.
+ These locales call: ssw (set on entry to: sswInversion_cal_)
+ The verb: trace -plays no part in this independent tracing mechanism.
+-
+wd 'psel dash; qform;'
+-
+To show dashboard, set DASHBOARD=:1
+)
+
+cocurrent 'cal'
+
+DASHPOS=: 810 647 321 483
+
+dash_default=: 3 : 0
+
+smoutput '>>> missing handler: ',sysevent
+)
+
+DASH=: 0 : 0
+pc dash;pn "CAL dashboard";
+bin v;
+cc edFile edit;
+cc mslog editm;
+cc edlog editm;
+bin hs;
+cc ckSTARTED checkbox; cn "STARTED";
+cc ckDIRTY checkbox; cn "DIRTY";
+cc ckTrace checkbox; cn "trace";
+bin sz;
+bin hs;
+  cc bnTag1 button; cn "Red";
+  cc bnTag2 button; cn "Green";
+  cc bnTag3 button; cn "Blue";
+  cc bnRefresh button; cn "Refresh";
+bin sz;
+cc sbar static; cn "status";
+bin z;
+set edlog font fixfont;
+pshow;
+)
+
+refresh=: 3 : 0
+
+wd 'psel dash; set edFile text *',file
+wd 'set mslog text *',f4x MSLOG
+wd 'set edlog text *',LOGINSTR
+wd 'set ckSTARTED ',":STARTED
+wd 'set ckDIRTY ',":dirty''
+wd 'set ckTrace ',":(-. 'empty' -: cr 'msg')
+putsb 'refreshed: ',date''
+)
+
+dash=: 3 : 0
+
+if. DASHBOARD do.
+  if. DASHDEAD do.
+    dash_close''
+    wd DASH
+    wd 'psel dash; pmove ' , ":DASHPOS
+    DASHDEAD=: 0
+  end.
+  refresh''
+else.
+  DASHDEAD=: 1
+  dash_close''
+end.
+)
+
+dash_bnRefresh_button=: refresh
+dash_resize=: empty
+
+dash_ckTrace_button=: 3 : 'trace ".ckTrace'
+
+dash_close=: 3 : 0
+wd :: empty 'psel dash; pclose;'
+)
+
+putsb=: 3 : 0
+
+wd 'psel dash; set sbar text *',":,y
+)
+
+trace=: 3 : 0
+
+
+if. y do.
+  msg=: smoutput&sw
+  sllog=: smoutput&llog
+else.
+  msg=: empty
+  sllog=: empty
+end.
+smoutput '+++ trace ',":y
+i.0 0
+)
+
+onload 'dash NIL [DASHBOARD=:1'
+
 '==================== [cal] start.ijs ===================='
 
 0 :0
@@ -4400,9 +4391,8 @@ start=: 3 : 0
 
 
 
-traceverbs 'OFF'
+trace 0
 sswInversion=: empty
-
 
 load 'math/uu'
 uuconnect''
@@ -4447,6 +4437,8 @@ globmake=: 3 : 0
 
 file=: tbx UNDEF
 ARROWCH=: ARROWCH1
+DASHBOARD=: 1
+DASHDEAD=: 1
 DIRTY=: 0
 ITEMNO=: _1
 INVERSION=: ''

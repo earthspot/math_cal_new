@@ -36,10 +36,9 @@ start=: 3 : 0
   NB. start'$' -- starts with builtin SAMPLE
   NB. start'$$' -- starts with builtin|saved SAMPLE
   NB. start path -- starts with t-table: (path)
-traceverbs 'OFF'
+trace 0
 sswInversion=: empty  NB. >>>>> DISABLE inversion heuristics tracing
   NB. switches ALL calls to ssw within the set of _inver*_ locales
-  NB. ---needs to be independently switched vis-a-vis traceverbs
 load 'math/uu'
 uuconnect''  NB. create and use an instance of class 'uu'
 NB. make_tabengineCore''  NB. the core of: tabengine0 [OBSOLETE]
@@ -97,6 +96,8 @@ globmake=: 3 : 0
   NB. If _cal_ used as a class these must be in numbered locale
 file=: tbx UNDEF
 ARROWCH=: ARROWCH1	NB. arrow-drawing chars (see consts.ijs)
+DASHBOARD=: 1	NB. "dashboard enabled" flag
+DASHDEAD=: 1	NB. "dashboard not showing" flag
 DIRTY=: 0		NB. =1 means t-table needs saving
 ITEMNO=: _1	NB. 'exe'# of formula being executed
 INVERSION=: ''	NB. inversion heuristics register

@@ -104,7 +104,6 @@ zz3 { uarr,'?'
 )
 
 arrowgen=: 3 : 0
-	pushme 'arrowgen'
   NB. array of "arrow" args
 a=. empty''
 c=. 0       NB. 1st arrow col to use
@@ -117,7 +116,6 @@ for_i. }.items'' do.
     c=. c+1      NB. next col
   end.      NB. inputs
 end.        NB. items
-	popme 'arrowgen'
 a return.   NB. arrow args
 )
 
@@ -155,7 +153,6 @@ deltaz beval y      NB. compute plausible inputs to y
 )
 
 beval=: 4 : 0
-	pushme'beval'
   NB. saddle to call: inversion
   NB. y==pivot node
   NB. x==CHANGE in value of pivot node
@@ -191,7 +188,6 @@ end.
   ssw '--- beval: heuristics used: ',,>INVERSION
   NB. ...INVERSION initted to '' in: recal
 sllog 'beval a r r1'
-	popme'beval'
 r1 a }vsiqn
   NB. Does NOT alter vsiqn itself, but only returns (vsiqn) updated.
   NB. (Currently the calling verb: bcalc throws this value away.)
@@ -414,14 +410,14 @@ descendants=: 3 : '(>:I.}.y{|:(clos dpmx TD))'
 
 dirty=: ''&$: : (4 : 0)
   NB. Exclusively reads+sets: DIRTY
-  NB. if 0<#x then x shows where set/reset
-if. 0<#x do.
-  msg '+++ dirty (y) --called by: (x)'
-end.
+  NB. if 0<#x then x shows which verb called: dirty
 select. y
 case. '' do.  DIRTY return.
 case. 0 do.  DIRTY=: 0
 case. 1 do.  DIRTY=: 1
+end.
+if. #x do.
+  msg '+++ dirty (y) --called by: (x); DIRTY=(DIRTY)'
 end.
 i.0 0
 )
@@ -559,7 +555,6 @@ end.
 )
 
 feval=: 4 : 0
-	pushme'feval'
   NB. return updated value of item: y
   NB. x is up-to-date state of vsiqn, don't use vsiqn directly
  z=. y{x  NB. the existing value of item: y
@@ -576,7 +571,6 @@ feval=: 4 : 0
  else.  NB. just return existing value
 	msg '[(y)] (z) unchanged'
  end.
-	popme'feval'
  z return.  NB. value of item y whether updated or not
 )
 
@@ -594,16 +588,13 @@ NB. else return a notionally bad formula:
 )
 
 fexp1=: 3 : 0
-	pushme'fexp1'
   NB. verb-ready expression from formula of item# y
   NB. This version of fexp applies to formulas
   NB. separated by ':', valid in SI units.
 select. fmlatyp y
 case. 0 do.
-	popme'fexp1'
   fexp_virtual y return.
 case. 2 do.
-	popme'fexp1'
   fexp_nominal y return.
 end.
   NB. else assume (fmlatyp y) is 1 (':'-separated)
@@ -620,12 +611,10 @@ for_i. i.$dep do.      NB. scan dep units
   sllog 'fexp1 fac unit'
   fmla=. fmla , tmp rplc '<n>';n; '<idp>';idp; '<fac>';":fac
 end.
-	popme'fexp1'
 fmla return.
 )
 
 fexp_nominal=: 3 : 0
-	pushme'fexp_nominal'
   NB. verb-ready expression from formula of item# y
   NB. This version of fexp applies to formulas
   NB. separated by ';', valid only in nominal units.
@@ -647,7 +636,6 @@ for_i. i.$dep do.    NB. scan dependencies
 	sllog 'fexp_nominal fac unit'
   z=. z , tmp rplc '<n>';n; '<idp>';idp; '<fac>';":fac
 end.
-	popme'fexp_nominal'
 z return.
 )
 
@@ -970,7 +958,7 @@ TTINFO return.
 :
   NB. x=0 - TTINFO merely initialized, resetting dirty flag
   NB. x=1 - TTINFO updated with (y), setting dirty flag
-dirty x
+'info' dirty x
 empty TTINFO=: y
 )
 
@@ -1737,7 +1725,7 @@ settitle CAPT
 reselect 0
 CH=: recal 0
 NB. snapshot 1
-dirty 0  NB. resets the dirty-bit
+'ttload' dirty 0  NB. resets the dirty-bit
 warnplex''
 27 message tag; filename file
 )
@@ -1792,7 +1780,7 @@ file=:  tbx UNDEF
 settitle CAPT=: UNDEF_CAPT
 reselect 0
 NB. snapshot 1
-dirty 0  NB. resets the dirty-bit
+'ttnew' dirty 0  NB. resets the dirty-bit
 0 message ''
 )
 
@@ -1802,9 +1790,12 @@ ttsaveCopyAs=: 4 : 0
 SAVEDfile=. file
 SAVEDdirty=. dirty''
 mmm=. x ttsav y
-  NB. Restore (changed): file, dirty''
+  NB. Restore (possibly altered): file
 file=: SAVEDfile
-dirty SAVEDdirty
+  NB. Restore previous "dirty" setting UNLESS filenames identical
+if. -. (filename y)-:filename file do.
+  'ttsaveCopyAs'dirty SAVEDdirty
+end.
 mmm  NB. return any messages from ttsav
 )
 
@@ -1874,7 +1865,7 @@ bytes=. z fwrite file
 	msg 28 message bytes; mfile
 if. bytes>0 do.  NB. t-table was saved ok
   ]mmm=. 30 message mfile; bytes
-  dirty 0        NB. flag: t-table no longer needs saving
+  'ttsav' dirty 0        NB. flag: t-table no longer needs saving
 else.            NB. file could not be saved...
   ]mmm=. 31 message mfile
 end.
@@ -1995,6 +1986,7 @@ validrv=: isLen2 *. ([: validitem {.) *. [: isFNo {:
 
 warnplex=: 0 ddefine
   NB. warns if any v-buffer is complex
+dash''
 if. 0=WARNPLEX do. i.0 0 return. end.
 z=. ;:'vfact vhidd vhold vmodl vqua0 vquan vsiq0 vsiqn'
 cplx=. 0
