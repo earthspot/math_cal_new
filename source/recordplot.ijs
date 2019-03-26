@@ -43,8 +43,7 @@ case. 1 do.	NB. Insert a new value (<y) into RECORD
 case. 2 do.	NB. finally report what's in RECORD
   RECORDSIZE=: {:$RECORD
   sllog 'me RECORDSIZE X0'
-  warnplex''	NB. warn of any complex nouns in this locale
-  cx''		NB. discover complex nouns in this locale
+  vchecks''	NB. check integrity of v-buffers
   if. all converging RECORD do.
     plot RECORD
     smoutput '--- record: converges'

@@ -2,7 +2,7 @@
 '==================== [cal] dashboard.ijs ===================='
 
 0 :0
-Monday 25 March 2019  02:45:35
+Tuesday 26 March 2019  01:11:43
 -
 sswInversion (set to empty by: start)
  …controls tracing in inversion* locales.
@@ -11,75 +11,103 @@ sswInversion (set to empty by: start)
 -
 wd 'psel dash; qform;'  NB. for adjusting POS below
 -
-To show dashboard, set DASHBOARD=:1
+To show dashboard: dash 1
 )
 
 cocurrent 'cal'
 
 DASHPOS=: 810 647 321 483
 
-dash_default=: 3 : 0
-  NB. warns of a missing handler
-smoutput '>>> missing handler: ',sysevent
-)
-
 DASH=: 0 : 0
 pc dash;pn "CAL dashboard";
 bin v;
 cc edFile edit;
-cc mslog editm;
-cc edlog editm;
+cc mslog listbox;
+cc inslog listbox;
+cc panel edit;
 bin hs;
-cc ckSTARTED checkbox; cn "STARTED";
-cc ckDIRTY checkbox; cn "DIRTY";
 cc ckTrace checkbox; cn "trace";
-bin sz;
-bin hs;
-  cc bnTag1 button; cn "Red";
-  cc bnTag2 button; cn "Green";
-  cc bnTag3 button; cn "Blue";
-  cc bnRefresh button; cn "Refresh";
+cc bnRETURNED button; cn "RETURNED";
+cc bnRefresh button; cn "Refresh";
 bin sz;
 cc sbar static; cn "status";
 bin z;
-set edlog font fixfont;
+set inslog font '"Menlo" 12';
+set panel font '"Menlo" 12';
 pshow;
+)
+
+INFO=: 0 : 0
+ [VERSION=: (VERSION) [STARTED=: (STARTED) [DIRTY=:(DIRTY) 
+ [INVERSION=: '(INVERSION)' [MAXINVERT=:(MAXINVERT)
+ [OVERHELDS=: ,'(OVERHELDS)'
+ [PAD=: (PAD) [PROTECT=: (PROTECT) [PLOT=:(PLOT)
+ [TIMEOUT=: (TIMEOUT) [TOLERANCE=: (TOLERANCE)
 )
 
 refresh=: 3 : 0
   NB. set data in the controls
-wd 'psel dash; set edFile text *',file
-wd 'set mslog text *',f4x MSLOG
-wd 'set edlog text *',LOGINSTR
-wd 'set ckSTARTED ',":STARTED
-wd 'set ckDIRTY ',":dirty''
+wd 'psel dash'
+wd 'set edFile text *',file
+wd 'set mslog items *',LF,f4x MSLOG  NB. (LF,) to handle 1-entry
+wd 'setselect mslog ',": #MSLOG
+wd 'set inslog items *',LOGINSTR
+wd 'setselect inslog ',": +/LF=}:LOGINSTR
+wd 'set panel text *',panel=: sw INFO
 wd 'set ckTrace ',":(-. 'empty' -: cr 'msg')
 putsb 'refreshed: ',date''
 )
 
 dash=: 3 : 0
   NB. show/update CAL dashboard
+  NB. y-:1  -- force (re)create dashboard
+  NB. y-:0  -- destroy dashboard
+  NB. otherwise (e.g. y-:'') recreate dashboard only if absent
+if. 0 1 e.~ {.y do. DASHBOARD=: {.y end.
 if. DASHBOARD do.
-  if. DASHDEAD do.
-    dash_close''
+  if. dashDead'' do.  NB. recreate it…
+    dash_close''  NB. paranoid!
     wd DASH
     wd 'psel dash; pmove ' , ":DASHPOS
-    DASHDEAD=: 0
   end.
   refresh''
 else.
-  DASHDEAD=: 1
   dash_close''
 end.
 )
 
-dash_bnRefresh_button=: refresh
-dash_resize=: empty
+dashDead=: 3 : 0
+  NB. =1 iff dashboard not showing
+try. wd 'psel dash'
+catch. 1 return. end.
+0 return.
+)
 
+dashDead=: 3 : '{. ,wd :: 1: ''psel dash'''
+
+0 :0
+dash_default=: 3 : 0
+  NB. warns of a missing handler
+smoutput '>>> missing handler: ',sysevent
+)
+
+dash_bnRefresh_button=: refresh
+dash_bnRETURNED_button=: returned
 dash_ckTrace_button=: 3 : 'trace ".ckTrace'
+dash_panel_button=: 3 : 'refresh NIL [do panel-.LF'
 
 dash_close=: 3 : 0
 wd :: empty 'psel dash; pclose;'
+)
+
+line=: 3 : 'smoutput 60#UL'
+
+returned=: 3 : 0
+  NB. handler: reveal the RETURNED cache
+line''
+smoutput sw '+++ RETURNED is (datatype RETURNED)[($RETURNED)]:'
+smoutput RETURNED
+line''
 )
 
 putsb=: 3 : 0
@@ -101,4 +129,4 @@ smoutput '+++ trace ',":y
 i.0 0
 )
 
-onload 'dash NIL [DASHBOARD=:1'
+onload 'dash 1'

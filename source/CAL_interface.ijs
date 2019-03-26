@@ -25,7 +25,7 @@ NB. ========================================================
   NB. (Instrs with: dummy'' pre-handled by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '2019-03-06  08:36:59'   \noun: CAL last saved
+QSAV void '2019-03-26  03:01:30'   \noun: CAL last saved
 Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
 Revt void revert''                 \=revert all changes
@@ -48,6 +48,7 @@ MSSG void MESSAGE                  \message text from last instruction
 MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
 PARS r    parents r                \parents of item r
+QCAL void CAL                      \the CAL instruction set
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
@@ -56,7 +57,7 @@ QZER yy   uuengine INSTR           \query Boolean ZERO word
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
-TITL void CAPT                     \window title -from CAPT
+TITL void CAPT                     \window title -from CAPTadd1
 TITU void UNDEF_CAPT               \window title -untitled
 TFIL void file                     \t-table file pathname
 TFIT void shortpath file           \t-table file short pathname
@@ -112,6 +113,7 @@ cbtv r    r setvalue~ cubert vr    \cube-root of r
 cubl r    r fnline~ 'cube'         \copy item cubed
 cubv r    r setvalue~ cube vr      \cubed value of r
 cvsi r    siunits r                \convert to SI units
+dash void dash 1                   \show CAL dashboard
 dbll r    r fnline~ 'dbl'          \copy item doubled
 dblv r    r setvalue~ +:vr         \double value of r
 deca r    'da' scaleunits r        \deca- item c/f deka

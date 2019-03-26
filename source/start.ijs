@@ -7,11 +7,7 @@ WARNING: MSLOG can build up indefinitely.
 
 cocurrent 'cal'
 
-STARTED=: 0  NB. becomes 1 when start completes successfully
 VERSION=: '2.0.0'
-
-tabengine=: tabengine1	NB. set NEW tabengine
-
 
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
@@ -42,9 +38,8 @@ sswInversion=: empty  NB. >>>>> DISABLE inversion heuristics tracing
 load 'math/uu'
 uuconnect''  NB. create and use an instance of class 'uu'
 NB. make_tabengineCore''  NB. the core of: tabengine0 [OBSOLETE]
-make_CAL''  NB. create semantic fns for tabengine1
+make_CAL''  NB. create semantic fns for tabengine
 globmake'' NB. make global nouns
-NB. inversion=: inversion3  NB. <<==== CHOOSE DAISYCHAIN: inversion
 progress _ NB. init progressbar to idle state
 0 enlog 0  NB. start a new log file
   NB. ENSURE up-to-date currency conversion table ...
@@ -67,8 +62,8 @@ case. '$' do. ttload'$'  NB. load SAMPLE, builtin only
 case. '$$' do. ttload'$$'  NB. load SAMPLE, builtin or saved
 case.   do. ttload y [smoutput '+++ start: loaded by default: ',":y
 end.
-warnplex''
-STARTED=: 1
+vchecks''  NB. check integrity of v-buffers
+STARTED=: 1  NB. registers successful completion of: start
 )
 
 tt_z_=: tabengine_cal_
@@ -96,9 +91,8 @@ globmake=: 3 : 0
   NB. If _cal_ used as a class these must be in numbered locale
 file=: tbx UNDEF
 ARROWCH=: ARROWCH1	NB. arrow-drawing chars (see consts.ijs)
-DASHBOARD=: 1	NB. "dashboard enabled" flag
-DASHDEAD=: 1	NB. "dashboard not showing" flag
-DIRTY=: 0		NB. =1 means t-table needs saving
+DASHBOARD=: 0	NB. 1==dashboard enabled
+DIRTY=: 0		NB. 1==t-table needs saving
 ITEMNO=: _1	NB. 'exe'# of formula being executed
 INVERSION=: ''	NB. inversion heuristics register
 LOGINSTR=: ''	NB. internal log of CAL instructions performed
@@ -109,6 +103,7 @@ PAD=: 10		NB. used by: pad
 PROTECT=: 1	NB. 1==don't overwrite t-table of same name
 PLOT=: 0		NB. plot control parameter
 RETURNED=: ''	NB. noun returned by i/f call
+STARTED=: 0	NB. 1==start completes ok
 TIMEOUT=: 5	NB. seconds (used by: timeout)
 TOLERANCE=: 1e_5	NB. default tolerance for comparing physical quantities
 TTn=: ,:'tn'	NB. t-table cache for item names

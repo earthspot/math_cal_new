@@ -1726,7 +1726,7 @@ reselect 0
 CH=: recal 0
 NB. snapshot 1
 'ttload' dirty 0  NB. resets the dirty-bit
-warnplex''
+vchecks''
 27 message tag; filename file
 )
 
@@ -1984,9 +1984,16 @@ validnum=: isNo
 validrr=: validitems *. isLen2
 validrv=: isLen2 *. ([: validitem {.) *. [: isFNo {:
 
+vchecks=: 3 : 0
+  NB. perform integrity checks on v-buffers
+  NB. ignores y but passes it thru (for: tabengine)
+warnplex''
+dash''  NB. show/update dashboard
+y return.
+)
+
 warnplex=: 0 ddefine
   NB. warns if any v-buffer is complex
-dash''
 if. 0=WARNPLEX do. i.0 0 return. end.
 z=. ;:'vfact vhidd vhold vmodl vqua0 vquan vsiq0 vsiqn'
 cplx=. 0
@@ -2045,24 +2052,23 @@ snap=: 3 : 0
   NB. ancillary fn for tabengine employed by: make_CAL
 snapshot''
 LASTINSTR=: INSTR
-warnplex''
-y return.  NB. pass-thru for assignment to RETURNED
+y return.  NB. pass-thru for (re-)assignment to RETURNED
 )
 
 unbox=: nb^:(L. > 0:)
 
-tabengine1=: 3 : 0 "1
+tabengine=: 3 : 0 "1
   NB. assumes make_CAL has been run by: start
 'INST YY'=: 4 split INSTR=: unbox y
 LOGINSTR=: LOGINSTR,INSTR,LF
 if. -. INST-:'MSSG' do. ''message'' end.
-RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError1) dltb YY
+vchecks RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError) dltb YY
 )
 
-tabengineError1=: 3 : 0
-  NB. analyse reason for tabengineCore:: error
-smoutput 'tabengineError1: bad instruction' ; INSTR
-smoutput ('errmsg from CAL_',INST) ; 13!:12''
+tabengineError=: 3 : 0
+  NB. report reason for instruction error
+smoutput z=. 'tabengineError: bad instruction' ; INSTR ; ('errmsg from CAL_',INST) ; 13!:12''
+z return.
 )
 
 
@@ -2081,94 +2087,12 @@ yy=. 5}.y
 select. inst
 )
 
-0 :0
-tabengine0=: 3 : 0 "1
-  NB. wrapper for tabengineCore
-  NB. computes RETURNED LASTINSTR INSTR INST
-  NB. avoiding damaging drop-thru result from tabengineCore
-NB. MESSAGE=: '' [MESSAGE_ID=: _1  NB. NO!! disables tt'MSSG'
-if. -.(STARTED or y beginsWith 'Ini') do.
-NB.   smoutput < RETURNED=: '>>> CAL is uninitialized'
-  smoutput < RETURNED=: 3}. dtb 46{MESSAGELIST
-  RETURNED return.
-end.
-progress _  NB. init progress-bar used by verb: inversion
-if. isBoxed y do. y=. nb y end.
-INST=: 4{. INSTR=: y  NB. (y) is now a literal/unicode string
-  NB. verb: tabengineCore is invalid/absent until verb: start is run.
-  NB. So the first tabengine call in a session must be instruction:
-  NB.    Inic   Inif   Inis n   Init
-NB. Trap and pre-handle instructions tabengineCore can't handle…
-select. INST
-case. 'Inic' do. RETURNED=: start''
-case. 'Inif' do. RETURNED=: start'$'
-case. 'Init' do. RETURNED=: start'$$'
-case. 'Inis' do. RETURNED=: start ".4}.INSTR
-case. 'Repe' do. RETURNED=: tabengineCore :: tabengineError LASTINSTR
-case.        do. RETURNED=: tabengineCore :: tabengineError INSTR
-end.
-if. changesTtable INST do.
-  snapshot''  NB. supports INST: Undo/Redo
-  LASTINSTR=: INSTR  NB. supports INST: Repe
-  warnplex''
-end.
-RETURNED return.
-)
-
-0 :0
-tabengineError=: 3 : 0
-  NB. analyse reason for tabengineCore:: error
-smoutput '>>> tabengineError: bad instruction: ', ; y
-smoutput '... errmsg from tabengineCore: ',LF,13!:12''
-)
-
 assnum=: 3 : 0
   NB. appears ONLY in: make_tabengineCore
   NB. called ONLY by: tabengineCore (generated)
 assert. isNum y
 assert. -. any isNaN y
 y return.
-)
-
-0 :0
-make_tabengineCore=: 3 : 0
-  NB. compile (CAL-interface) CAL-->tabengineCore
-z=. COMPILE_HEAD
-for_line. <;._2 CAL do.
-  'inst patt phrase'=. 3{.smcut3 >line
-  phrase=. phrase rplc '\' ; NB,SP
-  select. patt
-  case. 'void' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do.'
-  case. ,'r' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num 5}.y'
-	z=.LF,~ z, sw '                 vr=. r{vquan'
-  case. 'yy' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do.'
-  case. 'rzz' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num rz'
-  case. 'rv' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num rz'
-	z=.LF,~ z, sw '                 assnum v=. num zz'
-	z=.LF,~ z, sw '                 vr=. r{vquan'
-  case. 'rrr' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum rrr=. num 5}.y'
-  case. 'rr' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum rr=. num 5}.y'
-  case. ,'n' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum n=. num 5}.y'
-  case.      do.
-	z=.LF,~ z, sw '@@ (NB) (inst) pattern: (patt) not recognised'
-  end.
-  z=.LF,~ z, sw '                 (phrase)'
-end.
-z=. z,sw'case. do. assert. 0 (NB) >>> UNKNOWN INSTRUCTION',LF
-z=. z,'end.',LF
-  NB. No more generated code must follow this "end."-statement
-  NB. in case it wipes out the returned value from the semantics.
-tabengineCore=: (3 : z)"1
-NB. tv 5!:5<'tabengineCore'  NB. diagnostic display of generated verb
-i.0 0
 )
 
 NB. ================================================

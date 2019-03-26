@@ -71,6 +71,18 @@ AABUILT=: '2019-03-25  03:28:58'
 AABUILT=: '2019-03-25  03:29:47'
 AABUILT=: '2019-03-25  03:46:16'
 AABUILT=: '2019-03-25  03:47:22'
+AABUILT=: '2019-03-26  00:29:06'
+AABUILT=: '2019-03-26  00:36:12'
+AABUILT=: '2019-03-26  00:52:28'
+AABUILT=: '2019-03-26  00:57:58'
+AABUILT=: '2019-03-26  01:08:13'
+AABUILT=: '2019-03-26  01:09:25'
+AABUILT=: '2019-03-26  01:16:03'
+AABUILT=: '2019-03-26  01:19:13'
+AABUILT=: '2019-03-26  01:31:07'
+AABUILT=: '2019-03-26  03:03:30'
+AABUILT=: '2019-03-26  04:05:03'
+AABUILT=: '2019-03-26  04:49:08'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -84,6 +96,9 @@ HELP=: 0 : 0
 ============
 HELP for CAL
 ============
+dash 1
+…show the CAL dashboard
+
 cv''
 …show the v-caches
 
@@ -1959,7 +1974,7 @@ settitle CAPT
 reselect 0
 CH=: recal 0
 'ttload' dirty 0
-warnplex''
+vchecks''
 27 message tag; filename file
 )
 
@@ -2210,9 +2225,16 @@ validnum=: isNo
 validrr=: validitems *. isLen2
 validrv=: isLen2 *. ([: validitem {.) *. [: isFNo {:
 
+vchecks=: 3 : 0
+
+
+warnplex''
+dash''
+y return.
+)
+
 warnplex=: 0 ddefine
 
-dash''
 if. 0=WARNPLEX do. i.0 0 return. end.
 z=. ;:'vfact vhidd vhold vmodl vqua0 vquan vsiq0 vsiqn'
 cplx=. 0
@@ -2262,24 +2284,23 @@ snap=: 3 : 0
 
 snapshot''
 LASTINSTR=: INSTR
-warnplex''
 y return.
 )
 
 unbox=: nb^:(L. > 0:)
 
-tabengine1=: 3 : 0 "1
+tabengine=: 3 : 0 "1
 
 'INST YY'=: 4 split INSTR=: unbox y
 LOGINSTR=: LOGINSTR,INSTR,LF
 if. -. INST-:'MSSG' do. ''message'' end.
-RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError1) dltb YY
+vchecks RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError) dltb YY
 )
 
-tabengineError1=: 3 : 0
+tabengineError=: 3 : 0
 
-smoutput 'tabengineError1: bad instruction' ; INSTR
-smoutput ('errmsg from CAL_',INST) ; 13!:12''
+smoutput z=. 'tabengineError: bad instruction' ; INSTR ; ('errmsg from CAL_',INST) ; 13!:12''
+z return.
 )
 
 cocurrent 'cal'
@@ -2292,90 +2313,12 @@ yy=. 5}.y
 select. inst
 )
 
-0 :0
-tabengine0=: 3 : 0 "1
-
-
-
-if. -.(STARTED or y beginsWith 'Ini') do.
-  smoutput < RETURNED=: 3}. dtb 46{MESSAGELIST
-  RETURNED return.
-end.
-progress _
-if. isBoxed y do. y=. nb y end.
-INST=: 4{. INSTR=: y
-
-
-
-select. INST
-case. 'Inic' do. RETURNED=: start''
-case. 'Inif' do. RETURNED=: start'$'
-case. 'Init' do. RETURNED=: start'$$'
-case. 'Inis' do. RETURNED=: start ".4}.INSTR
-case. 'Repe' do. RETURNED=: tabengineCore :: tabengineError LASTINSTR
-case.        do. RETURNED=: tabengineCore :: tabengineError INSTR
-end.
-if. changesTtable INST do.
-  snapshot''
-  LASTINSTR=: INSTR
-  warnplex''
-end.
-RETURNED return.
-)
-
-0 :0
-tabengineError=: 3 : 0
-
-smoutput '>>> tabengineError: bad instruction: ', ; y
-smoutput '... errmsg from tabengineCore: ',LF,13!:12''
-)
-
 assnum=: 3 : 0
 
 
 assert. isNum y
 assert. -. any isNaN y
 y return.
-)
-
-0 :0
-make_tabengineCore=: 3 : 0
-
-z=. COMPILE_HEAD
-for_line. <;._2 CAL do.
-  'inst patt phrase'=. 3{.smcut3 >line
-  phrase=. phrase rplc '\' ; NB,SP
-  select. patt
-  case. 'void' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do.'
-  case. ,'r' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num 5}.y'
-	z=.LF,~ z, sw '                 vr=. r{vquan'
-  case. 'yy' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do.'
-  case. 'rzz' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num rz'
-  case. 'rv' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum r=. num rz'
-	z=.LF,~ z, sw '                 assnum v=. num zz'
-	z=.LF,~ z, sw '                 vr=. r{vquan'
-  case. 'rrr' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum rrr=. num 5}.y'
-  case. 'rr' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum rr=. num 5}.y'
-  case. ,'n' do.
-	z=.LF,~ z, sw 'case. ''(inst)'' do. assnum n=. num 5}.y'
-  case.      do.
-	z=.LF,~ z, sw '@@ (NB) (inst) pattern: (patt) not recognised'
-  end.
-  z=.LF,~ z, sw '                 (phrase)'
-end.
-z=. z,sw'case. do. assert. 0 (NB) >>> UNKNOWN INSTRUCTION',LF
-z=. z,'end.',LF
-
-
-tabengineCore=: (3 : z)"1
-i.0 0
 )
 ttlib=: 3 : 0
 jpath tbx '~Ttables/',y
@@ -3249,7 +3192,7 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '2019-03-06  08:36:59'   \noun: CAL last saved
+QSAV void '2019-03-26  03:01:30'   \noun: CAL last saved
 Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
 Revt void revert''                 \=revert all changes
@@ -3272,6 +3215,7 @@ MSSG void MESSAGE                  \message text from last instruction
 MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
 PARS r    parents r                \parents of item r
+QCAL void CAL                      \the CAL instruction set
 QSCI void uuengine INSTR           \query scientific notation threshold
 QSIC void uuengine INSTR           \query SI conformance level
 QSIG void uuengine INSTR           \query significant figures
@@ -3280,7 +3224,7 @@ QZER yy   uuengine INSTR           \query Boolean ZERO word
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
-TITL void CAPT                     \window title -from CAPT
+TITL void CAPT                     \window title -from CAPTadd1
 TITU void UNDEF_CAPT               \window title -untitled
 TFIL void file                     \t-table file pathname
 TFIT void shortpath file           \t-table file short pathname
@@ -3336,6 +3280,7 @@ cbtv r    r setvalue~ cubert vr    \cube-root of r
 cubl r    r fnline~ 'cube'         \copy item cubed
 cubv r    r setvalue~ cube vr      \cubed value of r
 cvsi r    siunits r                \convert to SI units
+dash void dash 1                   \show CAL dashboard
 dbll r    r fnline~ 'dbl'          \copy item doubled
 dblv r    r setvalue~ +:vr         \double value of r
 deca r    'da' scaleunits r        \deca- item c/f deka
@@ -3596,8 +3541,7 @@ case. 1 do.
 case. 2 do.
   RECORDSIZE=: {:$RECORD
   sllog 'me RECORDSIZE X0'
-  warnplex''
-  cx''
+  vchecks''
   if. all converging RECORD do.
     plot RECORD
     smoutput '--- record: converges'
@@ -4255,7 +4199,7 @@ FP=: 273.15
 '==================== [cal] dashboard.ijs ===================='
 
 0 :0
-Monday 25 March 2019  02:45:35
+Tuesday 26 March 2019  01:11:43
 -
 sswInversion (set to empty by: start)
  …controls tracing in inversion* locales.
@@ -4264,75 +4208,103 @@ sswInversion (set to empty by: start)
 -
 wd 'psel dash; qform;'
 -
-To show dashboard, set DASHBOARD=:1
+To show dashboard: dash 1
 )
 
 cocurrent 'cal'
 
 DASHPOS=: 810 647 321 483
 
-dash_default=: 3 : 0
-
-smoutput '>>> missing handler: ',sysevent
-)
-
 DASH=: 0 : 0
 pc dash;pn "CAL dashboard";
 bin v;
 cc edFile edit;
-cc mslog editm;
-cc edlog editm;
+cc mslog listbox;
+cc inslog listbox;
+cc panel edit;
 bin hs;
-cc ckSTARTED checkbox; cn "STARTED";
-cc ckDIRTY checkbox; cn "DIRTY";
 cc ckTrace checkbox; cn "trace";
-bin sz;
-bin hs;
-  cc bnTag1 button; cn "Red";
-  cc bnTag2 button; cn "Green";
-  cc bnTag3 button; cn "Blue";
-  cc bnRefresh button; cn "Refresh";
+cc bnRETURNED button; cn "RETURNED";
+cc bnRefresh button; cn "Refresh";
 bin sz;
 cc sbar static; cn "status";
 bin z;
-set edlog font fixfont;
+set inslog font '"Menlo" 12';
+set panel font '"Menlo" 12';
 pshow;
+)
+
+INFO=: 0 : 0
+ [VERSION=: (VERSION) [STARTED=: (STARTED) [DIRTY=:(DIRTY) 
+ [INVERSION=: '(INVERSION)' [MAXINVERT=:(MAXINVERT)
+ [OVERHELDS=: ,'(OVERHELDS)'
+ [PAD=: (PAD) [PROTECT=: (PROTECT) [PLOT=:(PLOT)
+ [TIMEOUT=: (TIMEOUT) [TOLERANCE=: (TOLERANCE)
 )
 
 refresh=: 3 : 0
 
-wd 'psel dash; set edFile text *',file
-wd 'set mslog text *',f4x MSLOG
-wd 'set edlog text *',LOGINSTR
-wd 'set ckSTARTED ',":STARTED
-wd 'set ckDIRTY ',":dirty''
+wd 'psel dash'
+wd 'set edFile text *',file
+wd 'set mslog items *',LF,f4x MSLOG
+wd 'setselect mslog ',": #MSLOG
+wd 'set inslog items *',LOGINSTR
+wd 'setselect inslog ',": +/LF=}:LOGINSTR
+wd 'set panel text *',panel=: sw INFO
 wd 'set ckTrace ',":(-. 'empty' -: cr 'msg')
 putsb 'refreshed: ',date''
 )
 
 dash=: 3 : 0
 
+
+
+
+if. 0 1 e.~ {.y do. DASHBOARD=: {.y end.
 if. DASHBOARD do.
-  if. DASHDEAD do.
+  if. dashDead'' do.
     dash_close''
     wd DASH
     wd 'psel dash; pmove ' , ":DASHPOS
-    DASHDEAD=: 0
   end.
   refresh''
 else.
-  DASHDEAD=: 1
   dash_close''
 end.
 )
 
-dash_bnRefresh_button=: refresh
-dash_resize=: empty
+dashDead=: 3 : 0
 
+try. wd 'psel dash'
+catch. 1 return. end.
+0 return.
+)
+
+dashDead=: 3 : '{. ,wd :: 1: ''psel dash'''
+
+0 :0
+dash_default=: 3 : 0
+
+smoutput '>>> missing handler: ',sysevent
+)
+
+dash_bnRefresh_button=: refresh
+dash_bnRETURNED_button=: returned
 dash_ckTrace_button=: 3 : 'trace ".ckTrace'
+dash_panel_button=: 3 : 'refresh NIL [do panel-.LF'
 
 dash_close=: 3 : 0
 wd :: empty 'psel dash; pclose;'
+)
+
+line=: 3 : 'smoutput 60#UL'
+
+returned=: 3 : 0
+
+line''
+smoutput sw '+++ RETURNED is (datatype RETURNED)[($RETURNED)]:'
+smoutput RETURNED
+line''
 )
 
 putsb=: 3 : 0
@@ -4354,7 +4326,7 @@ smoutput '+++ trace ',":y
 i.0 0
 )
 
-onload 'dash NIL [DASHBOARD=:1'
+onload 'dash 1'
 
 '==================== [cal] start.ijs ===================='
 
@@ -4364,11 +4336,7 @@ WARNING: MSLOG can build up indefinitely.
 
 cocurrent 'cal'
 
-STARTED=: 0
 VERSION=: '2.0.0'
-
-tabengine=: tabengine1
-
 
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
@@ -4408,7 +4376,7 @@ case. '$' do. ttload'$'
 case. '$$' do. ttload'$$'
 case.   do. ttload y [smoutput '+++ start: loaded by default: ',":y
 end.
-warnplex''
+vchecks''
 STARTED=: 1
 )
 
@@ -4437,8 +4405,7 @@ globmake=: 3 : 0
 
 file=: tbx UNDEF
 ARROWCH=: ARROWCH1
-DASHBOARD=: 1
-DASHDEAD=: 1
+DASHBOARD=: 0
 DIRTY=: 0
 ITEMNO=: _1
 INVERSION=: ''
@@ -4450,6 +4417,7 @@ PAD=: 10
 PROTECT=: 1
 PLOT=: 0
 RETURNED=: ''
+STARTED=: 0
 TIMEOUT=: 5
 TOLERANCE=: 1e_5
 TTn=: ,:'tn'

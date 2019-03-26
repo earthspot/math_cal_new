@@ -14,6 +14,9 @@ HELP=: 0 : 0
 ============
 HELP for CAL
 ============
+dash 1
+…show the CAL dashboard
+
 cv''
 …show the v-caches
 
