@@ -33,8 +33,8 @@ Church Clock
 └>  {8}    0.946 /     {4}/{7}
 )
 
-assert EXPECTED-: tt'CTBU'	[EXPECTED=: z
-assert EXPECTED-: tt'CTAB'	[EXPECTED=: x4f ucp z
+NB. assert EXPECTED-: tt'CTBU'	[EXPECTED=: z
+NB. assert EXPECTED-: tt'CTAB'	[EXPECTED=: x4f ucp z
 assert EXPECTED-: tt'FMLA 4'	[EXPECTED=: 'a*b*c: a(ft),b(kg),c(grav)'
 assert EXPECTED-: tt'FMLL 4'	[EXPECTED=: '{1}*{2}*{3}'
 assert EXPECTED-: tt'INTD'	[EXPECTED=: 1
@@ -74,7 +74,8 @@ assert EXPECTED-: tt'UNSU 5'	[EXPECTED=: 'A s'
 assert EXPECTED-: tt'UNIT 5'	[EXPECTED=: <'A h'
 assert EXPECTED-: tt'UNTU 5'	[EXPECTED=: 'A h'
 assert EXPECTED-: tt'VALF 3'	[EXPECTED=: '9.813'
-assert EXPECTED-: tt'VALU 3'	[EXPECTED=: 9.812865328
+NB. assert EXPECTED-: tt'VALU 3'	[EXPECTED=: 9.812865328
+assert EXPECTED-: tt'VALU 3'	[EXPECTED=: 981287r100000
 assert EXPECTED-: tt'VERS'	[EXPECTED=: '2.0.0'
 
 NB. >>> lowercase instrs not started yet

@@ -144,7 +144,7 @@ bcalc=: 3 : 0
   NB. returns full set of values for assigning to: vsiqn
   NB. Does NOT alter vsiqn itself
   NB. Assumes (c/f fcalc) that y{vsiqn has new given value already.
-deltaz=. y{(vsiqn-vsiq0)  NB. the resulting change in y's value
+deltaz=. 'bcalc'ratit y{(vsiqn-vsiq0)  NB. the resulting change in y's value
 deltaz beval y      NB. compute plausible inputs to y
   NB. beval returns an update for vsiqn (with altered ancestors y)
   NB. which may / may NOT recalc the existing y{z.
@@ -221,8 +221,8 @@ forceunits=: 4 : 0
 'targ junk coeft'=. convert y  NB. target SI-units
 UNITN=: (<,kosher y) x}UNITN
 UNITS=: (<,kosher targ) x}UNITS
-vfact=: coeft x}vfact
-vsiqn=: (vdisp'') + vquan*vfact
+vfact=: 'forceunits.1'ratit coeft x}vfact
+vsiqn=: 'forceunits.1'ratit (vdisp'') + vquan*vfact
 )
 
 forcevalue=: 4 : 0
@@ -230,8 +230,8 @@ forcevalue=: 4 : 0
 if. -.validitem x do. 10 message x return. end.
 if. y= x{vquan do. 13 message x; y return. end.
 vqua0=: vquan
-vquan=: y x}vquan
-vsiqn=: (vdisp'') + vquan*vfact
+vquan=: 'forcevalue.1'ratit y x}vquan
+vsiqn=: 'forcevalue.2'ratit (vdisp'') + vquan*vfact
 )
 
 isFreeItem=: 3 : 0
@@ -260,9 +260,9 @@ elseif. do.  NB. compatible (x)
   vqua0=: vquan  NB. save prev value (for signalling where changed)
   UNITN=: (<,kosher x) y}UNITN  NB. new nominal units are (x) as given
 NB.   UNITS=: (<,kosher targ) y}UNITS  NB. BUT… won't these be unchanged??
-  vfact=: coeft y}vfact
-  v=. (y{vquan) scale_displace__uun~ coeft,coefu,dispt,dispu
-  vquan=: v y}vquan
+  vfact=: 'changeunits.1'ratit coeft y}vfact
+  v=. 'changeunits.2'ratit (y{vquan) scale_displace__uun~ coeft,coefu,dispt,dispu
+  vquan=: 'changeunits.3'ratit v y}vquan
 NB.   recal y  NB. >>> NEEDED??
 NB. if we don't recal then only item {y} can change
 NB. -which won't conceal any errors in this algorithm.
@@ -552,6 +552,7 @@ if. 0<$xseq_y=.xseq y do.
     z=.(z feval i)i}z
   end.
 end.
+'fcalc'ratit z return.
 )
 
 feval=: 4 : 0
@@ -564,7 +565,7 @@ feval=: 4 : 0
    NB. >>> MAKE exe LOCAL WHEN CODE IS STABLE
    ". 'exe=:',fn  NB. now (global)exe is: exe<y>
    NB. In case exe contains a bad fmla...
-   try. z=. exe x  [z0=. z
+   try. z=. 'feval'ratit exe x  [z0=. z
    catch. z=. BAD_EXE_VALUE
    end.
 	msg '[(y)] (z0)(TAB)(z) from (fn) (x)'
@@ -682,9 +683,9 @@ ffwd=: 4 : 0
   NB. y==pivot node
   NB. x==ancestors' trial values
 a=. ancestors y  NB. ancestors' line numbers
-vsiqn=: x a}restore=.vsiqn  NB. temp alter the GLOBAL vsiqn
-z=. y{fcalc y  NB. return (updated) result
-vsiqn=: restore
+vsiqn=: 'ffwd.1'ratit x a}restore=.vsiqn  NB. temp alter the GLOBAL vsiqn
+z=.     'ffwd.2'ratit y{fcalc y  NB. return (updated) result
+vsiqn=: 'ffwd.3'ratit restore
 z
 )
 
@@ -1173,12 +1174,12 @@ recal=: 3 : 0
   NB. y is the pivot node and is the arg for: xseq
   NB. if pivot no importance, call: recal 0
   NB. assumes proffered changes have been made by recal to vquan (only)
-vsiq0=: vfact*vqua0  NB. follows nominal values, not system ones
-vsiqn=: vfact*vquan
+vsiq0=: 'recal.1'ratit vfact*vqua0  NB. follows nominal values, not system ones
+vsiqn=: 'recal.2'ratit vfact*vquan
 INVERSION=:''  NB. identifies daisychain heuristic that actually completes
-if. hasf y do. vsiqn=: bcalc y end.
-vsiqn=: fcalc y    NB. fwd after break-back to recalc all descendants
-vquan=: (vsiqn-vdisp'')%vfact  NB. update the nominal values
+if. hasf y do. vsiqn=: 'recal.0'ratit bcalc y end.
+vsiqn=: 'recal.1'ratit fcalc y    NB. fwd after break-back to recalc all descendants
+vquan=: 'recal.2'ratit (vsiqn-vdisp'')%vfact  NB. update the nominal values
 vhold=: 0*vhold  NB. reset all transient holds
 vquan ~: vqua0   NB. =1 where the item has changed
 )
@@ -1319,8 +1320,8 @@ setvalue=: 4 : 0
 if. -.validitem y do. 10 message y return. end.
 if. x= y{vquan do. 13 message y; x return. end.
 invalplot''
-vqua0=: vquan
-vquan=: x y}vquan
+vqua0=: 'setvalue.1'ratit vquan
+vquan=: 'setvalue.2'ratit x y}vquan
 CH=: recal y
 if. y{CH do. 16 message y;x  NB. accepts value
 elseif. 0<#OVERHELDS do. 35 message listitems OVERHELDS
@@ -1367,9 +1368,9 @@ siunits=: 3 : 0
   NB. convert item {y} to SI units
 si=. kosher > y{UNITS  NB. the SI units (unboxed)
 UNITN=: (<si) y}UNITN
-vquan=: (y{vsiqn) y}vquan  NB. SI-units: move vsiqn entry into vquan
-vqua0=: (y{vsiq0) y}vqua0  NB. SI-units: move vsiq0 entry into vqua0
-vfact=: 1 y}vfact  NB. SI-units: factor is always 1
+vquan=: 'siunits.1'ratit (y{vsiqn) y}vquan  NB. SI-units: move vsiqn entry into vquan
+vqua0=: 'siunits.2'ratit (y{vsiq0) y}vqua0  NB. SI-units: move vsiq0 entry into vqua0
+vfact=: 'siunits.3'ratit 1 y}vfact  NB. SI-units: factor is always 1
 CH=: recal y
 'siunits' dirty 1
 18 message y; si
@@ -1490,9 +1491,9 @@ TD=: TD,0  NB. dumb line
 TTf=: TTf,SP  NB. dumb line
 UNITN=: UNITN,<,kosher ytu
 UNITS=: UNITS,<,kosher yts
-vquan=: vquan , yvalu
-vfact=: vfact , fac
-vsiqn=: (vdisp'') + vquan*vfact
+vquan=: 'ttadl.1'ratit vquan , yvalu
+vfact=: 'ttadl.2'ratit vfact , fac
+vsiqn=: 'ttadl.3'ratit (vdisp'') + vquan*vfact
 ttfix''
   NB. (c/f ttafl, no need to recal here)
 'ttadl' dirty 1
@@ -1512,8 +1513,8 @@ end.
 TTf=: TTf,,ytf
 UNITN=: UNITN,<,kosher ytu
 UNITS=: UNITS,<,kosher yts
-vquan=: vquan,0    NB. placeholder, recomputed by: recal
-vfact=: vfact , fac
+vquan=: 'ttafl.1'ratit vquan,0r1    NB. placeholder, recomputed by: recal
+vfact=: 'ttafl.2'ratit vfact , 'ttafl.3'ratit fac
 TD=: TD,,".ytd
 TTn=: TTn,,ytn
 TTn=: (}:TTn) , fitemsub <:#TTn
@@ -1534,8 +1535,8 @@ elseif. -.fexist file1  do. 20 message file1 return.
 end.
   NB. keep t-table parts cos these will change
 CAPTsav=. CAPT
-vquanS=. vquan
-vfactS=. vfact
+vquanS=. 'ttappend.1'ratit vquan
+vfactS=. 'ttappend.2'ratit vfact
 vmodlS=. vmodl
 vhiddS=. vhidd
 UNITSsav=. UNITS
@@ -1567,8 +1568,8 @@ end.
 if. 1=#vmodl do. vmodl=: vmodlS, (nt1-nt0)#1
 else.     vmodl=: vmodlS, }.vmodl
 end.
-vqua0=: vquan=: vquanS, }.vquan
-vsiq0=: vsiqn=: (vdisp'') + vquan*vfact
+vqua0=: vquan=: 'ttappend.3'ratit vquanS, }.vquan
+vsiq0=: vsiqn=: 'ttappend.4'ratit (vdisp'') + vquan*vfact
   NB. 'exe' fns may be appended to the t-table
   NB. but replace them ALL anyway
 genexe each I. hasfb''
@@ -1707,14 +1708,14 @@ empty erase 'TT'      NB. delete TT as a redundant cache
   NB. re-create vfact and the units cols
 z=. convert each UNITN=: kosher each boxvec TTu  NB. nominal units
 UNITS=: kosher each (>&{.) each z    NB. SI-units
-vfact=: 0,>(>&{:) each }.z
+vfact=: 'ttload.1'ratit 0,>(>&{:) each }.z
   NB. Now setup work flags
 CH=: flags 0       NB. "Changed" flags
 if. 1=#vhidd do. vhidd=: flags 0 end.  NB. =1 if row is hidden when displayed
 if. 1=#vmodl do. vmodl=: flags 1 end.  NB. The break-back model to be used
 vhold=: flags 0    NB. TEST ONLY >>>>> default==no holds saved in t-table
-vqua0=: vquan
-vsiq0=: vsiqn=: (vdisp'') + vquan*vfact
+vqua0=: vquan=: 'ttload.1'ratit vquan
+vsiq0=: vsiqn=: 'ttload.2'ratit (vdisp'') + vquan*vfact
   NB. 'exe' fns can be included in the saved t-table
   NB. but replace them anyway
 genexe each I. hasfb''
@@ -1775,7 +1776,8 @@ TTn=: ,:'tn'
 TD=: 1 1$0
 TTf=: ,:'tf'
 UNITN=: UNITS=: ,<'??'
-vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: CH=: vhold=: vmodl=: vhidd=: ,0
+vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: ,0r1
+CH=: vhold=: vmodl=: vhidd=: ,0
 file=:  tbx UNDEF
 settitle CAPT=: UNDEF_CAPT
 reselect 0
@@ -2136,6 +2138,23 @@ elseif. '~'={.y  do. dtb jpath y
 elseif. '/'={.y  do. y  NB. assume y is fullpath (MAC/Unix only)
 elseif.          do. ttlib dtb y
 end.
+)
+
+ratit=: 4 : 0 "_ _ 1
+  NB. rationalize number (y) if not already rational
+  NB. and warn!
+  NB. x is identifier to find caller in case of warning
+if. 1 4 64 128 e.~ {.3!:0 y do. y
+else.
+  msg '>>> ratit called in (x): converting: [(y)]'
+  rational__uun y
+end.
+)
+0 :0
+datatype 'mytest' ratit i.5x
+datatype 'mytest' ratit i.5
+datatype 'mytest' ratit 1 0 1
+datatype 'mytest' ratit 0.5 + i.5
 )
 
 onload }: 0 : 0

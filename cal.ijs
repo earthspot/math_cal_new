@@ -83,6 +83,13 @@ AABUILT=: '2019-03-26  01:31:07'
 AABUILT=: '2019-03-26  03:03:30'
 AABUILT=: '2019-03-26  04:05:03'
 AABUILT=: '2019-03-26  04:49:08'
+AABUILT=: '2019-03-28  00:23:04'
+AABUILT=: '2019-03-28  00:32:03'
+AABUILT=: '2019-03-28  00:35:49'
+AABUILT=: '2019-03-28  01:04:32'
+AABUILT=: '2019-03-28  01:11:15'
+AABUILT=: '2019-03-28  01:20:56'
+AABUILT=: '2019-03-28  01:46:00'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -119,7 +126,7 @@ SAFECHARS=: AZ,az,n9
 ARROWCH0=: ' ┌│└┌├└├b→'
 ARROWCH1=: ' ┌│└┌├└├b>'
 ARROWCH2=: ' +|+++++b>'
-BAD_EXE_VALUE=: __
+BAD_EXE_VALUE=: __r1
 BS=: '\'
 CM=: ','
 CO=: ':'
@@ -441,7 +448,7 @@ bcalc=: 3 : 0
 
 
 
-deltaz=. y{(vsiqn-vsiq0)
+deltaz=. 'bcalc'ratit y{(vsiqn-vsiq0)
 deltaz beval y
 
 
@@ -518,8 +525,8 @@ forceunits=: 4 : 0
 'targ junk coeft'=. convert y
 UNITN=: (<,kosher y) x}UNITN
 UNITS=: (<,kosher targ) x}UNITS
-vfact=: coeft x}vfact
-vsiqn=: (vdisp'') + vquan*vfact
+vfact=: 'forceunits.1'ratit coeft x}vfact
+vsiqn=: 'forceunits.1'ratit (vdisp'') + vquan*vfact
 )
 
 forcevalue=: 4 : 0
@@ -527,8 +534,8 @@ forcevalue=: 4 : 0
 if. -.validitem x do. 10 message x return. end.
 if. y= x{vquan do. 13 message x; y return. end.
 vqua0=: vquan
-vquan=: y x}vquan
-vsiqn=: (vdisp'') + vquan*vfact
+vquan=: 'forcevalue.1'ratit y x}vquan
+vsiqn=: 'forcevalue.2'ratit (vdisp'') + vquan*vfact
 )
 
 isFreeItem=: 3 : 0
@@ -555,9 +562,9 @@ elseif. do.
   vsiq0=: vsiqn
   vqua0=: vquan
   UNITN=: (<,kosher x) y}UNITN
-  vfact=: coeft y}vfact
-  v=. (y{vquan) scale_displace__uun~ coeft,coefu,dispt,dispu
-  vquan=: v y}vquan
+  vfact=: 'changeunits.1'ratit coeft y}vfact
+  v=. 'changeunits.2'ratit (y{vquan) scale_displace__uun~ coeft,coefu,dispt,dispu
+  vquan=: 'changeunits.3'ratit v y}vquan
   3 message y ; z ; x
 end.
 )
@@ -841,6 +848,7 @@ if. 0<$xseq_y=.xseq y do.
     z=.(z feval i)i}z
   end.
 end.
+'fcalc'ratit z return.
 )
 
 feval=: 4 : 0
@@ -853,7 +861,7 @@ feval=: 4 : 0
 
    ". 'exe=:',fn
 
-   try. z=. exe x  [z0=. z
+   try. z=. 'feval'ratit exe x  [z0=. z
    catch. z=. BAD_EXE_VALUE
    end.
 	msg '[(y)] (z0)(TAB)(z) from (fn) (x)'
@@ -970,9 +978,9 @@ ffwd=: 4 : 0
 
 
 a=. ancestors y
-vsiqn=: x a}restore=.vsiqn
-z=. y{fcalc y
-vsiqn=: restore
+vsiqn=: 'ffwd.1'ratit x a}restore=.vsiqn
+z=.     'ffwd.2'ratit y{fcalc y
+vsiqn=: 'ffwd.3'ratit restore
 z
 )
 
@@ -1442,12 +1450,12 @@ recal=: 3 : 0
 
 
 
-vsiq0=: vfact*vqua0
-vsiqn=: vfact*vquan
+vsiq0=: 'recal.1'ratit vfact*vqua0
+vsiqn=: 'recal.2'ratit vfact*vquan
 INVERSION=:''
-if. hasf y do. vsiqn=: bcalc y end.
-vsiqn=: fcalc y
-vquan=: (vsiqn-vdisp'')%vfact
+if. hasf y do. vsiqn=: 'recal.0'ratit bcalc y end.
+vsiqn=: 'recal.1'ratit fcalc y
+vquan=: 'recal.2'ratit (vsiqn-vdisp'')%vfact
 vhold=: 0*vhold
 vquan ~: vqua0
 )
@@ -1582,8 +1590,8 @@ setvalue=: 4 : 0
 if. -.validitem y do. 10 message y return. end.
 if. x= y{vquan do. 13 message y; x return. end.
 invalplot''
-vqua0=: vquan
-vquan=: x y}vquan
+vqua0=: 'setvalue.1'ratit vquan
+vquan=: 'setvalue.2'ratit x y}vquan
 CH=: recal y
 if. y{CH do. 16 message y;x
 elseif. 0<#OVERHELDS do. 35 message listitems OVERHELDS
@@ -1630,9 +1638,9 @@ siunits=: 3 : 0
 
 si=. kosher > y{UNITS
 UNITN=: (<si) y}UNITN
-vquan=: (y{vsiqn) y}vquan
-vqua0=: (y{vsiq0) y}vqua0
-vfact=: 1 y}vfact
+vquan=: 'siunits.1'ratit (y{vsiqn) y}vquan
+vqua0=: 'siunits.2'ratit (y{vsiq0) y}vqua0
+vfact=: 'siunits.3'ratit 1 y}vfact
 CH=: recal y
 'siunits' dirty 1
 18 message y; si
@@ -1750,9 +1758,9 @@ TD=: TD,0
 TTf=: TTf,SP
 UNITN=: UNITN,<,kosher ytu
 UNITS=: UNITS,<,kosher yts
-vquan=: vquan , yvalu
-vfact=: vfact , fac
-vsiqn=: (vdisp'') + vquan*vfact
+vquan=: 'ttadl.1'ratit vquan , yvalu
+vfact=: 'ttadl.2'ratit vfact , fac
+vsiqn=: 'ttadl.3'ratit (vdisp'') + vquan*vfact
 ttfix''
 
 'ttadl' dirty 1
@@ -1772,8 +1780,8 @@ end.
 TTf=: TTf,,ytf
 UNITN=: UNITN,<,kosher ytu
 UNITS=: UNITS,<,kosher yts
-vquan=: vquan,0
-vfact=: vfact , fac
+vquan=: 'ttafl.1'ratit vquan,0r1
+vfact=: 'ttafl.2'ratit vfact , 'ttafl.3'ratit fac
 TD=: TD,,".ytd
 TTn=: TTn,,ytn
 TTn=: (}:TTn) , fitemsub <:#TTn
@@ -1794,8 +1802,8 @@ elseif. -.fexist file1  do. 20 message file1 return.
 end.
 
 CAPTsav=. CAPT
-vquanS=. vquan
-vfactS=. vfact
+vquanS=. 'ttappend.1'ratit vquan
+vfactS=. 'ttappend.2'ratit vfact
 vmodlS=. vmodl
 vhiddS=. vhidd
 UNITSsav=. UNITS
@@ -1827,8 +1835,8 @@ end.
 if. 1=#vmodl do. vmodl=: vmodlS, (nt1-nt0)#1
 else.     vmodl=: vmodlS, }.vmodl
 end.
-vqua0=: vquan=: vquanS, }.vquan
-vsiq0=: vsiqn=: (vdisp'') + vquan*vfact
+vqua0=: vquan=: 'ttappend.3'ratit vquanS, }.vquan
+vsiq0=: vsiqn=: 'ttappend.4'ratit (vdisp'') + vquan*vfact
 
 
 genexe each I. hasfb''
@@ -1956,14 +1964,14 @@ empty erase 'TT'
 
 z=. convert each UNITN=: kosher each boxvec TTu
 UNITS=: kosher each (>&{.) each z
-vfact=: 0,>(>&{:) each }.z
+vfact=: 'ttload.1'ratit 0,>(>&{:) each }.z
 
 CH=: flags 0
 if. 1=#vhidd do. vhidd=: flags 0 end.
 if. 1=#vmodl do. vmodl=: flags 1 end.
 vhold=: flags 0
-vqua0=: vquan
-vsiq0=: vsiqn=: (vdisp'') + vquan*vfact
+vqua0=: vquan=: 'ttload.1'ratit vquan
+vsiq0=: vsiqn=: 'ttload.2'ratit (vdisp'') + vquan*vfact
 
 
 genexe each I. hasfb''
@@ -2023,7 +2031,8 @@ TTn=: ,:'tn'
 TD=: 1 1$0
 TTf=: ,:'tf'
 UNITN=: UNITS=: ,<'??'
-vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: CH=: vhold=: vmodl=: vhidd=: ,0
+vfact=: vqua0=: vquan=: vsiq0=: vsiqn=: ,0r1
+CH=: vhold=: vmodl=: vhidd=: ,0
 file=:  tbx UNDEF
 settitle CAPT=: UNDEF_CAPT
 reselect 0
@@ -2358,6 +2367,23 @@ elseif. '~'={.y  do. dtb jpath y
 elseif. '/'={.y  do. y
 elseif.          do. ttlib dtb y
 end.
+)
+
+ratit=: 4 : 0 "_ _ 1
+
+
+
+if. 1 4 64 128 e.~ {.3!:0 y do. y
+else.
+  msg '>>> ratit called in (x): converting: [(y)]'
+  rational__uun y
+end.
+)
+0 :0
+datatype 'mytest' ratit i.5x
+datatype 'mytest' ratit i.5
+datatype 'mytest' ratit 1 0 1
+datatype 'mytest' ratit 0.5 + i.5
 )
 
 onload }: 0 : 0
