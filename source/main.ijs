@@ -2140,10 +2140,11 @@ elseif.          do. ttlib dtb y
 end.
 )
 
-ratit=: 4 : 0 "_ _ 1
-  NB. rationalize number (y) if not already rational
+NB. ratit=: 4 : 0 "_ _ 1
+ratit=: ('tag' ddefine) "1 _ 1  NB. accept whole list e.g. vquan
+  NB. rationalize number (y) if floating
   NB. and warn!
-  NB. x is identifier to find caller in case of warning
+  NB. x is identifier of caller to show in the warning notice
 if. 1 4 64 128 e.~ {.3!:0 y do. y
 else.
   msg '>>> ratit called in (x): converting: [(y)]'
@@ -2151,10 +2152,14 @@ else.
 end.
 )
 0 :0
+ratit vquan
+ratit real vquan
 datatype 'mytest' ratit i.5x
 datatype 'mytest' ratit i.5
 datatype 'mytest' ratit 1 0 1
 datatype 'mytest' ratit 0.5 + i.5
+datatype 'ratit 1r2 + i.5
+datatype ratit 0.5 + i.5
 )
 
 onload }: 0 : 0

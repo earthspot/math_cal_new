@@ -90,6 +90,8 @@ AABUILT=: '2019-03-28  01:04:32'
 AABUILT=: '2019-03-28  01:11:15'
 AABUILT=: '2019-03-28  01:20:56'
 AABUILT=: '2019-03-28  01:46:00'
+AABUILT=: '2019-03-29  06:12:14'
+AABUILT=: '2019-03-29  06:24:42'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -2368,8 +2370,7 @@ elseif. '/'={.y  do. y
 elseif.          do. ttlib dtb y
 end.
 )
-
-ratit=: 4 : 0 "_ _ 1
+ratit=: ('tag' ddefine) "1 _ 1
 
 
 
@@ -2380,10 +2381,14 @@ else.
 end.
 )
 0 :0
+ratit vquan
+ratit real vquan
 datatype 'mytest' ratit i.5x
 datatype 'mytest' ratit i.5
 datatype 'mytest' ratit 1 0 1
 datatype 'mytest' ratit 0.5 + i.5
+datatype 'ratit 1r2 + i.5
+datatype ratit 0.5 + i.5
 )
 
 onload }: 0 : 0
