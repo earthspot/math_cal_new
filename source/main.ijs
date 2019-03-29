@@ -2140,7 +2140,40 @@ elseif.          do. ttlib dtb y
 end.
 )
 
-NB. ratit=: 4 : 0 "_ _ 1
+NB. =========== trace ========================
+pushme=: empty	NB. legacy
+popme=: empty	NB. legacy
+
+trace=: 3 : 0
+  NB. enable/disable tracing verbs: msg, sllog
+  NB. y== boolean
+  NB. copied from: [cal] dashboard.ijs
+if. y do.
+  msg=: smoutput&sw
+  sllog=: smoutput&llog
+else.
+  msg=: empty
+  sllog=: empty
+end.
+smoutput '+++ trace ',":y
+i.0 0
+)
+
+traceINV=: 3 : 0
+  NB. enable/disable tracing verb: sswInversion
+  NB. --> (ssw), inside inversion* locales
+  NB. y== boolean
+  NB. copied from: [cal] dashboard.ijs
+if. y do.
+  sswInversion=: smoutput&sw
+else.
+  sswInversion=: empty
+end.
+smoutput '+++ traceINV ',":y
+i.0 0
+)
+
+NB. =========== ratit ========================
 ratit=: ('tag' ddefine) "1 _ 1  NB. accept whole list e.g. vquan
   NB. rationalize number (y) if floating
   NB. and warn!

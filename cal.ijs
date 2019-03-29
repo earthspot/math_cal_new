@@ -1,5 +1,5 @@
 0 :0
-Sunday 27 January 2019  18:03:54
+Friday 29 March 2019  13:56:26
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -9,89 +9,10 @@ clear 'cal'
 coclass 'cal'
 onload_z_=: empty
 
-AABUILT=: '2019-01-27  18:04:01'
-AABUILT=: '2019-01-28  03:24:56'
-AABUILT=: '2019-01-28  03:43:59'
-AABUILT=: '2019-01-28  03:54:43'
-AABUILT=: '2019-01-28  04:10:35'
-AABUILT=: '2019-01-28  04:54:34'
-AABUILT=: '2019-01-28  05:01:40'
-AABUILT=: '2019-02-11  17:47:34'
-AABUILT=: '2019-02-15  05:29:42'
-AABUILT=: '2019-02-15  05:51:43'
-AABUILT=: '2019-02-17  04:36:08'
-AABUILT=: '2019-02-17  04:55:46'
-AABUILT=: '2019-02-19  02:21:32'
-AABUILT=: '2019-02-25  02:52:24'
-AABUILT=: '2019-02-25  05:29:23'
-AABUILT=: '2019-02-25  12:34:00'
-AABUILT=: '2019-03-05  03:22:52'
-AABUILT=: '2019-03-05  04:28:21'
-AABUILT=: '2019-03-05  04:43:55'
-AABUILT=: '2019-03-05  05:02:04'
-AABUILT=: '2019-03-05  05:04:04'
-AABUILT=: '2019-03-06  01:36:28'
-AABUILT=: '2019-03-06  02:33:33'
-AABUILT=: '2019-03-06  02:33:45'
-AABUILT=: '2019-03-06  02:37:41'
-AABUILT=: '2019-03-06  02:56:43'
-AABUILT=: '2019-03-06  02:56:52'
-AABUILT=: '2019-03-06  03:13:39'
-AABUILT=: '2019-03-06  03:22:25'
-AABUILT=: '2019-03-06  03:41:08'
-AABUILT=: '2019-03-06  04:41:13'
-AABUILT=: '2019-03-06  05:33:35'
-AABUILT=: '2019-03-06  06:28:36'
-AABUILT=: '2019-03-06  06:35:17'
-AABUILT=: '2019-03-06  07:06:51'
-AABUILT=: '2019-03-06  08:08:10'
-AABUILT=: '2019-03-06  08:28:35'
-AABUILT=: '2019-03-06  08:29:03'
-AABUILT=: '2019-03-06  08:45:21'
-AABUILT=: '2019-03-06  08:52:40'
-AABUILT=: '2019-03-06  09:00:18'
-AABUILT=: '2019-03-06  09:48:44'
-AABUILT=: '2019-03-06  09:54:14'
-AABUILT=: '2019-03-06  10:04:21'
-AABUILT=: '2019-03-09  13:51:35'
-AABUILT=: '2019-03-24  23:29:03'
-AABUILT=: '2019-03-24  23:33:41'
-AABUILT=: '2019-03-24  23:35:37'
-AABUILT=: '2019-03-24  23:43:35'
-AABUILT=: '2019-03-25  01:28:43'
-AABUILT=: '2019-03-25  01:45:02'
-AABUILT=: '2019-03-25  02:02:21'
-AABUILT=: '2019-03-25  02:18:23'
-AABUILT=: '2019-03-25  02:40:01'
-AABUILT=: '2019-03-25  02:50:31'
-AABUILT=: '2019-03-25  02:57:18'
-AABUILT=: '2019-03-25  03:10:43'
-AABUILT=: '2019-03-25  03:16:39'
-AABUILT=: '2019-03-25  03:28:58'
-AABUILT=: '2019-03-25  03:29:47'
-AABUILT=: '2019-03-25  03:46:16'
-AABUILT=: '2019-03-25  03:47:22'
-AABUILT=: '2019-03-26  00:29:06'
-AABUILT=: '2019-03-26  00:36:12'
-AABUILT=: '2019-03-26  00:52:28'
-AABUILT=: '2019-03-26  00:57:58'
-AABUILT=: '2019-03-26  01:08:13'
-AABUILT=: '2019-03-26  01:09:25'
-AABUILT=: '2019-03-26  01:16:03'
-AABUILT=: '2019-03-26  01:19:13'
-AABUILT=: '2019-03-26  01:31:07'
-AABUILT=: '2019-03-26  03:03:30'
-AABUILT=: '2019-03-26  04:05:03'
-AABUILT=: '2019-03-26  04:49:08'
-AABUILT=: '2019-03-28  00:23:04'
-AABUILT=: '2019-03-28  00:32:03'
-AABUILT=: '2019-03-28  00:35:49'
-AABUILT=: '2019-03-28  01:04:32'
-AABUILT=: '2019-03-28  01:11:15'
-AABUILT=: '2019-03-28  01:20:56'
-AABUILT=: '2019-03-28  01:46:00'
-AABUILT=: '2019-03-29  06:12:14'
-AABUILT=: '2019-03-29  06:24:42'
+AABUILT=: '2019-03-29  13:57:38'
+AABUILT=: '2019-03-29  14:34:30'
+AABUILT=: '2019-03-29  14:47:42'
+AABUILT=: '2019-03-29  14:55:47'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -2370,6 +2291,37 @@ elseif. '/'={.y  do. y
 elseif.          do. ttlib dtb y
 end.
 )
+pushme=: empty
+popme=: empty
+
+trace=: 3 : 0
+
+
+
+if. y do.
+  msg=: smoutput&sw
+  sllog=: smoutput&llog
+else.
+  msg=: empty
+  sllog=: empty
+end.
+smoutput '+++ trace ',":y
+i.0 0
+)
+
+traceINV=: 3 : 0
+
+
+
+
+if. y do.
+  sswInversion=: smoutput&sw
+else.
+  sswInversion=: empty
+end.
+smoutput '+++ traceINV ',":y
+i.0 0
+)
 ratit=: ('tag' ddefine) "1 _ 1
 
 
@@ -4230,7 +4182,7 @@ FP=: 273.15
 '==================== [cal] dashboard.ijs ===================='
 
 0 :0
-Tuesday 26 March 2019  01:11:43
+Friday 29 March 2019  13:02:02
 -
 sswInversion (set to empty by: start)
  …controls tracing in inversion* locales.
@@ -4254,9 +4206,19 @@ cc mslog listbox;
 cc inslog listbox;
 cc panel edit;
 bin hs;
-cc ckTrace checkbox; cn "trace";
+cc ckTraceTAB checkbox; cn "trace TAB";
+cc ckTrace checkbox; cn "…CAL";
+cc ckTraceINV checkbox; cn "…INV";
+cc ckTraceUU checkbox; cn "…UU";
+bin sz;
+bin hs;
+cc bnCTBU button; cn "CTBU";
 cc bnRETURNED button; cn "RETURNED";
 cc bnRefresh button; cn "Refresh";
+bin sz;
+bin hs;
+cc bninv button; cn "inversion";
+cc bnINV button; cn "INVERSION";
 bin sz;
 cc sbar static; cn "status";
 bin z;
@@ -4265,10 +4227,9 @@ set panel font '"Menlo" 12';
 pshow;
 )
 
-INFO=: 0 : 0
+DASHINFO=: 0 : 0
  [VERSION=: (VERSION) [STARTED=: (STARTED) [DIRTY=:(DIRTY) 
- [INVERSION=: '(INVERSION)' [MAXINVERT=:(MAXINVERT)
- [OVERHELDS=: ,'(OVERHELDS)'
+ [MAXINVERT=:(MAXINVERT) [OVERHELDS=: ,'(OVERHELDS)'
  [PAD=: (PAD) [PROTECT=: (PROTECT) [PLOT=:(PLOT)
  [TIMEOUT=: (TIMEOUT) [TOLERANCE=: (TOLERANCE)
 )
@@ -4281,8 +4242,11 @@ wd 'set mslog items *',LF,f4x MSLOG
 wd 'setselect mslog ',": #MSLOG
 wd 'set inslog items *',LOGINSTR
 wd 'setselect inslog ',": +/LF=}:LOGINSTR
-wd 'set panel text *',panel=: sw INFO
+wd 'set panel text *',panel=: sw DASHINFO
 wd 'set ckTrace ',":(-. 'empty' -: cr 'msg')
+wd 'set ckTraceINV ',":(-. 'empty' -: cr 'sswInversion')
+wd 'set ckTraceTAB ',":(-. 'empty' -: cr 'msg_tabby_')
+wd 'set ckTraceUU ',":(-. 'empty' -: cr 'msg__uun')
 putsb 'refreshed: ',date''
 )
 
@@ -4291,6 +4255,7 @@ dash=: 3 : 0
 
 
 
+if. y-:_1 do. y=. 1 [dash_close'' end.
 if. 0 1 e.~ {.y do. DASHBOARD=: {.y end.
 if. DASHBOARD do.
   if. dashDead'' do.
@@ -4319,18 +4284,45 @@ dash_default=: 3 : 0
 smoutput '>>> missing handler: ',sysevent
 )
 
-dash_bnRefresh_button=: refresh
-dash_bnRETURNED_button=: returned
-dash_ckTrace_button=: 3 : 'trace ".ckTrace'
-dash_panel_button=: 3 : 'refresh NIL [do panel-.LF'
-
 dash_close=: 3 : 0
 wd :: empty 'psel dash; pclose;'
 )
 
-line=: 3 : 'smoutput 60#UL'
+line=: 3 : 'smoutput 50#UL'
 
-returned=: 3 : 0
+dash_bnRefresh_button=: refresh
+dash_panel_button=: 3 : 'refresh NIL [do panel-.LF'
+
+dash_ckTrace_button=:    3 : 'trace ".ckTrace'
+dash_ckTraceINV_button=: 3 : 'traceINV ".ckTraceINV'
+dash_ckTraceTAB_button=: 3 : 'trace_tabby_ ".ckTraceTAB'
+dash_ckTraceUU_button=:  3 : 'trace__uun ".ckTraceUU'
+
+dash_bnCTBU_button=: 3 : 0
+
+line''
+smoutput sw '+++ CTBU is:'
+smoutput tabengine 'CTBU'
+line''
+)
+
+dash_bnINV_button=: 3 : 0
+
+line''
+smoutput sw '+++ INVERSION is:'
+smoutput INVERSION
+line''
+)
+
+dash_bninv_button=: 3 : 0
+
+line''
+smoutput sw '+++ inversion is:'
+smoutput 5!:5 <'inversion'
+line''
+)
+
+dash_bnRETURNED_button=: 3 : 0
 
 line''
 smoutput sw '+++ RETURNED is (datatype RETURNED)[($RETURNED)]:'
@@ -4357,7 +4349,7 @@ smoutput '+++ trace ',":y
 i.0 0
 )
 
-onload 'dash 1'
+onload 'dash _1'
 
 '==================== [cal] start.ijs ===================='
 
@@ -4368,6 +4360,8 @@ WARNING: MSLOG can build up indefinitely.
 cocurrent 'cal'
 
 VERSION=: '2.0.0'
+dash_z_=: dash_cal_
+
 
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
