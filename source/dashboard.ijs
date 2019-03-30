@@ -27,21 +27,27 @@ cc edFile edit;
 cc mslog listbox;
 cc inslog listbox;
 cc panel edit;
+
 bin hs;
 cc ckTraceTAB checkbox; cn "trace TAB";
 cc ckTrace checkbox; cn "…CAL";
 cc ckTraceINV checkbox; cn "…INV";
 cc ckTraceUU checkbox; cn "…UU";
 bin sz;
+
 bin hs;
-cc bnCTBU button; cn "CTBU";
-cc bnRETURNED button; cn "RETURNED";
-cc bnRefresh button; cn "Refresh";
-bin sz;
-bin hs;
+cc bnsmx button; cn "smclear";
 cc bninv button; cn "inversion";
 cc bnINV button; cn "INVERSION";
 bin sz;
+
+bin hs;
+cc bnVEX button; cn "VEX";
+cc bnCTBU button; cn "CTBU";
+cc bnRETURNED button; cn "RET`D";
+cc bnRefresh button; cn "Refresh";
+bin sz;
+
 cc sbar static; cn "status";
 bin z;
 set inslog font '"Menlo" 12';
@@ -119,6 +125,16 @@ dash_ckTrace_button=:    3 : 'trace ".ckTrace'
 dash_ckTraceINV_button=: 3 : 'traceINV ".ckTraceINV'
 dash_ckTraceTAB_button=: 3 : 'trace_tabby_ ".ckTraceTAB'
 dash_ckTraceUU_button=:  3 : 'trace__uun ".ckTraceUU'
+
+dash_bnsmx_button=: smclear
+
+dash_bnVEX_button=: 3 : 0
+  NB. handler: reveal the latest VEX_tabby_
+line''
+smoutput sw '+++ VEX is:'
+smoutput VEX_tabby_
+line''
+)
 
 dash_bnCTBU_button=: 3 : 0
   NB. handler: reveal the current CTBU display

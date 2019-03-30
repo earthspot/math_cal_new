@@ -19,8 +19,8 @@ MESSAGELIST=: cmx 0 : 0
  9 line {(y0)} copied under fn: (y1)
 10 >>> {(y0)} is not a valid line
 11 >>> unknown arg: (y)
-12 >>> line {(y0)} orphaned
-13 >>> line {(y0)} value unaltered: (y1)
+12 line {(y0)} orphaned
+13 line {(y0)} value unaltered: (y1)
 14 >>> setfmla: line {(y0)} bad: (y1)
 15 line {(y0)} new formula: (y1)
 16 line {(y0)} accepts value: (y1)
@@ -43,7 +43,7 @@ MESSAGELIST=: cmx 0 : 0
 33 (y0) restored: (y1)
 34 >>> cannot (y) any more
 35 >>> no action because too many items have Holds: (y0)
-36 >>> no lines are hidden
+36 no lines are hidden
 37 (y0) lines newly hidden
 38 t-table (y0) deleted
 39 >>> t-table (y0) is not in tabula-user library

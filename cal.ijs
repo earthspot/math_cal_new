@@ -13,6 +13,9 @@ AABUILT=: '2019-03-29  13:57:38'
 AABUILT=: '2019-03-29  14:34:30'
 AABUILT=: '2019-03-29  14:47:42'
 AABUILT=: '2019-03-29  14:55:47'
+AABUILT=: '2019-03-30  19:54:25'
+AABUILT=: '2019-03-30  20:15:13'
+AABUILT=: '2019-03-30  20:39:29'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -1438,7 +1441,6 @@ scaleunits=: 4 : 0
 
 
 
-
 x_cal_=:x
 if. 'literal'-:datatype y do.
   un0=. y
@@ -1540,7 +1542,7 @@ end.
 if. 0<#units do. y forceunits units end.
 if. 0<#name do. y relabel name end.
 y forcevalue valu
-i.0 0
+16 message y;valu
 )
 
 shortpath=: 3 : 0
@@ -3337,7 +3339,7 @@ negl r    r fnline~ '-'            \copy item negated
 negv r    r setvalue~ -vr          \negate value of r
 newt void ttnew''                  \new empty t-table
 newu yy   ttadl 'unit';yy;1        \new item with units
-noop void noop''                   \no-op
+noop yy   noop''                   \no-op
 onen r    r setvalue~ _1           \set item to -1
 onep r    r setvalue~ 1            \set item to 1
 open yy   ttload yy                \load named t-table
@@ -3449,8 +3451,8 @@ MESSAGELIST=: cmx 0 : 0
  9 line {(y0)} copied under fn: (y1)
 10 >>> {(y0)} is not a valid line
 11 >>> unknown arg: (y)
-12 >>> line {(y0)} orphaned
-13 >>> line {(y0)} value unaltered: (y1)
+12 line {(y0)} orphaned
+13 line {(y0)} value unaltered: (y1)
 14 >>> setfmla: line {(y0)} bad: (y1)
 15 line {(y0)} new formula: (y1)
 16 line {(y0)} accepts value: (y1)
@@ -3473,7 +3475,7 @@ MESSAGELIST=: cmx 0 : 0
 33 (y0) restored: (y1)
 34 >>> cannot (y) any more
 35 >>> no action because too many items have Holds: (y0)
-36 >>> no lines are hidden
+36 no lines are hidden
 37 (y0) lines newly hidden
 38 t-table (y0) deleted
 39 >>> t-table (y0) is not in tabula-user library
@@ -4196,6 +4198,8 @@ To show dashboard: dash 1
 
 cocurrent 'cal'
 
+ckTraceTAB=: ckTraceINV=: ckTraceUU=: ckTrace=: ,'0'
+
 DASHPOS=: 810 647 321 483
 
 DASH=: 0 : 0
@@ -4205,21 +4209,27 @@ cc edFile edit;
 cc mslog listbox;
 cc inslog listbox;
 cc panel edit;
+
 bin hs;
 cc ckTraceTAB checkbox; cn "trace TAB";
 cc ckTrace checkbox; cn "…CAL";
 cc ckTraceINV checkbox; cn "…INV";
 cc ckTraceUU checkbox; cn "…UU";
 bin sz;
+
 bin hs;
-cc bnCTBU button; cn "CTBU";
-cc bnRETURNED button; cn "RETURNED";
-cc bnRefresh button; cn "Refresh";
-bin sz;
-bin hs;
+cc bnsmx button; cn "smclear";
 cc bninv button; cn "inversion";
 cc bnINV button; cn "INVERSION";
 bin sz;
+
+bin hs;
+cc bnVEX button; cn "VEX";
+cc bnCTBU button; cn "CTBU";
+cc bnRETURNED button; cn "RET`D";
+cc bnRefresh button; cn "Refresh";
+bin sz;
+
 cc sbar static; cn "status";
 bin z;
 set inslog font '"Menlo" 12';
@@ -4297,6 +4307,16 @@ dash_ckTrace_button=:    3 : 'trace ".ckTrace'
 dash_ckTraceINV_button=: 3 : 'traceINV ".ckTraceINV'
 dash_ckTraceTAB_button=: 3 : 'trace_tabby_ ".ckTraceTAB'
 dash_ckTraceUU_button=:  3 : 'trace__uun ".ckTraceUU'
+
+dash_bnsmx_button=: smclear
+
+dash_bnVEX_button=: 3 : 0
+
+line''
+smoutput sw '+++ VEX is:'
+smoutput VEX_tabby_
+line''
+)
 
 dash_bnCTBU_button=: 3 : 0
 
@@ -4402,6 +4422,7 @@ case. '$$' do. ttload'$$'
 case.   do. ttload y [smoutput '+++ start: loaded by default: ',":y
 end.
 vchecks''
+onload_z_=: do
 STARTED=: 1
 )
 

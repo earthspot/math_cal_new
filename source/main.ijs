@@ -1241,7 +1241,6 @@ scaleunits=: 4 : 0
     NB. TESTER is in: temp 719
   NB. eg x= 3(k); _3(m); 6(M); _6(mu) ...
   NB. MOD: ACCEPT THE ACTUAL PREFIX eg 'k' 'M' as: (x)
-  NB. For table of scaling prefixes recognised, see defn: cnvj_uu_
 x_cal_=:x
 if. 'literal'-:datatype y do.  NB. y is the actual units to be scaled [TEST ONLY]
   un0=. y
@@ -1347,7 +1346,7 @@ end.
 if. 0<#units do. y forceunits units end.
 if. 0<#name do. y relabel name end.
 y forcevalue valu
-i.0 0
+16 message y;valu
 )
 
 shortpath=: 3 : 0

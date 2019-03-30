@@ -65,6 +65,7 @@ case. '$$' do. ttload'$$'  NB. load SAMPLE, builtin or saved
 case.   do. ttload y [smoutput '+++ start: loaded by default: ',":y
 end.
 vchecks''  NB. check integrity of v-buffers
+onload_z_=: do  NB. to leave it nice for the J IDE
 STARTED=: 1  NB. registers successful completion of: start
 )
 

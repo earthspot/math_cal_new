@@ -187,7 +187,7 @@ negl r    r fnline~ '-'            \copy item negated
 negv r    r setvalue~ -vr          \negate value of r
 newt void ttnew''                  \new empty t-table
 newu yy   ttadl 'unit';yy;1        \new item with units
-noop void noop''                   \no-op
+noop yy   noop''                   \no-op
 onen r    r setvalue~ _1           \set item to -1
 onep r    r setvalue~ 1            \set item to 1
 open yy   ttload yy                \load named t-table
