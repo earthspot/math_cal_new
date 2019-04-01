@@ -105,6 +105,7 @@ OVERHELDS=: ''	NB. items recognised by: beval
 PAD=: 10		NB. used by: pad
 PROTECT=: 1	NB. 1==don't overwrite t-table of same name
 PLOT=: 0		NB. plot control parameter
+RATIONALIZED=: 1	NB. =1 to use rational numbers (esp in beval)
 RETURNED=: ''	NB. noun returned by i/f call
 STARTED=: 0	NB. 1==start completes ok
 TIMEOUT=: 5	NB. seconds (used by: timeout)

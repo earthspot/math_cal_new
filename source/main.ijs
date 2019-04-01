@@ -183,7 +183,11 @@ if. (0~:x)*.(hasf y) do.
     NB. vmodl (global) is predetermined model to use (normally 1)
     NB. -the actual model used is: amodel, having 0 forced for each item "held".
     NB. >>>>> NEED TO CREATE TEMP FN: fwd (-as seq of exe-fns working on r only)
-  r1=. r inversion deltaz    NB. updated values for ancestors
+  if. RATIONALIZED do.
+    r1=. r inversion deltaz    NB. updated values for ancestors
+  else.
+    r1=. 'beval'&ratit (float r) inversion (float deltaz)
+  end.
 end.
   ssw '--- beval: heuristics used: ',,>INVERSION
   NB. ...INVERSION initted to '' in: recal
@@ -193,6 +197,9 @@ r1 a }vsiqn
   NB. (Currently the calling verb: bcalc throws this value away.)
   NB. See bcalc for how it handles (y{vsiqn) and deltaz.
 )
+
+float=: real
+rat=: 'beval'&ratit
 
 bend=: 3 : 0
   NB. perm to move item y bottom or top (y<0)

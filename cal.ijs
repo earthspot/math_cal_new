@@ -16,6 +16,11 @@ AABUILT=: '2019-03-29  14:55:47'
 AABUILT=: '2019-03-30  19:54:25'
 AABUILT=: '2019-03-30  20:15:13'
 AABUILT=: '2019-03-30  20:39:29'
+AABUILT=: '2019-04-01  14:52:00'
+AABUILT=: '2019-04-01  14:56:00'
+AABUILT=: '2019-04-01  15:24:06'
+AABUILT=: '2019-04-01  16:22:09'
+AABUILT=: '2019-04-01  16:58:13'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -413,7 +418,11 @@ if. (0~:x)*.(hasf y) do.
 
 
 
-  r1=. r inversion deltaz
+  if. RATIONALIZED do.
+    r1=. r inversion deltaz
+  else.
+    r1=. 'beval'&ratit (float r) inversion (float deltaz)
+  end.
 end.
   ssw '--- beval: heuristics used: ',,>INVERSION
 
@@ -423,6 +432,9 @@ r1 a }vsiqn
 
 
 )
+
+float=: real
+rat=: 'beval'&ratit
 
 bend=: 3 : 0
 
@@ -2965,35 +2977,40 @@ d_X return.
 
 '==================== [cal] inverNR_C.ijs ===================='
 0 :0
-Friday 9 November 2018  17:55:42
+Monday 1 April 2019  16:27:06
+-
+rerun=: 3 : '2.5 40230 1 inversion_inverNRUC_ 7036300000000'
 )
 
 coclass z=.'inverNRUC'
 clear z
 
-TIMEOUT=: 5
+TIMEOUT=: 3
+TOLERANCE=: 1e_5
 
 timeout=: 3 : 0
 
+
 if. 0<#y do. TIME=: y+ 6!:1'' return. end.
-assert. TIME > 6!:1''
+assert. TIMEOUT=: 0< TIME - 6!:1''
 )
 
 fwd=: empty
 
-register=: register_cal_ f.
-approximates=: approximates_cal_
 
 inversion=: 4 : 0
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 fwdX0 X1 Y0D dY dY0 dX d_X d1X d2X'
+register=: register_cal_ f.
+TOLERANCE=: TOLERANCE_cal_
 fwd=: fwd_cal_
 amodel=: amodel_cal_
 ssw=: sswInversion_cal_ f.
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
+". sw'rerun=: 3 : ''(argLEFT) (me) (argRIGHT)'''
 timeout TIMEOUT [COUNT=: 0
 
 X0=: argLEFT
@@ -3013,10 +3030,10 @@ ssw 'COUNT  y       d_X     d_Y      G  H'
 ssw '=====  ======= ======= =======  ====='
 ssw '... (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd X1=: X0+dX
-if. Y0D approximates_cal_ fwdX1 do.
-  ssw'--- yes… Y0D=(Y0D) approximates fwdX1=(fwdX1)'
+if. Y0D approximates fwdX1 do.
+  ssw'... yes… Y0D=(Y0D) approximates fwdX1=(fwdX1)'
 else.
-  ssw'--- no… Y0D=(Y0D) <==> fwdX1=(fwdX1) not close enough.'
+  ssw'>>> no… Y0D=(Y0D) <==> fwdX1=(fwdX1) not close enough.'
   assert. 0
 end.
 register me
@@ -3030,11 +3047,15 @@ g=: 3 : 0
 
 timeout'' [COUNT=: COUNT+1
 d_X=: y
-d_Y=. (fwd X0+d_X) - fwdX0
+d_Y=: (fwd X0+d_X) - fwdX0
 d_X=: real amodel * d_X * dY0 % d_Y
 wd'msgs' [ssw 'g[(COUNT)] (y) (d_X) (d_Y) (G)'
 d_X return.
 
+)
+
+aa=: approximates=: 4 : 0
+APPROXIMATED=: (x=y) or TOLERANCE >: (|x-y) % (x max y)
 )
 
 '==================== [cal] inverTAY.ijs ===================='
@@ -4238,10 +4259,11 @@ pshow;
 )
 
 DASHINFO=: 0 : 0
- [VERSION=: (VERSION) [STARTED=: (STARTED) [DIRTY=:(DIRTY) 
+ [VERSION=: '(VERSION)' [STARTED=: (STARTED) [DIRTY=:(DIRTY) 
  [MAXINVERT=:(MAXINVERT) [OVERHELDS=: ,'(OVERHELDS)'
  [PAD=: (PAD) [PROTECT=: (PROTECT) [PLOT=:(PLOT)
  [TIMEOUT=: (TIMEOUT) [TOLERANCE=: (TOLERANCE)
+ [RATIONALIZED=: (RATIONALIZED)
 )
 
 refresh=: 3 : 0
@@ -4462,6 +4484,7 @@ OVERHELDS=: ''
 PAD=: 10
 PROTECT=: 1
 PLOT=: 0
+RATIONALIZED=: 1
 RETURNED=: ''
 STARTED=: 0
 TIMEOUT=: 5
