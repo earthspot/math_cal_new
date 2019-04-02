@@ -7,7 +7,7 @@ WARNING: MSLOG can build up indefinitely.
 
 cocurrent 'cal'
 
-VERSION=: '2.0.0'
+VERSION=: '2.1.00'
 dash_z_=: dash_cal_
 
 

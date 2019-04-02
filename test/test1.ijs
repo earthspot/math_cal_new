@@ -76,7 +76,7 @@ assert EXPECTED-: tt'UNTU 5'	[EXPECTED=: 'A h'
 assert EXPECTED-: tt'VALF 3'	[EXPECTED=: '9.813'
 NB. assert EXPECTED-: tt'VALU 3'	[EXPECTED=: 9.812865328
 assert EXPECTED-: tt'VALU 3'	[EXPECTED=: 981287r100000
-assert EXPECTED-: tt'VERS'	[EXPECTED=: '2.0.0'
+NB. assert EXPECTED-: tt'VERS'	[EXPECTED=: '2.0.0'
 
 NB. >>> lowercase instrs not started yet
 NB. suggest use new (small) t-table,

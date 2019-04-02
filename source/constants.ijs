@@ -51,6 +51,7 @@ LOGNAME=: 'cal_log.txt'
 LP=: '(' [ RP=: ')'	NB. used with: sw
 NB=: 'NB','.'
 PLOTNAME_z_=: jpath'~tempuu/latestplot.pdf'
+QT=: ''''
 SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'

@@ -21,6 +21,14 @@ AABUILT=: '2019-04-01  14:56:00'
 AABUILT=: '2019-04-01  15:24:06'
 AABUILT=: '2019-04-01  16:22:09'
 AABUILT=: '2019-04-01  16:58:13'
+AABUILT=: '2019-04-02  03:06:08'
+AABUILT=: '2019-04-02  03:28:45'
+AABUILT=: '2019-04-02  03:29:11'
+AABUILT=: '2019-04-02  03:31:07'
+AABUILT=: '2019-04-02  03:31:34'
+AABUILT=: '2019-04-02  16:33:11'
+AABUILT=: '2019-04-02  18:09:38'
+AABUILT=: '2019-04-02  18:10:37'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -68,6 +76,7 @@ LOGNAME=: 'cal_log.txt'
 LP=: '(' [ RP=: ')'
 NB=: 'NB','.'
 PLOTNAME_z_=: jpath'~tempuu/latestplot.pdf'
+QT=: ''''
 SAMPLE=: 'SAMPLE'
 SC=: ';'
 SH=: '!'
@@ -239,6 +248,82 @@ SIG__uun=: y
 uunicode=: 3 : 0
 SIC__uun=: y
 )
+
+'==================== [cal] handy4cal.ijs ===================='
+cocurrent 'z'
+
+append=: [ 1!:3 [: < ]
+az=: 'abcdefghijklmnopqrstuvwxyz'
+begins=: beginsWith=: [ (] -: [ {.~ [: # ]) [: , ]
+
+countdown=: 3 : 0
+
+
+
+
+
+if. y-:'?' do.
+  COUNTDOWN_z_
+elseif. 0=#y do.
+  if. 0=COUNTDOWN_z_ do. 'countdown over'(13!:8)199 end.
+  COUNTDOWN_z_=: COUNTDOWN_z_-1
+elseif. do.
+  assert. 0< <.y
+  COUNTDOWN_z_=: <.y
+end.
+)
+
+crex=: 0&$: :(4 : 0)
+
+
+
+if. 0 e. $y do. 5!:6 <'y' return. end.
+z=. y rplc QT ; QT,QT
+z=. q1 z rplc CRLF ; (q1',CRLF,') ; CR ; (q1',CR,') ; LF ; (q1',LF,') ; TAB ; (q1',TAB,')
+for_c. ~. y -. 32}. 127{. a. do.
+  z=. z rplc c ; q1 CM, CM,~ paren (":a. i. c),'{a.'
+end.
+z=. z rplc (CM,QT,QT,CM) ; CM
+if. (3{.z)-:QT,QT,CM do. z=. 3}.z end.
+if. (_3{.z)-:CM,QT,QT do. z=. _3}.z end.
+if. ($y)-:(,1) do. z=. CM,z end.
+try. assert y -: ".z
+catch.
+  if. x do.
+    smoutput '>>> crex: BAD lit repn: z --'
+    smoutput z
+    smoutput '>>> crex: --using instead: 5!:6 <''y'''
+  end.
+  5!:6 <'y' return.
+end.
+z
+)
+
+date=: 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)
+ddefine=: 1 : 'm&$: : (4 : 0)'
+dec=: 16 #. 16 | '0123456789ABCDEF0123456789abcdef' i. ]
+errno=: 13!:11
+isEmpty=: 0 = [: */ $
+isLit=: 2 2048 e.~ 3!:0
+listnameswithprefix=: 0 1 2 3&$: :(] ((] -: ({.~ #))S:0 _ # [)~ a: , [ 4!:1~ [: {. ])
+llog=: (1 { ":)@(,@([: ] ;: ,. [: ".&.> ;:))
+log=: [: ": ;: ,. [: ".&.> ;:
+nouns=: 3 : 'z ,. (datatype each v) ,. v=.".each z=.nl 0'
+np=: [: <: 2 * -.
+op=: 3 : 'opec ijs ''~proj/'',y'
+pathof=: ] {.~ [: >: '/' i:~ ]
+pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
+read=: [: 1!:1 <
+smcut3=: smcut3ucp
+st=: [: 1!:1 [: < tmp
+sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
+temp=: lasttemp`tmp@.(*@#@])
+tmp=: [: jpath '~temp/' , ijs@":
+ts=: 6!:2 , 7!:2@]
+wide=: uucp
+write=: [ 1!:2 [: < ]
+x2b=: [: (#~ ([: +./\. ' '&~:))&.> <"1
+x2f=: }.@((<10{a.) ;@,. ])@([: (#~ ([: +./\. ' '&~:))&.> <"1)
 
 '==================== [cal] main.ijs ===================='
 cocurrent 'cal'
@@ -4401,7 +4486,7 @@ WARNING: MSLOG can build up indefinitely.
 
 cocurrent 'cal'
 
-VERSION=: '2.0.0'
+VERSION=: '2.1.00'
 dash_z_=: dash_cal_
 
 
