@@ -1,34 +1,13 @@
 0 :0
-Friday 29 March 2019  13:56:26
+Wednesday 3 April 2019  12:23:38
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
 )
-
-clear 'cal'
 coclass 'cal'
 onload_z_=: empty
 
-AABUILT=: '2019-03-29  13:57:38'
-AABUILT=: '2019-03-29  14:34:30'
-AABUILT=: '2019-03-29  14:47:42'
-AABUILT=: '2019-03-29  14:55:47'
-AABUILT=: '2019-03-30  19:54:25'
-AABUILT=: '2019-03-30  20:15:13'
-AABUILT=: '2019-03-30  20:39:29'
-AABUILT=: '2019-04-01  14:52:00'
-AABUILT=: '2019-04-01  14:56:00'
-AABUILT=: '2019-04-01  15:24:06'
-AABUILT=: '2019-04-01  16:22:09'
-AABUILT=: '2019-04-01  16:58:13'
-AABUILT=: '2019-04-02  03:06:08'
-AABUILT=: '2019-04-02  03:28:45'
-AABUILT=: '2019-04-02  03:29:11'
-AABUILT=: '2019-04-02  03:31:07'
-AABUILT=: '2019-04-02  03:31:34'
-AABUILT=: '2019-04-02  16:33:11'
-AABUILT=: '2019-04-02  18:09:38'
-AABUILT=: '2019-04-02  18:10:37'
+AABUILT=: '2019-04-03  12:24:22'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -75,7 +54,6 @@ HOLD=: '='
 LOGNAME=: 'cal_log.txt'
 LP=: '(' [ RP=: ')'
 NB=: 'NB','.'
-PLOTNAME_z_=: jpath'~tempuu/latestplot.pdf'
 QT=: ''''
 SAMPLE=: 'SAMPLE'
 SC=: ';'
@@ -299,6 +277,22 @@ end.
 z
 )
 
+
+
+
+s=. 3 3 2$1 0 0 0 0 0 2 1 2 1 2 1 2 0 0 3 2 0
+m=. < '(' ; ')'
+smresolve=: ((0;s;m) ;: ucp)"1
+sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
+ssw=: smoutput&sw
+
+
+s=. 6 3 2$0 0 0 0 1 1 2 3 2 3 1 0 2 0 2 0 3 1 4 3 4 3 3 0 4 0 4 0 5 1 0 3 5 0 5 0
+m=. < LF ; NUL,SP,TAB
+smcut3utf=: (0;s;m)&(;:"1)
+smcut3ucp=: ((0;s;m) ;: ucp)"1
+smcut3=: smcut3ucp
+
 date=: 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)
 ddefine=: 1 : 'm&$: : (4 : 0)'
 dec=: 16 #. 16 | '0123456789ABCDEF0123456789abcdef' i. ]
@@ -314,7 +308,6 @@ op=: 3 : 'opec ijs ''~proj/'',y'
 pathof=: ] {.~ [: >: '/' i:~ ]
 pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
 read=: [: 1!:1 <
-smcut3=: smcut3ucp
 st=: [: 1!:1 [: < tmp
 sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
 temp=: lasttemp`tmp@.(*@#@])
@@ -3283,7 +3276,7 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '2019-03-26  03:01:30'   \noun: CAL last saved
+QSAV void '2019-04-02  21:26:20'   \noun: CAL last saved
 Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
 Revt void revert''                 \=revert all changes
@@ -3294,6 +3287,7 @@ ANCS r    ancestors r              \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
+CTBN n    utf8 x2f ct n            \t-table display choice: utf-8
 CTBU void utf8 x2f ct''            \t-table display: utf-8
 DIRT void dirty''                  \flag: unsaved changes
 FMLA r    formula r                \formula of item r

@@ -53,6 +53,24 @@ end.
 z
 )
 
+  NB. Swift-style string substitution. Use like this:
+  NB. ssw '>> The result of (x) is (y) with FLAG=(FLAG)'
+  NB. sw returns a resolved string, ssw smoutputs a resolved message
+s=. 3 3 2$1 0 0 0 0 0 2 1 2 1 2 1 2 0 0 3 2 0
+m=. < '(' ; ')'
+smresolve=: ((0;s;m) ;: ucp)"1
+NB. smresolve=: (((<0),(<3 3 2$1 0 0 0 0 0 2 1 2 1 2 1 2 0 0 3 2 0),<'(';')') ;: ucp)"1
+NB. …as J delivers it back
+sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
+ssw=: smoutput&sw
+
+  NB. smcut3: cut into 3 cols at first TWO whitespace-sections
+s=. 6 3 2$0 0 0 0 1 1 2 3 2 3 1 0 2 0 2 0 3 1 4 3 4 3 3 0 4 0 4 0 5 1 0 3 5 0 5 0
+m=. < LF ; NUL,SP,TAB
+smcut3utf=: (0;s;m)&(;:"1)      NB. cuts utf-8 (byte) string
+smcut3ucp=: ((0;s;m) ;: ucp)"1  NB. cuts unicoded string
+smcut3=: smcut3ucp
+
 date=: 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)
 ddefine=: 1 : 'm&$: : (4 : 0)'
 dec=: 16 #. 16 | '0123456789ABCDEF0123456789abcdef' i. ]
@@ -68,7 +86,6 @@ op=: 3 : 'opec ijs ''~proj/'',y'
 pathof=: ] {.~ [: >: '/' i:~ ]
 pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
 read=: [: 1!:1 <
-smcut3=: smcut3ucp
 st=: [: 1!:1 [: < tmp
 sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
 temp=: lasttemp`tmp@.(*@#@])

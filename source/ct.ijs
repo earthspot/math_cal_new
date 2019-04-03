@@ -60,7 +60,7 @@ NB. )
 
 
 NB. ------------------------------------------------------------------
-  NB. NEW ct -- ignores its y-arg, returns "unicode" table
+  NB. NEW ct -- returns "unicode" table
   NB.  CAL instruction CTAB returns ct output unaltered,
   NB.  CAL instruction CTBU returns (lit) utf-8 LF-separated string.
   NB. Some work-nouns will be redundant in distributed version
