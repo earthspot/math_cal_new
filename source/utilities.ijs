@@ -3,6 +3,10 @@
 
 cocurrent 'cal'
 
+cif=: open bind '~CAL/source/CAL_interface.ijs'
+ott=: open bind '~CAL/test/test.ijs'
+ot1=: open bind '~CAL/test/test1.ijs'
+
   NB. WARNING: CAL overrides stdlib defn of verb: items
   NB. This changes the valency of: items.
   NB. This needs a forward-definition of (items) to prevent
@@ -43,7 +47,6 @@ dyadic=: [: :
 monadic=: : [:
 
   NB. the 'op-colon' monadics
-  NB. >>> consider moving into: tabmath.ijs
 double=:	+: monadic
 twice=:	+: monadic
 halve=:	-: monadic
@@ -51,7 +54,6 @@ square=:	*: monadic
 sq=:	*: monadic
 sqrt=:	%: monadic
   NB. …more are needed, e.g. abs int roundup …
-  NB. sqr -has been supressed (in tabmath.ijs)
 
 	NB. Generate integer-suffixed id
 	NB. eg pq012 from: 'pq000' aann 12
@@ -62,7 +64,7 @@ n=. -+/x e. '0123456789'  NB. n<0 -to count from end
 (n}.x),n{.":100000000+y	  NB. re-fit suffix
 )
 
-breakback=: 3 : 0
+bbk=: breakback=: 3 : 0
   NB. show reference diagram of breakback work-vars
 cocurrent 'tabby' NB. to get a search-path including jgl2
 a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
@@ -157,11 +159,9 @@ or=:  +.		NB. own copy of tabz verb
 not=: -.		NB. own copy of tabz verb
 
   NB. Heritage to support old t-tables
-  NB. (calls to these verbs embedded in t-table script)
-sig=: 3 : 0
-SIG__uun=: y
-)
+  NB. (calls to these verbs may be embedded in t-table script)
+sig=: 3 : 'SIG__uun=: y'
+uunicode=: 3 : 'SIC__uun=: y'
 
-uunicode=: 3 : 0
-SIC__uun=: y
-)
+wd=: 3 : 'wd_z_ WD=: y'  NB. TEST cover for wd_z_
+ctb=: 3 : '}.each ,.each vhold ; CH ; vquan ; (>UNITN) ; (>UNITS) ; TTn'

@@ -61,6 +61,7 @@ assert. 0  NB. kick-off the daisychain with "bland" error
 
 endstop=: 4 : 0
   NB. ALWAYS the final verb in the daisychain
+qAssertionFailure''
 ssw '>>> endstop: called with:(LF)   (x) inversion_cal_ (y)'
 register 'endstop'  NB. assumes successful completion
 x return.  NB. forces rejection by caller (usually: beval)
@@ -69,9 +70,11 @@ x return.  NB. forces rejection by caller (usually: beval)
 qAssertionFailure=: 3 : 0
   NB. report if last error WAS NOT assertion failure (errno 12)
 if. 12= errno=. 13!:11'' do. i.0 0 return. end.
-loc=. >coname''
-smoutput sw '+++ qAssertionFailure_(loc)_: errno=(errno) WAS NOT assertion failure!'
-smoutput <13!:12''
+if. 3= errno=. 13!:11'' do. i.0 0 return. end. NB. discount window_close too
+smoutput sw '+++ qAssertionFailure: errno=(errno) WAS NOT assertion failure!'
+smoutput '============================'
+smoutput 13!:12''
+smoutput '============================'
 )
 
 register=: 3 : 0

@@ -1,70 +1,18 @@
 	NB. cal - ct.ijs
 '==================== [cal] ct.ijs ===================='
-NB. ct=="see t-table" -generates display layout for the t-table
-NB. IAC Tuesday 9 October 2018  04:00:35
-NB. DON'T USE ct1 --won't work because nfx has been withdrawn.
+0 :0
+Thursday 4 April 2019  22:18:14
+-
+ct=="see t-table" -generates display layout for the t-table
+)
 
 cocurrent 'cal'
 
-ct1=: 3 : 0
-NB. EXISTING ct as distributed (VERSION=: '1.1.00') pre: September 2018
-  NB. 1 e. y -include SI units column
-  NB. 3 e. y -include box-drawn arrows
-  NB. 4 e. y -include "line 0" col-headers
-if. 0=#y do. y=. ,3 end.  NB. the default display
-  NB. returns "no t-table" message if none has been loaded
-if. NaNoun'CAPT' do. ,:40 message'' return. end.
-if. 1=#items'' do. ,:CAPT return. end.   NB. trivial display if no items
-d=. ] ; $ ; datatype
-uc=. uucp"1
-d sp=. uc SP $~ 1,~#items''  NB. 1-char wide column spacer
-d st=. uc ST $~ 1,~#items''  NB. 1-char wide column of stars
-d vd=. uc SP $~ 0,~#items''  NB. 0-char wide empty column placeholder
-d arrw=. unis=. fact=. star=. vd  NB. void columns
-d lnos=. uc >brace each ":each items''  NB. line numbers
-d hold=. uc (HOLD fl vhold)  NB. marks "holds"
-d altd=. uc ('@'fl CH)  NB. marks altered values
-	d quan=. uc UNITN nfx vquan
-d unin=. sp ,. > (uc&uniform) each UNITN  NB. nominal units
-if. 1 e. y do.
-  d unis=. sp ,. > (uc&uniform) each UNITS  NB. SI-units figures
-	  d fact=. uc 'j'nfx vfact
-  d star=. uc sp ,.st
-end.
-if. 3 e. y do.
-  d arrw=. uc arrowch arrowgen''
-  if. mt arrw do. arrw=. vd else. arrw=. arrw ,. sp end.
-    NB. arrw comes with its own spacer
-end.
-d uttn=. sp ,.sp ,.uc TTn
-NB. z=. arrw ,.lnos ,.hold ,.altd ,.quan ,.unin ,.unis ,.star ,.fact ,.sp ,. uc TTn
-z=. 'arrw lnos hold altd quan unin unis star fact uttn'
-d z=. ". z rplc SP;',.'
-if. -. 4 e. y do. z=. }.z end.  NB. drop line {0}
-z=. z ,~ CAPT
-if. mt z do. z=. 1 1$SP end.  NB. to force panel-clear if void display
-z=. (-.vhidd) # z  NB. remove hidden lines
-)
-
-NB. nfx=: ''&$: : (4 : 0)
-NB.   NB. format numbers y into col using formats: x
-NB. f=. (#y)$ boxopen x  NB. formats for each element of y
-NB. z=. i.0 0
-NB. for_i. i.#y do.
-NB.   z=. z , (>i{f) format__uun i{y
-NB. 	NB. use of non-public UU-verb as a method
-NB. 	NB. -permitted ONLY for a non-operational verb like nfx.
-NB. end.
-NB. pad rjust z
-NB. )
-
-
-NB. ------------------------------------------------------------------
   NB. NEW ct -- returns "unicode" table
   NB.  CAL instruction CTAB returns ct output unaltered,
   NB.  CAL instruction CTBU returns (lit) utf-8 LF-separated string.
   NB. Some work-nouns will be redundant in distributed version
-ct2=: 3 : 0
+ct=: 3 : 0
   NB. y is diagnostic mode: y=='' for operational use
   NB. returns "no t-table" message if no t-table loaded…
 if. NaNoun'CAPT' do. ,:40 message'' return. end.
@@ -108,7 +56,3 @@ case.   do.  NB. OPERATIONAL USE
 end.
 lin0 , z #~ force0 -.vhidd        NB. remove hidden lines ALSO {0}
 )
-
-ct=: ct2		NB. USE NEW ct <<<<<<<<<<<<<<<<<<
-
-NB. smoutput ct2 2

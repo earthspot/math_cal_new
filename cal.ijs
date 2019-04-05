@@ -8,6 +8,13 @@ coclass 'cal'
 onload_z_=: empty
 
 AABUILT=: '2019-04-03  12:24:22'
+AABUILT=: '2019-04-04  22:35:49'
+AABUILT=: '2019-04-04  23:01:42'
+AABUILT=: '2019-04-04  23:11:00'
+AABUILT=: '2019-04-04  23:13:42'
+AABUILT=: '2019-04-05  04:45:04'
+AABUILT=: '2019-04-05  05:47:42'
+AABUILT=: '2019-04-05  05:54:32'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -71,6 +78,10 @@ UNSET=: '<UNSET>'
 
 cocurrent 'cal'
 
+cif=: open bind '~CAL/source/CAL_interface.ijs'
+ott=: open bind '~CAL/test/test.ijs'
+ot1=: open bind '~CAL/test/test1.ijs'
+
 
 
 
@@ -111,7 +122,6 @@ dyadic=: [: :
 monadic=: : [:
 
 
-
 double=:	+: monadic
 twice=:	+: monadic
 halve=:	-: monadic
@@ -124,13 +134,12 @@ sqrt=:	%: monadic
 
 
 
-
 aann=: 'aa00'&$: : (4 : 0)
 n=. -+/x e. '0123456789'
 (n}.x),n{.":100000000+y
 )
 
-breakback=: 3 : 0
+bbk=: breakback=: 3 : 0
 
 cocurrent 'tabby'
 a=: readimg_jqtide_ nom=. temp 'breakback.jpg'
@@ -219,13 +228,11 @@ not=: -.
 
 
 
-sig=: 3 : 0
-SIG__uun=: y
-)
+sig=: 3 : 'SIG__uun=: y'
+uunicode=: 3 : 'SIC__uun=: y'
 
-uunicode=: 3 : 0
-SIC__uun=: y
-)
+wd=: 3 : 'wd_z_ WD=: y'
+ctb=: 3 : '}.each ,.each vhold ; CH ; vquan ; (>UNITN) ; (>UNITS) ; TTn'
 
 '==================== [cal] handy4cal.ijs ===================='
 cocurrent 'z'
@@ -499,7 +506,7 @@ if. (0~:x)*.(hasf y) do.
   if. RATIONALIZED do.
     r1=. r inversion deltaz
   else.
-    r1=. 'beval'&ratit (float r) inversion (float deltaz)
+    r1=. ('beval'&ratit) (float r) inversion (float deltaz)
   end.
 end.
   ssw '--- beval: heuristics used: ',,>INVERSION
@@ -511,8 +518,7 @@ r1 a }vsiqn
 
 )
 
-float=: real
-rat=: 'beval'&ratit
+float=: _1&x:
 
 bend=: 3 : 0
 
@@ -2421,7 +2427,7 @@ ratit=: ('tag' ddefine) "1 _ 1
 if. 1 4 64 128 e.~ {.3!:0 y do. y
 else.
   msg '>>> ratit called in (x): converting: [(y)]'
-  rational__uun y
+  x:!.0 y
 end.
 )
 0 :0
@@ -2440,50 +2446,19 @@ smoutput expandedPath '$'
 )
 
 '==================== [cal] ct.ijs ===================='
-cocurrent 'cal'
-
-ct1=: 3 : 0
-
-
-
-if. 0=#y do. y=. ,3 end.
-
-if. NaNoun'CAPT' do. ,:40 message'' return. end.
-if. 1=#items'' do. ,:CAPT return. end.
-d=. ] ; $ ; datatype
-uc=. uucp"1
-d sp=. uc SP $~ 1,~#items''
-d st=. uc ST $~ 1,~#items''
-d vd=. uc SP $~ 0,~#items''
-d arrw=. unis=. fact=. star=. vd
-d lnos=. uc >brace each ":each items''
-d hold=. uc (HOLD fl vhold)
-d altd=. uc ('@'fl CH)
-	d quan=. uc UNITN nfx vquan
-d unin=. sp ,. > (uc&uniform) each UNITN
-if. 1 e. y do.
-  d unis=. sp ,. > (uc&uniform) each UNITS
-	  d fact=. uc 'j'nfx vfact
-  d star=. uc sp ,.st
-end.
-if. 3 e. y do.
-  d arrw=. uc arrowch arrowgen''
-  if. mt arrw do. arrw=. vd else. arrw=. arrw ,. sp end.
-
-end.
-d uttn=. sp ,.sp ,.uc TTn
-z=. 'arrw lnos hold altd quan unin unis star fact uttn'
-d z=. ". z rplc SP;',.'
-if. -. 4 e. y do. z=. }.z end.
-z=. z ,~ CAPT
-if. mt z do. z=. 1 1$SP end.
-z=. (-.vhidd) # z
+0 :0
+Thursday 4 April 2019  22:18:14
+-
+ct=="see t-table" -generates display layout for the t-table
 )
 
+cocurrent 'cal'
 
 
 
-ct2=: 3 : 0
+
+
+ct=: 3 : 0
 
 
 if. NaNoun'CAPT' do. ,:40 message'' return. end.
@@ -2527,8 +2502,6 @@ case.   do.
 end.
 lin0 , z #~ force0 -.vhidd
 )
-
-ct=: ct2
 
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 0 :0
@@ -2591,6 +2564,7 @@ assert. 0
 
 endstop=: 4 : 0
 
+qAssertionFailure''
 ssw '>>> endstop: called with:(LF)   (x) inversion_cal_ (y)'
 register 'endstop'
 x return.
@@ -2599,9 +2573,11 @@ x return.
 qAssertionFailure=: 3 : 0
 
 if. 12= errno=. 13!:11'' do. i.0 0 return. end.
-loc=. >coname''
-smoutput sw '+++ qAssertionFailure_(loc)_: errno=(errno) WAS NOT assertion failure!'
-smoutput <13!:12''
+if. 3= errno=. 13!:11'' do. i.0 0 return. end.
+smoutput sw '+++ qAssertionFailure: errno=(errno) WAS NOT assertion failure!'
+smoutput '============================'
+smoutput 13!:12''
+smoutput '============================'
 )
 
 register=: 3 : 0
@@ -3276,7 +3252,7 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '2019-04-02  21:26:20'   \noun: CAL last saved
+QSAV void '2019-04-05  00:18:55'   \noun: CAL last saved
 Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
 Revt void revert''                 \=revert all changes
@@ -3287,6 +3263,7 @@ ANCS r    ancestors r              \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
+CTBB void ctb''                    \t-table display: boxed raw data
 CTBN n    utf8 x2f ct n            \t-table display choice: utf-8
 CTBU void utf8 x2f ct''            \t-table display: utf-8
 DIRT void dirty''                  \flag: unsaved changes
@@ -4233,53 +4210,6 @@ wd 'psel ttb; set g sort 0 ',direction 0
 )
 
 onload 'start 0'
-
-'==================== [cal] tabmath.ijs ===================='
-cocurrent 'z'
-
-sqr=: SUPPRESSED
-sqrt=: %:
-cube=: 3 ^~ ]
-
-
-PI=:	o.1
-PI2=:	o.2
-PI4=:	o.4
-PIb3=:	o.1r3
-PI4b3=:	o.4r3
-RT2=:	2^0.5
-RT3=:	3^0.5
-abs=: |
-avg=: +/ % #
-exp=: ^
-div=: %
-int=: [: <. ] + 0 > ]
-mod=: |~
-times=: *
-
-choice=: 4 : '((0>.1<.x)){y'
-sin=: 1&o."0
-cos=: 2&o."0
-tan=: 3&o."0
-
-sinh=: 5&o."0
-cosh=: 6&o."0
-tanh=: 7&o."0
-
-arcsin=: _1&o."0
-arccos=: _2&o."0
-arctan=: _3&o."0
-
-arcsinh=: _5&o."0
-arccosh=: _6&o."0
-arctanh=: _7&o."0
-
-pi=: 1p1
-
-dfr=: *&(180%pi)
-rfd=: *&(pi%180)
-BP=: 373.15
-FP=: 273.15
 
 '==================== [cal] dashboard.ijs ===================='
 

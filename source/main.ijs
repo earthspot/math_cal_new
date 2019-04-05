@@ -186,7 +186,7 @@ if. (0~:x)*.(hasf y) do.
   if. RATIONALIZED do.
     r1=. r inversion deltaz    NB. updated values for ancestors
   else.
-    r1=. 'beval'&ratit (float r) inversion (float deltaz)
+    r1=. ('beval'&ratit) (float r) inversion (float deltaz)
   end.
 end.
   ssw '--- beval: heuristics used: ',,>INVERSION
@@ -198,8 +198,7 @@ r1 a }vsiqn
   NB. See bcalc for how it handles (y{vsiqn) and deltaz.
 )
 
-float=: real
-rat=: 'beval'&ratit
+float=: _1&x:
 
 bend=: 3 : 0
   NB. perm to move item y bottom or top (y<0)
@@ -2183,11 +2182,11 @@ NB. =========== ratit ========================
 ratit=: ('tag' ddefine) "1 _ 1  NB. accept whole list e.g. vquan
   NB. rationalize number (y) if floating
   NB. and warn!
-  NB. x is identifier of caller to show in the warning notice
+  NB. optional (x) is identifier of caller to show in the warning notice
 if. 1 4 64 128 e.~ {.3!:0 y do. y
 else.
   msg '>>> ratit called in (x): converting: [(y)]'
-  rational__uun y
+  x:!.0 y
 end.
 )
 0 :0

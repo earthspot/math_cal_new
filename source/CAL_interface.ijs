@@ -25,7 +25,7 @@ NB. ========================================================
   NB. (Instrs with: dummy'' pre-handled by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '2019-04-02  21:26:20'   \noun: CAL last saved
+QSAV void '2019-04-05  00:18:55'   \noun: CAL last saved
 Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
 Revt void revert''                 \=revert all changes
@@ -36,6 +36,7 @@ ANCS r    ancestors r              \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
 CTAB void ct''                     \t-table display: wide chars
+CTBB void ctb''                    \t-table display: boxed raw data
 CTBN n    utf8 x2f ct n            \t-table display choice: utf-8
 CTBU void utf8 x2f ct''            \t-table display: utf-8
 DIRT void dirty''                  \flag: unsaved changes
