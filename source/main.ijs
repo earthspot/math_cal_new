@@ -2160,7 +2160,7 @@ else.
   msg=: empty
   sllog=: empty
 end.
-smoutput '+++ trace ',":y
+NB. smoutput '+++ trace ',":y
 i.0 0
 )
 
@@ -2174,7 +2174,7 @@ if. y do.
 else.
   sswInversion=: empty
 end.
-smoutput '+++ traceINV ',":y
+NB. smoutput '+++ traceINV ',":y
 i.0 0
 )
 

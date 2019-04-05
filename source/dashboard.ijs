@@ -184,7 +184,7 @@ else.
   msg=: empty
   sllog=: empty
 end.
-smoutput '+++ trace ',":y
+NB. smoutput '+++ trace ',":y
 i.0 0
 )
 
