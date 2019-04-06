@@ -15,6 +15,8 @@ AABUILT=: '2019-04-04  23:13:42'
 AABUILT=: '2019-04-05  04:45:04'
 AABUILT=: '2019-04-05  05:47:42'
 AABUILT=: '2019-04-05  05:54:32'
+AABUILT=: '2019-04-06  03:16:07'
+AABUILT=: '2019-04-06  04:58:15'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -231,7 +233,6 @@ not=: -.
 sig=: 3 : 'SIG__uun=: y'
 uunicode=: 3 : 'SIC__uun=: y'
 
-wd=: 3 : 'wd_z_ WD=: y'
 ctb=: 3 : '}.each ,.each vhold ; CH ; vquan ; (>UNITN) ; (>UNITS) ; TTn'
 
 '==================== [cal] handy4cal.ijs ===================='
@@ -2403,7 +2404,6 @@ else.
   msg=: empty
   sllog=: empty
 end.
-NB. smoutput '+++ trace ',":y
 i.0 0
 )
 
@@ -2417,7 +2417,6 @@ if. y do.
 else.
   sswInversion=: empty
 end.
-NB. smoutput '+++ traceINV ',":y
 i.0 0
 )
 ratit=: ('tag' ddefine) "1 _ 1
@@ -3262,6 +3261,7 @@ ABOU void ABOUT                    \About the engine
 ANCS r    ancestors r              \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
+CONV yy   uuengine INSTR           \convert units: yy
 CTAB void ct''                     \t-table display: wide chars
 CTBB void ctb''                    \t-table display: boxed raw data
 CTBN n    utf8 x2f ct n            \t-table display choice: utf-8
@@ -4310,6 +4310,7 @@ else.
 end.
 )
 
+0 :0
 dashDead=: 3 : 0
 
 try. wd 'psel dash'
@@ -4329,7 +4330,7 @@ dash_close=: 3 : 0
 wd :: empty 'psel dash; pclose;'
 )
 
-line=: 3 : 'smoutput 50#UL'
+smline=: 3 : 'smoutput 50#UL'
 
 dash_bnRefresh_button=: refresh
 dash_panel_button=: 3 : 'refresh NIL [do panel-.LF'
@@ -4343,42 +4344,42 @@ dash_bnsmx_button=: smclear
 
 dash_bnVEX_button=: 3 : 0
 
-line''
+smline''
 smoutput sw '+++ VEX is:'
 smoutput VEX_tabby_
-line''
+smline''
 )
 
 dash_bnCTBU_button=: 3 : 0
 
-line''
+smline''
 smoutput sw '+++ CTBU is:'
 smoutput tabengine 'CTBU'
-line''
+smline''
 )
 
 dash_bnINV_button=: 3 : 0
 
-line''
+smline''
 smoutput sw '+++ INVERSION is:'
 smoutput INVERSION
-line''
+smline''
 )
 
 dash_bninv_button=: 3 : 0
 
-line''
+smline''
 smoutput sw '+++ inversion is:'
 smoutput 5!:5 <'inversion'
-line''
+smline''
 )
 
 dash_bnRETURNED_button=: 3 : 0
 
-line''
+smline''
 smoutput sw '+++ RETURNED is (datatype RETURNED)[($RETURNED)]:'
 smoutput RETURNED
-line''
+smline''
 )
 
 putsb=: 3 : 0
@@ -4396,7 +4397,6 @@ else.
   msg=: empty
   sllog=: empty
 end.
-NB. smoutput '+++ trace ',":y
 i.0 0
 )
 

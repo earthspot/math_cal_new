@@ -163,5 +163,4 @@ not=: -.		NB. own copy of tabz verb
 sig=: 3 : 'SIG__uun=: y'
 uunicode=: 3 : 'SIC__uun=: y'
 
-wd=: 3 : 'wd_z_ WD=: y'  NB. TEST cover for wd_z_
 ctb=: 3 : '}.each ,.each vhold ; CH ; vquan ; (>UNITN) ; (>UNITS) ; TTn'

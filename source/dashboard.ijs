@@ -98,6 +98,7 @@ else.
 end.
 )
 
+0 :0
 dashDead=: 3 : 0
   NB. =1 iff dashboard not showing
 try. wd 'psel dash'
@@ -117,7 +118,7 @@ dash_close=: 3 : 0
 wd :: empty 'psel dash; pclose;'
 )
 
-line=: 3 : 'smoutput 50#UL'
+smline=: 3 : 'smoutput 50#UL'
 
 dash_bnRefresh_button=: refresh
 dash_panel_button=: 3 : 'refresh NIL [do panel-.LF'
@@ -131,42 +132,42 @@ dash_bnsmx_button=: smclear
 
 dash_bnVEX_button=: 3 : 0
   NB. handler: reveal the latest VEX_tabby_
-line''
+smline''
 smoutput sw '+++ VEX is:'
 smoutput VEX_tabby_
-line''
+smline''
 )
 
 dash_bnCTBU_button=: 3 : 0
   NB. handler: reveal the current CTBU display
-line''
+smline''
 smoutput sw '+++ CTBU is:'
 smoutput tabengine 'CTBU'  NB. why not: ct'' ??
-line''
+smline''
 )
 
 dash_bnINV_button=: 3 : 0
   NB. handler: reveal INVERSION
-line''
+smline''
 smoutput sw '+++ INVERSION is:'
 smoutput INVERSION
-line''
+smline''
 )
 
 dash_bninv_button=: 3 : 0
   NB. handler: reveal INVERSION
-line''
+smline''
 smoutput sw '+++ inversion is:'
 smoutput 5!:5 <'inversion'
-line''
+smline''
 )
 
 dash_bnRETURNED_button=: 3 : 0
   NB. handler: reveal the RETURNED cache
-line''
+smline''
 smoutput sw '+++ RETURNED is (datatype RETURNED)[($RETURNED)]:'
 smoutput RETURNED
-line''
+smline''
 )
 
 putsb=: 3 : 0
