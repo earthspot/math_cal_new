@@ -79,8 +79,8 @@ vd_X=: 3 : 'd_X'  NB. final (d_X) g computes before dying
 g=: 3 : 0
 	NB. === NEWTON-RAPHSON (N-R) INVERTER ===
   NB. >>> USES THESE GLOBAL workvars: X0 dY0 d_X
-timeout'' [COUNT=: COUNT+1
 d_X=: y  NB. y gets return. from previous pass. NOTE: (=:)
+timeout'' [COUNT=: COUNT+1
 NB. d_Y=. (fwd X0+d_X) - fwdX0  NB. d_Y used only inside this verb. NOTE: (=.)
 d_Y=: (fwd X0+d_X) - fwdX0  NB. d_Y used only inside this verb
 d_X=: real amodel * d_X * dY0 % d_Y  NB. d_X adjusted from (y)
@@ -92,4 +92,8 @@ d_X return.     NB. becomes (y) at next pass of g^:_
 
 aa=: approximates=: 4 : 0
 APPROXIMATED=: (x=y) or TOLERANCE >: (|x-y) % (x max y)
+)
+
+onload 0 :0
+483339916633277r187649984473771 40230 1 inversion_inverNRUC_ 66378546930353r32
 )

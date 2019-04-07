@@ -17,6 +17,8 @@ AABUILT=: '2019-04-05  05:47:42'
 AABUILT=: '2019-04-05  05:54:32'
 AABUILT=: '2019-04-06  03:16:07'
 AABUILT=: '2019-04-06  04:58:15'
+AABUILT=: '2019-04-07  01:57:39'
+AABUILT=: '2019-04-07  03:31:01'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -129,7 +131,6 @@ twice=:	+: monadic
 halve=:	-: monadic
 square=:	*: monadic
 sq=:	*: monadic
-sqrt=:	%: monadic
 
 
 
@@ -3098,8 +3099,8 @@ vd_X=: 3 : 'd_X'
 g=: 3 : 0
 
 
-timeout'' [COUNT=: COUNT+1
 d_X=: y
+timeout'' [COUNT=: COUNT+1
 d_Y=: (fwd X0+d_X) - fwdX0
 d_X=: real amodel * d_X * dY0 % d_Y
 wd'msgs' [ssw 'g[(COUNT)] (y) (d_X) (d_Y) (G)'
@@ -3109,6 +3110,10 @@ d_X return.
 
 aa=: approximates=: 4 : 0
 APPROXIMATED=: (x=y) or TOLERANCE >: (|x-y) % (x max y)
+)
+
+onload 0 :0
+483339916633277r187649984473771 40230 1 inversion_inverNRUC_ 66378546930353r32
 )
 
 '==================== [cal] inverTAY.ijs ===================='
@@ -3186,8 +3191,8 @@ avg=: +/ % #
 g=: 3 : 0
 
 
-timeout'' [COUNT=: COUNT+1
 d_X=: y
+timeout'' [COUNT=: COUNT+1
 d_Y=. (fwd X0+d_X) - fwdX0
 d_Xsemi=. d_X%2
 d_Ysemi=. (fwd X0+d_Xsemi) - fwdX0

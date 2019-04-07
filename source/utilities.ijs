@@ -52,7 +52,7 @@ twice=:	+: monadic
 halve=:	-: monadic
 square=:	*: monadic
 sq=:	*: monadic
-sqrt=:	%: monadic
+NB. sqrt=:	%: monadic  --suppressed in favor of UU
   NB. …more are needed, e.g. abs int roundup …
 
 	NB. Generate integer-suffixed id

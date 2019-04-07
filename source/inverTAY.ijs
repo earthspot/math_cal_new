@@ -78,8 +78,8 @@ avg=: +/ % #
 g=: 3 : 0
 	NB. === NEWTON-RAPHSON (N-R) INVERTER ===
   NB. >>> USES THESE GLOBAL workvars: X0 dY0 d_X
-timeout'' [COUNT=: COUNT+1
 d_X=: y  NB. y gets return. from previous pass. NOTE: (=:)
+timeout'' [COUNT=: COUNT+1
 d_Y=. (fwd X0+d_X) - fwdX0  NB. d_Y used only inside this verb. NOTE: (=.)
 d_Xsemi=. d_X%2
 d_Ysemi=. (fwd X0+d_Xsemi) - fwdX0
