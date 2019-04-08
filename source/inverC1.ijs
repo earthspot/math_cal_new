@@ -7,8 +7,7 @@ Monday 22 October 2018  05:26:53
 TEST WITH line {5,6} of SAMPLE 4
 )
 
-coclass z=.'inverC1'
-clear z
+coclass 'inverC1'
 
 inversion=: inversionC_cal_ f.
 

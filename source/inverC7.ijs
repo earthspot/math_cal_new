@@ -7,8 +7,7 @@ Wednesday 24 October 2018  01:40:54
 Based on inverC5, with - for %
 )
 
-coclass z=.'inverC7'
-clear z
+coclass 'inverC7'
 
 inversion=: inversionC_cal_ f.
 

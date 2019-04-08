@@ -1,24 +1,17 @@
 0 :0
-Wednesday 3 April 2019  12:23:38
+Monday 8 April 2019  13:25:01
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
 )
 coclass 'cal'
 onload_z_=: empty
+RATIONALIZED_z_=: 1
+smoutputINV_z_=: empty
+smoutputINV_z_=: smoutput&sw
 
-AABUILT=: '2019-04-03  12:24:22'
-AABUILT=: '2019-04-04  22:35:49'
-AABUILT=: '2019-04-04  23:01:42'
-AABUILT=: '2019-04-04  23:11:00'
-AABUILT=: '2019-04-04  23:13:42'
-AABUILT=: '2019-04-05  04:45:04'
-AABUILT=: '2019-04-05  05:47:42'
-AABUILT=: '2019-04-05  05:54:32'
-AABUILT=: '2019-04-06  03:16:07'
-AABUILT=: '2019-04-06  04:58:15'
-AABUILT=: '2019-04-07  01:57:39'
-AABUILT=: '2019-04-07  03:31:01'
+AABUILT=: '2019-04-08  13:27:23'
+AABUILT=: '2019-04-08  13:27:56'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -466,7 +459,8 @@ bcalc=: 3 : 0
 
 
 
-deltaz=. 'bcalc'ratit y{(vsiqn-vsiq0)
+deltaz=. 'bcalc'ratit (y{vsiqn)-(y{vsiq0)
+
 deltaz beval y
 
 
@@ -519,8 +513,6 @@ r1 a }vsiqn
 
 
 )
-
-float=: _1&x:
 
 bend=: 3 : 0
 
@@ -2217,7 +2209,7 @@ else.
     34 message tag return.
   end.
 end.
-  ssw '(LF)+++ (tag): nZN=(nZN) nrestore=(nrestore)'
+  msg '(LF)+++ (tag): nZN=(nZN) nrestore=(nrestore)'
 nrestore snapshot''
 33 message tag; nrestore
 )
@@ -2420,6 +2412,16 @@ else.
 end.
 i.0 0
 )
+
+rationalize=: 3 : 0
+
+if. y do.
+  RATIONALIZED_z_=: 1
+else.
+  RATIONALIZED_z_=: 0
+end.
+i.0 0
+)
 ratit=: ('tag' ddefine) "1 _ 1
 
 
@@ -2505,7 +2507,7 @@ lin0 , z #~ force0 -.vhidd
 
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 0 :0
-Wednesday 7 November 2018  16:28:08
+Monday 8 April 2019  13:27:46
 -
 INVERSION TEST: use SAMPLE4
 -
@@ -2557,16 +2559,20 @@ inversion=: endstop
 
 beginstop=: 4 : 0
 
-ssw date''
-ssw '>>> beginstop: called with:(LF)   (x) inversion_cal_ (y)'
+ssw LF,'+++++ beginstop[(date$0)]: entered via:'
+ssw '  (x) inversion_cal_ (y)'
 assert. 0
 )
 
 endstop=: 4 : 0
 
 qAssertionFailure''
-ssw '>>> endstop: called with:(LF)   (x) inversion_cal_ (y)'
+ssw LF,'+++++ endstop[(date$0)]: entered via:'
+ssw '  (x) inversion_cal_ (y)'
 register 'endstop'
+
+
+
 x return.
 )
 
@@ -2586,6 +2592,7 @@ z [INVERSION_cal_=: INVERSION_cal_ , <z=. y
 )
 
 inversionC=: 4 : 0
+	smoutputINV '+++++ inversion_(>coname$0)_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 
@@ -2610,6 +2617,7 @@ ssw'... (me): Y0D=(Y0D) ~= fwdX1=(fwd X1) ??'
 assert. Y0D approximates_cal_ fwd X1
 ssw'--- (me): …yes, close enough. […Exits]'
 register me
+	smoutputINV '----- inversion_(>coname$0)_ returns X1'
 X1 return.
 )
 
@@ -2621,13 +2629,12 @@ approximates=: 4 : '(x=y) or (TOLERANCE >: |x-y)'
 
 '==================== [cal] inverC0.ijs ===================='
 0 :0
-Monday 22 October 2018  05:59:56
+Monday 8 April 2019  13:05:08
 -
 TEST WITH line {4} of SAMPLE 4 -- PI * X[1]
 )
 
-coclass z=.'inverC0'
-clear z
+coclass 'inverC0'
 
 inversion=: inversionC_cal_ f.
 
@@ -2647,8 +2654,7 @@ Monday 22 October 2018  05:26:53
 TEST WITH line {5,6} of SAMPLE 4
 )
 
-coclass z=.'inverC1'
-clear z
+coclass 'inverC1'
 
 inversion=: inversionC_cal_ f.
 
@@ -2665,8 +2671,7 @@ Monday 22 October 2018  18:03:32
 TEST WITH lines {7,8} of SAMPLE 4
 )
 
-coclass z=.'inverC2'
-clear z
+coclass 'inverC2'
 
 inversion=: inversionC_cal_ f.
 
@@ -2688,8 +2693,7 @@ Monday 22 October 2018  18:02:28
 TEST WITH line {9} of SAMPLE 4 -- X[1]^2
 )
 
-coclass z=.'inverC3'
-clear z
+coclass 'inverC3'
 
 inversion=: inversionC_cal_ f.
 
@@ -2707,8 +2711,7 @@ TEST WITH lines {10} of SAMPLE 4
 HOW ON EARTH does it manage line {13} also?
 )
 
-coclass z=.'inverC4'
-clear z
+coclass 'inverC4'
 
 inversion=: inversionC_cal_ f.
 
@@ -2726,8 +2729,7 @@ Monday 22 October 2018  18:36:29
 TEST WITH lines {11} of SAMPLE 4
 )
 
-coclass z=.'inverC5'
-clear z
+coclass 'inverC5'
 
 inversion=: inversionC_cal_ f.
 
@@ -2753,8 +2755,7 @@ BASED ON inverC5 with items in the reverse order.
 It would be redundant if beval recognised the need to reverse X0.
 )
 
-coclass z=.'inverC6'
-clear z
+coclass 'inverC6'
 
 inversion=: inversionC_cal_ f.
 
@@ -2777,8 +2778,7 @@ Wednesday 24 October 2018  01:40:54
 Based on inverC5, with - for %
 )
 
-coclass z=.'inverC7'
-clear z
+coclass 'inverC7'
 
 inversion=: inversionC_cal_ f.
 
@@ -2802,7 +2802,6 @@ Based on inverC6, with - for %
 )
 
 coclass z=.'inverC8'
-clear z
 
 inversion=: inversionC_cal_ f.
 
@@ -2825,8 +2824,7 @@ Monday 22 October 2018  17:42:07
 Expand this script to handle a new conjecture about (fwd X)
 )
 
-coclass z=.'inverC9'
-clear z
+coclass 'inverC9'
 
 inversion=: inversionC_cal_ f.
 
@@ -2858,6 +2856,7 @@ fwd=: empty
 register=: register_cal_ f.
 record=: empty
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverNRS_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 
@@ -2892,6 +2891,7 @@ ssw '--- (me): dX=(dX) d1X=(d1X)'
   2 record''
 X1=: X0+dX
 register me
+	smoutputINV '----- inversion_inverNRS_ returns X1'
 X1 return.
 )
 
@@ -2923,6 +2923,7 @@ register=: register_cal_ f.
 record=: record_cal_
 
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverNRFCR_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
@@ -2955,6 +2956,7 @@ ssw '--- (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd X1=: X0+dX
 assert. Y1 approximates_cal_ fwdX1
 register me
+	smoutputINV '----- inversion_inverNRFCR_ returns X1'
 X1 return.
 )
 
@@ -2977,13 +2979,13 @@ Wednesday 7 November 2018  17:18:23
 )
 
 coclass z=.'inverNRFC'
-clear z
-
 MAXLOOP=: 20
 fwd=: empty
 register=: register_cal_ f.
 
+
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverNRFC_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
@@ -2993,6 +2995,7 @@ amodel=: amodel_cal_
 ssw=: sswInversion_cal_ f.
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
+COUNT=: 0
 
 X0=: argLEFT
 Y0=: fwdX0=: fwd(X0)
@@ -3014,6 +3017,7 @@ ssw '--- (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd X1=: X0+dX
 assert. Y1 approximates_cal_ fwdX1
 register me
+	smoutputINV '----- inversion_inverNRFC_ returns X1'
 X1 return.
 )
 
@@ -3022,9 +3026,10 @@ g=: 3 : 0
 
 
 d_X=. y
+COUNT=: COUNT+1
 d_Y=. (fwd X0+d_X) -(fwd X0)
 d_X=. real amodel * d_X * dY0 % d_Y
-ssw '... g: X0=(X0) dY0=(dY0) d_X=(d_X) d_Y=(d_Y)'
+wd'msgs' [ssw 'g[(COUNT)] y=[(y)] d_X=[(d_X)] d_Y=(float d_Y)'
 d_X return.
 
 )
@@ -3037,9 +3042,7 @@ rerun=: 3 : '2.5 40230 1 inversion_inverNRUC_ 7036300000000'
 )
 
 coclass z=.'inverNRUC'
-clear z
-
-TIMEOUT=: 3
+TIMEOUT=: 5
 TOLERANCE=: 1e_5
 
 timeout=: 3 : 0
@@ -3053,18 +3056,23 @@ fwd=: empty
 
 
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverNRUC_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
+INVERSIONx__=: x [INVERSIONy__=: y
 erase 'X Y X0 Y0 fwdX0 X1 Y0D dY dY0 dX d_X d1X d2X'
 register=: register_cal_ f.
+
 TOLERANCE=: TOLERANCE_cal_
 fwd=: fwd_cal_
 amodel=: amodel_cal_
 ssw=: sswInversion_cal_ f.
 ssw'+++ (me): amodel=(amodel); TEST CALL…'
 ssw'   (argLEFT) (me) (argRIGHT)'
-". sw'rerun=: 3 : ''(argLEFT) (me) (argRIGHT)'''
+ssw'>>> but you may find rerun__$0 more convenient! <<<'
+
+". sw'rerun__=: 3 : ''(argLEFT) (me) (argRIGHT)'''
 timeout TIMEOUT [COUNT=: 0
 
 X0=: argLEFT
@@ -3079,18 +3087,16 @@ G=: H=: __
 ssw '... argLEFT=X0=(X0) argRIGHT=dY0=(dY0) start g with d1X=(d1X)'
 dX=: (g^:_) :: vd_X d1X
 
-ssw '=====  ======= ======= =======  ====='
-ssw 'COUNT  y       d_X     d_Y      G  H'
-ssw '=====  ======= ======= =======  ====='
-ssw '... (me): dX=(dX) d1X=(d1X)'
+ssw '... (me): dX=[(dX)] d1X=[(d1X)]'
 fwdX1=: fwd X1=: X0+dX
 if. Y0D approximates fwdX1 do.
   ssw'... yes… Y0D=(Y0D) approximates fwdX1=(fwdX1)'
 else.
-  ssw'>>> no… Y0D=(Y0D) <==> fwdX1=(fwdX1) not close enough.'
+  ssw'>>> no… Y0D=(Y0D) <==> fwdX1=(float fwdX1) not close enough.'
   assert. 0
 end.
 register me
+	smoutputINV '----- inversion_inverNRUC_ returns X1'
 X1 return.
 )
 
@@ -3103,7 +3109,7 @@ d_X=: y
 timeout'' [COUNT=: COUNT+1
 d_Y=: (fwd X0+d_X) - fwdX0
 d_X=: real amodel * d_X * dY0 % d_Y
-wd'msgs' [ssw 'g[(COUNT)] (y) (d_X) (d_Y) (G)'
+wd'msgs' [ssw 'g[(COUNT)] y=[(y)] d_X=[(d_X)] d_Y=(float d_Y)'
 d_X return.
 
 )
@@ -3112,9 +3118,7 @@ aa=: approximates=: 4 : 0
 APPROXIMATED=: (x=y) or TOLERANCE >: (|x-y) % (x max y)
 )
 
-onload 0 :0
-483339916633277r187649984473771 40230 1 inversion_inverNRUC_ 66378546930353r32
-)
+onload 'rerun__$0'
 
 '==================== [cal] inverTAY.ijs ===================='
 0 :0
@@ -3141,7 +3145,9 @@ assert. TIME > 6!:1''
 fwd=: empty
 register=: register_cal_ f.
 
+
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverTAY_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 
 argLEFT=. x [argRIGHT=. y
@@ -3169,9 +3175,6 @@ H=: % D2fwd X0
 ssw '... argLEFT=X0=(X0) argRIGHT=dY0=(dY0) G=(G); start g with d1X=(d1X)'
 dX=: (g^:_) :: vd_X d1X
 
-ssw '=====  ======= ======= =======  ======= ======='
-ssw 'COUNT  y       d_X     d_Y      G       H'
-ssw '=====  ======= ======= =======  ======= ======='
 ssw '... (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd(X1=: X0+dX)
 if. Y0D approximates_cal_ fwdX1 do.
@@ -3181,6 +3184,7 @@ else.
   assert. 0
 end.
 register me
+	smoutputINV '----- inversion_inverTAY_ returns X1'
 X1 return.
 )
 
@@ -4219,23 +4223,26 @@ onload 'start 0'
 '==================== [cal] dashboard.ijs ===================='
 
 0 :0
-Friday 29 March 2019  13:02:02
+Monday 8 April 2019  12:14:16
 -
-sswInversion (set to empty by: start)
- …controls tracing in inversion* locales.
- These locales call: ssw (set on entry to: sswInversion_cal_)
- The verb: trace -plays no part in this independent tracing mechanism.
+WARNING: MSLOG can build up indefinitely.
 -
-wd 'psel dash; qform;'
+sswInversion is set to: empty by: start
+ …controls tracing in inver* locales, which call: ssw INSTEAD OF: msg
+ …ssw is set to: sswInversion_cal_ -on entry to: inversion_inver*_
+The verb: trace -plays no part in this separate tracing mechanism.
 -
-To show dashboard: dash 1
+To move the form: update DASHPOS below after running this phrase…
+ wd 'psel dash; qform;'
+To show dashboard:
+ dash 1
 )
 
 cocurrent 'cal'
 
-ckTraceTAB=: ckTraceINV=: ckTraceUU=: ckTrace=: ,'0'
-
 DASHPOS=: 810 647 321 483
+
+ckRAT=: ckTraceTAB=: ckTraceINV=: ckTraceUU=: ckTrace=: ,'0'
 
 DASH=: 0 : 0
 pc dash;pn "CAL dashboard";
@@ -4246,6 +4253,7 @@ cc inslog listbox;
 cc panel edit;
 
 bin hs;
+cc ckRAT checkbox; cn "RAT";
 cc ckTraceTAB checkbox; cn "trace TAB";
 cc ckTrace checkbox; cn "…CAL";
 cc ckTraceINV checkbox; cn "…INV";
@@ -4277,7 +4285,7 @@ DASHINFO=: 0 : 0
  [MAXINVERT=:(MAXINVERT) [OVERHELDS=: ,'(OVERHELDS)'
  [PAD=: (PAD) [PROTECT=: (PROTECT) [PLOT=:(PLOT)
  [TIMEOUT=: (TIMEOUT) [TOLERANCE=: (TOLERANCE)
- [RATIONALIZED=: (RATIONALIZED)
+ [RATIONALIZED_z_=: (RATIONALIZED)
 )
 
 refresh=: 3 : 0
@@ -4315,13 +4323,7 @@ else.
 end.
 )
 
-0 :0
-dashDead=: 3 : 0
-
-try. wd 'psel dash'
-catch. 1 return. end.
-0 return.
-)
+dash_z_=: dash_cal_
 
 dashDead=: 3 : '{. ,wd :: 1: ''psel dash'''
 
@@ -4331,15 +4333,14 @@ dash_default=: 3 : 0
 smoutput '>>> missing handler: ',sysevent
 )
 
-dash_close=: 3 : 0
-wd :: empty 'psel dash; pclose;'
-)
+dash_close=: (wd :: empty) bind 'psel dash; pclose'
 
 smline=: 3 : 'smoutput 50#UL'
 
 dash_bnRefresh_button=: refresh
-dash_panel_button=: 3 : 'refresh NIL [do panel-.LF'
+dash_panel_button=: 3 : 'refresh$0 [do panel-.LF'
 
+dash_ckRAT_button=:      3 : 'rationalize ".ckRAT'
 dash_ckTrace_button=:    3 : 'trace ".ckTrace'
 dash_ckTraceINV_button=: 3 : 'traceINV ".ckTraceINV'
 dash_ckTraceTAB_button=: 3 : 'trace_tabby_ ".ckTraceTAB'
@@ -4392,6 +4393,7 @@ putsb=: 3 : 0
 wd 'psel dash; set sbar text *',":,y
 )
 
+0 :0
 trace=: 3 : 0
 
 
@@ -4409,29 +4411,27 @@ onload 'dash _1'
 
 '==================== [cal] start.ijs ===================='
 
-0 :0
-WARNING: MSLOG can build up indefinitely.
-)
-
 cocurrent 'cal'
 
 VERSION=: '2.1.00'
-dash_z_=: dash_cal_
 
+0 :0
++++ CHOICE OF INVERSION HEURISTICS
+inversionA=: beginstop ::inversion_inverNRUC_ ::endstop
+inversionB=: beginstop ::inversion_inverTAY_ ::endstop
 
+-
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
 inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
+-
 inversion0=: beginstop ::inverCser ::endstop
 inversion1=: beginstop ::inverNRser ::endstop
 inversion2=: beginstop ::inverNRRser ::endstop
 inversion3=: beginstop ::inverCser ::inverNRser ::endstop
-
-inversionA=: beginstop ::inversion_inverNRUC_ ::endstop
-inversionB=: beginstop ::inversion_inverTAY_ ::endstop
-
+)
+inversion3=: beginstop ::inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRFC_ ::inversion_inverNRUC_ ::endstop
 inversion=: inversion3
-
 start=: 3 : 0
 
 
@@ -4498,7 +4498,6 @@ OVERHELDS=: ''
 PAD=: 10
 PROTECT=: 1
 PLOT=: 0
-RATIONALIZED=: 1
 RETURNED=: ''
 STARTED=: 0
 TIMEOUT=: 5

@@ -1,31 +1,31 @@
 	NB. cal - start.ijs
 '==================== [cal] start.ijs ===================='
 
-0 :0
-WARNING: MSLOG can build up indefinitely.
-)
-
 cocurrent 'cal'
 
 VERSION=: '2.1.00'
-dash_z_=: dash_cal_
 
-
+0 :0
++++ CHOICE OF INVERSION HEURISTICS
+inversionA=: beginstop ::inversion_inverNRUC_ ::endstop  NB. TAY expt
+inversionB=: beginstop ::inversion_inverTAY_ ::endstop  NB. TAY expt
+	NB. use temp 41 to switch inversion between inversionA/B
+-
 inverCser=: inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_
 inverNRser=: inversion_inverNRFC_ ::inversion_inverNRUC_
 inverNRRser=: inversion_inverNRFCR_ ::inversion_inverNRUC_
+-
 inversion0=: beginstop ::inverCser ::endstop    NB. debug inverCser
 inversion1=: beginstop ::inverNRser ::endstop   NB. debug inverNRser
 inversion2=: beginstop ::inverNRRser ::endstop  NB. debug N-R
 inversion3=: beginstop ::inverCser ::inverNRser ::endstop  NB. operational use
-
-inversionA=: beginstop ::inversion_inverNRUC_ ::endstop  NB. TAY expt
-inversionB=: beginstop ::inversion_inverTAY_ ::endstop  NB. TAY expt
-
-inversion=: inversion3  NB. the best option to-date
-	NB. use temp 41 to switch inversion between inversionA/B
+)
+inversion3=: beginstop ::inversion_inverC0_ ::inversion_inverC1_ ::inversion_inverC2_ ::inversion_inverC3_ ::inversion_inverC4_ ::inversion_inverC5_ ::inversion_inverC6_ ::inversion_inverC7_ ::inversion_inverC8_ ::inversion_inverC9_ ::inversion_inverNRFC_ ::inversion_inverNRUC_ ::endstop  NB. operational use
 
 NB. ========================================================
+inversion=: inversion3  NB. the best option to-date
+NB. ========================================================
+
 start=: 3 : 0
   NB. start the CAL-engine
   NB. start 0 -- starts with SAMPLE0
@@ -105,7 +105,6 @@ OVERHELDS=: ''	NB. items recognised by: beval
 PAD=: 10		NB. used by: pad
 PROTECT=: 1	NB. 1==don't overwrite t-table of same name
 PLOT=: 0		NB. plot control parameter
-RATIONALIZED=: 1	NB. =1 to use rational numbers (esp in beval)
 RETURNED=: ''	NB. noun returned by i/f call
 STARTED=: 0	NB. 1==start completes ok
 TIMEOUT=: 5	NB. seconds (used by: timeout)

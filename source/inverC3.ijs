@@ -7,8 +7,7 @@ Monday 22 October 2018  18:02:28
 TEST WITH line {9} of SAMPLE 4 -- X[1]^2
 )
 
-coclass z=.'inverC3'
-clear z
+coclass 'inverC3'
 
 inversion=: inversionC_cal_ f.
 

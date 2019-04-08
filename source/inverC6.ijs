@@ -10,8 +10,7 @@ BASED ON inverC5 with items in the reverse order.
 It would be redundant if beval recognised the need to reverse X0.
 )
 
-coclass z=.'inverC6'
-clear z
+coclass 'inverC6'
 
 inversion=: inversionC_cal_ f.
 

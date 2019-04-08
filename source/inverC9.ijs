@@ -7,8 +7,7 @@ Monday 22 October 2018  17:42:07
 Expand this script to handle a new conjecture about (fwd X)
 )
 
-coclass z=.'inverC9'
-clear z
+coclass 'inverC9'
 
 inversion=: inversionC_cal_ f.
 

@@ -8,7 +8,6 @@ Based on inverC6, with - for %
 )
 
 coclass z=.'inverC8'
-clear z
 
 inversion=: inversionC_cal_ f.
 

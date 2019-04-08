@@ -144,7 +144,8 @@ bcalc=: 3 : 0
   NB. returns full set of values for assigning to: vsiqn
   NB. Does NOT alter vsiqn itself
   NB. Assumes (c/f fcalc) that y{vsiqn has new given value already.
-deltaz=. 'bcalc'ratit y{(vsiqn-vsiq0)  NB. the resulting change in y's value
+deltaz=. 'bcalc'ratit (y{vsiqn)-(y{vsiq0)  NB. the resulting change in y's value
+  NB. must extract y{… separately because vsiqn may contain infinities
 deltaz beval y      NB. compute plausible inputs to y
   NB. beval returns an update for vsiqn (with altered ancestors y)
   NB. which may / may NOT recalc the existing y{z.
@@ -197,8 +198,6 @@ r1 a }vsiqn
   NB. (Currently the calling verb: bcalc throws this value away.)
   NB. See bcalc for how it handles (y{vsiqn) and deltaz.
 )
-
-float=: _1&x:
 
 bend=: 3 : 0
   NB. perm to move item y bottom or top (y<0)
@@ -1950,7 +1949,7 @@ else.
     34 message tag return.
   end.
 end.
-  ssw '(LF)+++ (tag): nZN=(nZN) nrestore=(nrestore)'
+  msg '(LF)+++ (tag): nZN=(nZN) nrestore=(nrestore)'
 nrestore snapshot''
 33 message tag; nrestore
 )
@@ -2173,6 +2172,17 @@ if. y do.
   sswInversion=: smoutput&sw
 else.
   sswInversion=: empty
+end.
+NB. smoutput '+++ traceINV ',":y
+i.0 0
+)
+
+rationalize=: 3 : 0
+  NB. set/reset RATIONALIZED_z_
+if. y do.
+  RATIONALIZED_z_=: 1
+else.
+  RATIONALIZED_z_=: 0
 end.
 NB. smoutput '+++ traceINV ',":y
 i.0 0

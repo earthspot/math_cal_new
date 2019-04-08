@@ -2,7 +2,7 @@
 '==================== [cal] inversion_CONTROLLER.ijs ===================='
 NB. TABULA inversion controller via daisychain technique
 0 :0
-Wednesday 7 November 2018  16:28:08
+Monday 8 April 2019  13:27:46
 -
 INVERSION TEST: use SAMPLE4
 -
@@ -54,17 +54,21 @@ inversion=: endstop  NB. placeholder, overridden by: start
 
 beginstop=: 4 : 0
   NB. ALWAYS the first verb in the daisychain
-ssw date''
-ssw '>>> beginstop: called with:(LF)   (x) inversion_cal_ (y)'
+ssw LF,'+++++ beginstop[(date$0)]: entered via:'
+ssw '  (x) inversion_cal_ (y)'
 assert. 0  NB. kick-off the daisychain with "bland" error
 )
 
 endstop=: 4 : 0
   NB. ALWAYS the final verb in the daisychain
 qAssertionFailure''
-ssw '>>> endstop: called with:(LF)   (x) inversion_cal_ (y)'
+ssw LF,'+++++ endstop[(date$0)]: entered via:'
+ssw '  (x) inversion_cal_ (y)'
 register 'endstop'  NB. assumes successful completion
-x return.  NB. forces rejection by caller (usually: beval)
+  NB. Returning the (x) arg unchanged (i.e. X1=X0)
+  NB. forces the caller (typically: beval) to reject
+  NB.  the value offered for backfitting by the user.
+x return.
 )
 
 qAssertionFailure=: 3 : 0
@@ -83,12 +87,13 @@ z [INVERSION_cal_=: INVERSION_cal_ , <z=. y
 )
 
 inversionC=: 4 : 0
+	smoutputINV '+++++ inversion_(>coname$0)_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
   NB. === CURVE-FITTING INVERTER SADDLE for inverC* ===
-  NB. serves locales: 'inverC*' (* = 1..9)
+  NB. COPIES MADE in locales: 'inverC*' (* = 1..9)
   NB. needs special case of verb: fit
   NB. in order to generate: bwd: Y0D --> X1
-  NB. >>> WARNING: executes in the caller's locale! <<<
+  NB. >>> WARNING: A COPY (…f.) executes in the caller's locale! <<<
 ssw=: sswInversion_cal_ f.
 argLEFT=. x [argRIGHT=. y
 erase 'X Y X0 Y0 X1 Y1 dY dY0 Y0D dX d_X d1X d2X'
@@ -107,6 +112,7 @@ ssw'... (me): Y0D=(Y0D) ~= fwdX1=(fwd X1) ??'
 assert. Y0D approximates_cal_ fwd X1
 ssw'--- (me): …yes, close enough. […Exits]'
 register me
+	smoutputINV '----- inversion_(>coname$0)_ returns X1'
 X1 return.
 )
 

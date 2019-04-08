@@ -8,8 +8,7 @@ TEST WITH lines {10} of SAMPLE 4
 HOW ON EARTH does it manage line {13} also?
 )
 
-coclass z=.'inverC4'
-clear z
+coclass 'inverC4'
 
 inversion=: inversionC_cal_ f.
 

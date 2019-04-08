@@ -16,6 +16,7 @@ NB. record=: empty  NB. DISABLE convergence recording
 record=: record_cal_  NB. ENABLE convergence recording
 
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverNRFCR_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 	NB. === NEWTON-RAPHSON (N-R) INVERTER ===
 argLEFT=. x [argRIGHT=. y
@@ -48,6 +49,7 @@ ssw '--- (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd X1=: X0+dX  NB. X1 : Y1 approximates fwd(X1)
 assert. Y1 approximates_cal_ fwdX1
 register me
+	smoutputINV '----- inversion_inverNRFCR_ returns X1'
 X1 return.
 )
 

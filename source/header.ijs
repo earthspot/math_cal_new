@@ -1,5 +1,5 @@
 0 :0
-Wednesday 3 April 2019  12:23:38
+Monday 8 April 2019  13:25:01
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -8,16 +8,9 @@ CAL: scientific calculator engine
 NB. clear 'cal'  NB. >>>>> CONSIDER DELETING THIS LINE IN RELEASED ADDON
 coclass 'cal'
 onload_z_=: empty
+RATIONALIZED_z_=: 1  NB. switch for inversion heuristics
+smoutputINV_z_=: empty
+smoutputINV_z_=: smoutput&sw
 
-AABUILT=: '2019-04-03  12:24:22'
-AABUILT=: '2019-04-04  22:35:49'
-AABUILT=: '2019-04-04  23:01:42'
-AABUILT=: '2019-04-04  23:11:00'
-AABUILT=: '2019-04-04  23:13:42'
-AABUILT=: '2019-04-05  04:45:04'
-AABUILT=: '2019-04-05  05:47:42'
-AABUILT=: '2019-04-05  05:54:32'
-AABUILT=: '2019-04-06  03:16:07'
-AABUILT=: '2019-04-06  04:58:15'
-AABUILT=: '2019-04-07  01:57:39'
-AABUILT=: '2019-04-07  03:31:01'
+AABUILT=: '2019-04-08  13:27:23'
+AABUILT=: '2019-04-08  13:27:56'

@@ -2,13 +2,12 @@
 '==================== [cal] inverC0.ijs ===================='
 NB. TABULA inversion -- inverC0 -- multiply item by a constant
 0 :0
-Monday 22 October 2018  05:59:56
+Monday 8 April 2019  13:05:08
 -
 TEST WITH line {4} of SAMPLE 4 -- PI * X[1]
 )
 
-coclass z=.'inverC0'
-clear z
+coclass 'inverC0'
 
 inversion=: inversionC_cal_ f.
 

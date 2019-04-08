@@ -26,7 +26,9 @@ fwd=: empty  NB. reassigned below inside: inversion
 NB. ssw=: smoutput&sw  NB. reassigned below [?] inside: inversion
 register=: register_cal_ f.  NB. fetch once on loading
 
+
 inversion=: 4 : 0
+	smoutputINV '+++++ inversion_inverTAY_ entered'
 qAssertionFailure_cal_'' [me=. 'inversion_',(>coname''),'_'
 	NB. === NEWTON-RAPHSON (N-R) INVERTER ===
 argLEFT=. x [argRIGHT=. y
@@ -54,9 +56,9 @@ H=: % D2fwd X0  NB. gravity at X0
 ssw '... argLEFT=X0=(X0) argRIGHT=dY0=(dY0) G=(G); start g with d1X=(d1X)'
 dX=: (g^:_) :: vd_X d1X
   NB. …dX is the limit of infinite series: d1X--> d2X-->… d_X-->… dX
-ssw '=====  ======= ======= =======  ======= ======='
-ssw 'COUNT  y       d_X     d_Y      G       H'
-ssw '=====  ======= ======= =======  ======= ======='
+NB. ssw '=====  ======= ======= =======  ======= ======='
+NB. ssw 'COUNT  y       d_X     d_Y      G       H'
+NB. ssw '=====  ======= ======= =======  ======= ======='
 ssw '... (me): dX=(dX) d1X=(d1X)'
 fwdX1=: fwd(X1=: X0+dX)  NB. X1 such that Y0D approximates fwd(X1)
 NB. assert. Y0D approximates_cal_ fwdX1
@@ -68,6 +70,7 @@ else.
   assert. 0  NB. die (and hand-on down the daisychain)
 end.
 register me
+	smoutputINV '----- inversion_inverTAY_ returns X1'
 X1 return.
 )
 
