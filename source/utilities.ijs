@@ -42,6 +42,10 @@ sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs	  NB. tbx: ext for t-tables (if it ever changes)
 thRootOf=: ] ^ [: % [  NB. x thRootOf y == y^1%x
 to=: [ + [: i. [: >: -~
+v=: 3 : 'y{vquan'  NB. use with: calco, e.g. :v 4
+f=: float&v
+vsi=: 3 : 'y{vsiqn'
+fsi=: float&vsi
 
 dyadic=: [: :
 monadic=: : [:

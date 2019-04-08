@@ -9,8 +9,5 @@ NB. clear 'cal'  NB. >>>>> CONSIDER DELETING THIS LINE IN RELEASED ADDON
 coclass 'cal'
 onload_z_=: empty
 RATIONALIZED_z_=: 1  NB. switch for inversion heuristics
-smoutputINV_z_=: empty
 smoutputINV_z_=: smoutput&sw
-
-AABUILT=: '2019-04-08  13:27:23'
-AABUILT=: '2019-04-08  13:27:56'
+smoutputINV_z_=: empty

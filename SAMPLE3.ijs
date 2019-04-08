@@ -11,7 +11,7 @@ c:centripetal acceleration   m/s/s m/s^2  5 3 0 v*v/r:  v(m/s),r(m)
 TARGET pseudogravity         *     *     10 8 9 i choice(a,b): i(/),a(m/s/s),b(m/s/s)
 g:earth gravity unit=        m/s/s m/s^2  0 0 0                                      
 a:mars gravity unit=         m/s/s m/s^2  0 0 0                                      
-selector (click tool 0 or 1) /     /      0 0 0                                      
+selector(click tool 0 or 1)= /     /      0 0 0                                      
 Set to 1 to force equality   *     *      6 7 0 a/b:           a(m/s/s),b(*)         
 Set to 0 to force equality   *     *      6 7 0 a-b: a(m/s/s),b(*)                   
 )
