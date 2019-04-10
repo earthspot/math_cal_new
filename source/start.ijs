@@ -3,7 +3,7 @@
 
 cocurrent 'cal'
 
-VERSION=: '2.1.00'
+VERSION=: '??'
 
 0 :0
 +++ CHOICE OF INVERSION HEURISTICS
@@ -37,7 +37,9 @@ start=: 3 : 0
 trace 0
 sswInversion=: empty  NB. >>>>> DISABLE inversion heuristics tracing
   NB. switches ALL calls to ssw within the set of _inver*_ locales
-load 'math/uu'
+load 'math/uu'  NB. creates: sister_z_
+load 'cal' sister 'manifest'
+erase'CAPTION FILES DESCRIPTION RELEASE FOLDER LABCATEGORY PLATFORMS'
 uuconnect''  NB. create and use an instance of class 'uu'
 NB. make_tabengineCore''  NB. the core of: tabengine0 [OBSOLETE]
 make_CAL''  NB. create semantic fns for tabengine

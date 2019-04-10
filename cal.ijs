@@ -1,17 +1,18 @@
 0 :0
-Monday 8 April 2019  13:25:01
+Wednesday 10 April 2019  06:16:47
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
 )
 coclass 'cal'
+CREATOR=: ;(4!:4<'zx'){4!:3''[zx=.''
 onload_z_=: empty
 RATIONALIZED_z_=: 1
-smoutputINV_z_=: empty
 smoutputINV_z_=: smoutput&sw
+smoutputINV_z_=: empty
 
-AABUILT=: '2019-04-08  13:27:23'
-AABUILT=: '2019-04-08  13:27:56'
+AABUILT=: '2019-04-10  06:18:43'
+AABUILT=: '2019-04-10  06:33:34'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -25,6 +26,17 @@ HELP=: 0 : 0
 ============
 HELP for CAL
 ============
+
+++ Type into the "calco" input field…
+
+;ABOUT	…view description of TABULA calculator
+:ABOUT	…view description of CAL engine
+,ABOUT	…view description of UU units converter
+:dash 1	…show the CAL dashboard
+$valu 12 0	…set {12} to 0
+\VALU 12		…see {12} value (same as: v 12)
+
+++ Type into the Term Window…
 dash 1
 …show the CAL dashboard
 
@@ -114,6 +126,10 @@ sub=: ' _'&$: :(4 : '({:x) (I.y={.x) } y')
 tbx=: ijs
 thRootOf=: ] ^ [: % [
 to=: [ + [: i. [: >: -~
+v=: 3 : 'y{vquan'
+f=: float&v
+vsi=: 3 : 'y{vsiqn'
+fsi=: float&vsi
 
 dyadic=: [: :
 monadic=: : [:
@@ -4413,7 +4429,7 @@ onload 'dash _1'
 
 cocurrent 'cal'
 
-VERSION=: '2.1.00'
+VERSION=: '??'
 
 0 :0
 +++ CHOICE OF INVERSION HEURISTICS
@@ -4444,6 +4460,8 @@ trace 0
 sswInversion=: empty
 
 load 'math/uu'
+load 'cal' sister 'manifest'
+erase'CAPTION FILES DESCRIPTION RELEASE FOLDER LABCATEGORY PLATFORMS'
 uuconnect''
 make_CAL''
 globmake''
