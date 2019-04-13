@@ -1,18 +1,14 @@
 	NB. cal - CAL_interface.ijs
 '==================== [cal] CAL_interface.ijs ===================='
-NB. The CAL interface / instruction set
-
-0 :0  NB. REMOVED from instruction set…
-Inic void start''                  \=(re-)start with clear tt
-Inif void start'$'                 \=(re-)start with factory SAMPLE tt
-Inis n    start n                  \=(re-)start with factory SAMPLEn tt
-Init void start'$$'                \=(re-)start with (saved) SAMPLE tt
-)
 
 cocurrent 'cal'
 
-NB. ========================================================
+CAL_SAVED=: }: 0 :0
+Saturday 13 April 2019  00:45:44
+)
+
   NB. The tabengine instruction set.
+  NB. Includes the uuengine instruction set - grouped at bottom.
   NB. DON'T USE HARD TAB chars! Use only spaces!
   NB.  1st col: name of instruction (always 4 bytes)
   NB.  2nd col: arg format (always <:4 bytes)
@@ -25,7 +21,7 @@ NB. ========================================================
   NB. (Instrs with: dummy'' pre-handled by: tabengine itself)
 
 CAL=: 0 : 0
-QSAV void '2019-04-05  00:18:55'   \noun: CAL last saved
+QSAV void CAL_SAVED                \noun: CAL last saved
 Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
 Revt void revert''                 \=revert all changes
@@ -35,7 +31,6 @@ ABOU void ABOUT                    \About the engine
 ANCS r    ancestors r              \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
-CONV yy   uuengine INSTR           \convert units: yy
 CTAB void ct''                     \t-table display: wide chars
 CTBB void ctb''                    \t-table display: boxed raw data
 CTBN n    utf8 x2f ct n            \t-table display choice: utf-8
@@ -52,11 +47,6 @@ MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
 PARS r    parents r                \parents of item r
 QCAL void CAL                      \the CAL instruction set
-QSCI void uuengine INSTR           \query scientific notation threshold
-QSIC void uuengine INSTR           \query SI conformance level
-QSIG void uuengine INSTR           \query significant figures
-QSIZ void uuengine INSTR           \query zero attraction
-QZER yy   uuengine INSTR           \query Boolean ZERO word
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
@@ -68,33 +58,25 @@ TFLU void UNDEF                    \t-table file name -undefined
 TNAM void filename file            \t-table file name-only
 TNMS void ttnames''                \t-table all its names
 TNMX void tbx filename file        \t-table file name.ext
-TPAR void jpath'~Archive'          \reference path to archive
-TPCA void jpath'~CAL'              \reference path to CAL addon
-TPCL void logpath LOGNAME          \reference path of callogfile
-TPSA void jpath'~Samples'          \reference path to SAMPLES
-TPTA void jpath'~TAB'              \reference path to TABULA
-TPTT void jpath'~Ttables'          \reference path to t-tables
-TPUU void jpath'~UU'               \reference path to UU addon
-TPUC void jpath'~UUC'              \reference path to constants
-TPUF void jpath'~UUF'              \reference path to functions
-TPUM void jpath'~UUM'              \reference path to macros
+TPAR void TPAR                     \reference path to archive
+TPCA void TPCA                     \reference path to CAL addon
+TPCL void TPCL                     \reference path of callogfile
+TPSA void TPSA                     \reference path to SAMPLES
+TPTA void TPTA                     \reference path to TABULA
+TPTT void TPTT                     \reference path to t-tables
+TPUU void TPUU                     \reference path to UU addon
+TPUC void TPUC                     \reference path to constants
+TPUF void TPUF                     \reference path to functions
+TPUM void TPUM                     \reference path to macros
 UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 UCOM r    docompatlist r           \item compat units (system)
-UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
 UNIS r    r{UNITS                  \SI units of item (system)
 UNSU r    uniform >r{UNITS         \SI units of item (SIC-mode)
 UNIT r    r{UNITN                  \units of item -nominal (system)
 UNTU r    uniform >r{UNITN         \units of item -nominal (SIC-mode)
-UUUU yy   uuengine INSTR           \call uu converter directly
 VALF r    getformattedvalue r      \value of item -formatted string
 VALU r    getvalue r               \value of item -numeric
 VERS void VERSION                  \version of engine
-VUUC yy   uuengine INSTR           \UUC (filtered by yy)
-VUUF yy   uuengine INSTR           \UUF (filtered by yy)
-VUUN yy   uuengine INSTR           \UUN (filtered by yy)
-WUUC yy   uuengine INSTR           \UUC (filtered by yy case-insens)
-WUUF yy   uuengine INSTR           \UUF (filtered by yy case-insens)
-WUUN yy   uuengine INSTR           \UUN (filtered by yy case-insens)
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
@@ -230,11 +212,6 @@ savo yy   ttsavo yy                \save as yy over existing
 savs void ttsavs ''                \save t-table COPY as SAMPLE
 savt void ttsavt ''                \save t-table from caption
 sign r    r setvalue~ *vr          \signum of item
-ssci n    uuengine INSTR           \set scientific notation threshold
-ssic n    uuengine INSTR           \set SI conformance level
-ssig n    uuengine INSTR           \set significant figures
-ssiz n    uuengine INSTR           \set zero attraction threshold
-szer n    uuengine INSTR           \set Boolean ZERO word
 sort rrr  1 ttsort rrr             \sort by perm
 sqrl r    r fnline~ 'sq'           \copy item squared
 sqrv r    r setvalue~ sq vr        \squared value of r
@@ -280,4 +257,41 @@ yott r    'Y' scaleunits r         \yotta- item
 zept r    'z' scaleunits r         \zepto- item
 zero r    0 setvalue r             \set item to 0
 zett r    'Z' scaleunits r         \zetta- item
+CPAT yy   uuengine INSTR           \are 2 units compatible?
+CPLI yy   uuengine INSTR           \list of compatible units
+CNVJ yy   uuengine INSTR           \cut a cunit
+CONV yy   uuengine INSTR           \convert units: yy
+CONS yy   uuengine INSTR           \cut "cons" formatted string
+DISP yy   uuengine INSTR           \displacement for units
+DUMB yy   uuengine INSTR           \cut "dumb" formatted string
+FUNC yy   uuengine INSTR           \cut "func" formatted string
+FMTI yy   uuengine INSTR           \format string-qty
+FMTO yy   uuengine INSTR           \format qty: arg as output string
+QRAT void uuengine INSTR           \query rational value saved by: uu
+QSCI void uuengine INSTR           \query scientific notation threshold
+QSIC void uuengine INSTR           \query SI conformance level
+QSIG void uuengine INSTR           \query significant figures
+QSIZ void uuengine INSTR           \query zero attraction threshold
+QZER void uuengine INSTR           \query Boolean ZERO word
+SCIN yy   uuengine INSTR           \numarg-->(string) scientific notation
+SELF yy   uuengine INSTR           \self-cancel units
+UCOD yy   uuengine INSTR           \convert special symbols-->"goy"
+UCOS yy   uuengine INSTR           \ditto UCOD (not currency)
+UNUC yy   uuengine INSTR           \un-convert "goy" symbols-->"kosher"
+UDIV yy   uuengine INSTR           \divide two units symbolically
+UNIF yy   uuengine INSTR           \convert symbs wrto SI-compliance
+UUUU yy   uuengine INSTR           \call uu converter directly
+VUUC yy   uuengine INSTR           \UUC (filtered by yy)
+VUUF yy   uuengine INSTR           \UUF (filtered by yy)
+VUUM void uuengine INSTR           \UUM (filtered by yy)
+WUUC yy   uuengine INSTR           \UUC (filtered by yy case-insens)
+WUUF yy   uuengine INSTR           \UUF (filtered by yy case-insens)
+WUUM void uuengine INSTR           \UUM (filtered by yy case-insens)
+fcty void uuengine INSTR           \restore UU factory settings
+ssci yy   uuengine INSTR           \set scientific notation threshold
+ssic yy   uuengine INSTR           \set SI-conformance level
+ssig yy   uuengine INSTR           \set significant figures
+ssiz yy   uuengine INSTR           \set zero attraction threshold
+strt void uuengine INSTR           \restart this instance of UU
+szer yy   uuengine INSTR           \set Boolean ZERO word
 )

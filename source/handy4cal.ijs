@@ -82,10 +82,20 @@ llog=: (1 { ":)@(,@([: ] ;: ,. [: ".&.> ;:))
 log=: [: ": ;: ,. [: ".&.> ;:
 nouns=: 3 : 'z ,. (datatype each v) ,. v=.".each z=.nl 0'
 np=: [: <: 2 * -.
-op=: 3 : 'opec ijs ''~proj/'',y'
+NB. op=: 3 : 'opec ijs ''~proj/'',y'
 pathof=: ] {.~ [: >: '/' i:~ ]
 pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
 read=: [: 1!:1 <
+
+sl=: 4 : 0
+  NB. RELIABLE path catenator
+  NB. IAC Thursday 30 August 2018  16:42:51
+SL=. '/'
+if. SL={:x do. x=. }:x end.
+if. SL={.y do. x=. }.y end.
+x,SL,y
+)
+
 st=: [: 1!:1 [: < tmp
 sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
 temp=: lasttemp`tmp@.(*@#@])

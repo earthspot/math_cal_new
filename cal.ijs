@@ -4,15 +4,27 @@ Wednesday 10 April 2019  06:16:47
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
 )
+
 coclass 'cal'
+
 CREATOR=: ;(4!:4<'zx'){4!:3''[zx=.''
 onload_z_=: empty
 RATIONALIZED_z_=: 1
 smoutputINV_z_=: smoutput&sw
 smoutputINV_z_=: empty
 
-AABUILT=: '2019-04-10  06:18:43'
-AABUILT=: '2019-04-10  06:33:34'
+AABUILT=: '2019-04-13  03:57:02'
+AABUILT=: '2019-04-13  04:04:20'
+AABUILT=: '2019-04-13  04:20:29'
+AABUILT=: '2019-04-13  05:00:20'
+AABUILT=: '2019-04-13  05:17:45'
+AABUILT=: '2019-04-13  05:20:05'
+AABUILT=: '2019-04-13  06:22:14'
+AABUILT=: '2019-04-13  17:36:28'
+AABUILT=: '2019-04-13  17:44:16'
+AABUILT=: '2019-04-13  17:44:43'
+AABUILT=: '2019-04-13  18:20:00'
+AABUILT=: '2019-04-13  18:21:16'
 
 '==================== [cal] constants.ijs ===================='
 cocurrent 'cal'
@@ -87,10 +99,6 @@ UNSET=: '<UNSET>'
 
 cocurrent 'cal'
 
-cif=: open bind '~CAL/source/CAL_interface.ijs'
-ott=: open bind '~CAL/test/test.ijs'
-ot1=: open bind '~CAL/test/test1.ijs'
-
 
 
 
@@ -101,6 +109,7 @@ bh=:    ] }.~ [: >: ' ' i.~ ]
 boxvec=: [: dltb&.> <"1
 brace=: 1 |. '}{' , ":
 brack=: 1 |. '][' , ":
+createDirIfAbsent=: [: 1!:5 ::0: <
 cmx=: [: > <;._2
 cr=: [: 5!:5 boxopen
 crr=: > , '=: ' , cr
@@ -322,10 +331,19 @@ llog=: (1 { ":)@(,@([: ] ;: ,. [: ".&.> ;:))
 log=: [: ": ;: ,. [: ".&.> ;:
 nouns=: 3 : 'z ,. (datatype each v) ,. v=.".each z=.nl 0'
 np=: [: <: 2 * -.
-op=: 3 : 'opec ijs ''~proj/'',y'
 pathof=: ] {.~ [: >: '/' i:~ ]
 pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
 read=: [: 1!:1 <
+
+sl=: 4 : 0
+
+
+SL=. '/'
+if. SL={:x do. x=. }:x end.
+if. SL={.y do. x=. }.y end.
+x,SL,y
+)
+
 st=: [: 1!:1 [: < tmp
 sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
 temp=: lasttemp`tmp@.(*@#@])
@@ -795,7 +813,7 @@ enlog=: 0&$: : (4 : 0)
 
 
 
-fi=. <logpath LOGNAME
+fi=. <TPCL sl LOGNAME
 if. x do. empty fi 1!:3~ nounreturned y return. end.
 if. y-:0 do.
   empty fi 1!:2~ (": 6!:0''),' start ',LOGNAME,LF
@@ -1347,11 +1365,6 @@ ln=: ^.
 log10=: 10&^.
 log2=: 2&^.
 
-logpath=: 3 : 0
-
- jpath'~home/',y
-)
-
 mandhold=: _1&$: :(4 : 0)
 
 if. 1<#y do. for_i. y do. x mandhold i end. return. end.
@@ -1827,7 +1840,7 @@ ttappend=: 3 : 0
 sllog'ttappend y'
 invalexe''
 SWAPPED=: 0
-file1=: expandedPath y
+file1=. expandedPath y
 if. mt file1            do. 19 message '' return.
 elseif. -.fexist file1  do. 20 message file1 return.
 end.
@@ -2360,28 +2373,27 @@ assert. isNum y
 assert. -. any isNaN y
 y return.
 )
+
 ttlib=: 3 : 0
-jpath tbx '~Ttables/',y
+jpath tbx TPTT sl y
 )
 
 ttsamps=: 3 : 0
-jpath tbx '~Samples/',y
+jpath tbx TPSA sl y
 )
 
 archive=: 3 : 0
 
 
-require'files'
-
 xtx=. tbx
-sce=. jpath sw'~Ttables/(y).ijs'
+sce=. ttlib y
 
 if. 0=#z=.freads sce do. _2 return. end.
 
 if. _1=z do. _3 return. end.
-1!:5 :: 0: <jpath '~Archive'
-1!:5 <fld=. (jpath'~Archive/'), 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
-tgt=. fld , SL , xtx y
+createDirIfAbsent TPAR
+createDirIfAbsent fld=. TPAR sl 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
+tgt=. fld sl xtx y
 tgt fcopynew sce
 )
 
@@ -3255,14 +3267,14 @@ d_X return.
 )
 
 '==================== [cal] CAL_interface.ijs ===================='
-0 :0
-Inic void start''                  \=(re-)start with clear tt
-Inif void start'$'                 \=(re-)start with factory SAMPLE tt
-Inis n    start n                  \=(re-)start with factory SAMPLEn tt
-Init void start'$$'                \=(re-)start with (saved) SAMPLE tt
-)
 
 cocurrent 'cal'
+
+CAL_SAVED=: }: 0 :0
+Saturday 13 April 2019  00:45:44
+)
+
+
 
 
 
@@ -3276,7 +3288,7 @@ cocurrent 'cal'
 
 
 CAL=: 0 : 0
-QSAV void '2019-04-05  00:18:55'   \noun: CAL last saved
+QSAV void CAL_SAVED                \noun: CAL last saved
 Repe void tabengine LASTINSTR      \=repeat last action
 Redo void undo 0                   \=redo
 Revt void revert''                 \=revert all changes
@@ -3286,7 +3298,6 @@ ABOU void ABOUT                    \About the engine
 ANCS r    ancestors r              \ancestors of item r
 CAPT void CAPT                     \t-table title -cf TITL
 CAPU void CAPT rplc SP;UL          \t-table title soldered
-CONV yy   uuengine INSTR           \convert units: yy
 CTAB void ct''                     \t-table display: wide chars
 CTBB void ctb''                    \t-table display: boxed raw data
 CTBN n    utf8 x2f ct n            \t-table display choice: utf-8
@@ -3303,11 +3314,6 @@ MSID void MESSAGE_ID               \message-ID of last instruction
 NAME r    dtb r{TTn                \name of item r
 PARS r    parents r                \parents of item r
 QCAL void CAL                      \the CAL instruction set
-QSCI void uuengine INSTR           \query scientific notation threshold
-QSIC void uuengine INSTR           \query SI conformance level
-QSIG void uuengine INSTR           \query significant figures
-QSIZ void uuengine INSTR           \query zero attraction
-QZER yy   uuengine INSTR           \query Boolean ZERO word
 RETA yy   'assert last noun retd'  \=+assert last noun returned
 RETU void RETURNED                 \=+last noun returned
 TITF void dtb 0{TTf                \window title -from TTf
@@ -3319,33 +3325,25 @@ TFLU void UNDEF                    \t-table file name -undefined
 TNAM void filename file            \t-table file name-only
 TNMS void ttnames''                \t-table all its names
 TNMX void tbx filename file        \t-table file name.ext
-TPAR void jpath'~Archive'          \reference path to archive
-TPCA void jpath'~CAL'              \reference path to CAL addon
-TPCL void logpath LOGNAME          \reference path of callogfile
-TPSA void jpath'~Samples'          \reference path to SAMPLES
-TPTA void jpath'~TAB'              \reference path to TABULA
-TPTT void jpath'~Ttables'          \reference path to t-tables
-TPUU void jpath'~UU'               \reference path to UU addon
-TPUC void jpath'~UUC'              \reference path to constants
-TPUF void jpath'~UUF'              \reference path to functions
-TPUM void jpath'~UUM'              \reference path to macros
+TPAR void TPAR                     \reference path to archive
+TPCA void TPCA                     \reference path to CAL addon
+TPCL void TPCL                     \reference path of callogfile
+TPSA void TPSA                     \reference path to SAMPLES
+TPTA void TPTA                     \reference path to TABULA
+TPTT void TPTT                     \reference path to t-tables
+TPUU void TPUU                     \reference path to UU addon
+TPUC void TPUC                     \reference path to constants
+TPUF void TPUF                     \reference path to functions
+TPUM void TPUM                     \reference path to macros
 UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 UCOM r    docompatlist r           \item compat units (system)
-UNIF yy   uuengine INSTR           \yy (units) at SI-conformance level
 UNIS r    r{UNITS                  \SI units of item (system)
 UNSU r    uniform >r{UNITS         \SI units of item (SIC-mode)
 UNIT r    r{UNITN                  \units of item -nominal (system)
 UNTU r    uniform >r{UNITN         \units of item -nominal (SIC-mode)
-UUUU yy   uuengine INSTR           \call uu converter directly
 VALF r    getformattedvalue r      \value of item -formatted string
 VALU r    getvalue r               \value of item -numeric
 VERS void VERSION                  \version of engine
-VUUC yy   uuengine INSTR           \UUC (filtered by yy)
-VUUF yy   uuengine INSTR           \UUF (filtered by yy)
-VUUN yy   uuengine INSTR           \UUN (filtered by yy)
-WUUC yy   uuengine INSTR           \UUC (filtered by yy case-insens)
-WUUF yy   uuengine INSTR           \UUF (filtered by yy case-insens)
-WUUN yy   uuengine INSTR           \UUN (filtered by yy case-insens)
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
@@ -3481,11 +3479,6 @@ savo yy   ttsavo yy                \save as yy over existing
 savs void ttsavs ''                \save t-table COPY as SAMPLE
 savt void ttsavt ''                \save t-table from caption
 sign r    r setvalue~ *vr          \signum of item
-ssci n    uuengine INSTR           \set scientific notation threshold
-ssic n    uuengine INSTR           \set SI conformance level
-ssig n    uuengine INSTR           \set significant figures
-ssiz n    uuengine INSTR           \set zero attraction threshold
-szer n    uuengine INSTR           \set Boolean ZERO word
 sort rrr  1 ttsort rrr             \sort by perm
 sqrl r    r fnline~ 'sq'           \copy item squared
 sqrv r    r setvalue~ sq vr        \squared value of r
@@ -3531,6 +3524,43 @@ yott r    'Y' scaleunits r         \yotta- item
 zept r    'z' scaleunits r         \zepto- item
 zero r    0 setvalue r             \set item to 0
 zett r    'Z' scaleunits r         \zetta- item
+CPAT yy   uuengine INSTR           \are 2 units compatible?
+CPLI yy   uuengine INSTR           \list of compatible units
+CNVJ yy   uuengine INSTR           \cut a cunit
+CONV yy   uuengine INSTR           \convert units: yy
+CONS yy   uuengine INSTR           \cut "cons" formatted string
+DISP yy   uuengine INSTR           \displacement for units
+DUMB yy   uuengine INSTR           \cut "dumb" formatted string
+FUNC yy   uuengine INSTR           \cut "func" formatted string
+FMTI yy   uuengine INSTR           \format string-qty
+FMTO yy   uuengine INSTR           \format qty: arg as output string
+QRAT void uuengine INSTR           \query rational value saved by: uu
+QSCI void uuengine INSTR           \query scientific notation threshold
+QSIC void uuengine INSTR           \query SI conformance level
+QSIG void uuengine INSTR           \query significant figures
+QSIZ void uuengine INSTR           \query zero attraction threshold
+QZER void uuengine INSTR           \query Boolean ZERO word
+SCIN yy   uuengine INSTR           \numarg-->(string) scientific notation
+SELF yy   uuengine INSTR           \self-cancel units
+UCOD yy   uuengine INSTR           \convert special symbols-->"goy"
+UCOS yy   uuengine INSTR           \ditto UCOD (not currency)
+UNUC yy   uuengine INSTR           \un-convert "goy" symbols-->"kosher"
+UDIV yy   uuengine INSTR           \divide two units symbolically
+UNIF yy   uuengine INSTR           \convert symbs wrto SI-compliance
+UUUU yy   uuengine INSTR           \call uu converter directly
+VUUC yy   uuengine INSTR           \UUC (filtered by yy)
+VUUF yy   uuengine INSTR           \UUF (filtered by yy)
+VUUM void uuengine INSTR           \UUM (filtered by yy)
+WUUC yy   uuengine INSTR           \UUC (filtered by yy case-insens)
+WUUF yy   uuengine INSTR           \UUF (filtered by yy case-insens)
+WUUM void uuengine INSTR           \UUM (filtered by yy case-insens)
+fcty void uuengine INSTR           \restore UU factory settings
+ssci yy   uuengine INSTR           \set scientific notation threshold
+ssic yy   uuengine INSTR           \set SI-conformance level
+ssig yy   uuengine INSTR           \set significant figures
+ssiz yy   uuengine INSTR           \set zero attraction threshold
+strt void uuengine INSTR           \restart this instance of UU
+szer yy   uuengine INSTR           \set Boolean ZERO word
 )
 
 '==================== [cal] message.ijs ===================='
@@ -4120,7 +4150,7 @@ end.
 directory=: 3 : 0
 
 
-DIR=: 1!:0 jpath '~Ttables/*.ijs'
+DIR=: 1!:0 TPTT,'/*.ijs'
 )
 
 window_close=: 3 : 0
@@ -4195,7 +4225,7 @@ ttb_g_mark=: 3 : 0
 fno=: {.".g
 fname=: 0 pick fno{DIR
 smoutput fname
-path=: jpath '~Ttables/',fname
+path=: TPTT,SL,fname
 tagid=. tagpath path
 tag=. > tagid { ;:'notag red green'
 text=: info=: UNSET
@@ -4429,7 +4459,7 @@ onload 'dash _1'
 
 cocurrent 'cal'
 
-VERSION=: '??'
+VERSION=: '0.0.0'
 
 0 :0
 +++ CHOICE OF INVERSION HEURISTICS
@@ -4459,14 +4489,21 @@ start=: 3 : 0
 trace 0
 sswInversion=: empty
 
-load 'math/uu'
-load 'cal' sister 'manifest'
+try.	load (pathof CREATOR) sl 'tpathdev.ijs'
+catch.	load (pathof CREATOR) sl 'tpathjal.ijs'
+end.
+load TPMC sl 'manifest.ijs'
+
 erase'CAPTION FILES DESCRIPTION RELEASE FOLDER LABCATEGORY PLATFORMS'
-uuconnect''
+
+load TPUU sl 'uu.ijs'
+uun=: uuconnect''
 make_CAL''
 globmake''
 progress _
 0 enlog 0
+createDirIfAbsent TPTT
+createDirIfAbsent TPAR
 
 select. y
 case. '' do. ttnew''
@@ -4496,7 +4533,7 @@ uun=: '' conew 'uu'
 uuengine		=: uuengine__uun
 uniform		=: uniform__uun
 kosher		=: (0&uniform)"1
-i.0 0
+uun return.
 )
 
 globmake=: 3 : 0
@@ -4552,4 +4589,3 @@ else.
   pd_z_ y
 end.
 )
-

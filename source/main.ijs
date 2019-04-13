@@ -472,7 +472,7 @@ enlog=: 0&$: : (4 : 0)
   NB. append to cal_log file the string: y
   NB. x=0 --y is INSTRUCTION + ARGUMENTS
   NB. x=1 --y is (RETURNED NOUN)
-fi=. <logpath LOGNAME   NB. fullpathname of cal_log file
+fi=. <TPCL sl LOGNAME   NB. fullpathname of cal_log file
 if. x do. empty fi 1!:3~ nounreturned y return. end.
 if. y-:0 do.            NB. initialise cal_log
   empty fi 1!:2~ (": 6!:0''),' start ',LOGNAME,LF
@@ -1039,11 +1039,6 @@ ln=: ^.
 log10=: 10&^.
 log2=: 2&^.
 
-logpath=: 3 : 0
-  NB. pathname of log file: y
- jpath'~home/',y
-)
-
 mandhold=: _1&$: :(4 : 0)
   NB. set (x=1) /reset (x=0) /toggle (x=_1) mandatory hold on item(s) y
 if. 1<#y do. for_i. y do. x mandhold i end. return. end.
@@ -1533,7 +1528,7 @@ ttappend=: 3 : 0
 sllog'ttappend y'
 invalexe''      NB. existing 'exe' verbs are invalid
 SWAPPED=: 0      NB. fmla order (overridden by t-table script)
-file1=: expandedPath y    NB. y is generalised file descriptor
+file1=. expandedPath y    NB. y is generalised file descriptor
 if. mt file1            do. 19 message '' return.
 elseif. -.fexist file1  do. 20 message file1 return.
 end.
@@ -2101,31 +2096,26 @@ assert. -. any isNaN y
 y return.
 )
 
-NB. ================================================
-NB. ELIMINATE TPATH_*
-
 ttlib=: 3 : 0
-jpath tbx '~Ttables/',y
+jpath tbx TPTT sl y
 )
 
 ttsamps=: 3 : 0
-jpath tbx '~Samples/',y
+jpath tbx TPSA sl y
 )
 
 archive=: 3 : 0
   NB. archive t-table: y (the unexpanded path name)
-  NB. ---now using: fcopynew instead (no use of toHOST)
-require'files'  NB. for: fcopynew
-  NB. xtx appends correct .ext if none given
+  NB. xtx appends correct filename extension if none given
 xtx=. tbx  NB. the correct extension for a t-table
-sce=. jpath sw'~Ttables/(y).ijs'
+sce=. ttlib y
   NB. Don't archive empty file, return _2 instead
 if. 0=#z=.freads sce do. _2 return. end.
   NB. Don't archive absent file, return _3 instead
 if. _1=z do. _3 return. end.
-1!:5 :: 0: <jpath '~Archive'  NB. ensure it is there
-1!:5 <fld=. (jpath'~Archive/'), 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
-tgt=. fld , SL , xtx y
+createDirIfAbsent TPAR
+createDirIfAbsent fld=. TPAR sl 's',~ 6!:0 'YYYY-MM-DD-hhhmmmss'
+tgt=. fld sl xtx y
 tgt fcopynew sce
 )
 

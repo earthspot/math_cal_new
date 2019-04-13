@@ -3,10 +3,6 @@
 
 cocurrent 'cal'
 
-cif=: open bind '~CAL/source/CAL_interface.ijs'
-ott=: open bind '~CAL/test/test.ijs'
-ot1=: open bind '~CAL/test/test1.ijs'
-
   NB. WARNING: CAL overrides stdlib defn of verb: items
   NB. This changes the valency of: items.
   NB. This needs a forward-definition of (items) to prevent
@@ -17,6 +13,7 @@ bh=:    ] }.~ [: >: ' ' i.~ ]	NB. behead y up to 1st SP
 boxvec=: [: dltb&.> <"1		NB. convert cmx-->boxed list
 brace=: 1 |. '}{' , ":
 brack=: 1 |. '][' , ":
+createDirIfAbsent=: [: 1!:5 ::0: <
 cmx=: [: > <;._2			NB. fwd-ref fixup
 cr=: [: 5!:5 boxopen
 crr=: > , '=: ' , cr

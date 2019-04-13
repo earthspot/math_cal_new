@@ -98,7 +98,7 @@ end.
 directory=: 3 : 0
   NB. 6-col boxed array of "ls -l" info
   NB. 1st col is filenames
-DIR=: 1!:0 jpath '~Ttables/*.ijs'
+DIR=: 1!:0 TPTT,'/*.ijs'
 )
 
 window_close=: 3 : 0
@@ -183,7 +183,7 @@ fno=: {.".g
 fname=: 0 pick fno{DIR
 NB. ssw 'ttb_g_mark: g_select=(g_select) g=(g) fno=(fno)'
 smoutput fname
-path=: jpath '~Ttables/',fname
+path=: TPTT,SL,fname
 tagid=. tagpath path
 tag=. > tagid { ;:'notag red green'
 text=: info=: UNSET

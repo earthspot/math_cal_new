@@ -11,6 +11,8 @@ cocurrent 'base'
 
 smoutput PLS,'+++ CAL test1.ijs - entered',PLS
 
+EXPECTED=: '<UNSET>'
+
 start_cal_ 1	NB. start with SAMPLE1: Church Clock
 
 NB. assert EXPECTED-: tt'QSAV'	[EXPECTED=:'2018-12-18 02:56:00'
@@ -53,15 +55,15 @@ assert EXPECTED-: tt'TFLU'	[EXPECTED=: 'untitled'
 assert EXPECTED-: tt'TNAM'	[EXPECTED=: 'SAMPLE1'
 assert EXPECTED-: tt'TNMX'	[EXPECTED=: 'SAMPLE1.ijs'
 assert EXPECTED-: tt'TPAR'	[EXPECTED=: jpath'~Archive'
-assert EXPECTED-: tt'TPCA'	[EXPECTED=: jpath'~CAL'
+assert EXPECTED-: tt'TPCA'	[EXPECTED=: jpath'~Gitcal'
 assert EXPECTED-: tt'TPCL'	[EXPECTED=: logpath LOGNAME
-assert EXPECTED-: tt'TPSA'	[EXPECTED=: jpath'~Samples'
-assert EXPECTED-: tt'TPTA'	[EXPECTED=: jpath'~TAB'
+assert EXPECTED-: tt'TPSA'	[EXPECTED=: jpath'~Gitcal'
+assert EXPECTED-: tt'TPTA'	[EXPECTED=: jpath'~Gittab'
 assert EXPECTED-: tt'TPTT'	[EXPECTED=: jpath'~Ttables'
-assert EXPECTED-: tt'TPUU'	[EXPECTED=: jpath'~UU'
-assert EXPECTED-: tt'TPUC'	[EXPECTED=: jpath'~UUC'
-assert EXPECTED-: tt'TPUF'	[EXPECTED=: jpath'~UUF'
-assert EXPECTED-: tt'TPUM'	[EXPECTED=: jpath'~UUM'
+assert EXPECTED-: tt'TPUU'	[EXPECTED=: jpath'~Gituu'
+assert EXPECTED-: tt'TPUC'	[EXPECTED=: jpath'~Gituu'
+assert EXPECTED-: tt'TPUF'	[EXPECTED=: jpath'~Gituu'
+assert EXPECTED-: tt'TPUM'	[EXPECTED=: jpath'~Gituu'
 assert EXPECTED-: tt'UCMU 6'	[EXPECTED=: ,<,'V'
 assert EXPECTED-: tt'UCOM 6'	[EXPECTED=: ,<,'V'
 assert EXPECTED-: tt'UNIF Ang'	[EXPECTED=: 'Å'

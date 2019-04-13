@@ -235,7 +235,7 @@ data0=. }. 0{DATA  NB. 1st row of DATA always x-coords
 datay=. 0 1 }. y{DATA  NB. 1st col of DATA always item#
 pd data0 ; datay
 pd 'show'
-NB. pd 'pdf ',jpath '~/plot.pdf'
+NB. pd 'pdf ',jpath '~home/plot.pdf'
 )
 
 plotLineChart=: 3 : 0
