@@ -1,5 +1,4 @@
 NB. math/cal manifest
-NB. IAC Sunday 14 April 2019  08:03:20
 
 CAPTION=: 'Scientific calculator engine'
 
@@ -20,10 +19,8 @@ CAL is a platform-independent engine.
 It forms the basis of TABULA, a backfitting scientific calculator.
 )
 
-RELEASE=: 'j805 j807'
+RELEASE=: 'j805'
 
 FOLDER=: 'math/cal'
 
 LABCATEGORY=: 'Math'
-
-PLATFORMS=: 'darwin macOS OSX'
