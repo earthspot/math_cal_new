@@ -2061,8 +2061,9 @@ unbox=: nb^:(L. > 0:)
 tabengine=: 3 : 0 "1
   NB. assumes make_CAL has been run by: start
 'INST YY'=: 4 split INSTR=: unbox y
+if. INST-:4#SP do. INST=: 'CTBU' end.  NB. for convenience of: tt_z_
 LOGINSTR=: LOGINSTR,INSTR,LF
-if. -. INST-:'MSSG' do. ''message'' end.
+if. -. INST-:'MSSG' do. ''message'' end. NB. clear MESSAGE
 vchecks RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError) dltb YY
 )
 

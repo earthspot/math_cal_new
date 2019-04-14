@@ -1,5 +1,6 @@
+badged'~home/documents/github/math_cal_new/cal.ijs'
 0 :0
-Wednesday 10 April 2019  06:16:47
+Sunday 14 April 2019  04:20:09
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -10,29 +11,26 @@ coclass 'cal'
 CREATOR=: ;(4!:4<'zx'){4!:3''[zx=.''
 onload_z_=: empty
 RATIONALIZED_z_=: 1
-smoutputINV_z_=: smoutput&sw
 smoutputINV_z_=: empty
 
-AABUILT=: '2019-04-13  03:57:02'
-AABUILT=: '2019-04-13  04:04:20'
-AABUILT=: '2019-04-13  04:20:29'
-AABUILT=: '2019-04-13  05:00:20'
-AABUILT=: '2019-04-13  05:17:45'
-AABUILT=: '2019-04-13  05:20:05'
-AABUILT=: '2019-04-13  06:22:14'
-AABUILT=: '2019-04-13  17:36:28'
-AABUILT=: '2019-04-13  17:44:16'
-AABUILT=: '2019-04-13  17:44:43'
-AABUILT=: '2019-04-13  18:20:00'
-AABUILT=: '2019-04-13  18:21:16'
+AABUILT=: '2019-04-14  04:38:18'
+AABUILT=: '2019-04-14  04:42:26'
 
-'==================== [cal] constants.ijs ===================='
+'==================== [cal] help.ijs ===================='
+0 :0
+Sunday 14 April 2019  03:13:26
+-
+When Help > Help for CAL is selected,
+the CAL instruction set is appended to noun: HELP below
+)
+
 cocurrent 'cal'
 
 ABOUT=: 0 : 0
 CAL: scientific calculator engine
 -serves multiple TABULA implementations.
 )
+
 
 HELP=: 0 : 0
 ============
@@ -41,30 +39,30 @@ HELP for CAL
 
 ++ Type into the "calco" input field…
 
-;ABOUT	…view description of TABULA calculator
-:ABOUT	…view description of CAL engine
-,ABOUT	…view description of UU units converter
-:dash 1	…show the CAL dashboard
+;ABOUT		…view description of TABULA calculator
+:ABOUT		…view description of CAL engine
+,ABOUT		…view description of UU units converter
+:dash 1		…show the CAL dashboard
+\VALU 12		…see {12} value
 $valu 12 0	…set {12} to 0
-\VALU 12		…see {12} value (same as: v 12)
 
 ++ Type into the Term Window…
-dash 1
-…show the CAL dashboard
 
-cv''
-…show the v-caches
+dash 1		…show the CAL dashboard
+cv''		…show the v-caches
+cx''		…check for any complex nouns in _cal_
+tt''		…show current t-table
+v 12		…see {12} value
+tt'valu 12 0'	…set {12} to 0
 
-cx''
-…check for any complex nouns in _cal_
-
-tt'CTBU'
-…show current t-table
-
-=======================================================================
+====================
 CAL instruction set…
-=======================================================================
+====================
 )
+
+'==================== [cal] constants.ijs ===================='
+cocurrent 'cal'
+
 AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 az=: tolower AZ
 n9=: '0123456789'
@@ -252,7 +250,11 @@ not=: -.
 sig=: 3 : 'SIG__uun=: y'
 uunicode=: 3 : 'SIC__uun=: y'
 
+
 ctb=: 3 : '}.each ,.each vhold ; CH ; vquan ; (>UNITN) ; (>UNITS) ; TTn'
+
+cv_z_=: cv_cal_
+cx_z_=: cx_cal_
 
 '==================== [cal] handy4cal.ijs ===================='
 cocurrent 'z'
@@ -2345,6 +2347,7 @@ unbox=: nb^:(L. > 0:)
 tabengine=: 3 : 0 "1
 
 'INST YY'=: 4 split INSTR=: unbox y
+if. INST-:4#SP do. INST=: 'CTBU' end.
 LOGINSTR=: LOGINSTR,INSTR,LF
 if. -. INST-:'MSSG' do. ''message'' end.
 vchecks RETURNED=: (((<'CAL_',INST)`:6) :: tabengineError) dltb YY
@@ -3271,7 +3274,7 @@ d_X return.
 cocurrent 'cal'
 
 CAL_SAVED=: }: 0 :0
-Saturday 13 April 2019  00:45:44
+Sunday 14 April 2019  01:18:37
 )
 
 
@@ -3325,16 +3328,8 @@ TFLU void UNDEF                    \t-table file name -undefined
 TNAM void filename file            \t-table file name-only
 TNMS void ttnames''                \t-table all its names
 TNMX void tbx filename file        \t-table file name.ext
-TPAR void TPAR                     \reference path to archive
 TPCA void TPCA                     \reference path to CAL addon
-TPCL void TPCL                     \reference path of callogfile
-TPSA void TPSA                     \reference path to SAMPLES
-TPTA void TPTA                     \reference path to TABULA
-TPTT void TPTT                     \reference path to t-tables
-TPUU void TPUU                     \reference path to UU addon
-TPUC void TPUC                     \reference path to constants
-TPUF void TPUF                     \reference path to functions
-TPUM void TPUM                     \reference path to macros
+TPTT void TPTT                     \reference path to ttable library
 UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 UCOM r    docompatlist r           \item compat units (system)
 UNIS r    r{UNITS                  \SI units of item (system)
@@ -3343,7 +3338,7 @@ UNIT r    r{UNITN                  \units of item -nominal (system)
 UNTU r    uniform >r{UNITN         \units of item -nominal (SIC-mode)
 VALF r    getformattedvalue r      \value of item -formatted string
 VALU r    getvalue r               \value of item -numeric
-VERS void VERSION                  \version of engine
+VERS void VERSION                  \version of CAL engine
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%
@@ -4508,6 +4503,7 @@ createDirIfAbsent TPAR
 select. y
 case. '' do. ttnew''
 case. 0 do. ttload 0
+
 case. '$' do. ttload'$'
 case. '$$' do. ttload'$$'
 case.   do. ttload y [smoutput '+++ start: loaded by default: ',":y

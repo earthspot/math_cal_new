@@ -4,7 +4,7 @@
 cocurrent 'cal'
 
 CAL_SAVED=: }: 0 :0
-Saturday 13 April 2019  00:45:44
+Sunday 14 April 2019  01:18:37
 )
 
   NB. The tabengine instruction set.
@@ -58,16 +58,8 @@ TFLU void UNDEF                    \t-table file name -undefined
 TNAM void filename file            \t-table file name-only
 TNMS void ttnames''                \t-table all its names
 TNMX void tbx filename file        \t-table file name.ext
-TPAR void TPAR                     \reference path to archive
 TPCA void TPCA                     \reference path to CAL addon
-TPCL void TPCL                     \reference path of callogfile
-TPSA void TPSA                     \reference path to SAMPLES
-TPTA void TPTA                     \reference path to TABULA
-TPTT void TPTT                     \reference path to t-tables
-TPUU void TPUU                     \reference path to UU addon
-TPUC void TPUC                     \reference path to constants
-TPUF void TPUF                     \reference path to functions
-TPUM void TPUM                     \reference path to macros
+TPTT void TPTT                     \reference path to ttable library
 UCMU r    1 docompatlist r         \item compat units (SIC-mode)
 UCOM r    docompatlist r           \item compat units (system)
 UNIS r    r{UNITS                  \SI units of item (system)
@@ -76,7 +68,7 @@ UNIT r    r{UNITN                  \units of item -nominal (system)
 UNTU r    uniform >r{UNITN         \units of item -nominal (SIC-mode)
 VALF r    getformattedvalue r      \value of item -formatted string
 VALU r    getvalue r               \value of item -numeric
-VERS void VERSION                  \version of engine
+VERS void VERSION                  \version of CAL engine
 absl r    r fnline~ 'abs'          \copy abs value of item
 absv r    r setvalue~ |vr          \absolute value of r
 addc rv   r fnline~ '*1+',":v%100  \copy item adding v%

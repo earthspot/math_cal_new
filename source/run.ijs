@@ -1,9 +1,9 @@
 NB. cal - run
 0 :0
-Tuesday 1 January 2019  20:29:44
+Sunday 14 April 2019  03:55:40
 -
+open TESTFILE
 open BUILTFILE
-open '~Gitcal/test/test.ijs'
 )
 
 cocurrent 'base'

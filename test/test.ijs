@@ -1,6 +1,6 @@
 NB. CAL test suite controller - test.ijs
 0 :0
-Wednesday 5 December 2018  14:28:35
+Sunday 14 April 2019  03:54:54
 )
 
 cocurrent 'base'
@@ -9,7 +9,8 @@ PLS_z_=: LF,~LF,60$'+'
 
 smoutput PLS,'+++ CAL test.ijs - entered',PLS
 
-test_cal_=: 1 ddefine  NB. to run via fkey 5
+   NB. to run via fkey 5 if test fails - (currently unused)
+test_cal_=: 1 ddefine
 smoutput 'NOT IMPLEMENTED'
 )
 
@@ -32,4 +33,5 @@ open '~Gitcal/test/test1.ijs'
 )
 NB. ---------------------------------------------------------
 
+erase'test_cal_'
 smoutput PLS,'--- CAL test.ijs - completed',PLS

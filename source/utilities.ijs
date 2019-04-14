@@ -164,4 +164,8 @@ not=: -.		NB. own copy of tabz verb
 sig=: 3 : 'SIG__uun=: y'
 uunicode=: 3 : 'SIC__uun=: y'
 
+  NB. "boxed" variant of ct'' - for special t-table displays
 ctb=: 3 : '}.each ,.each vhold ; CH ; vquan ; (>UNITN) ; (>UNITS) ; TTn'
+
+cv_z_=: cv_cal_
+cx_z_=: cx_cal_

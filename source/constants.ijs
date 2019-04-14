@@ -5,45 +5,6 @@ NB. (See: globmake in: start.ijs for those that do change)
 
 cocurrent 'cal'
 
-ABOUT=: 0 : 0
-CAL: scientific calculator engine
--serves multiple TABULA implementations.
-)
-
-HELP=: 0 : 0
-============
-HELP for CAL
-============
-
-++ Type into the "calco" input field…
-
-;ABOUT	…view description of TABULA calculator
-:ABOUT	…view description of CAL engine
-,ABOUT	…view description of UU units converter
-:dash 1	…show the CAL dashboard
-$valu 12 0	…set {12} to 0
-\VALU 12		…see {12} value (same as: v 12)
-
-++ Type into the Term Window…
-dash 1
-…show the CAL dashboard
-
-cv''
-…show the v-caches
-
-cx''
-…check for any complex nouns in _cal_
-
-tt'CTBU'
-…show current t-table
-
-=======================================================================
-CAL instruction set…
-=======================================================================
-)
-
-NB. ----------------------------------------------------------
-
 AZ=: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 az=: tolower AZ
 n9=: '0123456789'

@@ -1,8 +1,8 @@
 NB. CAL test1.ijs - individual instructions basic test
 0 :0
-Sunday 27 January 2019  13:14:25
+Sunday 14 April 2019  01:36:16
 -
-open '~Gitcal/test/test.ijs'
+open '~Gitcal/test/test.ijs'  NB. the top-level of the test suite
 )
 
 cocurrent 'base'
@@ -54,16 +54,7 @@ assert EXPECTED-: tt'TFIT'	[EXPECTED=: '~/documents/github/math_cal_new/SAMPLE1.
 assert EXPECTED-: tt'TFLU'	[EXPECTED=: 'untitled'
 assert EXPECTED-: tt'TNAM'	[EXPECTED=: 'SAMPLE1'
 assert EXPECTED-: tt'TNMX'	[EXPECTED=: 'SAMPLE1.ijs'
-assert EXPECTED-: tt'TPAR'	[EXPECTED=: jpath'~Archive'
-assert EXPECTED-: tt'TPCA'	[EXPECTED=: jpath'~Gitcal'
-assert EXPECTED-: tt'TPCL'	[EXPECTED=: logpath LOGNAME
-assert EXPECTED-: tt'TPSA'	[EXPECTED=: jpath'~Gitcal'
-assert EXPECTED-: tt'TPTA'	[EXPECTED=: jpath'~Gittab'
-assert EXPECTED-: tt'TPTT'	[EXPECTED=: jpath'~Ttables'
-assert EXPECTED-: tt'TPUU'	[EXPECTED=: jpath'~Gituu'
-assert EXPECTED-: tt'TPUC'	[EXPECTED=: jpath'~Gituu'
-assert EXPECTED-: tt'TPUF'	[EXPECTED=: jpath'~Gituu'
-assert EXPECTED-: tt'TPUM'	[EXPECTED=: jpath'~Gituu'
+assert EXPECTED-: tt'TPCA'	[EXPECTED=: TPCA_z_
 assert EXPECTED-: tt'UCMU 6'	[EXPECTED=: ,<,'V'
 assert EXPECTED-: tt'UCOM 6'	[EXPECTED=: ,<,'V'
 assert EXPECTED-: tt'UNIF Ang'	[EXPECTED=: 'Å'

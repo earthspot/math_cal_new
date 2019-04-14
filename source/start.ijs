@@ -57,16 +57,7 @@ createDirIfAbsent TPAR  NB. establish user's t-table archive
 select. y
 case. '' do. ttnew''  NB. new empty t-table
 case. 0 do. ttload 0
-NB. similar cases handled by (case. do.) below…
-NB. case. 1 do. ttload 1
-NB. case. 2 do. ttload 2
-NB. case. 3 do. ttload 3
-NB. case. 4 do. ttload 4
-NB. case. 5 do. ttload 5
-NB. case. 6 do. ttload 6
-NB. case. 7 do. ttload 7
-NB. case. 8 do. ttload 8
-NB. case. 9 do. ttload 9
+  NB. similar cases 1 to 9 handled by (case. do.) below…
 case. '$' do. ttload'$'  NB. load SAMPLE, builtin only
 case. '$$' do. ttload'$$'  NB. load SAMPLE, builtin or saved
 case.   do. ttload y [smoutput '+++ start: loaded by default: ',":y
