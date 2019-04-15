@@ -213,7 +213,7 @@ do_plot=: 4 : 0
   NB. Omit item# (x) if it accidentally gets included in (y)…
 iY=. y=. y -. iX=.x
 ]suffix=. '…regen DATA' #~ {.NaNoun'DATA'
-smoutput sw '+++ do_plot: iX=(iX) iY=[(iY)]',suffix
+msg '+++ do_plot: iX=(iX) iY=[(iY)]',suffix
 NB. Xpre=. getvalue x  NB. save existing value of item# of X-axis
 Yitems=. }.,',',.brace"0  y  NB. e.g. '{2},{3},{4}'
 pd 'reset'
@@ -272,7 +272,7 @@ if. PLOT=0 do. 0 return. end.  NB. the safety-catch
 i=. ITEMNO  NB. the item with the "plotline" formula
 iX=. {. i{TD
 iY=. iX -.~ i{TD
-ssw '... plotline: iX=(iX) iY=(iY)'
+msg '... plotline: iX=(iX) iY=(iY)'
 iX do_plot iY [CHART_TYPE=:'line'
 PLOT return.
 )
