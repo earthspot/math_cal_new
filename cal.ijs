@@ -15,6 +15,8 @@ smoutputINV_z_=: empty
 
 AABUILT=: '2019-04-14  04:38:18'
 AABUILT=: '2019-04-14  04:42:26'
+AABUILT=: '2019-04-15  03:12:16'
+AABUILT=: '2019-04-15  03:15:35'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -4484,8 +4486,8 @@ start=: 3 : 0
 trace 0
 sswInversion=: empty
 
-try.	load (pathof CREATOR) sl 'tpathdev.ijs'
-catch.	load (pathof CREATOR) sl 'tpathjal.ijs'
+if. fexist p=. (pathof CREATOR) sl 'tpathdev.ijs' do. load p
+else.     load (pathof CREATOR) sl 'tpathjal.ijs'
 end.
 load TPMC sl 'manifest.ijs'
 

@@ -38,8 +38,8 @@ trace 0
 sswInversion=: empty  NB. >>>>> DISABLE inversion heuristics tracing
 NB. …switches ALL calls to: ssw within the set of _inver*_ locales
   NB. Create the TP*_z_ nouns (the JAL addon lacks tpathdev)
-try.	load (pathof CREATOR) sl 'tpathdev.ijs'
-catch.	load (pathof CREATOR) sl 'tpathjal.ijs'
+if. fexist p=. (pathof CREATOR) sl 'tpathdev.ijs' do. load p
+else.     load (pathof CREATOR) sl 'tpathjal.ijs'
 end.
 load TPMC sl 'manifest.ijs'  NB. to get VERSION
   NB. erase unwanted globals loaded by manifest
