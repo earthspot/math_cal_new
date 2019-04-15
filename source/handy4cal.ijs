@@ -2,6 +2,8 @@
 '==================== [cal] handy4cal.ijs ===================='
 cocurrent 'z'
 
+NUL=: 0{a.
+
 append=: [ 1!:3 [: < ]
 az=: 'abcdefghijklmnopqrstuvwxyz'
 begins=: beginsWith=: [ (] -: [ {.~ [: # ]) [: , ]
@@ -105,3 +107,4 @@ wide=: uucp
 write=: [ 1!:2 [: < ]
 x2b=: [: (#~ ([: +./\. ' '&~:))&.> <"1
 x2f=: }.@((<10{a.) ;@,. ])@([: (#~ ([: +./\. ' '&~:))&.> <"1)
+x4f=: ([: <;._1 LF , ]) (1 : 'if. 0=#y do. 0 0$'''' else. >@u y end.')
