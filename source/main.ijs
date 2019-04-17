@@ -1857,20 +1857,20 @@ if. x and PROTECT and fexist file do.
 end.
   NB. Save file and report the result...
 if.-. 'literal' -: datatype z do.
-  smoutput sw'>>> ttsav: z to be saved is:  (datatype z) shape=($z)'
+  msg'... ttsav: z to be saved is:  (datatype z) shape=($z)'
   z=. utf8 x2f z
-  smoutput sw'>>> ttsav: z now: (datatype z) shape=($z)'
+  msg'... ttsav: z now: (datatype z) shape=($z)'
   PROTECT=: 1  NB. re-establish protection
 end.
 bytes=. z fwrite file
-	msg 28 message bytes; mfile
+  msg 28 message bytes; mfile
 if. bytes>0 do.  NB. t-table was saved ok
-  ]mmm=. 30 message mfile; bytes
+  mmm=. 30 message mfile; bytes
   'ttsav' dirty 0        NB. flag: t-table no longer needs saving
 else.            NB. file could not be saved...
-  ]mmm=. 31 message mfile
+  mmm=. 31 message mfile
 end.
-smoutput sw'>>> ttsav returns message:(LF)(mmm)'
+msg'--- ttsav returns message:(LF)(mmm)'
 mmm return.  NB. return resulting message for top-end
 )
 

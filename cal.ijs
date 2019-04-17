@@ -19,6 +19,8 @@ AABUILT=: '2019-04-15  03:12:16'
 AABUILT=: '2019-04-15  03:15:35'
 AABUILT=: '2019-04-15  05:32:34'
 AABUILT=: '2019-04-15  09:18:09'
+AABUILT=: '2019-04-16  22:59:37'
+AABUILT=: '2019-04-16  23:36:17'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -96,6 +98,109 @@ UL=: '_'
 UNDEF=: 'untitled'
 UNDEF_CAPT=: 'untitled'
 UNSET=: '<UNSET>'
+
+'==================== [cal] handy4cal.ijs ===================='
+cocurrent 'z'
+
+NUL=: 0{a.
+
+append=: [ 1!:3 [: < ]
+az=: 'abcdefghijklmnopqrstuvwxyz'
+begins=: beginsWith=: [ (] -: [ {.~ [: # ]) [: , ]
+
+countdown=: 3 : 0
+
+
+
+
+
+if. y-:'?' do.
+  COUNTDOWN_z_
+elseif. 0=#y do.
+  if. 0=COUNTDOWN_z_ do. 'countdown over'(13!:8)199 end.
+  COUNTDOWN_z_=: COUNTDOWN_z_-1
+elseif. do.
+  assert. 0< <.y
+  COUNTDOWN_z_=: <.y
+end.
+)
+
+crex=: 0&$: :(4 : 0)
+
+
+
+if. 0 e. $y do. 5!:6 <'y' return. end.
+z=. y rplc QT ; QT,QT
+z=. q1 z rplc CRLF ; (q1',CRLF,') ; CR ; (q1',CR,') ; LF ; (q1',LF,') ; TAB ; (q1',TAB,')
+for_c. ~. y -. 32}. 127{. a. do.
+  z=. z rplc c ; q1 CM, CM,~ paren (":a. i. c),'{a.'
+end.
+z=. z rplc (CM,QT,QT,CM) ; CM
+if. (3{.z)-:QT,QT,CM do. z=. 3}.z end.
+if. (_3{.z)-:CM,QT,QT do. z=. _3}.z end.
+if. ($y)-:(,1) do. z=. CM,z end.
+try. assert y -: ".z
+catch.
+  if. x do.
+    smoutput '>>> crex: BAD lit repn: z --'
+    smoutput z
+    smoutput '>>> crex: --using instead: 5!:6 <''y'''
+  end.
+  5!:6 <'y' return.
+end.
+z
+)
+
+
+
+
+s=. 3 3 2$1 0 0 0 0 0 2 1 2 1 2 1 2 0 0 3 2 0
+m=. < '(' ; ')'
+smresolve=: ((0;s;m) ;: ucp)"1
+sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
+ssw=: smoutput&sw
+
+
+s=. 6 3 2$0 0 0 0 1 1 2 3 2 3 1 0 2 0 2 0 3 1 4 3 4 3 3 0 4 0 4 0 5 1 0 3 5 0 5 0
+m=. < LF ; NUL,SP,TAB
+smcut3utf=: (0;s;m)&(;:"1)
+smcut3ucp=: ((0;s;m) ;: ucp)"1
+smcut3=: smcut3ucp
+
+date=: 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)
+ddefine=: 1 : 'm&$: : (4 : 0)'
+dec=: 16 #. 16 | '0123456789ABCDEF0123456789abcdef' i. ]
+errno=: 13!:11
+isEmpty=: 0 = [: */ $
+isLit=: 2 2048 e.~ 3!:0
+listnameswithprefix=: 0 1 2 3&$: :(] ((] -: ({.~ #))S:0 _ # [)~ a: , [ 4!:1~ [: {. ])
+llog=: (1 { ":)@(,@([: ] ;: ,. [: ".&.> ;:))
+log=: [: ": ;: ,. [: ".&.> ;:
+nouns=: 3 : 'z ,. (datatype each v) ,. v=.".each z=.nl 0'
+np=: [: <: 2 * -.
+pathof=: ] {.~ [: >: '/' i:~ ]
+pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
+read=: [: 1!:1 <
+
+sl=: 4 : 0
+
+
+SL=. '/'
+if. SL={:x do. x=. }:x end.
+if. SL={.y do. x=. }.y end.
+x,SL,y
+)
+
+st=: [: 1!:1 [: < tmp
+sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
+temp=: lasttemp`tmp@.(*@#@])
+tmp=: [: jpath '~temp/' , ijs@":
+ts=: 6!:2 , 7!:2@]
+wide=: uucp
+write=: [ 1!:2 [: < ]
+x2b=: [: (#~ ([: +./\. ' '&~:))&.> <"1
+x2f=: }.@((<10{a.) ;@,. ])@([: (#~ ([: +./\. ' '&~:))&.> <"1)
+x4f=: ([: <;._1 LF , ]) (1 : 'if. 0=#y do. 0 0$'''' else. >@u y end.')
 
 '==================== [cal] utilities.ijs ===================='
 
@@ -260,108 +365,26 @@ ctb=: 3 : '}.each ,.each vhold ; CH ; vquan ; (>UNITN) ; (>UNITS) ; TTn'
 cv_z_=: cv_cal_
 cx_z_=: cx_cal_
 
-'==================== [cal] handy4cal.ijs ===================='
-cocurrent 'z'
-
-NUL=: 0{a.
-
-append=: [ 1!:3 [: < ]
-az=: 'abcdefghijklmnopqrstuvwxyz'
-begins=: beginsWith=: [ (] -: [ {.~ [: # ]) [: , ]
-
-countdown=: 3 : 0
+runlabcal_z_=: 3 : 0
 
 
 
-
-
-if. y-:'?' do.
-  COUNTDOWN_z_
-elseif. 0=#y do.
-  if. 0=COUNTDOWN_z_ do. 'countdown over'(13!:8)199 end.
-  COUNTDOWN_z_=: COUNTDOWN_z_-1
-elseif. do.
-  assert. 0< <.y
-  COUNTDOWN_z_=: <.y
+if. 0=#y do.
+  ]y=. jpath TPCA,'/cal.ijt'
 end.
-)
-
-crex=: 0&$: :(4 : 0)
-
-
-
-if. 0 e. $y do. 5!:6 <'y' return. end.
-z=. y rplc QT ; QT,QT
-z=. q1 z rplc CRLF ; (q1',CRLF,') ; CR ; (q1',CR,') ; LF ; (q1',LF,') ; TAB ; (q1',TAB,')
-for_c. ~. y -. 32}. 127{. a. do.
-  z=. z rplc c ; q1 CM, CM,~ paren (":a. i. c),'{a.'
+if. -.fexist y do.
+  smoutput '>>> runlab: file not found: ',y
+  return.
 end.
-z=. z rplc (CM,QT,QT,CM) ; CM
-if. (3{.z)-:QT,QT,CM do. z=. 3}.z end.
-if. (_3{.z)-:CM,QT,QT do. z=. _3}.z end.
-if. ($y)-:(,1) do. z=. CM,z end.
-try. assert y -: ".z
+]thelab_z_=: y
+trace 0
+require '~addons/labs/labs/labs.ijs'
+try. lab_jlab_ thelab
 catch.
-  if. x do.
-    smoutput '>>> crex: BAD lit repn: z --'
-    smoutput z
-    smoutput '>>> crex: --using instead: 5!:6 <''y'''
-  end.
-  5!:6 <'y' return.
+  require '~addons/labs/labs/labs805.ijs'
+  lab_jlab805_ thelab
 end.
-z
 )
-
-
-
-
-s=. 3 3 2$1 0 0 0 0 0 2 1 2 1 2 1 2 0 0 3 2 0
-m=. < '(' ; ')'
-smresolve=: ((0;s;m) ;: ucp)"1
-sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
-ssw=: smoutput&sw
-
-
-s=. 6 3 2$0 0 0 0 1 1 2 3 2 3 1 0 2 0 2 0 3 1 4 3 4 3 3 0 4 0 4 0 5 1 0 3 5 0 5 0
-m=. < LF ; NUL,SP,TAB
-smcut3utf=: (0;s;m)&(;:"1)
-smcut3ucp=: ((0;s;m) ;: ucp)"1
-smcut3=: smcut3ucp
-
-date=: 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)
-ddefine=: 1 : 'm&$: : (4 : 0)'
-dec=: 16 #. 16 | '0123456789ABCDEF0123456789abcdef' i. ]
-errno=: 13!:11
-isEmpty=: 0 = [: */ $
-isLit=: 2 2048 e.~ 3!:0
-listnameswithprefix=: 0 1 2 3&$: :(] ((] -: ({.~ #))S:0 _ # [)~ a: , [ 4!:1~ [: {. ])
-llog=: (1 { ":)@(,@([: ] ;: ,. [: ".&.> ;:))
-log=: [: ": ;: ,. [: ".&.> ;:
-nouns=: 3 : 'z ,. (datatype each v) ,. v=.".each z=.nl 0'
-np=: [: <: 2 * -.
-pathof=: ] {.~ [: >: '/' i:~ ]
-pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
-read=: [: 1!:1 <
-
-sl=: 4 : 0
-
-
-SL=. '/'
-if. SL={:x do. x=. }:x end.
-if. SL={.y do. x=. }.y end.
-x,SL,y
-)
-
-st=: [: 1!:1 [: < tmp
-sw=: ] rplc [: , (paren&.> ,. ":&".&.>)&smresolve
-temp=: lasttemp`tmp@.(*@#@])
-tmp=: [: jpath '~temp/' , ijs@":
-ts=: 6!:2 , 7!:2@]
-wide=: uucp
-write=: [ 1!:2 [: < ]
-x2b=: [: (#~ ([: +./\. ' '&~:))&.> <"1
-x2f=: }.@((<10{a.) ;@,. ])@([: (#~ ([: +./\. ' '&~:))&.> <"1)
-x4f=: ([: <;._1 LF , ]) (1 : 'if. 0=#y do. 0 0$'''' else. >@u y end.')
 
 '==================== [cal] main.ijs ===================='
 cocurrent 'cal'
@@ -3898,7 +3921,7 @@ do_plot=: 4 : 0
 
 iY=. y=. y -. iX=.x
 ]suffix=. '…regen DATA' #~ {.NaNoun'DATA'
-smoutput sw '+++ do_plot: iX=(iX) iY=[(iY)]',suffix
+msg '+++ do_plot: iX=(iX) iY=[(iY)]',suffix
 Yitems=. }.,',',.brace"0  y
 pd 'reset'
 select. CHART_TYPE
@@ -3952,7 +3975,7 @@ if. PLOT=0 do. 0 return. end.
 i=. ITEMNO
 iX=. {. i{TD
 iY=. iX -.~ i{TD
-ssw '... plotline: iX=(iX) iY=(iY)'
+msg '... plotline: iX=(iX) iY=(iY)'
 iX do_plot iY [CHART_TYPE=:'line'
 PLOT return.
 )
