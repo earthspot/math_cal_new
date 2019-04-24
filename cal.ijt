@@ -26,7 +26,7 @@ E.g. the instruction to return the version number is 'VERS'
 )
 cocurrent 'base'
 
-load 'math/cal'
+require 'math/cal'
 
 tt=: tabengine_cal_   NB. handy way to send it instructions
 

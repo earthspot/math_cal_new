@@ -1,6 +1,6 @@
-badged'~home/documents/github/math_cal_new/cal.ijs'
+empty'~home/documents/github/math_cal_new/cal.ijs'
 0 :0
-Sunday 14 April 2019  04:20:09
+Wednesday 24 April 2019  02:10:47
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
@@ -13,12 +13,3 @@ onload_z_=: empty
 RATIONALIZED_z_=: 1  NB. switch for inversion heuristics
 NB. smoutputINV_z_=: smoutput&sw  NB. trace inversion heuristics
 smoutputINV_z_=: empty  NB. trace inversion heuristics
-
-AABUILT=: '2019-04-14  04:38:18'
-AABUILT=: '2019-04-14  04:42:26'
-AABUILT=: '2019-04-15  03:12:16'
-AABUILT=: '2019-04-15  03:15:35'
-AABUILT=: '2019-04-15  05:32:34'
-AABUILT=: '2019-04-15  09:18:09'
-AABUILT=: '2019-04-16  22:59:37'
-AABUILT=: '2019-04-16  23:36:17'
