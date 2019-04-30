@@ -2,6 +2,16 @@
 '==================== [cal] handy4cal.ijs ===================='
 cocurrent 'z'
 
+ddefine=: 1 : 'm&$: : (4 : 0)'
+
+ide=: 3 : 0
+select. y
+  case. 0 do. wd 'ide hide' [IDE_z_=: y
+  case. 1 do. wd 'ide show' [IDE_z_=: y
+  case.   do. ide -.IDE_z_	NB. toggle status
+end.
+)
+
 NUL=: 0{a.
 
 append=: [ 1!:3 [: < ]
@@ -74,7 +84,6 @@ smcut3ucp=: ((0;s;m) ;: ucp)"1  NB. cuts unicoded string
 smcut3=: smcut3ucp
 
 date=: 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)
-ddefine=: 1 : 'm&$: : (4 : 0)'
 dec=: 16 #. 16 | '0123456789ABCDEF0123456789abcdef' i. ]
 errno=: 13!:11
 isEmpty=: 0 = [: */ $
@@ -85,7 +94,6 @@ log=: [: ": ;: ,. [: ".&.> ;:
 nouns=: 3 : 'z ,. (datatype each v) ,. v=.".each z=.nl 0'
 np=: [: <: 2 * -.
 NB. op=: 3 : 'opec ijs ''~proj/'',y'
-pathof=: ] {.~ [: >: '/' i:~ ]
 pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
 read=: [: 1!:1 <
 

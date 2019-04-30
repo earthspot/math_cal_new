@@ -399,8 +399,9 @@ deletefile=: 3 : 0
   NB. delete t-table (y) in Ttables folder ONLY
   NB. but ONLY IF a valid t-table...
 me=. 'deletefile'
+y=. jpathsep y
 nom=. filename expandedPath y
-if. SL e. y do. pth=. pathof y else. pth=.'' end.
+if. SL e. y do. pth=. (y i:'/'){.y else. pth=.'' end.
   sllog 'me nom pth y'
 file0=: jpath ttlib nom
 if. fexist file0 do.

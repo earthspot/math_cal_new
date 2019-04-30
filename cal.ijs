@@ -8,7 +8,7 @@ CAL: scientific calculator engine
 
 coclass 'cal'
 
-CREATOR=: ;(4!:4<'zx'){4!:3''[zx=.''
+PARENTDIR=: (zx i:'/'){.zx=.jpathsep>(4!:4<'zx'){4!:3''[zx=.''
 onload_z_=: empty
 RATIONALIZED_z_=: 1
 smoutputINV_z_=: empty
@@ -178,7 +178,6 @@ llog=: (1 { ":)@(,@([: ] ;: ,. [: ".&.> ;:))
 log=: [: ": ;: ,. [: ".&.> ;:
 nouns=: 3 : 'z ,. (datatype each v) ,. v=.".each z=.nl 0'
 np=: [: <: 2 * -.
-pathof=: ] {.~ [: >: '/' i:~ ]
 pc=: '%' ,~ [: ": [: <. 0.5 + 100 * 88350 %~ ]
 read=: [: 1!:1 <
 
@@ -774,8 +773,9 @@ deletefile=: 3 : 0
 
 
 me=. 'deletefile'
+y=. jpathsep y
 nom=. filename expandedPath y
-if. SL e. y do. pth=. pathof y else. pth=.'' end.
+if. SL e. y do. pth=.(y i:'/'){.y else. pth=.'' end.
   sllog 'me nom pth y'
 file0=: jpath ttlib nom
 if. fexist file0 do.
@@ -4514,14 +4514,14 @@ start=: 3 : 0
 trace 0
 sswInversion=: empty
 
-if. fexist p=. (pathof CREATOR) sl 'tpathdev.ijs' do. load p
-else.     load (pathof CREATOR) sl 'tpathjal.ijs'
+if. fexist p=. PARENTDIR sl 'tpathdev.ijs' do. loadFixed p
+else.     loadFixed PARENTDIR sl 'tpathjal.ijs'
 end.
-load TPMC sl 'manifest.ijs'
+loadFixed TPMC sl 'manifest.ijs'
 
 erase'CAPTION FILES DESCRIPTION RELEASE FOLDER LABCATEGORY PLATFORMS'
 
-load TPUU sl 'uu.ijs'
+loadFixed TPUU sl 'uu.ijs'
 uun=: uuconnect''
 make_CAL''
 globmake''
@@ -4549,6 +4549,17 @@ ttt_z_=: 3 : 0
 z=:  tabengine_cal_ y
 zz=: tabengine_cal_ 'CTBU'
 (":z),LF,LF,zz
+)
+
+loadFixed=: 3 : 0
+try. load y
+catch.
+  try. load z=. dquote y
+  catch.
+    smoutput '>>> start_uu_ cannot load script at path: ',z
+    assert 0 ['abort start_uu_'
+  end.
+end.
 )
 
 uuconnect=: 3 : 0
