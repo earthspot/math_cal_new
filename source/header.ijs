@@ -1,10 +1,13 @@
 empty'~home/documents/github/math_cal_new/cal.ijs'
 0 :0
-Wednesday 24 April 2019  02:10:47
+Wednesday 1 May 2019  05:24:17
 -
 CAL: scientific calculator engine
 -serves multiple TABULA implementations
 )
+
+require 'format/zulu'
+require 'math/uu/handy4uu'
 
 coclass 'cal'
 

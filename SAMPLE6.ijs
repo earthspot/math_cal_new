@@ -1,51 +1,43 @@
-SAVED=: '2019-02-19  03:08:16'
+SAVED=: '2019-05-07  08:29:01'
 CAPT=: 'temperature scales'
 
 TTIMAGE=: 0 define
-temperature scales                                           
-┌ ┌ ┌ ┌ ┌ ┌ ┌ ┌ ┌ {1}  @       1 f.p  Freezing pt units      
-│ │ │ │ │ │ │ │ └>{2}  @   0.732 b.p  Boiling pt units       
-│ │ │ │ │ │ │ └>  {3}  @ 273.150 K    ={1}                   
-│ │ │ │ │ │ └>    {4}  @       0 °C   ={1}                   
-│ │ │ │ │ └>      {5}  @  32.000 °F   ={1}                   
-│ │ │ │ └>        {6}  @   7.500 °Ro  ={1}                   
-│ │ │ └>          {7}  @     150 °De  ={1}                   
-│ │ └>            {8}  @ 491.670 °Ra  ={1}                   
-│ └>              {9}  @       0 °Re  ={1}                   
-└>                {10} @       0 °Ne  ={1}                   
+temperature scales                                                
+┌ ┌ ┌ ┌ ┌ ┌ ┌ ┌ ┌ {1}          1 f.p  Freezing pt units           
+│ │ │ │ │ │ │ │ └>{2}      0.732 b.p  Boiling pt units            
+│ │ │ │ │ │ │ └>  {3}          0 °C   Celsius: 0 to 100           
+│ │ │ │ │ │ └>    {4}     32.000 °F   Fahrenheit: 32 to 212       
+│ │ │ │ │ └>      {5}    273.150 K    Kelvin: 273.15 to 373.15    
+│ │ │ │ └>        {6}    491.670 °Ra  Rankine: 491.67 to 671.64   
+│ │ │ └>          {7}        150 °De  Delisle: 150 to 0           
+│ │ └>            {8}          0 °Ne  Newton: 0 to 33             
+│ └>              {9}          0 °Re  Reaumur: 0 to 80            
+└>                {10}     7.500 °Ro  Roemer: 7.5 to 60           
 )
 
 TT=: cmx 0 define
-tn                      tu    ts td  tf                 
-Freezing pt units       f.p   K  0 0                    
-Boiling pt units        b.p   K  1 0 a                  
-={1}                    K     K  1 0 a                  
-={1}                    degC  K  1 0 a                  
-={1}                    degF  K  1 0 a                  
-={1}                    degRo K  1 0 a                  
-={1}                    degDe K  1 0 a                  
-={1}                    degRa K  1 0 a                  
-={1}                    degRe K  1 0 a                  
-={1}                    degNe K  1 0 a                  
+tn                           tu    ts td  tf                 
+Freezing pt units            f.p   K  0 0                    
+Boiling pt units             b.p   K  1 0 a                  
+Celsius: 0 to 100            degC  K  1 0 a                  
+Fahrenheit: 32 to 212        degF  K  1 0 a                  
+Kelvin: 273.15 to 373.15     K     K  1 0 a                  
+Rankine: 491.67 to 671.64    degRa K  1 0 a                  
+Delisle: 150 to 0            degDe K  1 0 a                  
+Newton: 0 to 33              degNe K  1 0 a                  
+Reaumur: 0 to 80             degRe K  1 0 a                  
+Roemer: 7.5 to 60            degRo K  1 0 a                  
 )
 
-vquan=: 0 1 0.732011255527267868 273.149999999999977 0 32.0003999999999351 7.49994749994749377 150 491.670086097673277 0 0
+vquan=: 0 1 5463r7463 0 80001r2500 5463r20 68298875r138912 150 0 0 357140r47619
 
-vfact=: 0 273.149999999999977 373.149999999999977 1 1 0.55555555555555558 1.90476000000000001 _0.66666666666666663 0.555648000000000031 1.25 3.03029999999999999
+vfact=: 0 5463r20 7463r20 1 5r9 1 8682r15625 _2r3 30303r10000 5r4 47619r25000
 
-exe10=: 3 : 'a [a=. 1{y [ITEMNO=:10'
-exe2=: 3 : 'a [a=. 1{y [ITEMNO=:2'
-exe3=: 3 : 'a [a=. 1{y [ITEMNO=:3'
-exe4=: 3 : 'a [a=. 1{y [ITEMNO=:4'
-exe5=: 3 : 'a [a=. 1{y [ITEMNO=:5'
-exe6=: 3 : 'a [a=. 1{y [ITEMNO=:6'
-exe7=: 3 : 'a [a=. 1{y [ITEMNO=:7'
-exe8=: 3 : 'a [a=. 1{y [ITEMNO=:8'
-exe9=: 3 : 'a [a=. 1{y [ITEMNO=:9'
 
 TTINFO=: 0 define
-This is a test ttable.
 Purpose:
 1. To show the various temperature scales TABULA can handle
-2. To demonstrate backfitting.
+2. To show how a physical constant defines its own units, e.g. [f.p] [b.p]
+3. To demonstrate backfitting.
+https://en.wikipedia.org/wiki/Conversion_of_units_of_temperature
 )
